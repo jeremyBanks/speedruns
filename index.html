@@ -18,10 +18,17 @@
   mainEl.appendChild(placeholder);
   const player = new YT.Player(placeholder, {
     videoId: '3gJHBA1go5I',
-    playerParams: {
-      iv_load_policy: 3, // disable annotations by default
+    playerVars: {
+      rel: 0, // related videos overlay
+      controls: 1,
+      iv_load_policy: 3, // disabled annotations
       loop: 1,
-      modestbranding: 1, // suppress logos that could obscure timers/data
+      modestbranding: 1,
+    },
+    onStateChange(event) {
+      if (event.data == YT.PlayerState.PAUSED) {
+        document.body.appendChild(document.createTextNode(player.getCurrentTime()));
+      }
     }
   });
 });</script>
@@ -30,7 +37,8 @@
 
 <p>
   You can use <kbd>,</kbd> and <kbd>.</kbd> to seek backwards
-  and forwards by single frames in the YouTube player.
+  and forwards by single frames in the YouTube player. You
+  may need to click to focus it first.
 </p>
 
 <main id="main"></main>
