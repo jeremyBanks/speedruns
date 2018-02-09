@@ -24,10 +24,13 @@
       iv_load_policy: 3, // disabled annotations
       loop: 1,
       modestbranding: 1,
+      autoplay: 1,
     },
-    onStateChange(event) {
-      if (event.data == YT.PlayerState.PAUSED) {
+    events: {
+      onStateChange(event) {
+        console.log(event);
         document.body.appendChild(document.createTextNode(player.getCurrentTime()));
+        
       }
     }
   });
@@ -35,13 +38,25 @@
 
 <h1>YouTube Video Timer</h1>
 
+<form>
+  <label>Video ID or URL: <input name="videoId" value="https://youtu.be/3gJHBA1go5I" /></label>
+  <button type="submit">Load</button>
+</form>
+  
 <p>
   You can use <kbd>,</kbd> and <kbd>.</kbd> to seek backwards
-  and forwards by single frames in the YouTube player. You
-  may need to click to focus it first.
+  and forwards by single frames in the YouTube player after
+  clicking on it to pause the video.
 </p>
 
-<main id="main"></main>
+<main id="main">
+  <p>
+    
+  </p>
+  <label>Start Time: <input id="startTime" placeholder="1.000" /></label> <button id="startCap">Get Video Timestamp</button> <br />
+  <label>End Time: <input id="endTime" placeholder="120.000" /></label> <button id="endCap">Get Video Timestamp</button> <br />
+  <label>Elapsed Time: <input id="elapsedTime" placeholder="119.00" /></label>
+</main>
 
 <style>
   html {
@@ -51,5 +66,10 @@
   body {
     max-width: 800px;
   }
+  
+  kbd {
+    border: 2px outset #CCC;
+    padding: 0px 2px;
+    background: #EEE;
 </style>
   
