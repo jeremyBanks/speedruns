@@ -26,12 +26,15 @@
   const startTime = document.querySelector('#startTime');
   const endTime = document.querySelector('#endTime');
   const elapsedTime = document.querySelector('#elapsedTime');
+  const elapsedDetail = document.querySelector('#elapsedDetail');
   const startCap = document.querySelector('#startCap');
   const endCap = document.querySelector('#endCap');
       
   const updateElapsed = () => {
     elapsedTime.value = ((endTime.value) - Number(startTime.value)).toFixed(3);
-  }
+    const s = Number(elapsedTime.value)
+    elapsedDetail.textContent = `${(s / 60 / 60) | 0}:${(s / 60) | 0}:${s % 60}`;
+  };
   
   startTime.onchange = endTime.onchange = updateElapsed;
 
@@ -86,7 +89,7 @@
   <p>
     <label>Start Time: <input id="startTime" type="number" step="0.001" placeholder="1.000" /></label> <button id="startCap">Get Video Timestamp</button> <br />
     <label>End Time: <input id="endTime" type="number" step="0.001" placeholder="120.000" /></label> <button id="endCap">Get Video Timestamp</button> <br />
-    <label>Elapsed Time: <input id="elapsedTime" type="number" step="0.001" placeholder="119.00" /></label>
+    <label>Elapsed Time: <input id="elapsedTime" type="number" step="0.001" placeholder="119.00" /> <span id="elapsedDetail"></span></label>
   </p>
 </main>
 
