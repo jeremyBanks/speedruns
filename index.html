@@ -10,14 +10,33 @@
   });
 </script>
 <script src="https://www.youtube.com/iframe_api"></script>
-<script>'use strict'; setTimeout(async () => {
+<script>'use strict'; setTimeout(async () => {    
+  const videoIdOrUrl = new URLSearchParams(location.search).get('videoId') || '';
+  const videoId = videoIdOrUrl.replace(/^.*[\?\&]q=/, '').replace(/\?.*$/, '').replace(/^.*\//, '');
+
+  if (!videoId) return;
+    
+  document.querySelector('[name=videoId]').value = videoId;
+  
   const YT = await window.YTAPILoaded;
   const mainEl = document.querySelector('#main');
+
+  mainEl.removeAttribute('disabled');
+    
+  const startTime = document.querySelector('#startTime');
+  const endTime = document.querySelector('#endTime');
+  const elapsedTime = document.querySelector('#elapsedTime');
+
+  const updateElapsed = () => {
+    elapsedTime.value = Number(endTime) - Number(startTime);
+  }
   
+  startTime 
+    
   const placeholder = document.createElement('span');
   mainEl.appendChild(placeholder);
   const player = new YT.Player(placeholder, {
-    videoId: '3gJHBA1go5I',
+    videoId: videoId,
     playerVars: {
       rel: 0, // related videos overlay
       controls: 1,
