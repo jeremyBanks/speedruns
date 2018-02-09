@@ -3,11 +3,27 @@
 <title>YouTube Video Timer</title>
 
 <script>
-  window.YTAPILoaded = new Promise(resolve => window.onYouTubeIframeAPIReady = () => resolve(wi
+  window.YTAPILoaded = new Promise(resolve => {
+    window.onYouTubeIframeAPIReady = () => {
+      resolve(window.YT);
+    };
+  });
 </script>
 <script src="https://www.youtube.com/iframe_api"></script>
-<script defer>'use strict'; setTimeout(function() {
-
+<script defer>'use strict'; setTimeout(async () => {
+  const YT = await window.YTAPILoaded;
+  const mainEl = document.querySelector('#main');
+  
+  const placeholder = document.createElement('span');
+  mainEl.appendChild(placeholder);
+  const player = new YT.Player(placeholder, {
+    videoId: '3gJHBA1go5I',
+    playerParams: {
+      iv_load_policy: 3, // disable annotations by default
+      loop: 1,
+      modestbranding: 1, // suppress logos that could obscure timers/data
+    }
+  });
 });</script>
 
 <h1>YouTube Video Timer</h1>
