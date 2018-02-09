@@ -10,7 +10,7 @@
   });
 </script>
 <script src="https://www.youtube.com/iframe_api"></script>
-<script defer>'use strict'; setTimeout(async () => {
+<script>'use strict'; setTimeout(async () => {
   const YT = await window.YTAPILoaded;
   const mainEl = document.querySelector('#main');
   
@@ -30,7 +30,6 @@
       onStateChange(event) {
         console.log(event);
         document.body.appendChild(document.createTextNode(player.getCurrentTime()));
-        
       }
     }
   });
@@ -42,20 +41,19 @@
   <label>Video ID or URL: <input name="videoId" value="https://youtu.be/3gJHBA1go5I" /></label>
   <button type="submit">Load</button>
 </form>
-  
-<p>
-  You can use <kbd>,</kbd> and <kbd>.</kbd> to seek backwards
-  and forwards by single frames in the YouTube player after
-  clicking on it to pause the video.
-</p>
 
-<main id="main">
+<main id="main" disabled>
   <p>
-    
+    You can use <kbd>,</kbd> and <kbd>.</kbd> to seek backwards
+    and forwards by single frames in the YouTube player after
+    clicking on it to pause the video.
   </p>
-  <label>Start Time: <input id="startTime" placeholder="1.000" /></label> <button id="startCap">Get Video Timestamp</button> <br />
-  <label>End Time: <input id="endTime" placeholder="120.000" /></label> <button id="endCap">Get Video Timestamp</button> <br />
-  <label>Elapsed Time: <input id="elapsedTime" placeholder="119.00" /></label>
+
+  <p>
+    <label>Start Time: <input id="startTime" placeholder="1.000" /></label> <button id="startCap">Get Video Timestamp</button> <br />
+    <label>End Time: <input id="endTime" placeholder="120.000" /></label> <button id="endCap">Get Video Timestamp</button> <br />
+    <label>Elapsed Time: <input id="elapsedTime" placeholder="119.00" /></label>
+  </p>
 </main>
 
 <style>
@@ -70,6 +68,14 @@
   kbd {
     border: 2px outset #CCC;
     padding: 0px 2px;
-    background: #EEE;
+    background: #EEE
+  }
+  
+  main[disabled] {
+    pointer-events: none;
+    opacity: 0.25;
+    cursor: not-allowed;
+    user-select: none;
+  }
 </style>
   
