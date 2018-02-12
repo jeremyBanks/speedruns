@@ -12,7 +12,7 @@
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>'use strict'; setTimeout(async () => {    
   const videoIdOrUrl = new URLSearchParams(location.search).get('videoId') || '';
-  const videoId = videoIdOrUrl.replace(/^.*[\?\&]q=/, '').replace(/\?.*$/, '').replace(/^.*\//, '');
+  const videoId = videoIdOrUrl.replace(/^.*[\?\&]v=/, '').replace(/\?.*$/, '').replace(/^.*\//, '');
 
   if (!videoId) return;
     
@@ -49,6 +49,7 @@
       loop: 1,
       modestbranding: 1,
       autoplay: 1,
+      mute: 1,
     },
     events: {
       onReady() {
