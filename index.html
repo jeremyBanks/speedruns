@@ -10,12 +10,24 @@
   });
 </script>
 <script src="https://www.youtube.com/iframe_api"></script>
-<script>'use strict'; setTimeout(async () => {    
+<script>'use strict'; setTimeout(async () => {
+  const projectName = /^[a-z0-9\-]+\.glitch\.me$/.test(document.location.host) ? document.location.host.split('.')[0] : null;
+
+  if (projectName) {
+    const h1 = document.querySelector('h1');
+    const link = document.createElement('a');
+    link.href = `https://glitch.com/edit/#!/${projectName}`;
+    link.textContent = 'edit';
+    h1.appendChild(document.createTextNode(' ('));
+    h1.appendChild(link);
+    h1.appendChild(document.createTextNode(')'));
+  }
+    
   const videoIdOrUrl = new URLSearchParams(location.search).get('videoId') || '';
   const videoId = videoIdOrUrl.replace(/^.*[\?\&]v=/, '').replace(/\?.*$/, '').replace(/^.*\//, '');
 
   if (!videoId) return;
-    
+
   document.querySelector('[name=videoId]').value = videoId;
   
   const YT = await window.YTAPILoaded;
@@ -88,8 +100,12 @@
   </p>
 
   <p>
-    <label>Start Time: <input id="startTime" type="number" step="0.001" placeholder="1.000" /></label> <button id="startCap">Get Video Timestamp</button> <br />
-    <label>End Time: <input id="endTime" type="number" step="0.001" placeholder="120.000" /></label> <button id="endCap">Get Video Timestamp</button> <br />
+    <label>Start Time: <input id="startTime" type="number" step="0.001" placeholder="1.000" /></label> <button id="startCap">Get Video Timestamp</button>
+  </p>
+  <p>
+    <label>End Time: <input id="endTime" type="number" step="0.001" placeholder="120.000" /></label> <button id="endCap">Get Video Timestamp</button>
+  </p>
+  <p>
     <label>Elapsed Time: <input id="elapsedTime" type="number" step="0.001" placeholder="119.00" /> <span id="elapsedDetail"></span></label>
   </p>
 </main>
@@ -114,6 +130,10 @@
     opacity: 0.25;
     cursor: not-allowed;
     user-select: none;
+  }
+  
+  button {
+    padding: 8px;
   }
 </style>
   
