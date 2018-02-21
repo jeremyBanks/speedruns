@@ -1,6 +1,6 @@
 import HTML from '/html.js';
 
-(main => main.defer = (async _=>_)().then(_ => main(main.defer)))(async defer => {
+((f, p) => p = (async _=> (await f)(p))())(async defer => {
   defer.then(success => {
     document.querySelector('#loading-message').remove();
   }, error => {
@@ -32,7 +32,8 @@ import HTML from '/html.js';
   const renderHTML = (...args) => output.appendChild(HTML.fragment(...args));
 
   renderHTML`<header>
-    <h1><a href="/">${title}</a></h1>
+    <h1>
+      <a href="/">${title}</a></h1>
 
     ${projectName && HTML`
       <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}`}">view source</a></nav>
