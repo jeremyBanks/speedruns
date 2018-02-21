@@ -37,9 +37,12 @@ a:hover {
   color: #00F;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Trebuchet MS', sans-serif;
+}
+
 h1 {
   display: inline;
-  font-family: 'Trebuchet MS', sans-serif;
   border-bottom: 2px solid currentColor;
   border-bottom-left-radius: 16px 8px;
 }
