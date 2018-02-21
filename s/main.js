@@ -14,7 +14,7 @@ import HTML from '/html.js';
   
   const apiRoot = '/https://www.speedrun.com/api/v1';
 
-  document.title = title;
+  document.title = document.URL.replace(/^\w+:\/\//, '');
 
   const output = document.querySelector('#main');
   const out = child => output.appendChild(child);
@@ -41,9 +41,11 @@ import HTML from '/html.js';
     out(HTML.element`<h2><img src="${icon}"> ${name}</h2>`);
     
     out(HTML.element`<pre>${JSON.stringify(info, null, 2)}</pre>`);
-  } else {
-    out(HTML.element`<p>
-      Consider <a href="/wc2">WarCraft II</a> and <a href="/wc2btdp">its expansion</a>.
-    </p>`);
+    return;
+  }
+  
+  else {
+    document.location.replace('/wc2@banks');
+    return;
   }
 });
