@@ -2,9 +2,9 @@ import HTML from '/html.js';
 
 (main => {const done = Promise.resolve().then(_ => main(done));})(async done => {
   done.then(
-    _ => document.querySelector('#premain-message').remove(),
+    _ => document.querySelector('#loading-message').remove(),
     error => {
-      document.querySelector('#premain-message').textContent = String(error.stack);
+      document.querySelector('#loading-message').textContent = String(error.stack);
       throw error;
     });
 
@@ -15,6 +15,11 @@ import HTML from '/html.js';
   const title = `${projectName || defaultName}.glitch.me`;
   
   const apiRoot = '/https://www.speedrun.com/api/v1';
+  const apiFetchJson = async path => {
+    const url = apiRoot + path;
+    const response = await fetch(url);
+    
+  }
 
   document.title = (path.length) ? `${defaultName}…/${path.join('/')}` : title;
 
