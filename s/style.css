@@ -6,3 +6,11 @@ body {
 #premain-message {
   color: red;
 }
+
+img {
+  --max-size: calc(.5em + .5ex);
+  max-width: var(--max-size);
+  max-height: var(--max-size);
+  vertical-align: baseline;
+  pointer-events: none;
+}
