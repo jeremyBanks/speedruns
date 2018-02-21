@@ -38,7 +38,7 @@ import HTML from '/html.js';
     </h1>
 
     ${projectName && HTML`
-      <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}`}">view source</a></nav>
+      <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}?path=s/main.js`}">view/edit source</a></nav>
     `}
   </header>`;
 
