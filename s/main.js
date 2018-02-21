@@ -14,20 +14,31 @@ import HTML from '/html.js';
   const defaultName = "bests";
   const title = `${projectName || defaultName}.glitch.me`;
   
-  const apiRoot = '/https://www.speedrun.com/api/v1';
-  const apiFetchJson = async path => {
+  const apiRoot = '/https://www.speedrun.com/api/v1/';
+  const apiFetch = async path => {
     const url = apiRoot + path;
     const response = await fetch(url);
-    
+    const body = await response.json();
+    if (body.status) {
+      throw new Error(`${body.status}: ${body.message}`); 
+    } else {
+      return body.data;
+    }
   }
 
   document.title = (path.length) ? `${defaultName}…/${path.join('/')}` : title;
 
   const output = document.querySelector('#main');
-  const out = child => output.appendChild(child);
+  const renderHTML = (...args) => output.appendChild(HTML.fragment(...args));
 
   addHeader: {
-    const header = HTML.element`<header><h1><a href="/">${title}</a></h1></header>`;
+    writeHtml`<header>
+      <h1><a href="/">${title}</a></h1>
+
+      ${projectName && HTML`
+
+      `}
+    </header>`;
     if (projectName) {
       header.appendChild(HTML.fragment`
           <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}`}">view source</a></nav>`);
@@ -35,43 +46,50 @@ import HTML from '/html.js';
     out(header);
   }
 
-  if (path.length === 1) displayGameBests: {
-    const [gameSlug, playerSlug] = path[0].split('@');
-    if (!gameSlug || !playerSlug) break displayGameBests;
-    
-    const [gameInfo, playerInfo] = await Promise.all([
-      fetch(`${apiRoot}/games/${gameSlug}`).then(r => r.json()),
-      fetch(`${apiRoot}/users/${playerSlug}`).then(r => r.json()),
-    ]);
-    
-    const gameId = gameInfo.data.id;
-    const playerId = gameInfo.data.id;
+  let bodyRendered = false;
+  renderBody: {
+    if (path.length === 1) {
+      const [gameSlug, playerSlug] = path[0].split('@');
+      if (!gameSlug || !playerSlug) break renderBody;
 
-    const gameName = gameInfo.data.names.international;
-    const playerName = playerInfo.data.names.international;
-    
-    const runsInfo = await fetch(`${apiRoot}/runs?user=${playerId}&game=${gameId}`).then(r => r.json());
-    
-    const icon = gameInfo.data.assets.icon.uri;
-    const trophies = [
-      'trophy-1st', 'trophy-2nd', 'trophy-3rd', 'trophy-4th'
-    ].map(s => gameInfo.data.assets[s]).map(o => o ? o.uri : null);
-    
-    out(HTML.element`<h2><img src="${icon}"> ${gameName}</h2>`);
-    
-    out(HTML.element`<pre>${JSON.stringify(gameInfo, null, 2)}</pre>`);
-    
-    out(HTML.element`<h2><img src="${trophies[0]}"> ${playerName}</h2>`);
+      const [gameInfo, playerInfo] = await Promise.all([
+        apiFetch(`games/${gameSlug}`),
+        apiFetch(`users/${playerSlug}`),
+      ]);
 
-    out(HTML.element`<pre>${JSON.stringify(playerInfo, null, 2)}</pre>`);
+      const gameId = gameInfo.id;
+      const playerId = gameInfo.id;
 
-    out(HTML.element`<h2><img src="${trophies[1]}"> Runs</h2>`);
+      const gameName = gameInfo.names.international;
+      const playerName = playerInfo.names.international;
 
-    out(HTML.element`<pre>${JSON.stringify(runsInfo, null, 2)}</pre>`);
-  } else handle404: {
-    document.location.replace('/wc2@banks');
+      const runsInfo = await apiFetch(`runs?user=${playerId}&game=${gameId}`);
+
+      const icon = gameInfo.assets.icon.uri;
+      const trophies = [
+        'trophy-1st', 'trophy-2nd', 'trophy-3rd', 'trophy-4th'
+      ].map(s => gameInfo.assets[s]).map(o => o ? o.uri : null);
+
+      out(HTML.element`<h2><img src="${icon}"> ${gameName}</h2>`);
+
+      out(HTML.element`<pre>${JSON.stringify(gameInfo, null, 2)}</pre>`);
+
+      out(HTML.element`<h2><img src="${trophies[0]}"> ${playerName}</h2>`);
+
+      out(HTML.element`<pre>${JSON.stringify(playerInfo, null, 2)}</pre>`);
+
+      out(HTML.element`<h2><img src="${trophies[1]}"> Runs</h2>`);
+
+      out(HTML.element`<pre>${JSON.stringify(runsInfo, null, 2)}</pre>`);
+    }
+    
+    bodyRendered = true;
   }
 
+  if (!bodyRendered) handle404: {
+    document.location.replace('/wc2@banks');
+  }
+    
   addFooter: {
     out(HTML.fragment`<footer>
       This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>.
