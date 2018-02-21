@@ -53,10 +53,8 @@ import HTML from '/html.js';
       const [
         gameInfo,
         playerInfo,
-        levelsInfo,
       ] = await Promise.all([
-        apiFetch(`games/${gameSlug}`),
-        apiFetch(`games/${gameSlug}/levels`),
+        apiFetch(`games/${gameSlug}?embed=levels,categories`),
         apiFetch(`users/${playerSlug}`),
       ]);
 

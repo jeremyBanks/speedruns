@@ -4,6 +4,11 @@ html {
 
 #loading-message {
   color: red;
+  position: absolute;
+  z-index: 512;
+  background: black;
+  width: auto;
+  padding: 2em;
 }
 
 body {
