@@ -1,10 +1,13 @@
 const express = require('express');
+const request = require('request-promise-native');
+
 const app = express();
 
 app.use(express.static('s'));
 
-app.get('/https://www.speedrun.com/api/', (req, res) => {
-  // forward request to https://www.speedrun.com/api/, and cache locally!
+app.get(/^\/(https:\/\/www\.speedrun\.com\/api\/(.*))/, async (req, res) => {
+  const url = req.params[0];
+  res.send(await request.get(url));
 });
 
 app.use((req, res) => {
