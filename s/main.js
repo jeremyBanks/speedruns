@@ -1,13 +1,7 @@
 import HTML from '/html.js';
 
-(f => (async () => 0) f())(async done => {
-  
-});
-
-export const main = async () => {
-  await 0;
-
-  main.result.then(
+(main => {const done = Promise.resolve().then(_ => main(done));})(async done => {
+  done.then(
     _ => document.querySelector('#premain-message').remove(),
     error => {
       document.querySelector('#premain-message').textContent = String(error.stack);
@@ -21,12 +15,16 @@ export const main = async () => {
   document.title = title;
 
   const output = document.querySelector('#main');
+  const out = child => output.appendChild(child);
 
   const heading = HTML.element`<h1>${title}</h1>`;
   if (projectName) {
     heading.appendChild(HTML.fragment` (<a href="${`https://glitch.com/edit/#!/${projectName}`}">view source</a>)`);
   }
-  output.appendChild(heading);
-};
+  out(heading);
+  
+  const response = await fetch(`https://www.speedrun.com/api/v1/games/wc2`);
+  const data = await response.json();
 
-main.result = main();
+  out(HTML.element`<pre>${JSON.stringify(data, null, 2)}</pre>`);
+});
