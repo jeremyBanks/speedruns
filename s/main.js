@@ -34,9 +34,12 @@ import HTML from '/html.js';
     
     const name = info.data.names.international;
     const icon = info.data.assets.icon.uri;
+    const trophies = [
+      'trophy-1st', 'trophy-2nd', 'trophy-3rd', 'trophy-4th'
+    ].map(s => info.data.assets.icon[s]).map(o => o ? o.url : null);
     
     out(HTML.element`<h2><img src="${icon}"> ${name}</h2>`);
     
     out(HTML.element`<pre>${JSON.stringify(info, null, 2)}</pre>`);
-  }
+  } else
 });
