@@ -33,10 +33,10 @@ import HTML from '/html.js';
 
   renderHTML`
     <header>
-      <h1>
+      <h1><span>
         <img src="${document.querySelector('link[rel=icon]').href}">
         <a href="/">${title}</a>
-      </h1>
+      <span></h1>
 
       ${projectName && HTML`
         <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}?path=s/main.js`}">view/edit source</a></nav>
