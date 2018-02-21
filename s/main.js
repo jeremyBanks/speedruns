@@ -31,16 +31,18 @@ import HTML from '/html.js';
   const output = document.querySelector('#main');
   const renderHTML = (...args) => output.appendChild(HTML.fragment(...args));
 
-  renderHTML`<header>
-    <h1>
-      <img src="${document.querySelector('link[rel=icon]').href}">
-      <a href="/">${title}</a>
-    </h1>
+  renderHTML`
+    <header>
+      <h1>
+        <img src="${document.querySelector('link[rel=icon]').href}">
+        <a href="/">${title}</a>
+      </h1>
 
-    ${projectName && HTML`
-      <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}?path=s/main.js`}">view/edit source</a></nav>
-    `}
-  </header>`;
+      ${projectName && HTML`
+        <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}?path=s/main.js`}">view/edit source</a></nav>
+      `}
+    </header>
+  `;
 
   let bodyRendered = false;
   renderBody: {
@@ -63,8 +65,8 @@ import HTML from '/html.js';
 
       const icon = gameInfo.assets.icon.uri;
       const trophies = [
-        'trophy-1st', 'trophy-2nd', 'trophy-3rd', 'trophy-4th'
-      ].map(s => gameInfo.assets[s]).map(o => o ? o.uri : null);
+        'trophy-1st', 'trophy-2nd', 'trophy-3rd'
+      ].map(s => gameInfo.assets[s].uri);
 
       renderHTML`<h2><img src="${icon}"> ${gameName}</h2>`;
 
@@ -86,9 +88,11 @@ import HTML from '/html.js';
     document.location.replace('/wc2@banks');
   }
 
-  renderHTML`<footer>
-    This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>.
-    It is used under <a href="https://creativecommons.org/licenses/by-nc/4.0/">the CC BY-NC license</a> and
-    loaded from <a href="https://github.com/speedruncomorg/api/tree/master/version1">their API</a>.
-  </footer>`;
+  renderHTML`
+    <footer>
+      This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>.
+      It is used under <a href="https://creativecommons.org/licenses/by-nc/4.0/">the CC BY-NC license</a> and
+      loaded from <a href="https://github.com/speedruncomorg/api/tree/master/version1">their API</a>.
+    </footer>
+  `;
 });
