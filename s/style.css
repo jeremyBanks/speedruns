@@ -2,6 +2,18 @@ html {
   background: #222;
 }
 
+body {
+  opacity: 1.0;
+  animation-name: appear;
+  animation-delay: 0.5s;
+  animation-duration: .125s;
+  animation-fill-mode: both;
+}
+@keyframes appear {
+  from { opacity: 0.0; }
+  to   { opactiy: 1.0; }
+}
+
 #loading-message {
   color: red;
   position: absolute;
