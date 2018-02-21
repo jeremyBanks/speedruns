@@ -22,16 +22,15 @@ import HTML from '/html.js';
   const heading = HTML.element`<h1><a href="/">${title}</a></h1>`;
   if (projectName) {
     heading.appendChild(HTML.element`
-        <span class="subtitle"> <a href="${`https://glitch.com/edit/#!/${projectName}`}">view source</a></span>`);
+        <span class="links"> <a href="${`https://glitch.com/edit/#!/${projectName}`}">view source</a></span>`);
   }
   out(heading);
   
   const path = document.location.pathname.split(/\//g).slice(1);
   
-  if (path.length === 1) {
+  if (path.length === 1) gameBests: {
     const [gameId, playerId] = path[0].split('@');
-    
-    if (n
+    if (!gameId || !playerId) break gameBests;
     
     const response = await fetch(`${apiRoot}/games/${gameId}`);
     const info = await response.json();

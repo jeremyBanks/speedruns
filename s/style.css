@@ -6,11 +6,15 @@ html {
   color: red;
 }
 
+body {
+  padding: 21px;
+}
+
 main {
   background: #FFF;
   font-family: helvetica, arial, sans-serif;
   padding: 12px 36px;
-  margin: 42px auto;
+  margin: 0 auto;
   max-width: 800px;
   min-width: 512px;
   min-height: 256px;
@@ -39,7 +43,7 @@ h1 {
   border-bottom-left-radius: 16px 8px;
 }
 
-h1 .subtitle {
+h1 .links {
   float: right;
   margin-top: 1.125em;
   margin-right: .125em;
