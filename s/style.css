@@ -14,3 +14,18 @@ img {
   vertical-align: baseline;
   pointer-events: none;
 }
+
+a, a:visited  {
+  color: #008;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #00F;
+}
+
+h1 {
+  font-family: 'Trebuchet MS', sans-serif;
+  border-bottom: 2px solid currentColor;
+  border-bottom-left-radius: 6px 12px;
+}

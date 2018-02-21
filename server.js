@@ -19,7 +19,7 @@ app.get(/^\/(https:\/\/www\.speedrun\.com\/api\/(.*))/, async (req, res) => {
 
 app.use((req, res) => {
   res.sendFile(__dirname + '/s/index.html');
-})
+});
 
 const listener = app.listen(process.env.PORT, () => {
   console.log(`Your app is listening on port ${listener.address().port}`);
