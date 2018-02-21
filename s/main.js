@@ -26,10 +26,13 @@ import HTML from '/html.js';
   }
   out(heading);
   
-  const path = document.location.pathname;
-  const [_, gameId] = path.split(/\//g);
+  const path = document.location.pathname.split(/\//g).slice(1);
   
-  if (gameId) {
+  if (path.length === 1) {
+    const [gameId, playerId] = path[0].split('@');
+    
+    if (n
+    
     const response = await fetch(`${apiRoot}/games/${gameId}`);
     const info = await response.json();
     
@@ -45,8 +48,6 @@ import HTML from '/html.js';
     return;
   }
   
-  else {
-    document.location.replace('/wc2@banks');
-    return;
-  }
+  document.location.replace('/wc2@banks');
+  return;
 });
