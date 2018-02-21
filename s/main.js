@@ -9,30 +9,34 @@ import HTML from '/html.js';
     });
 
   const hostname = document.location.host;
+  const path = document.location.pathname.split(/\//g).slice(1);
   const projectName = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
-  const title = `${projectName || 'speedrun'}.glitch.me`;
+  const defaultName = "bests";
+  const title = `${projectName || defaultName}.glitch.me`;
   
   const apiRoot = '/https://www.speedrun.com/api/v1';
 
-  document.title = document.URL.replace(/^\w+:\/\//, '');
+  document.title = (path.length) ? `${defaultName}…/${path.join('/')}` : title;
 
   const output = document.querySelector('#main');
   const out = child => output.appendChild(child);
 
-  const heading = HTML.element`<h1><a href="/">${title}</a></h1>`;
-  if (projectName) {
-    heading.appendChild(HTML.element`
-        <span class="links"> <a href="${`https://glitch.com/edit/#!/${projectName}`}">view source</a></span>`);
+  addHeading: {
+    const heading = HTML.element`<h1><a href="/">${title}</a></h1>`;
+    if (projectName) {
+      heading.appendChild(HTML.element`
+          <span class="links"> <a href="${`https://glitch.com/edit/#!/${projectName}`}">view source</a></span>`);
+    }
+    out(heading);
   }
-  out(heading);
   
-  const path = document.location.pathname.split(/\//g).slice(1);
-  
-  if (path.length === 1) gameBests: {
+
+  if (path.length === 1) displayGameBests: {
     const [gameId, playerId] = path[0].split('@');
-    if (!gameId || !playerId) break gameBests;
+    if (!gameId || !playerId) break displayGameBests;
     
-    const response = await fetch(`${apiRoot}/games/${gameId}`);
+    const 
+    const response = (await fetch(`${apiRoot}/games/${gameId}`)).json();
     const info = await response.json();
 
     // https://www.speedrun.com/api/v1/games/o1yry26q/records
@@ -50,7 +54,9 @@ import HTML from '/html.js';
     out(HTML.element`<pre>${JSON.stringify(info, null, 2)}</pre>`);
     return;
   }
-  
-  document.location.replace('/wc2@banks');
-  return;
+
+  handle404: {
+    document.location.replace('/wc2@banks');
+    return;
+  }
 });
