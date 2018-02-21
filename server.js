@@ -7,7 +7,7 @@ app.use(express.static('s'));
 
 const apiCache = new Map();
 app.get(/^\/(https:\/\/www\.speedrun\.com\/api\/(.*))/, async (req, res) => {
-  const url = req.params[0];
+  const url = req.url.slice(1);
   if (apiCache.has(url)) {
     return res.send(apiCache.get(url));
   }

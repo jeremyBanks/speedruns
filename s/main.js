@@ -32,26 +32,42 @@ import HTML from '/html.js';
   
 
   if (path.length === 1) displayGameBests: {
-    const [gameId, playerId] = path[0].split('@');
-    if (!gameId || !playerId) break displayGameBests;
+    const [gameSlug, playerSlug] = path[0].split('@');
+    if (!gameSlug || !playerSlug) break displayGameBests;
     
-    const 
-    const response = (await fetch(`${apiRoot}/games/${gameId}`)).json();
-    const info = await response.json();
+    const [gameInfo, playerInfo] = await Promise.all([
+      fetch(`${apiRoot}/games/${gameSlug}`).then(r => r.json()),
+      fetch(`${apiRoot}/users/${playerSlug}`).then(r => r.json()),
+    ]);
+    
+    const gameId = gameInfo.data.id;
+    const playerId = gameInfo.data.id;
+
+    const gameName = gameInfo.data.names.international;
+    const playerName = playerInfo.data.names.international;
+    
+    const runsInfo = await fetch(`${apiRoot}/runs?user=${playerId}&game=${gameId}`).then(r => r.json());
 
     // https://www.speedrun.com/api/v1/games/o1yry26q/records
     // https://www.speedrun.com/api/v1/users/18qyezox/personal-bests?embed=game%2Ccategory
-    // https://www.speedrun.com/api/v1/runs?user=18qyezox&game=o1yry26q
+    // https://www.speedrun.com/api/v1/
     
-    const name = info.data.names.international;
-    const icon = info.data.assets.icon.uri;
+    const icon = gameInfo.data.assets.icon.uri;
     const trophies = [
       'trophy-1st', 'trophy-2nd', 'trophy-3rd', 'trophy-4th'
-    ].map(s => info.data.assets.icon[s]).map(o => o ? o.url : null);
+    ].map(s => gameInfo.data.assets[s]).map(o => o ? o.uri : null);
     
-    out(HTML.element`<h2><img src="${icon}"> ${name}</h2>`);
+    out(HTML.element`<h2><img src="${icon}"> ${gameName}</h2>`);
     
-    out(HTML.element`<pre>${JSON.stringify(info, null, 2)}</pre>`);
+    out(HTML.element`<pre>${JSON.stringify(gameInfo, null, 2)}</pre>`);
+    
+    out(HTML.element`<h2><img src="${trophies[0]}"> ${playerName}</h2>`);
+
+    out(HTML.element`<pre>${JSON.stringify(playerInfo, null, 2)}</pre>`);
+
+    out(HTML.element`<h2><img src="${trophies[1]}"> Runs</h2>`);
+
+    out(HTML.element`<pre>${JSON.stringify(runsInfo, null, 2)}</pre>`);
     return;
   }
 
