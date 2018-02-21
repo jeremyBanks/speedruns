@@ -1,10 +1,18 @@
-body {
-  font-family: helvetica, arial, sans-serif;
-  margin: 25px;
+html {
+  background: #222;
 }
 
 #premain-message {
   color: red;
+}
+
+main {
+  background: #FFF;
+  font-family: helvetica, arial, sans-serif;
+  padding: 24px;
+  margin: auto;
+  max-width: 800px;
+  min-width: 400px;
 }
 
 img {
@@ -27,5 +35,13 @@ a:hover {
 h1 {
   font-family: 'Trebuchet MS', sans-serif;
   border-bottom: 2px solid currentColor;
-  border-bottom-left-radius: 6px 12px;
+  border-bottom-left-radius: 16px 8px;
+}
+
+h1 .subtitle {
+  float: right;
+  margin-top: 1.125em;
+  margin-right: .125em;
+  font-size: 0.5em;
+  opacity: 0.5;
 }
