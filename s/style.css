@@ -18,6 +18,7 @@ main {
   max-width: 800px;
   min-width: 512px;
   min-height: 256px;
+  overflow-x: hidden;
 }
 
 img {
