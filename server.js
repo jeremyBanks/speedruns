@@ -11,7 +11,7 @@ app.get(/^\/(https:\/\/www\.speedrun\.com\/api\/(.*))/, async (req, res) => {
   if (apiCache.has(url)) {
     return res.send(apiCache.get(url));
   }
-  console.log("Loading and caching", url); 
+  console.log("Loading and caching", url);
   const result = await request.get(url, {simple: false});
   apiCache.set(url, result);
   return res.send(result);
