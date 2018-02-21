@@ -8,13 +8,17 @@ app.use(express.static('s'));
 const apiCache = new Map();
 app.get(/^\/(https:\/\/www\.speedrun\.com\/api\/(.*))/, async (req, res) => {
   const url = req.url.slice(1);
-  if (apiCache.has(url)) {
-    return res.send(apiCache.get(url));
+  const cached = apiCache.get(url);
+  
+  if (cached) {
+    return await cached;
   }
-  console.log("Loading and caching", url);
-  const result = await request.get(url, {simple: false});
+
+  console.log("GETting", url);
+  const result = request.get(url, {simple: false});
   apiCache.set(url, result);
-  return res.send(result);
+
+  return res.send(await result);
 });
 
 app.use((req, res) => {
