@@ -11,6 +11,8 @@ import HTML from '/html.js';
   const hostname = document.location.host;
   const projectName = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
   const title = `${projectName || 'speedrun'}.glitch.me`;
+  
+  const apiRoot = 'https://www.speedrun.com/api/v1';
 
   document.title = title;
 
@@ -23,7 +25,7 @@ import HTML from '/html.js';
   }
   out(heading);
   
-  const response = await fetch(`https://www.speedrun.com/api/v1/games/wc2`);
+  const response = await fetch(`${apiRoot}/games/wc2`);
   const data = await response.json();
 
   out(HTML.element`<pre>${JSON.stringify(data, null, 2)}</pre>`);
