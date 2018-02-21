@@ -12,7 +12,7 @@ import HTML from '/html.js';
   const projectName = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
   const title = `${projectName || 'speedrun'}.glitch.me`;
   
-  const apiRoot = 'https://www.speedrun.com/api/v1';
+  const apiRoot = '/https://www.speedrun.com/api/v1';
 
   document.title = title;
 
@@ -25,8 +25,18 @@ import HTML from '/html.js';
   }
   out(heading);
   
-  const response = await fetch(`${apiRoot}/games/wc2`);
-  const data = await response.json();
-
-  out(HTML.element`<pre>${JSON.stringify(data, null, 2)}</pre>`);
+  const path = document.location.pathname;
+  const [_, gameId] = path.split(/\//g);
+  
+  if (gameId) {
+    const response = await fetch(`${apiRoot}/games/${gameId}`);
+    const info = await response.json();
+    
+    const name = info.data.names.international;
+    const icon = info.data.assets.icon.uri;
+    
+    out(HTML.element`<h2><img src="${icon}"> ${name}</h2>`);
+    
+    out(HTML.element`<pre>${JSON.stringify(info, null, 2)}</pre>`);
+  }
 });
