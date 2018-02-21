@@ -1,6 +1,6 @@
 import HTML from '/html.js';
 
-((f, p) => p = (async _=> (await f)(p))())(async defer => {
+({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async defer => {
   defer.then(success => {
     document.querySelector('#loading-message').remove();
   }, error => {
@@ -96,4 +96,4 @@ import HTML from '/html.js';
       loaded from <a href="https://github.com/speedruncomorg/api/tree/master/version1">their API</a>.
     </footer>
   `;
-});
+};
