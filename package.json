@@ -1,16 +1,14 @@
 {
-  "name": "speedrun-dot-glitch-dot-io",
-  "version": "0.0.1",
-  "scripts": {
-    "start": "node server.js"
+  "private": true,
+  "engines": {
+    "node": "8.x"
   },
   "dependencies": {
     "express": "^4.16.2",
     "request-promise-native": "^1.0.5",
     "request": "^2.83.0"
   },
-  "engines": {
-    "node": "8.x"
-  },
-  "private": true
+  "scripts": {
+    "start": "node server.js"
+  }
 }
