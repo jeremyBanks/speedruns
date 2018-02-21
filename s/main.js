@@ -34,6 +34,10 @@ import HTML from '/html.js';
     
     const response = await fetch(`${apiRoot}/games/${gameId}`);
     const info = await response.json();
+
+    // https://www.speedrun.com/api/v1/games/o1yry26q/records
+    // https://www.speedrun.com/api/v1/users/18qyezox/personal-bests?embed=game%2Ccategory
+    // https://www.speedrun.com/api/v1/runs?user=18qyezox&game=o1yry26q
     
     const name = info.data.names.international;
     const icon = info.data.assets.icon.uri;
