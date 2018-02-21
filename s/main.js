@@ -46,10 +46,6 @@ import HTML from '/html.js';
     const playerName = playerInfo.data.names.international;
     
     const runsInfo = await fetch(`${apiRoot}/runs?user=${playerId}&game=${gameId}`).then(r => r.json());
-
-    // https://www.speedrun.com/api/v1/games/o1yry26q/records
-    // https://www.speedrun.com/api/v1/users/18qyezox/personal-bests?embed=game%2Ccategory
-    // https://www.speedrun.com/api/v1/
     
     const icon = gameInfo.data.assets.icon.uri;
     const trophies = [
