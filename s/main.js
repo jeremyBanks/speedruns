@@ -41,5 +41,9 @@ import HTML from '/html.js';
     out(HTML.element`<h2><img src="${icon}"> ${name}</h2>`);
     
     out(HTML.element`<pre>${JSON.stringify(info, null, 2)}</pre>`);
-  } else
+  } else {
+    out(HTML.element`<p>
+      Consider <a href="/wc2">WarCraft II</a> and <a href="/wc2btdp">its expansion</a>.
+    </p>`);
+  }
 });
