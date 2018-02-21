@@ -22,8 +22,11 @@ main {
   margin: 0 auto;
   max-width: 800px;
   min-width: 512px;
-  overflow-x: hidden;
   position: relative;
+}
+
+pre {
+  white-space: pre-wrap;
 }
 
 img {
@@ -49,15 +52,16 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   display: inline;
-  border-bottom: 2px solid currentColor;
+  border-bottom: 2px solid #666;
   border-bottom-left-radius: 16px 8px;
   border-bottom-right-radius: 32px 2px;
   position: relative;
+  top: -6px;
 }
 
 h1 span {
   position: relative;
-  top: 2px;
+  top: 6px;
 }
 
 header .links {
