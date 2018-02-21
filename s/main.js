@@ -19,9 +19,10 @@ import HTML from '/html.js';
   const output = document.querySelector('#main');
   const out = child => output.appendChild(child);
 
-  const heading = HTML.element`<h1>${title}</h1>`;
+  const heading = HTML.element`<h1><a href="/">${title}</a></h1>`;
   if (projectName) {
-    heading.appendChild(HTML.fragment` (<a href="${`https://glitch.com/edit/#!/${projectName}`}">view source</a>)`);
+    heading.appendChild(HTML.element`
+        <span class="subtitle"> <a href="${`https://glitch.com/edit/#!/${projectName}`}">view source</a></span>`);
   }
   out(heading);
   
