@@ -50,8 +50,13 @@ import HTML from '/html.js';
       const [gameSlug, playerSlug] = path[0].split('@');
       if (!gameSlug || !playerSlug) break renderBody;
 
-      const [gameInfo, playerInfo] = await Promise.all([
+      const [
+        gameInfo,
+        playerInfo,
+        levelsInfo,
+      ] = await Promise.all([
         apiFetch(`games/${gameSlug}`),
+        apiFetch(`games/${gameSlug}/levels`),
         apiFetch(`users/${playerSlug}`),
       ]);
 
@@ -64,9 +69,7 @@ import HTML from '/html.js';
       const runsInfo = await apiFetch(`runs?user=${playerId}&game=${gameId}`);
 
       const icon = gameInfo.assets.icon.uri;
-      const trophies = [
-        'trophy-1st', 'trophy-2nd', 'trophy-3rd'
-      ].map(s => gameInfo.assets[s].uri);
+      const trophies = ['trophy-1st', 'trophy-2nd', 'trophy-3rd'].map(s => gameInfo.assets[s].uri);
 
       renderHTML`<h2><img src="${icon}"> ${gameName}</h2>`;
 
