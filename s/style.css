@@ -13,7 +13,7 @@ body {
 main {
   background: #FFF;
   font-family: helvetica, arial, sans-serif;
-  padding: 12px 36px;
+  padding: 24px 36px;
   margin: 0 auto;
   max-width: 800px;
   min-width: 512px;
@@ -39,14 +39,18 @@ a:hover {
 }
 
 h1 {
+  display: inline;
   font-family: 'Trebuchet MS', sans-serif;
   border-bottom: 2px solid currentColor;
   border-bottom-left-radius: 16px 8px;
 }
 
-h1 .links {
+header .links {
+  display: inline;
   float: right;
-  margin-top: 1.125em;
-  margin-right: .125em;
-  font-size: 0.5em;
+  margin-top: 0.75em;
+}
+
+footer {
+    
 }

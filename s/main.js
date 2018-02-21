@@ -21,15 +21,14 @@ import HTML from '/html.js';
   const output = document.querySelector('#main');
   const out = child => output.appendChild(child);
 
-  addHeading: {
-    const heading = HTML.element`<h1><a href="/">${title}</a></h1>`;
+  addHeader: {
+    const header = HTML.element`<header><h1><a href="/">${title}</a></h1></header>`;
     if (projectName) {
-      heading.appendChild(HTML.element`
-          <span class="links"> <a href="${`https://glitch.com/edit/#!/${projectName}`}">view source</a></span>`);
+      header.appendChild(HTML.fragment`
+          <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}`}">view source</a></nav>`);
     }
-    out(heading);
+    out(header);
   }
-  
 
   if (path.length === 1) displayGameBests: {
     const [gameSlug, playerSlug] = path[0].split('@');
@@ -68,11 +67,13 @@ import HTML from '/html.js';
     out(HTML.element`<h2><img src="${trophies[1]}"> Runs</h2>`);
 
     out(HTML.element`<pre>${JSON.stringify(runsInfo, null, 2)}</pre>`);
-    return;
+  } else handle404: {
+    document.location.replace('/wc2@banks');
   }
 
-  handle404: {
-    document.location.replace('/wc2@banks');
-    return;
+  addFooter: {
+    out(HTML.fragment`<footer>
+      <p>Data loaded from <a href="https://www.speedrun.com/about">speedrun.com</a> using <a href="https://github.com/speedruncomorg/api/tree/master/version1">their API</a>.</p>
+    </footer>`);
   }
 });
