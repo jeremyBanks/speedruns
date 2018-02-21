@@ -73,7 +73,9 @@ import HTML from '/html.js';
 
   addFooter: {
     out(HTML.fragment`<footer>
-      <p>Data loaded from <a href="https://www.speedrun.com/about">speedrun.com</a> using <a href="https://github.com/speedruncomorg/api/tree/master/version1">their API</a>.</p>
+      This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>.
+      It is used under <a href="https://creativecommons.org/licenses/by-nc/4.0/">the CC BY-NC license</a> and
+      loaded from <a href="https://github.com/speedruncomorg/api/tree/master/version1">their API</a>.
     </footer>`);
   }
 });

@@ -17,7 +17,6 @@ main {
   margin: 0 auto;
   max-width: 800px;
   min-width: 512px;
-  min-height: 256px;
   overflow-x: hidden;
 }
 
@@ -46,11 +45,12 @@ h1 {
 }
 
 header .links {
-  display: inline;
   float: right;
   margin-top: 0.75em;
 }
 
 footer {
-    
+  text-align: center;
+  font-size: 0.75em;
+  margin-top: 128px;
 }
