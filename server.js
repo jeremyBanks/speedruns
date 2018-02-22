@@ -7,8 +7,8 @@ const app = express();
 app.use(express.static('s'));
 
 // Crudely mirror and cache speedrun.com/api.
-// We never expire/evict values here; we assume
-// the process won't live long enough for this to get very stale.
+// We never expire/evict values here; we assume the
+// process won't live long enough for it to matter.
 const apiCache = new Map();
 app.get(/^\/(https:\/\/www\.speedrun\.com\/api\/(.*))/, async (req, res) => {
   const url = req.url.slice(1);
