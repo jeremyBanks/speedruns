@@ -56,32 +56,37 @@ import HTML from '/html.js';
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-    const [
-      playerInfo,
-      ...gameInfos
-    ] = await Promise.all([
-      apiFetch(`users/${playerSlug}`),
-    ].concat(gameSlugs.map(
-      gameSlug => apiFetch(`games/${gameSlug}?embed=levels,categories`))));
-
+    const playerInfoReq = apiFetch(`users/${playerSlug}`);
+    const gameInfoReqs = gameSlugs.map(
+      gameSlug => apiFetch(`games/${gameSlug}?embed=levels,categories`));
+    const gameRunReqs = gameInfoReqs.map(
+      gameInfoReq.then(async gameInfo => {
+        const playerInfo = await playerInfoReq;
+        return apiFetch(`runs?user=${playerId}&game=${gameId}`);
+      }))
+    
+    const playerInfo = await playerInfoReq;
     const playerId = playerInfo.id;
     const playerName = playerInfo.names.international;
 
-    for (const gameInfo of gameInfos) {
+    for (const [gameInfoReq, gameRunReq] of zip(gameInfoReqs, gameRunReqs)) {
+      const gameInfo = await gameInfoReq;
+      const runsInfo = await gameRunReq;
+
       const gameId = gameInfo.id;
       const gameName = gameInfo.names.international;
 
-      const runsInfo = await apiFetch(`runs?user=${playerId}&game=${gameId}`);
-
       const icon = HTML`<img src="${gameInfo.assets.icon.uri}" alt="">`;
-      const [gold, silver, bronze] = ['trophy-1st', 'trophy-2nd', 'trophy-3rd'].map(
-        s => HTML`<img src="${gameInfo.assets[s].uri}" alt=);
+      const gold = HTML`<img src="${gameInfo.assets['trophy-1st'].uri}" alt="1st">`;
+      const silver = HTML`<img src="${gameInfo.assets['trophy-2nd'].uri}" alt="2nd">`;
+      const bronze = HTML`<img src="${gameInfo.assets['trophy-3rd'].uri}" alt="3rd">`;
+      const medals = [gold, silver, bronze];
 
       renderHTML`
         <section>
           <h2>${gameName}</h2>
 
-          <h3><img src="${icon}"> Full Game <img src="${icon}"></h3>
+          <h3>${icon} Full Game ${icon}</h3>
 
           <table>
             <thead>
@@ -102,17 +107,17 @@ import HTML from '/html.js';
               <tr>
                 <th>Orc Campaign</th>
                 <td>
-                  <img src="${gold}"> 4h 2m 30s <br>
+                  ${gold} 4h 2m 30s <br>
                   by John Smith
                 </td>
                 <td>
-                  <img src="${silver}"> 6h 22m 13s
+                  ${silver} 6h 22m 13s
                 </td>
               </tr>
               <tr>
                 <th>Human Campaign</th>
                 <td>
-                  <img src="${gold}"> 10m 13s <br>
+                  ${gold} 10m 13s <br>
                   by John Smith
                 </td>
                 <td>-</td>
@@ -120,14 +125,14 @@ import HTML from '/html.js';
             </tbody>
           </table>
 
-          <h3><img src="${icon}"> Individual Levels <img src="${icon}"></h3>
+          <h3>${icon} Individual Levels ${icon}</h3>
 
           <p>foo</p>
 
           <pre>${JSON.stringify(gameInfo, null, 2).slice(0, 128)}</pre>
           <pre>${JSON.stringify(playerInfo, null, 2).slice(0, 128)}</pre>
           <pre>${JSON.stringify(runsInfo, null, 2).slice(0, 128)}</pre>
-        </section>
+        </section>T
       `;
     }
   }
@@ -139,4 +144,11 @@ import HTML from '/html.js';
       loaded from <a href="https://github.com/speedruncomorg/api/tree/master/version1">their API</a>.
     </footer>
   `;
+};
+
+const zip = (...args) => {
+  // like Python's itertools.zip_longest
+  // from stackoverflow.com/a/10284006
+  const longest = args.reduce((a, b) => a.length > b.length ? a : b, []);
+  return longest.map((_, i) => args.map(array => array[i]));
 };
