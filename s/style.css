@@ -145,4 +145,15 @@ section {
 .placement {
   font-size: 0.75em; 
   font-stretch: condensed;
+  letter-spacing: -0.0625em;
+  position: relative;
+  top: -0.125em;
+  background: #DDD;
+  border-radius: .25em;
+  padding: 0.0625em;
+  padding-right: 0.1875em;
+}
+
+.placement sup {
+  vertical-align: text-top;
 }
