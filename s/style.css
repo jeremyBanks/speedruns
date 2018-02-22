@@ -1,5 +1,11 @@
 html {
   background: #222;
+  overflow-y: scroll;
+}
+
+body, pre {
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -9,18 +15,24 @@ body {
   animation-duration: .125s;
   animation-fill-mode: both;
 }
+
 @keyframes appear {
   from { opacity: 0.0; }
-  to   { opactiy: 1.0; }
+  to   { opacity: 1.0; }
 }
 
 #loading-message {
+  border: 1px solid red;
   color: red;
-  position: absolute;
+  position: fixed;
+  right: 4px;
+  bottom: 4px;
   z-index: 512;
-  background: black;
+  background: rgba(0, 0, 0, 0.9375);
   width: auto;
   padding: 2em;
+  max-width: 600px;
+  user-select: all;
 }
 
 body {
