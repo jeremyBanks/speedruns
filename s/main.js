@@ -90,7 +90,7 @@ import HTML from '/html.js';
             null;
 
         if (asset) {
-          return HTML`<img class="placement" src="${asset.uri}" alt="${n}${suffix}" title="${n}${suffix}">`;
+          return HTML`<img class="placement" src="${asset.uri}" alt="${n}${suffix}">`;
         } else {
           return HTML`<span class="placement">${n}<sup>${suffix}</sup></span>`;
         }
@@ -142,10 +142,6 @@ import HTML from '/html.js';
           </table>
 
           <h3>${icon} Individual Levels ${icon}</h3>
-
-          <p>
-            ${new Array(128).fill().map((_, i) => HTML`${placement(i)} `)}
-          </p>
 
           <pre>${JSON.stringify(gameInfo, null, 2).slice(0, 128)}</pre>
           <pre>${JSON.stringify(playerInfo, null, 2).slice(0, 128)}</pre>
