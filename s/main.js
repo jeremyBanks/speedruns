@@ -75,20 +75,26 @@ import HTML from '/html.js';
       const gameName = gameInfo.names.international;
 
       const icon = HTML`<img src="${gameInfo.assets.icon.uri}" alt="">`;
-      const placementIcon = n => {
-        images: {
-          
-        }
-        
-        text: {
-          
-          return HTML`<span class="placement">${n}<sup>th</sup></span>`;
+      const placement = n => {
+        const suffix =
+            (n % 10 == 1 && n % 100 != 11) ? 'st' :
+            (n % 10 == 2 && n % 100 != 12) ? 'nd' :
+            (n % 10 == 3 && n % 100 != 13) ? 'rd' :
+            'th';
+
+        let asset =
+            (n == 1) ? gameInfo.assets['trophy-1st'] :
+            (n == 2) ? gameInfo.assets['trophy-2nd'] :
+            (n == 3) ? gameInfo.assets['trophy-3rd'] :
+            (n == 4) ? gameInfo.assets['trophy-4th'] :
+            null;
+
+        if (asset) {
+          return HTML`<img class="placement" src="${asset.uri}" alt="${n}${suffix}" title="${n}${suffix}">`;
+        } else {
+          return HTML`<span class="placement">${n}<sup>${suffix}</sup></span>`;
         }
       };
-      const gold = HTML`<img src="${gameInfo.assets['trophy-1st'].uri}" alt="1st">`;
-      const silver = HTML`<img src="${gameInfo.assets['trophy-2nd'].uri}" alt="2nd">`;
-      const bronze = HTML`<img src="${gameInfo.assets['trophy-3rd'].uri}" alt="3rd">`;
-      const medals = [gold, silver, bronze];
 
       renderHTML`
         <section>
@@ -115,21 +121,21 @@ import HTML from '/html.js';
               <tr>
                 <th>Orc Campaign</th>
                 <td>
-                  ${gold} 4h 2m 30s <br>
+                  ${placement(1)} 4h 2m 30s <br>
                   by John Smith
                 </td>
                 <td>
-                  ${} 6h 22m 13s
+                  ${placement(14)} 6h 22m 13s
                 </td>
               </tr>
               <tr class="best-best">
                 <th>Human Campaign</th>
                 <td>
-                  ${gold} 10m 13s <br>
+                  ${placement(1)} 10m 13s <br>
                   by Banks
                 </td>
                 <td>
-                  ${gold} 10m 13s
+                  ${placement(1)} 10m 13s
                 </td>
               </tr>
             </tbody>
@@ -137,7 +143,9 @@ import HTML from '/html.js';
 
           <h3>${icon} Individual Levels ${icon}</h3>
 
-          <p>foo</p>
+          <p>
+            ${new Array(128).fill().map((_, i) => HTML`${placement(i)} `)}
+          </p>
 
           <pre>${JSON.stringify(gameInfo, null, 2).slice(0, 128)}</pre>
           <pre>${JSON.stringify(playerInfo, null, 2).slice(0, 128)}</pre>
