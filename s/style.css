@@ -52,6 +52,8 @@ main {
 
 pre {
   white-space: pre-wrap;
+  text-align: left;
+  overflow-x: auto;
 }
 
 table {
@@ -93,18 +95,23 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Trebuchet MS', sans-serif;
 }
 
+h2, h3, h4, h5, h6 {
+  margin: 1em;
+}
+
 h1 {
   display: inline;
-  border-bottom: 2px solid gold;
-  border-bottom-left-radius: 16px 8px;
+  border-bottom: 2px solid #EB0;
+  border-bottom-left-radius: 10px 6px;
   border-bottom-right-radius: 32px 2px;
   position: relative;
-  top: -6px;
+  top: -7px;
+  padding-right: 4px;
 }
 
 h1 span {
   position: relative;
-  top: 6px;
+  top: 7px;
 }
 
 header {
