@@ -69,8 +69,14 @@ import HTML from '/html.js';
       const icon = gameInfo.assets.icon.uri;
       const trophies = ['trophy-1st', 'trophy-2nd', 'trophy-3rd'].map(s => gameInfo.assets[s].uri);
 
-      renderHTML`<h2><img src="${icon}"> ${gameName}</h2>`;
+      renderHTML`
+        <h2><img src="${icon}"> ${gameName}</h2>
 
+        <table>
+      `;
+
+      
+      
       renderHTML`<pre>${JSON.stringify(gameInfo, null, 2)}</pre>`;
 
       renderHTML`<h2><img src="${trophies[0]}"> ${playerName}</h2>`;
