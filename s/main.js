@@ -79,14 +79,31 @@ import HTML from '/html.js';
             <tr>
               <th>Category</th>
               <th>World Record</th>
-              <th>Personal Best</th>
+              <th>${playerName}'s Best</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <th>All Campaigns</th>
               <td>
-                <img src="${gold}"> 3h 22m 13s <br>
+                -
+              </td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <th>Orc Campaign</th>
+              <td>
+                <img src="${gold}"> 4h 2m 30s <br>
+                by John Smith
+              </td>
+              <td>
+                <img src="${silver}"> 6h 22m 13s
+              </td>
+            </tr>
+            <tr>
+              <th>Human Campaign</th>
+              <td>
+                <img src="${gold}"> 10m 13s <br>
                 by John Smith
               </td>
               <td>-</td>
@@ -95,19 +112,13 @@ import HTML from '/html.js';
         </table>
 
         <h3><img src="${icon}"> Individual Levels <img src="${icon}"></h3>
+
+        <p>foo</p>
+
+        <pre>${JSON.stringify(gameInfo, null, 2)}</pre>
+        <pre>${JSON.stringify(playerInfo, null, 2)}</pre>
+        <pre>${JSON.stringify(runsInfo, null, 2)}</pre>
       `;
-
-      
-      
-      renderHTML`<pre>${JSON.stringify(gameInfo, null, 2)}</pre>`;
-
-      renderHTML`<h2>${playerName}</h2>`;
-
-      renderHTML`<pre>${JSON.stringify(playerInfo, null, 2)}</pre>`;
-
-      renderHTML`<h2>Runs</h2>`;
-
-      renderHTML`<pre>${JSON.stringify(runsInfo, null, 2)}</pre>`;
     }
     
     bodyRendered = true;
