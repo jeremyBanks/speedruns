@@ -60,20 +60,18 @@ import HTML from '/html.js';
     const gameInfoReqs = gameSlugs.map(
       gameSlug => apiFetch(`games/${gameSlug}?embed=levels,categories`));
     const gameRunReqs = gameInfoReqs.map(
-      gameInfoReq.then(async gameInfo => {
+      gameInfoReq => gameInfoReq.then(async gameInfo => {
         const playerInfo = await playerInfoReq;
-        return apiFetch(`runs?user=${playerId}&game=${gameId}`);
+        return apiFetch(`runs?user=${playerInfo.id}&game=${gameInfo.id}`);
       }))
     
     const playerInfo = await playerInfoReq;
-    const playerId = playerInfo.id;
     const playerName = playerInfo.names.international;
 
     for (const [gameInfoReq, gameRunReq] of zip(gameInfoReqs, gameRunReqs)) {
       const gameInfo = await gameInfoReq;
       const runsInfo = await gameRunReq;
 
-      const gameId = gameInfo.id;
       const gameName = gameInfo.names.international;
 
       const icon = HTML`<img src="${gameInfo.assets.icon.uri}" alt="">`;
