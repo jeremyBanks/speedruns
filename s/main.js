@@ -82,7 +82,7 @@ import HTML from '/html.js';
 
       renderHTML`
         <section>
-          <h2>${gameName}</h2>
+          <h2>${icon} ${gameName} ${icon}</h2>
 
           <h3>${icon} Full Game ${icon}</h3>
 
@@ -114,11 +114,13 @@ import HTML from '/html.js';
               </tr>
               <tr>
                 <th>Human Campaign</th>
-                <td>
+                <td class="best-best">
                   ${gold} 10m 13s <br>
-                  by John Smith
+                  by Banks
                 </td>
-                <td>-</td>
+                <td class="best-best">
+                  ${gold} 10m 13s
+                </td>
               </tr>
             </tbody>
           </table>
@@ -130,7 +132,7 @@ import HTML from '/html.js';
           <pre>${JSON.stringify(gameInfo, null, 2).slice(0, 128)}</pre>
           <pre>${JSON.stringify(playerInfo, null, 2).slice(0, 128)}</pre>
           <pre>${JSON.stringify(runsInfo, null, 2).slice(0, 128)}</pre>
-        </section>T
+        </section>
       `;
     }
   }
