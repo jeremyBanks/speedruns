@@ -72,16 +72,16 @@ th {
 }
 
 td {
-  height: 42px; 
+  height: 42px;
 }
 
-tbody tr:hover > *,
-tbody tr.best-best:hover > * {
+tbody 
+
+tbody tr:hover > * {
   background: #EEE;
 }
 
 tbody tr.best-best > * {
-  background: #FFC;
   font-weight: bold;
 }
 
