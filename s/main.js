@@ -143,8 +143,9 @@ import HTML from '/html.js';
 
           <h3>${icon} Individual Levels ${icon}</h3>
 
-          <pre>gameInfo = ${JSON.stringify(gameInfo, null, 2)}</pre>
-          <pre>runsInfo = ${JSON.stringify(runsInfo, null, 2)}</pre>
+          <pre>gameInfo.categories === ${JSON.stringify(gameInfo.categories, null, 2)}</pre>
+          <pre>gameInfo.levels === ${JSON.stringify(gameInfo.levels, null, 2)}</pre>
+          <pre>runsInfo === ${JSON.stringify(runsInfo, null, 2)}</pre>
         </section>
       `;
     }
