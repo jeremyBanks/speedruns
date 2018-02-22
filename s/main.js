@@ -58,7 +58,7 @@ import HTML from '/html.js';
 
     const playerInfoReq = apiFetch(`users/${playerSlug}`);
     const gameInfoReqs = gameSlugs.map(
-      gameSlug => apiFetch(`games/${gameSlug}?embed=levels,categories`));
+      gameSlug => apiFetch(`games/${gameSlug}?embed=levels,categories,players`));
     const gameRunReqs = gameInfoReqs.map(
       gameInfoReq => gameInfoReq.then(async gameInfo => {
         const playerInfo = await playerInfoReq;
@@ -143,12 +143,15 @@ import HTML from '/html.js';
 
           <h3>${icon} Individual Levels ${icon}</h3>
 
-          <pre>${JSON.stringify(gameInfo, null, 2).slice(0, 128)}</pre>
-          <pre>${JSON.stringify(playerInfo, null, 2).slice(0, 128)}</pre>
-          <pre>${JSON.stringify(runsInfo, null, 2).slice(0, 128)}</pre>
+          <pre>gameInfo = ${JSON.stringify(gameInfo, null, 2)}</pre>
+          <pre>runsInfo = ${JSON.stringify(runsInfo, null, 2)}</pre>
         </section>
       `;
     }
+    
+    renderHTML`
+        <pre>${JSON.stringify(playerInfo, null, 2)}</pre>
+    `;
   }
 
   renderHTML`

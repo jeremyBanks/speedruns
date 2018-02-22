@@ -164,10 +164,16 @@ section + section {
 }
 
 @media print {
-  main,
+  html,
   body {
+    padding: 0;
+    margin: 0;
+    background: white;
+  }
+  main {
     margin-top: 0;
     padding-top: 0;
+    background: white;
   }
   header,
   footer {
