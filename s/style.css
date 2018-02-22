@@ -44,7 +44,7 @@ main {
   font: 16px sans-serif;
   padding: 24px 36px;
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 640px;
   min-width: 512px;
   position: relative;
   text-align: center;
@@ -157,4 +157,20 @@ span.placement {
 
 span.placement sup {
   vertical-align: text-top;
+}
+
+section + section {
+  page-break-before: always;
+}
+
+@media print {
+  main,
+  body {
+    margin-top: 0;
+    padding-top: 0;
+  }
+  header,
+  footer {
+    display: none !important;
+  }
 }
