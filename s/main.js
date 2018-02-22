@@ -45,7 +45,7 @@ import HTML from '/html.js';
   `;
 
   if (path.length === 0) {
-    document.location.replace('/wc2+wc2btdp@banks');
+    document.location.replace('/wc2+wc2btdp+sc1+scbw@banks');
   }
 
   if (path.length === 1) {
