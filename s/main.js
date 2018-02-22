@@ -75,6 +75,16 @@ import HTML from '/html.js';
       const gameName = gameInfo.names.international;
 
       const icon = HTML`<img src="${gameInfo.assets.icon.uri}" alt="">`;
+      const placementIcon = n => {
+        images: {
+          
+        }
+        
+        text: {
+          
+          return HTML`<span class="placement">${n}<sup>th</sup></span>`;
+        }
+      };
       const gold = HTML`<img src="${gameInfo.assets['trophy-1st'].uri}" alt="1st">`;
       const silver = HTML`<img src="${gameInfo.assets['trophy-2nd'].uri}" alt="2nd">`;
       const bronze = HTML`<img src="${gameInfo.assets['trophy-3rd'].uri}" alt="3rd">`;
@@ -109,7 +119,7 @@ import HTML from '/html.js';
                   by John Smith
                 </td>
                 <td>
-                  <span class="placement">12<sup>th</sup></span> 6h 22m 13s
+                  ${} 6h 22m 13s
                 </td>
               </tr>
               <tr class="best-best">

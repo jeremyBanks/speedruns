@@ -3,13 +3,13 @@ html {
   overflow-y: scroll;
 }
 
-body, pre {
+pre {
   margin: 0;
   padding: 0;
 }
 
 body {
-  opacity: 1.0;
+  margin: 0;
   animation-name: appear;
   animation-delay: 0.5s;
   animation-duration: .125s;
@@ -111,7 +111,7 @@ h2, h3, h4, h5, h6 {
 
 h1 {
   display: inline;
-  border-bottom: 2px solid #EB0;
+  border-bottom: 2px solid #625;
   border-bottom-left-radius: 10px 6px;
   border-bottom-right-radius: 32px 2px;
   position: relative;
@@ -130,7 +130,8 @@ header {
 
 header .links {
   float: right;
-  margin-top: 0.75em;
+  margin-top: 8px;
+  font-size: 12px;
 }
 
 footer {
