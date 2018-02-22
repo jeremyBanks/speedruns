@@ -67,12 +67,31 @@ import HTML from '/html.js';
       const runsInfo = await apiFetch(`runs?user=${playerId}&game=${gameId}`);
 
       const icon = gameInfo.assets.icon.uri;
-      const trophies = ['trophy-1st', 'trophy-2nd', 'trophy-3rd'].map(s => gameInfo.assets[s].uri);
+      const [gold, silver, bronze] = ['trophy-1st', 'trophy-2nd', 'trophy-3rd'].map(s => gameInfo.assets[s].uri);
 
       renderHTML`
         <h2><img src="${icon}"> ${gameName}</h2>
 
+        <h3>Full Game</h3>
+
+        <h3>Individual Levels</h3>
+
         <table>
+          <thead>
+            <tr>
+              <th>World Record</th>
+              <th>Personal Best</th>
+            </tr>
+          </thead>
+          <tbody>
+            <th>
+              <td>
+                3h 22m 13s
+                by John Smith
+              </td
+            </th>
+          </tbody>
+        </table>
       `;
 
       
