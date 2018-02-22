@@ -125,7 +125,7 @@ import HTML from '/html.js';
   }
 
   if (!bodyRendered) handle404: {
-    document.location.replace('/wc2@banks');
+    document.location.replace('/wc2+wc2btdp@banks');
   }
 
   renderHTML`
