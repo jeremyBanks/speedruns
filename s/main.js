@@ -109,7 +109,7 @@ import HTML from '/html.js';
                   by John Smith
                 </td>
                 <td>
-                  ${silver} 6h 22m 13s
+                  <span class="placement">12<sup>th</sup></span> 6h 22m 13s
                 </td>
               </tr>
               <tr class="best-best">

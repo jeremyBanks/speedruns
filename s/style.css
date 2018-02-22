@@ -60,7 +60,7 @@ table {
   width: 100%;
   table-layout: fixed;
   font-size: 14px;
-  border-spacing: 8px 0;
+  border-spacing: 4px 8px;
 }
 
 thead th {
@@ -71,11 +71,10 @@ th {
   font-weight: normal;
 }
 
-td {
+tbody > tr > * {
   height: 42px;
+  background: #F8F8F8;
 }
-
-tbody 
 
 tbody tr:hover > * {
   background: #EEE;
@@ -141,4 +140,9 @@ footer {
 
 section {
   margin-bottom: 92px;
+}
+
+.placement {
+  font-size: 0.75em; 
+  font-stretch: condensed;
 }
