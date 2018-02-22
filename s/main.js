@@ -70,39 +70,42 @@ import HTML from '/html.js';
       const [gold, silver, bronze] = ['trophy-1st', 'trophy-2nd', 'trophy-3rd'].map(s => gameInfo.assets[s].uri);
 
       renderHTML`
-        <h2><img src="${icon}"> ${gameName}</h2>
+        <h2>${gameName}</h2>
 
-        <h3>Full Game</h3>
-
-        <h3>Individual Levels</h3>
+        <h3><img src="${icon}"> Full Game <img src="${icon}"></h3>
 
         <table>
           <thead>
             <tr>
+              <th>Category</th>
               <th>World Record</th>
               <th>Personal Best</th>
             </tr>
           </thead>
           <tbody>
-            <th>
+            <tr>
+              <th>All Campaigns</th>
               <td>
-                3h 22m 13s
+                <img src="${gold}"> 3h 22m 13s <br>
                 by John Smith
-              </td
-            </th>
+              </td>
+              <td>-</td>
+            </tr>
           </tbody>
         </table>
+
+        <h3><img src="${icon}"> Individual Levels <img src="${icon}"></h3>
       `;
 
       
       
       renderHTML`<pre>${JSON.stringify(gameInfo, null, 2)}</pre>`;
 
-      renderHTML`<h2><img src="${trophies[0]}"> ${playerName}</h2>`;
+      renderHTML`<h2>${playerName}</h2>`;
 
       renderHTML`<pre>${JSON.stringify(playerInfo, null, 2)}</pre>`;
 
-      renderHTML`<h2><img src="${trophies[1]}"> Runs</h2>`;
+      renderHTML`<h2>Runs</h2>`;
 
       renderHTML`<pre>${JSON.stringify(runsInfo, null, 2)}</pre>`;
     }
