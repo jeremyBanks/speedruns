@@ -148,6 +148,9 @@ import HTML from '/html.js';
           <pre>runsInfo === ${JSON.stringify(runsInfo, null, 2)}</pre>
         </section>
       `;
+      
+      renderHTML`<p>Skipping other games until this is actually implemented...</p>`;
+      break;
     }
     
     renderHTML`
