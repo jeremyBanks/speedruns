@@ -1,5 +1,5 @@
 const express = require('express');
-const request = require('request-promise-native');
+const rp = require('request-promise-native');
 
 const app = express();
 
@@ -19,7 +19,7 @@ app.get(/^\/(https:\/\/www\.speedrun\.com\/api\/(.*))/, async (req, res) => {
   }
 
   console.log("GETting", url);
-  const result = request.get(url, {simple: false});
+  const result = rp.get(url, {simple: false});
   apiCache.set(url, result);
 
   return res.send(await result);
