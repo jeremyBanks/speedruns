@@ -60,6 +60,7 @@ table {
   width: 100%;
   table-layout: fixed;
   font-size: 14px;
+  border-spacing: 8px 0;
 }
 
 thead th {
@@ -74,8 +75,12 @@ td {
   height: 42px; 
 }
 
-.best-best {
-  background: #FEC;
+tbody tr:hover {
+  background: #EEE;
+}
+
+tr.best-best td, tr.best-best th {
+  background: #FFC;
   font-weight: bold;
 }
 

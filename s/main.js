@@ -112,13 +112,13 @@ import HTML from '/html.js';
                   ${silver} 6h 22m 13s
                 </td>
               </tr>
-              <tr>
+              <tr class="best-best">
                 <th>Human Campaign</th>
-                <td class="best-best">
+                <td>
                   ${gold} 10m 13s <br>
                   by Banks
                 </td>
-                <td class="best-best">
+                <td>
                   ${gold} 10m 13s
                 </td>
               </tr>
