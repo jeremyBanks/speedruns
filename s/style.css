@@ -41,16 +41,27 @@ body {
 
 main {
   background: #FFF;
-  font-family: helvetica, arial, sans-serif;
+  font-family: sans-serif;
   padding: 24px 36px;
   margin: 0 auto;
   max-width: 800px;
   min-width: 512px;
   position: relative;
+  text-align: center;
 }
 
 pre {
   white-space: pre-wrap;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+th {
+  font-family: tahoma;
+  font-weight: normal;
 }
 
 img {
@@ -88,13 +99,16 @@ h1 span {
   top: 6px;
 }
 
+header {
+  text-align: left;
+}
+
 header .links {
   float: right;
   margin-top: 0.75em;
 }
 
 footer {
-  text-align: center;
   font-size: 0.75em;
   margin-top: 128px;
 }
