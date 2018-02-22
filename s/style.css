@@ -74,6 +74,11 @@ td {
   height: 42px; 
 }
 
+.best-best {
+  background: #FEC;
+  font-weight: bold;
+}
+
 img {
   --max-size: calc(.5em + .5ex);
   max-width: var(--max-size);
