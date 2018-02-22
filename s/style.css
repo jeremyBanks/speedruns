@@ -79,7 +79,7 @@ tbody tr:hover {
   background: #EEE;
 }
 
-tr.best-best td, tr.best-best th {
+tbody tr.best-best :matches(td, th), tbody tr.best-best th {
   background: #FFC;
   font-weight: bold;
 }

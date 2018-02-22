@@ -4,7 +4,7 @@ import HTML from '/html.js';
   defer.then(success => {
     document.querySelector('#loading-message').remove();
   }, error => {
-    document.querySelector('#loading-message').textContent = String(error.stack);
+    document.querySelector('#loading-message').textContent = `${error}\n${error.stack}S`;
     throw error;
   });
 
@@ -21,7 +21,7 @@ import HTML from '/html.js';
   }
 
   const hostname = document.location.host;
-  const path = document.location.pathname.split(/\//g).slice(1);
+  const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
   const projectName = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
   const defaultName = "bests";
   const title = `${projectName || defaultName}.glitch.me`;
