@@ -1,7 +1,8 @@
 {
   "private": true,
+  "license": "0BSD",
   "engines": {
-    "node": "8.x"
+    "node": "9.x"
   },
   "dependencies": {
     "express": "^4.16.2",
