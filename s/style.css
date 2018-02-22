@@ -41,7 +41,7 @@ body {
 
 main {
   background: #FFF;
-  font-family: sans-serif;
+  font: 16px sans-serif;
   padding: 24px 36px;
   margin: 0 auto;
   max-width: 800px;
@@ -57,11 +57,19 @@ pre {
 table {
   width: 100%;
   table-layout: fixed;
+  font-size: 14px;
+}
+
+thead th {
+  text-decoration: underline;
 }
 
 th {
-  font-family: tahoma;
   font-weight: normal;
+}
+
+td {
+  height: 42px; 
 }
 
 img {
@@ -87,7 +95,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   display: inline;
-  border-bottom: 2px solid #666;
+  border-bottom: 2px solid gold;
   border-bottom-left-radius: 16px 8px;
   border-bottom-right-radius: 32px 2px;
   position: relative;
