@@ -161,7 +161,7 @@ import HTML from './lib/html.js';
                     <td>${records[0].runs.filter(r => r.place == 1).map(r => r.run).map(run => HTML`
                       <div>
                         <a href="${run.weblink}">
-                          <span class="time">${run.times.primary.toLowerCase().slice(2).replace(/\D+/g, s => `${s} `).strip()}</span>
+                          <span class="time">${run.times.primary.toLowerCase().slice(2).replace(/\D+/g, s => `${s} `).trim()}</span>
                           ${placement(1)}
                           ${run.players.map(p => p.name || p.id)}
                         </a>
