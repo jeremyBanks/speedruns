@@ -67,28 +67,25 @@ import HTML from './lib/html.js';
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-    const playerInfoReq = apiFetch(`users/${playerSlug}`);
-    const gameInfoReqs = gameSlugs.map(
+    const playerReq = apiFetch(`users/${playerSlug}`);
+    const gameReqs = gameSlugs.map(
       gameSlug => apiFetch(`games/${gameSlug}?embed=levels,categories,players`));
-    const gameRunReqs = gameInfoReqs.map(
-      gameInfoReq => gameInfoReq.then(async gameInfo => {
-        const playerInfo = await playerInfoReq;
-        return apiFetch(`runs?user=${playerInfo.id}&game=${gameInfo.id}`);
+    const gameRunReqs = gameReqs.map(
+      gameReq => gameReq.then(async game => {
+        const player = await playerReq;
+        return apiFetch(`runs?user=${player.id}&game=${game.id}`);
       }))
     
-    const playerInfo = await playerInfoReq;
-    const playerName = playerInfo.names.international;
+    const player = await playerReq;
+    const playerName = player.names.international;
 
-    for (const [gameInfoReq, gameRunReq] of zip(gameInfoReqs, gameRunReqs)) {
-      const gameInfo = await gameInfoReq;
-      const runsInfo = await gameRunReq;
-      
-      // TODO: make this more parallel
-      // TODO: any "this"
+    for (const [gameReq, gameRunReq] of zip(gameReqs, gameRunReqs)) {
+      const game = await gameReq;
+      const runs = await gameRunReq;
 
-      const gameName = gameInfo.names.international;
+      const gameName = game.names.international;
 
-      const icon = HTML`<img src="${gameInfo.assets.icon.uri}" alt="">`;
+      const icon = HTML`<img src="${game.assets.icon.uri}" alt="">`;
       const placement = n => {
         const suffix =
             (n % 10 == 1 && n % 100 != 11) ? 'st' :
@@ -98,7 +95,7 @@ import HTML from './lib/html.js';
 
         const nth = `${n}${suffix}`;
 
-        let asset = gameInfo.assets[`trophy-${nth}`];
+        let asset = game.assets[`trophy-${nth}`];
 
         if (asset) {
           return HTML`<img class="placement" src="${asset.uri}" alt="${nth}">`;
@@ -111,18 +108,18 @@ import HTML from './lib/html.js';
         <section>
           <h2>${icon} ${gameName} ${icon}</h2>
 
-          <h3>${icon} <a href="${gameInfo.weblink}/full_game">Full Game</a> ${icon}</h3>
+          <h3>${icon} <a href="${game.weblink}/full_game">Full Game</a> ${icon}</h3>
 
           <table class="game-records">
             <thead>
               <tr>
                 <th>Category</th>
                 <th>World Record</th>
-                <th><a href="${playerInfo.weblink}">${playerName}</a>'s Best</th>
+                <th><a href="${player.weblink}">${playerName}</a>'s Best</th>
               </tr>
             </thead>
             <tbody>
-              ${gameInfo.categories.data.map(c => {
+              ${game.categories.data.map(c => {
                 if (c.type === 'per-game') return HTML`
                   <tr class="">
                     <th><a href="${c.weblink}">${c.name}</a></th>
@@ -134,26 +131,30 @@ import HTML from './lib/html.js';
             </tbody>
           </table>
 
-          <h3>${icon} <a href="${gameInfo.weblink}/individual_levels">Individual Levels</a> ${icon}</h3>
+          <h3>${icon} <a href="${game.weblink}/individual_levels">Individual Levels</a> ${icon}</h3>
 
           <table class="level-records">
             <thead>
               <tr>
                 <th>Level</th>
                 <th>World Record</th>
-                <th><a href="${playerInfo.weblink}">${playerName}</a>'s Best</th>
+                <th><a href="${player.weblink}">${playerName}</a>'s Best</th>
               </tr>
             </thead>
             <tbody>
-              ${gameInfo.levels.data.map(l => {
+              ${await Promise.all(game.levels.data.map(async level => {
+                const records = await apiFetch(`levels/${level.id}/records`);
+              
                 return HTML`
                   <tr class="">
-                    <th><a href="${l.weblink}">${l.name}</a></th>
-                    <td><span class="none">none</span></td>
+                    <th><a href="${level.weblink}">${level.name}</a></th>
+                    <td><span class="none">${JSON.stringify(records.runs.filter(r => r.place == 1).map(r => HTML`
+        
+                    `))}</span></td>
                     <td><span class="none">none</span></td>
                   </tr>
                 `
-              })}
+              }))}
             </tbody>
           </table>
         </section>
