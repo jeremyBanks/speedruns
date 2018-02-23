@@ -116,43 +116,19 @@ import HTML from './lib/html.js';
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>All Campaigns</th>
-                <td>
-                  -
-                </td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <th>Orc Campaign</th>
-                <td>
-                  ${placement(1)} 4h 2m 30s <br>
-                  by John Smith
-                </td>
-                <td>
-                  ${placement(14)} 6h 22m 13s
-                </td>
-              </tr>
-              <tr class="best-best">
-                <th>Human Campaign</th>
-                <td>
-                  ${placement(1)} 10m 13s <br>
-                  by Banks
-                </td>
-                <td>
-                  ${placement(1)} 10m 13s
-                </td>
-              </tr>
+              ${gameInfo.categories.data.map(c => {
+                if (c.type === 'per-game') return HTML`
+                  <tr class="">
+                    <th>${c.name}</th>
+                    <td>-</td>
+                    <td>-</td>
+                  </tr>
+                `
+              })}
             </tbody>
           </table>
 
           <h3>${icon} <a href="${gameInfo.weblink}/individual_levels">Individual Levels</a> ${icon}</h3>
-
-          <pre>${JSON.stringify(
-            gameInfo.categories.data
-              .filter(c => c.type === 'per-game')
-              .map(c => c.name)
-          , null, 2)}</pre>
 
           <hr>
           <pre>gameInfo.categories === ${JSON.stringify(gameInfo.categories, null, 2).slice(0, 256)}</pre>
