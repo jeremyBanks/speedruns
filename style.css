@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box; 
+}
+
 html {
   background: #222;
   overflow-y: scroll;
@@ -75,6 +79,7 @@ th {
 tbody > tr > * {
   height: 42px;
   background: #F8F8F8;
+  padding: 4px; 
 }
 
 tbody tr:hover > * {
@@ -83,6 +88,12 @@ tbody tr:hover > * {
 
 tbody tr.best-best > * {
   font-weight: bold;
+}
+
+table.level-records tbody th {
+  text-align: left;
+  text-indent: -20px;
+  padding-left: 24px;
 }
 
 img {
