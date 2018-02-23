@@ -22,7 +22,7 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   const result = rp.get(url, {simple: false});
   apiCache.set(url, result);
 
-  return res.send(await result);
+  return res.json(await result);
 });
 
 // Serve index for unknown URLs so it can route them client-side.

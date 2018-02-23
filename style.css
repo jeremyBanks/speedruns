@@ -196,4 +196,7 @@ section + section {
   footer {
     display: none !important;
   }
+  a, a:visited  {
+    color: #000;
+  }
 }
