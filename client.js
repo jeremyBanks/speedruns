@@ -87,12 +87,9 @@ import HTML from './lib/html.js';
             (n % 10 == 3 && n % 100 != 13) ? 'rd' :
             'th';
 
-        let asset =
-            (n == 1) ? gameInfo.assets['trophy-1st'] :
-            (n == 2) ? gameInfo.assets['trophy-2nd'] :
-            (n == 3) ? gameInfo.assets['trophy-3rd'] :
-            (n == 4) ? gameInfo.assets['trophy-4th'] :
-            null;
+        const nth = `${n}${suffix}`;
+
+        let asset = gameInfo.assets[`trophy-${nth}`];
 
         if (asset) {
           return HTML`<img class="placement" src="${asset.uri}" alt="${n}${suffix}">`;
