@@ -40,7 +40,7 @@ body {
 }
 
 body {
-  padding: 21px;
+  padding: 21px 0;
 }
 
 main {
@@ -49,8 +49,7 @@ main {
   font: 16px sans-serif;
   padding: 24px 36px;
   margin: 0 auto;
-  max-width: 640px;
-  min-width: 512px;
+  width: 640px;
   position: relative;
   text-align: center;
 }
@@ -174,6 +173,11 @@ span.placement sup {
 
 section + section {
   page-break-before: always;
+}
+
+.none {
+  font-size: .5em;
+  opacity: 0.5;
 }
 
 @media print {
