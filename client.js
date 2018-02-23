@@ -33,7 +33,17 @@ import HTML from './lib/html.js';
     } else {
       return body.data;
     }
-  }
+  };
+  const apiCache = new Map();
+  const api = async path => {
+    if (!apiCache.has(path)) {
+      const result = await apiFetch(path);
+      apiCache.set(path, result);
+      return result;
+    } else {
+      return apiCache.get(path);
+    }
+  };
   const defaultName = "bests";
   const title = `${projectName || defaultName}.glitch.me`;
 
@@ -67,13 +77,13 @@ import HTML from './lib/html.js';
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-    const playerReq = apiFetch(`users/${playerSlug}`);
+    const playerReq = api(`users/${playerSlug}`);
     const gameReqs = gameSlugs.map(
-      gameSlug => apiFetch(`games/${gameSlug}?embed=levels,categories,players`));
+      gameSlug => api(`games/${gameSlug}?embed=levels,categories,players`));
     const gameRunReqs = gameReqs.map(
       gameReq => gameReq.then(async game => {
         const player = await playerReq;
-        return apiFetch(`runs?user=${player.id}&game=${game.id}`);
+        return api(`runs?user=${player.id}&game=${game.id}`);
       }))
     
     const player = await playerReq;
@@ -143,20 +153,20 @@ import HTML from './lib/html.js';
             </thead>
             <tbody>
               ${await Promise.all(game.levels.data.map(async level => {
-                const records = await apiFetch(`levels/${level.id}/records`);
+                const records = await api(`levels/${level.id}/records`);
               
                 return HTML`
                   <tr class="">
                     <th><a href="${level.weblink}">${level.name}</a></th>
-                    <td><span class="none">${records[0].runs.filter(r => r.place == 1).map(r => r.run).map(run => HTML`
+                    <td>${records[0].runs.filter(r => r.place == 1).map(r => r.run).map(run => HTML`
                       <div>
                         <a href="${run.weblink}">
+                          <span class="time">${run.times.primary.toLowerCase().slice(2).replace(/\D+/g, s => `${s} `).strip()}</span>
                           ${placement(1)}
-                          ${run.times.primary.toLowerCase().slice(2).replace(/\D+/g, s => `${s} `)}
-                          by ${run.players.map(JSON.stringify)}
+                          ${run.players.map(p => p.name || p.id)}
                         </a>
                       </div>
-                    `)}</span></td>
+                    `)}</td>
                     <td><span class="none">none</span></td>
                   </tr>
                 `

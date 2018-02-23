@@ -175,6 +175,10 @@ section + section {
   page-break-before: always;
 }
 
+span.time {
+  font-family: monospace;
+}
+
 .none {
   font-size: .5em;
   opacity: 0.5;
