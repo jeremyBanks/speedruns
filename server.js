@@ -3,8 +3,8 @@ const rp = require('request-promise-native');
 
 const app = express();
 
-// Serve static files from s/.
-app.use(express.static('s'));
+// Serve this entire project directoy.
+app.use(express.static('./', {dotfiles: 'ignore'}));
 
 // Crudely mirror and cache speedrun.com/api.
 // We never expire/evict values here; we assume the
@@ -27,7 +27,7 @@ app.get(/^\/(https:\/\/www\.speedrun\.com\/api\/(.*))/, async (req, res) => {
 
 // Serve index for unknown URLs so it can route them client-side.
 app.use((req, res) => {
-  res.sendFile(__dirname + '/s/index.html');
+  res.sendFile(__dirname + '/index.html');
 });
 
 const listener = app.listen(process.env.PORT, () => {

@@ -1,4 +1,4 @@
-import HTML from '/html.js';
+import HTML from './lib/html.js';
 
 ({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async defer => {
   defer.then(success => {
@@ -107,7 +107,7 @@ import HTML from '/html.js';
               <tr>
                 <th>Category</th>
                 <th>World Record</th>
-                <th>${playerName}'s Best</th>
+                <th><a href="${playerInfo.weblink}">${playerName}</a>'s Best</th>
               </tr>
             </thead>
             <tbody>
@@ -143,9 +143,13 @@ import HTML from '/html.js';
 
           <h3>${icon} Individual Levels ${icon}</h3>
 
-          <pre>gameInfo.categories === ${JSON.stringify(gameInfo.categories, null, 2)}</pre>
-          <pre>gameInfo.levels === ${JSON.stringify(gameInfo.levels, null, 2)}</pre>
-          <pre>runsInfo === ${JSON.stringify(runsInfo, null, 2)}</pre>
+          <hr>
+          <pre>gameInfo.categories === ${JSON.stringify(gameInfo.categories, null, 2).slice(0, 256)}</pre>
+          <hr>
+          <pre>gameInfo.levels === ${JSON.stringify(gameInfo.levels, null, 2).slice(0, 256)}</pre>
+          <hr>
+          <pre>runsInfo === ${JSON.stringify(runsInfo, null, 2).slice(0, 256)}</pre>
+          <hr>
         </section>
       `;
       

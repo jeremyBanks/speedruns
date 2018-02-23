@@ -40,6 +40,7 @@ body {
 }
 
 main {
+  color: #000;
   background: #FFF;
   font: 16px sans-serif;
   padding: 24px 36px;
@@ -95,6 +96,7 @@ img {
 a, a:visited  {
   color: #008;
   text-decoration: none;
+  text-decoration-color: black;
 }
 
 a:hover {
@@ -111,7 +113,7 @@ h2, h3, h4, h5, h6 {
 
 h1 {
   display: inline;
-  border-bottom: 2px solid #625;
+  border-bottom: 2px solid #000;
   border-bottom-left-radius: 10px 6px;
   border-bottom-right-radius: 32px 2px;
   position: relative;
