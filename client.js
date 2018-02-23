@@ -1,12 +1,17 @@
 import HTML from './lib/html.js';
 
-({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async defer => {
-  defer.then(success => {
-    document.querySelector('#loading-message').remove();
-  }, error => {
-    document.querySelector('#loading-message').textContent = `${error}\n${error.stack}S`;
-    throw error;
-  });
+({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async result => {
+  (async () => {
+    const loadingMessage = document.querySelector('#loading-message');
+    try {
+      await result;
+      loadingMessage.remove();
+    } catch (error) {
+      loadingMessage.innerHTML =
+        HTML.string`<b>${error}</b>\n\n${error.stack}`;
+      throw error;
+    }
+  })();
 
   const apiRoot = '/https://www.speedrun.com/api/v1/';
   const apiFetch = async path => {
@@ -142,6 +147,12 @@ import HTML from './lib/html.js';
           </table>
 
           <h3>${icon} <a href="${gameInfo.weblink}/individual_levels">Individual Levels</a> ${icon}</h3>
+
+          <pre>${JSON.stringify(
+            gameInfo.categories.data
+              .filter(c => c.type === 'per-game')
+              // .map(c => c.name)
+          , null, 2)}</pre>
 
           <hr>
           <pre>gameInfo.categories === ${JSON.stringify(gameInfo.categories, null, 2).slice(0, 256)}</pre>
