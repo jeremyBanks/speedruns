@@ -80,7 +80,7 @@ import HTML from './lib/html.js';
     const playerReq = api(`users/${playerSlug}`);
     const gameReqs = gameSlugs.map(
       gameSlug => api(`games/${gameSlug}?embed=levels,categories,players`));
-    const gameRunReqs = gameReqs.map(
+    const gameRunsReqs = gameReqs.map(
       gameReq => gameReq.then(async game => {
         const player = await playerReq;
         return api(`runs?user=${player.id}&game=${game.id}`);
@@ -89,9 +89,9 @@ import HTML from './lib/html.js';
     const player = await playerReq;
     const playerName = player.names.international;
 
-    for (const [gameReq, gameRunReq] of zip(gameReqs, gameRunReqs)) {
+    for (const [gameReq, gameRunsReq] of zip(gameReqs, gameRunsReqs)) {
       const game = await gameReq;
-      const runs = await gameRunReq;
+      const runs = await gameRunsReq;
 
       const gameName = game.names.international;
 
@@ -153,12 +153,12 @@ import HTML from './lib/html.js';
             </thead>
             <tbody>
               ${await Promise.all(game.levels.data.map(async level => {
-                const records = await api(`levels/${level.id}/records`);
-              
+                const records = await api(`levels/${level.id}/records?max=200`)[0].runs;
+            
                 return HTML`
                   <tr class="">
                     <th><a href="${level.weblink}">${level.name}</a></th>
-                    <td>${records[0].runs.filter(r => r.place == 1).map(r => r.run).map(run => HTML`
+                    <td>${records.filter(r => r.place == 1).map(r => r.run).map(run => HTML`
                       <div>
                         <a href="${run.weblink}">
                           <span class="time">${run.times.primary.toLowerCase().slice(2).replace(/\D+/g, s => `${s} `).trim()}</span>
@@ -166,7 +166,7 @@ import HTML from './lib/html.js';
                           ${run.players.map(p => p.name || p.id)}
                         </a>
                       </div>
-                    `)}</td>
+                    `)}</td>records
                     <td><span class="none">none</span></td>
                   </tr>
                 `
