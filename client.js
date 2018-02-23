@@ -148,9 +148,15 @@ import HTML from './lib/html.js';
                 return HTML`
                   <tr class="">
                     <th><a href="${level.weblink}">${level.name}</a></th>
-                    <td><span class="none">${JSON.stringify(records.runs.filter(r => r.place == 1).map(r => HTML`
-        
-                    `))}</span></td>
+                    <td><span class="none">${records[0].runs.filter(r => r.place == 1).map(r => r.run).map(run => HTML`
+                      <div>
+                        <a href="${run.weblink}">
+                          ${placement(1)}
+                          ${run.times.primary.toLowerCase().slice(2).replace(/\D+/g, s => `${s} `)}
+                          by ${run.players.map(JSON.stringify)}
+                        </a>
+                      </div>
+                    `)}</span></td>
                     <td><span class="none">none</span></td>
                   </tr>
                 `
