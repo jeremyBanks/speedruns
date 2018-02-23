@@ -8,7 +8,7 @@ import HTML from './lib/html.js';
       loadingMessage.remove();
     } catch (error) {
       loadingMessage.innerHTML =
-        HTML.string`<b>${error}</b>\n\n${error.stack}`;
+          HTML.string`<b>${error}</b>\n\n${error.stack}`;
       throw error;
     }
   })();
