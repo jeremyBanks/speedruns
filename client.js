@@ -107,7 +107,7 @@ import HTML from './lib/html.js';
 
           <h3>${icon} <a href="${gameInfo.weblink}/full_game">Full Game</a> ${icon}</h3>
 
-          <table>
+          <table class="game-records">
             <thead>
               <tr>
                 <th>Category</th>
@@ -129,6 +129,27 @@ import HTML from './lib/html.js';
           </table>
 
           <h3>${icon} <a href="${gameInfo.weblink}/individual_levels">Individual Levels</a> ${icon}</h3>
+
+          <table class="level-records">
+            <thead>
+              <tr>
+                <th>Level</th>
+                <th>World Record</th>
+                <th><a href="${playerInfo.weblink}">${playerName}</a>'s Best</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${gameInfo.levels.data.map(c => {
+                return HTML`
+                  <tr class="">
+                    <th>${c.name}</th>
+                    <td>-</td>
+                    <td>-</td>
+                  </tr>
+                `
+              })}
+            </tbody>
+          </table>
 
           <hr>
           <pre>gameInfo.categories === ${JSON.stringify(gameInfo.categories, null, 2).slice(0, 256)}</pre>

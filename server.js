@@ -10,7 +10,7 @@ app.use(express.static('./', {dotfiles: 'ignore'}));
 // We never expire/evict values here; we assume the
 // process won't live long enough for it to matter.
 const apiCache = new Map();
-app.get(/^\/(https:\/\/www\.speedrun\.com\/api\/(.*))/, async (req, res) => {
+app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   const url = req.url.slice(1);
   const cached = apiCache.get(url);
   
