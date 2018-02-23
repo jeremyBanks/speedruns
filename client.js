@@ -100,7 +100,7 @@ import HTML from './lib/html.js';
         <section>
           <h2>${icon} ${gameName} ${icon}</h2>
 
-          <h3>${icon} Full Game ${icon}</h3>
+          <h3>${icon} <a href="${gameInfo.weblink}/full_game">Full Game</a> ${icon}</h3>
 
           <table>
             <thead>
@@ -141,7 +141,7 @@ import HTML from './lib/html.js';
             </tbody>
           </table>
 
-          <h3>${icon} Individual Levels ${icon}</h3>
+          <h3>${icon} <a href="${gameInfo.weblink}/individual_levels">Individual Levels</a> ${icon}</h3>
 
           <hr>
           <pre>gameInfo.categories === ${JSON.stringify(gameInfo.categories, null, 2).slice(0, 256)}</pre>
@@ -152,9 +152,6 @@ import HTML from './lib/html.js';
           <hr>
         </section>
       `;
-      
-      renderHTML`<p>Skipping other games until this is actually implemented...</p>`;
-      break;
     }
     
     renderHTML`
