@@ -150,10 +150,6 @@ import HTML from './lib/html.js';
               })}
             </tbody>
           </table>
-
-          <hr>
-          <pre>runsInfo === ${JSON.stringify(runsInfo, null, 2).slice(0, 256)}</pre>
-          <hr>
         </section>
       `;
     }
@@ -161,8 +157,8 @@ import HTML from './lib/html.js';
 
   renderHTML`
     <footer>
-      This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>.
-      It is used under <a href="https://creativecommons.org/licenses/by-nc/4.0/">the CC BY-NC license</a> and
+      This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>,
+      used under <a href="https://creativecommons.org/licenses/by-nc/4.0/">the CC BY-NC license</a> and
       loaded from <a href="https://github.com/speedruncomorg/api/tree/master/version1">their API</a>.
     </footer>
   `;
