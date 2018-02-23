@@ -51,7 +51,7 @@ import HTML from './lib/html.js';
 
   const output = HTML.element`<div></div>`; 
   document.querySelector('#main').appendChild(output);
-  
+
   const renderHTML = (...args) => output.appendChild(HTML.fragment(...args));
 
   renderHTML`
