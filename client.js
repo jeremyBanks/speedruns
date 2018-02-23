@@ -50,7 +50,7 @@ import HTML from './lib/html.js';
   `;
 
   if (path.length === 0) {
-    document.location.replace('/wc2+wc2btdp+sc1+scbw@banks');
+    document.location.replace('/wc2+wc2btdp@banks');
   }
 
   if (path.length === 1) {
@@ -119,9 +119,9 @@ import HTML from './lib/html.js';
               ${gameInfo.categories.data.map(c => {
                 if (c.type === 'per-game') return HTML`
                   <tr class="">
-                    <th>${c.name}</th>
-                    <td>-</td>
-                    <td>-</td>
+                    <th><a href="${c.weblink}">${c.name}</a></th>
+                    <td><span class="none">none</span></td>
+                    <td><span class="none">none</span></td>
                   </tr>
                 `
               })}
@@ -139,12 +139,12 @@ import HTML from './lib/html.js';
               </tr>
             </thead>
             <tbody>
-              ${gameInfo.levels.data.map(c => {
+              ${gameInfo.levels.data.map(l => {
                 return HTML`
                   <tr class="">
-                    <th>${c.name}</th>
-                    <td>-</td>
-                    <td>-</td>
+                    <th><a href="${l.weblink}">${l.name}</a></th>
+                    <td><span class="none">none</span></td>
+                    <td><span class="none">none</span></td>
                   </tr>
                 `
               })}
@@ -152,19 +152,11 @@ import HTML from './lib/html.js';
           </table>
 
           <hr>
-          <pre>gameInfo.categories === ${JSON.stringify(gameInfo.categories, null, 2).slice(0, 256)}</pre>
-          <hr>
-          <pre>gameInfo.levels === ${JSON.stringify(gameInfo.levels, null, 2).slice(0, 256)}</pre>
-          <hr>
           <pre>runsInfo === ${JSON.stringify(runsInfo, null, 2).slice(0, 256)}</pre>
           <hr>
         </section>
       `;
     }
-    
-    renderHTML`
-        <pre>${JSON.stringify(playerInfo, null, 2)}</pre>
-    `;
   }
 
   renderHTML`
