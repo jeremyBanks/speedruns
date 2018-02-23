@@ -6,7 +6,10 @@ const app = express();
 app.set('json spaces', 2);
 
 // Serve this entire project directoy.
-app.use(express.static('./', {dotfiles: 'ignore'}));
+app.use(express.static('./', {
+  dotfiles: 'ignore',
+  index: ['index.html', '.js']
+}));
 
 // Crudely mirror and cache speedrun.com/api.
 // We never expire/evict values here; we assume the
