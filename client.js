@@ -151,7 +151,7 @@ import HTML from './lib/html.js';
           <pre>${JSON.stringify(
             gameInfo.categories.data
               .filter(c => c.type === 'per-game')
-              // .map(c => c.name)
+              .map(c => c.name)
           , null, 2)}</pre>
 
           <hr>
