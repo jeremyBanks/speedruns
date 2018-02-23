@@ -13,6 +13,7 @@ pre {
 }
 
 body {
+  padding: 0;
   margin: 0;
   animation-name: appear;
   animation-delay: 0.5s;
@@ -39,16 +40,12 @@ body {
   user-select: all;
 }
 
-body {
-  padding: 21px 0;
-}
-
 main {
   color: #000;
   background: #FFF;
   font: 16px sans-serif;
   padding: 24px 0;
-  margin: 0 auto;
+  margin: 16px auto;
   width: 100%;
   max-width: 640px;
   min-width: 596px;
@@ -199,15 +196,18 @@ span.time {
     margin: 0;
     background: white;
   }
+
   main {
     margin-top: 0;
     padding-top: 0;
     background: white;
   }
+
   header,
   footer {
     display: none !important;
   }
+
   a, a:visited  {
     color: #000;
   }
