@@ -13,6 +13,16 @@ import HTML from './lib/html.js';
     }
   })();
 
+  const hostname = document.location.host;
+  const projectName = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
+
+  // force HTTPS if running on Glitch, where we know it's available.
+  if (projectName && document.location.protocol === 'http:') {
+    document.location.protocol = 'https:';
+  }
+
+  const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
+
   const apiRoot = '/https://www.speedrun.com/api/v1/';
   const apiFetch = async path => {
     const url = apiRoot + path;
@@ -24,10 +34,6 @@ import HTML from './lib/html.js';
       return body.data;
     }
   }
-
-  const hostname = document.location.host;
-  const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
-  const projectName = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
   const defaultName = "bests";
   const title = `${projectName || defaultName}.glitch.me`;
 
@@ -76,6 +82,9 @@ import HTML from './lib/html.js';
     for (const [gameInfoReq, gameRunReq] of zip(gameInfoReqs, gameRunReqs)) {
       const gameInfo = await gameInfoReq;
       const runsInfo = await gameRunReq;
+      
+      // TODO: make this more parallel
+      // TODO: any "this"
 
       const gameName = gameInfo.names.international;
 
@@ -92,7 +101,7 @@ import HTML from './lib/html.js';
         let asset = gameInfo.assets[`trophy-${nth}`];
 
         if (asset) {
-          return HTML`<img class="placement" src="${asset.uri}" alt="${n}${suffix}">`;
+          return HTML`<img class="placement" src="${asset.uri}" alt="${nth}">`;
         } else {
           return HTML`<span class="placement">${n}<sup>${suffix}</sup></span>`;
         }
