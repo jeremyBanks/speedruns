@@ -64,7 +64,7 @@ table {
   width: 100%;
   table-layout: fixed;
   font-size: 14px;
-  border-spacing: 4px 8px;
+  border-spacing: 4px 4px;
 }
 
 thead th {

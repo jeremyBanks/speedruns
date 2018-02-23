@@ -3,6 +3,8 @@ const rp = require('request-promise-native');
 
 const app = express();
 
+app.set('json spaces', 2);
+
 // Serve this entire project directoy.
 app.use(express.static('./', {dotfiles: 'ignore'}));
 
@@ -19,7 +21,7 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   }
 
   console.log("GETting", url);
-  const result = rp.get(url, {simple: false});
+  const result = rp.get(url, {simple: false}).then(JSON.parse);
   apiCache.set(url, result);
 
   return res.json(await result);
