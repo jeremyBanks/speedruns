@@ -49,7 +49,9 @@ import HTML from './lib/html.js';
 
   document.title = (path.length) ? `${defaultName}…/${path.join('/')}` : title;
 
-  const output = document.querySelector('#main');
+  const output = HTML.element`<div></div>`; 
+  document.querySelector('#main').appendChild(output);
+  
   const renderHTML = (...args) => output.appendChild(HTML.fragment(...args));
 
   renderHTML`
@@ -199,7 +201,7 @@ import HTML from './lib/html.js';
     <footer>
       This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>,
       used under <a href="https://creativecommons.org/licenses/by-nc/4.0/">the CC BY-NC license</a> and
-      loaded from <a href="https://github.com/speedruncomorg/api/tree/master/version1">their API</a>.
+      loaded from <a href="https://github.com/speedruncomorg/api/blob/master/version1/README.md#readme">their API</a>.
     </footer>
   `;
 };
