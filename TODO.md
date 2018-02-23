@@ -1,0 +1,1 @@
+- allow promises to include async components
