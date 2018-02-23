@@ -1,4 +1,5 @@
-import HTML from './lib/html.js';
+import HTML from '/lib/html.js';
+import {defaultPath} from '/settings';
 
 ({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async result => {
   (async () => {
@@ -68,7 +69,7 @@ import HTML from './lib/html.js';
   `;
 
   if (path.length === 0) {
-    document.location.replace('/wc2+wc2btdp@banks');
+    document.location.replace(`/${defaultPath}`);
   }
 
   if (path.length === 1) {
