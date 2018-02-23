@@ -153,21 +153,38 @@ import HTML from './lib/html.js';
             </thead>
             <tbody>
               ${await Promise.all(game.levels.data.map(async level => {
-                const records = await api(`levels/${level.id}/records?max=200`)[0].runs;
+                const records = (await api(`levels/${level.id}/records?max=200`))[0].runs;
             
                 return HTML`
                   <tr class="">
                     <th><a href="${level.weblink}">${level.name}</a></th>
-                    <td>${records.filter(r => r.place == 1).map(r => r.run).map(run => HTML`
-                      <div>
-                        <a href="${run.weblink}">
-                          <span class="time">${run.times.primary.toLowerCase().slice(2).replace(/\D+/g, s => `${s} `).trim()}</span>
-                          ${placement(1)}
-                          ${run.players.map(p => p.name || p.id)}
-                        </a>
-                      </div>
-                    `)}</td>records
-                    <td><span class="none">none</span></td>
+                    <td>${
+                      records
+                        .filter(r => r.place == 1)
+                        .map(r => r.run)
+                        .map(run => HTML`
+                          <div>
+                            <a href="${run.weblink}">
+                              <span class="time">${run.times.primary.toLowerCase().slice(2).replace(/\D+/g, s => `${s} `).trim()}</span>
+                              ${placement(1)}
+                              ${run.players.map(p => p.name || p.id)}
+                            </a>
+                          </div>
+                        `) || HTML`<span class="none">none</span>`
+                    }</td>
+                    <td>${
+                      records
+                        .filter(r => r.run.players.some(p => p.id === player.id))
+                        .slice(0, 1)
+                        .map(record => HTML`
+                          <div>
+                            <a href="${record.run.weblink}">
+                              <span class="time">${record.run.times.primary.toLowerCase().slice(2).replace(/\D+/g, s => `${s} `).trim()}</span>
+                              ${placement(record.place)}
+                            </a>
+                          </div>
+                        `) || HTML`<span class="none">none</span>`
+                    }</td>
                   </tr>
                 `
               }))}
