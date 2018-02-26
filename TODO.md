@@ -1,5 +1,3 @@
-allow promises to include async components:
-
 split out your view and display model:
 
     Bests{
