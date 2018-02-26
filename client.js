@@ -10,8 +10,7 @@ import {defaultPath} from '/config';
       await result;
       loadingMessage.remove();
     } catch (error) {
-      loadingMessage.innerHTML =
-          HTML.string`<b>${error}</b>\n\n${error.stack}`;
+      loadingMessage.textContent = `${error}\n\n${error.stack}`;
       throw error;
     }
   })();
@@ -58,8 +57,8 @@ import {defaultPath} from '/config';
   const blockers = [];
 
   const renderHTML = (...args) => {
-    const result = HTML.fragment(...args);
-    blockers.push(result);
+    const [result, done] = HTML(...args).fragmentAndDone();
+    blockers.push(done);
     output.appendChild(result);
     return result;
   };
@@ -99,6 +98,7 @@ import {defaultPath} from '/config';
       }))
 
     const playerName = playerReq.then(player => player.names.international);
+    const playerLink = playerReq.then(player => `<a href="${playerReq.then(player => player.weblink)}">${playerName}</a>`);
 
     for (const [gameReq, gameRunsReq] of zip(gameReqs, gameRunsReqs)) {
       const icon = gameReq.then(game => HTML`<img src="${game.assets.icon.uri}" alt="">`);
@@ -131,7 +131,7 @@ import {defaultPath} from '/config';
               <tr>
                 <th>Category</th>
                 <th>World Record</th>
-                <th><a href="${playerReq.then(player => player.weblink)}">${playerName}</a>'s Best</th>
+                <th>${playerLink}'s Best</th>
               </tr>
             </thead>
             <tbody>
