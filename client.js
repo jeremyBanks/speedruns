@@ -4,9 +4,37 @@ import {zip} from '/lib/iteration.js';
 import {defaultPath} from '/config/client.js';
 
 
+const getBestsModel = (gameSlugs, playerSlug) => {
+  const getPlayer = async (slug) => {
+    const player = await api(`users/${playerSlug}`);
+    return {
+      id: player.id,
+      url: player.weblink,
+      name: player.names.international,
+    };
+  };
+  
+  const player = getPlayer(playerSlug);
+
+  return {
+    player: player,
+    games: gameSlugs.map(async (gameSlug) => {
+      const game = await api(`games/${gameSlug}?embed=levels,categories,players`);
+
+      const playerRuns = player.then(p => api(`runs?user=${p.id}&game=${game.id}`));
+
+      return {
+        id: game.id,
+        url: game.weblink,
+        name: game.names.international,
+        
+      };
+    }),
+  };
+};
+
+
 const getBestsView = async function*(model) {
-
-
   const playerLink = playerReq.then(player => HTML`<a href="${player.weblink}">${player.names.international}</a>`);
 
   for (const [gameReq, gameRunsReq] of zip(gameReqs, gameRunsReqs)) {
@@ -132,4 +160,81 @@ let api; {
       return apiCache.get(path);
     }
   };
+};
+
+
+({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async result => {
+  (async () => {
+    const loadingMessage = document.querySelector('#loading-message');
+    try {
+      await result;
+      loadingMessage.remove();
+    } catch (error) {
+      loadingMessage.textContent = `${error}\n\n${error.stack}`;
+      throw error;
+    }
+  })();
+
+  const hostname = document.location.host;
+  const projectName = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
+
+  // force HTTPS if running on Glitch, where we know it's available.
+  if (projectName && document.location.protocol === 'http:') {
+    document.location.protocol = 'https:';
+  }
+
+  const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
+
+  const defaultName = "bests";
+  const title = `${projectName || defaultName}.glitch.me`;
+
+  document.title = (path.length) ? `${defaultName}…/${path.join('/')}` : title;
+
+  const output = await HTML.element`<div></div>`; 
+  document.querySelector('#main').appendChild(output);
+
+  output.appendChild(HTML.fragment`
+    <header>
+      <h1><span>
+        <img src="${document.querySelector('link[rel=icon]').href}">
+        <a href="/">${title}</a>
+      <span></h1>
+
+      ${projectName && HTML`
+        <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}?path=s/main.js`}">view/edit source</a></nav>
+      `}
+    </header>
+  `);
+
+  const blockers = [];
+
+  if (path.length === 0) {
+    document.location.replace(`/${defaultPath}`);
+  } else if (path.length === 1) {
+    const [gamesSlug, playerSlug] = path[0].split('@');
+    if (!gamesSlug) throw new Error("no game(s) in URL");
+    if (!playerSlug) throw new Error("no player in URL");
+
+    const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
+    if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
+
+    const model = getModel(gameSlugs, playerSlug);
+    const view = getView(model);
+
+    const [fragment, done] = HTML.from(view).fragmentAndDone();
+    output.appendChild(fragment);
+    blockers.push(done);
+  } else {
+    throw new Error("404/invalid URL");
+  }
+
+  output.appendChild(HTML.fragment`
+    <footer>
+      This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>,
+      used under <a href="https://creativecommons.org/licenses/by-nc/4.0/">the CC BY-NC license</a> and
+      loaded from <a href="https://github.com/speedruncomorg/api/blob/master/version1/README.md#readme">their API</a>.
+    </footer>
+  `);
+  
+  await Promise.all(blockers);
 };
