@@ -2,6 +2,10 @@ import HTML from '/lib/html.js';
 
 import {defaultPath} from '/config';
 
+const getViewModel = () => {
+  
+};
+
 
 ({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async result => {
   (async () => {
@@ -134,6 +138,7 @@ import {defaultPath} from '/config';
             </thead>
             <tbody>
               ${gameReq.then(game => game.categories.data.map(c => {
+                /// XXX: THIS DOESn"T WORK BECAUSE WE CAN'T PUT OUR ELEMENTS HERE!
                 if (c.type === 'per-game') return HTML`
                   <tr class="">
                     <th><a href="${c.weblink}">${c.name}</a></th>
