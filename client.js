@@ -102,7 +102,7 @@ import {defaultPath} from '/config';
 
     for (const [gameReq, gameRunsReq] of zip(gameReqs, gameRunsReqs)) {
       const icon = gameReq.then(game => HTML`<img src="${game.assets.icon.uri}" alt="">`);
-      const placement = n => {
+      const placement = async (n) => {
         const suffix =
             (n % 10 == 1 && n % 100 != 11) ? 'st' :
             (n % 10 == 2 && n % 100 != 12) ? 'nd' :
@@ -111,7 +111,7 @@ import {defaultPath} from '/config';
 
         const nth = `${n}${suffix}`;
 
-        let asset = game.assets[`trophy-${nth}`];
+        let asset = (await gameReq).assets[`trophy-${nth}`];
 
         if (asset) {
           return HTML`<img class="placement" src="${asset.uri}" alt="${nth}">`;
@@ -131,7 +131,7 @@ import {defaultPath} from '/config';
               <tr>
                 <th>Category</th>
                 <th>World Record</th>
-                <th><a href="${player.weblink}">${playerName}</a>'s Best</th>
+                <th><a href="${playerReq.then(player => player.weblink)}">${playerName}</a>'s Best</th>
               </tr>
             </thead>
             <tbody>
