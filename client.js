@@ -57,10 +57,9 @@ import {defaultPath} from '/config';
   const blockers = [];
 
   const renderHTML = (...args) => {
-    const [result, done] = HTML(...args).fragmentAndDone();
+    const [fragment, done] = HTML(...args).fragmentAndDone();
     blockers.push(done);
-    output.appendChild(result);
-    return result;
+    output.appendChild(fragment);
   };
 
   renderHTML`
@@ -97,8 +96,7 @@ import {defaultPath} from '/config';
         return api(`runs?user=${player.id}&game=${game.id}`);
       }))
 
-    const playerName = playerReq.then(player => player.names.international);
-    const playerLink = playerReq.then(player => `<a href="${playerReq.then(player => player.weblink)}">${playerName}</a>`);
+    const playerLink = playerReq.then(player => HTML`<a href="${player.weblink}">${player.names.international}</a>`);
 
     for (const [gameReq, gameRunsReq] of zip(gameReqs, gameRunsReqs)) {
       const icon = gameReq.then(game => HTML`<img src="${game.assets.icon.uri}" alt="">`);
@@ -154,7 +152,7 @@ import {defaultPath} from '/config';
               <tr>
                 <th>Level</th>
                 <th>World Record</th>
-                <th><a href="${playerReq.then(player => player.weblink)}">${playerName}</a>'s Best</th>
+                <th>${playerLink}'s Best</th>
               </tr>
             </thead>
             <tbody>
