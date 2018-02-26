@@ -1,10 +1,92 @@
 import HTML from '/lib/html.js';
+import {zip} from '/lib/iteration.js';
 
-import {defaultPath} from '/config';
+import {defaultPath} from '/config/client.js';
 
-const getModel = (gameSlugs, playerSlug) => ({gameSlugs, playerSlug});
 
-const getView = async *({gameSlugs, playerSlug}) => {
+({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async result => {
+  (async () => {
+    const loadingMessage = document.querySelector('#loading-message');
+    try {
+      await result;
+      loadingMessage.remove();
+    } catch (error) {
+      loadingMessage.textContent = `${error}\n\n${error.stack}`;
+      throw error;
+    }
+  })();
+
+  const hostname = document.location.host;
+  const projectName = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
+
+  // force HTTPS if running on Glitch, where we know it's available.
+  if (projectName && document.location.protocol === 'http:') {
+    document.location.protocol = 'https:';
+  }
+
+  const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
+
+  const defaultName = "bests";
+  const title = `${projectName || defaultName}.glitch.me`;
+
+  document.title = (path.length) ? `${defaultName}…/${path.join('/')}` : title;
+
+  const output = await HTML.element`<div></div>`; 
+  document.querySelector('#main').appendChild(output);
+
+  output.appendChild(HTML.fragment`
+    <header>
+      <h1><span>
+        <img src="${document.querySelector('link[rel=icon]').href}">
+        <a href="/">${title}</a>
+      <span></h1>
+
+      ${projectName && HTML`
+        <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}?path=s/main.js`}">view/edit source</a></nav>
+      `}
+    </header>
+  `);
+
+  const blockers = [];
+
+  if (path.length === 0) {
+    document.location.replace(`/${defaultPath}`);
+  } else if (path.length === 1) {
+    const [gamesSlug, playerSlug] = path[0].split('@');
+    if (!gamesSlug) throw new Error("no game(s) in URL");
+    if (!playerSlug) throw new Error("no player in URL");
+
+    const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
+    if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
+
+    const model = await getModel(gameSlugs, playerSlug);
+    const view = getView(model);
+
+    const [fragment, done] = HTML.from(view).fragmentAndDone();
+    output.appendChild(fragment);
+    blockers.push(done);
+  } else {
+    throw new Error("404/invalid URL");
+  }
+
+  output.appendChild(HTML.fragment`
+    <footer>
+      This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>,
+      used under <a href="https://creativecommons.org/licenses/by-nc/4.0/">the CC BY-NC license</a> and
+      loaded from <a href="https://github.com/speedruncomorg/api/blob/master/version1/README.md#readme">their API</a>.
+    </footer>
+  `);
+  
+  await Promise.all(blockers);
+};
+
+
+const getModel = (gameSlugs, playerSlug) => {
+  return {gameSlugs, playerSlug};
+};
+
+
+const getView = async function*({gameSlugs, playerSlug}) {
   const apiRoot = '/https://www.speedrun.com/api/v1/';
   const apiFetch = async path => {
     const url = apiRoot + path;
@@ -137,88 +219,4 @@ const getView = async *({gameSlugs, playerSlug}) => {
       `)}</section>
     `;
   }
-};
-
-
-({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async result => {
-  (async () => {
-    const loadingMessage = document.querySelector('#loading-message');
-    try {
-      await result;
-      loadingMessage.remove();
-    } catch (error) {
-      loadingMessage.textContent = `${error}\n\n${error.stack}`;
-      throw error;
-    }
-  })();
-
-  const hostname = document.location.host;
-  const projectName = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
-
-  // force HTTPS if running on Glitch, where we know it's available.
-  if (projectName && document.location.protocol === 'http:') {
-    document.location.protocol = 'https:';
-  }
-
-  const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
-
-  const defaultName = "bests";
-  const title = `${projectName || defaultName}.glitch.me`;
-
-  document.title = (path.length) ? `${defaultName}…/${path.join('/')}` : title;
-
-  const output = await HTML.element`<div></div>`; 
-  document.querySelector('#main').appendChild(output);
-
-  output.appendChild(HTML.fragment`
-    <header>
-      <h1><span>
-        <img src="${document.querySelector('link[rel=icon]').href}">
-        <a href="/">${title}</a>
-      <span></h1>
-
-      ${projectName && HTML`
-        <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}?path=s/main.js`}">view/edit source</a></nav>
-      `}
-    </header>
-  `);
-
-  const blockers = [];
-
-  if (path.length === 0) {
-    document.location.replace(`/${defaultPath}`);
-  }
-
-  if (path.length === 1) {
-    const [gamesSlug, playerSlug] = path[0].split('@');
-    if (!gamesSlug) throw new Error("no game(s) in URL");
-    if (!playerSlug) throw new Error("no player in URL");
-
-    const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
-    if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
-
-    const model = await getModel(gameSlugs, playerSlug);
-    const view = getView(model);
-
-    const [fragment, done] = HTML.from(view).fragmentAndDone();
-    output.appendChild(fragment);
-    blockers.push(done);
-  }
-
-  output.appendChild(HTML.fragment`
-    <footer>
-      This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>,
-      used under <a href="https://creativecommons.org/licenses/by-nc/4.0/">the CC BY-NC license</a> and
-      loaded from <a href="https://github.com/speedruncomorg/api/blob/master/version1/README.md#readme">their API</a>.
-    </footer>
-  `);
-  
-  await Promise.all(blockers);
-};
-
-const zip = (...args) => {
-  // like Python's itertools.zip_longest
-  // from stackoverflow.com/a/10284006
-  const longest = args.reduce((a, b) => a.length > b.length ? a : b, []);
-  return longest.map((_, i) => args.map(array => array[i]));
 };
