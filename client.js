@@ -59,7 +59,7 @@ import {defaultPath} from '/config/client.js';
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-    const model = await getModel(gameSlugs, playerSlug);
+    const model = getModel(gameSlugs, playerSlug);
     const view = getView(model);
 
     const [fragment, done] = HTML.from(view).fragmentAndDone();
@@ -81,37 +81,31 @@ import {defaultPath} from '/config/client.js';
 };
 
 
-const getModel = (gameSlugs, playerSlug) => {
-  return {gameSlugs, playerSlug};
+const getBestsModel = (gameSlugs, playerSlug) => {
+  const getPlayer = async (slug) => {
+    const data = await api(`users/${playerSlug}`);
+    return {
+      nick: null,
+      id: null,
+      url: null,
+    };
+  };
+  
+  const player = getPlayer(playerSlug);
+
+  return {
+    player: player,
+    games: gameSlugs.map(async (gameSlug) => {
+      const game = await api(`games/${gameSlug}?embed=levels,categories,players`)
+    }),
+  };
 };
 
 
-const getView = async function*({gameSlugs, playerSlug}) {
-  const apiRoot = '/https://www.speedrun.com/api/v1/';
-  const apiFetch = async path => {
-    const url = apiRoot + path;
-    const response = await fetch(url);
-    const body = await response.json();
-    if (body.status) {
-      throw new Error(`${body.status}: ${body.message}`); 
-    } else {
-      return body.data;
-    }
-  };
-  const apiCache = new Map();
-  const api = async path => {
-    if (!apiCache.has(path)) {
-      const result = await apiFetch(path);
-      apiCache.set(path, result);
-      return result;
-    } else {
-      return apiCache.get(path);
-    }
-  };
-
+const getBestsView = async function*({gameSlugs, playerSlug}) {
   const playerReq = api(`users/${playerSlug}`);
   const gameReqs = gameSlugs.map(
-    gameSlug => api(`games/${gameSlug}?embed=levels,categories,players`));
+    gameSlug => );
   const gameRunsReqs = gameReqs.map(
     gameReq => gameReq.then(async game => {
       const player = await playerReq;
@@ -156,7 +150,6 @@ const getView = async function*({gameSlugs, playerSlug}) {
           </thead>
           <tbody>
             ${gameReq.then(game => game.categories.data.map(c => {
-              /// XXX: THIS DOESn"T WORK BECAUSE WE CAN'T PUT OUR ELEMENTS HERE!
               if (c.type === 'per-game') return HTML`
                 <tr class="">
                   <th><a href="${c.weblink}">${c.name}</a></th>
@@ -219,4 +212,29 @@ const getView = async function*({gameSlugs, playerSlug}) {
       `)}</section>
     `;
   }
+};
+
+
+let api; {
+  const apiRoot = '/https://www.speedrun.com/api/v1/';
+  const apiFetch = async path => {
+    const url = apiRoot + path;
+    const response = await fetch(url);
+    const body = await response.json();
+    if (body.status) {
+      throw new Error(`${body.status}: ${body.message}`); 
+    } else {
+      return body.data;
+    }
+  };
+  const apiCache = new Map();
+  api = async path => {
+    if (!apiCache.has(path)) {
+      const result = await apiFetch(path);
+      apiCache.set(path, result);
+      return result;
+    } else {
+      return apiCache.get(path);
+    }
+  };
 };
