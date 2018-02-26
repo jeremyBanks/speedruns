@@ -52,7 +52,7 @@ import {defaultPath} from '/config';
 
   document.title = (path.length) ? `${defaultName}…/${path.join('/')}` : title;
 
-  const output = HTML.element`<div></div>`; 
+  const output = await HTML.element`<div></div>`; 
   document.querySelector('#main').appendChild(output);
 
   const renderHTML = (...args) => output.appendChild(HTML.fragment(...args));
@@ -95,10 +95,7 @@ import {defaultPath} from '/config';
     const playerName = player.names.international;
 
     for (const [gameReq, gameRunsReq] of zip(gameReqs, gameRunsReqs)) {
-      const game = await gameReq;
-      const runs = await gameRunsReq;
-
-      const gameName = game.names.international;
+      const gameName = ;
 
       const icon = HTML`<img src="${game.assets.icon.uri}" alt="">`;
       const placement = n => {
@@ -121,7 +118,7 @@ import {defaultPath} from '/config';
 
       renderHTML`
         <section>
-          <h2>${icon} ${gameName} ${icon}</h2>
+          <h2>${icon} ${gameReq.then(game => gameName)} ${icon}</h2>
 
           <h3>${icon} <a href="${game.weblink}/full_game">Full Game</a> ${icon}</h3>
 
