@@ -55,7 +55,14 @@ import {defaultPath} from '/config';
   const output = await HTML.element`<div></div>`; 
   document.querySelector('#main').appendChild(output);
 
-  const renderHTML = (...args) => output.appendChild(HTML.fragment(...args));
+  const blockers = [];
+
+  const renderHTML = (...args) => {
+    const result = HTML.fragment(...args);
+    blockers.push(result);
+    output.appendChild(result);
+    return result;
+  };
 
   renderHTML`
     <header>
@@ -90,14 +97,11 @@ import {defaultPath} from '/config';
         const player = await playerReq;
         return api(`runs?user=${player.id}&game=${game.id}`);
       }))
-    
-    const player = await playerReq;
-    const playerName = player.names.international;
+
+    const playerName = playerReq.then(player => player.names.international);
 
     for (const [gameReq, gameRunsReq] of zip(gameReqs, gameRunsReqs)) {
-      const gameName = ;
-
-      const icon = HTML`<img src="${game.assets.icon.uri}" alt="">`;
+      const icon = gameReq.then(game => HTML`<img src="${game.assets.icon.uri}" alt="">`);
       const placement = n => {
         const suffix =
             (n % 10 == 1 && n % 100 != 11) ? 'st' :
@@ -117,8 +121,8 @@ import {defaultPath} from '/config';
       };
 
       renderHTML`
-        <section>
-          <h2>${icon} ${gameReq.then(game => gameName)} ${icon}</h2>
+        <section>${gameReq.then(game => HTML`
+          <h2>${icon} ${game.names.international} ${icon}</h2>
 
           <h3>${icon} <a href="${game.weblink}/full_game">Full Game</a> ${icon}</h3>
 
@@ -131,7 +135,7 @@ import {defaultPath} from '/config';
               </tr>
             </thead>
             <tbody>
-              ${game.categories.data.map(c => {
+              ${gameReq.then(game => game.categories.data.map(c => {
                 if (c.type === 'per-game') return HTML`
                   <tr class="">
                     <th><a href="${c.weblink}">${c.name}</a></th>
@@ -139,7 +143,7 @@ import {defaultPath} from '/config';
                     <td><span class="none">none</span></td>
                   </tr>
                 `
-              })}
+              }))}
             </tbody>
           </table>
 
@@ -150,11 +154,11 @@ import {defaultPath} from '/config';
               <tr>
                 <th>Level</th>
                 <th>World Record</th>
-                <th><a href="${player.weblink}">${playerName}</a>'s Best</th>
+                <th><a href="${playerReq.then(player => player.weblink)}">${playerName}</a>'s Best</th>
               </tr>
             </thead>
             <tbody>
-              ${await Promise.all(game.levels.data.map(async level => {
+              ${game.levels.data.map(async level => {
                 const records = (await api(`levels/${level.id}/records?max=200`))[0].runs;
             
                 return HTML`
@@ -174,8 +178,7 @@ import {defaultPath} from '/config';
                           </div>
                         `) || HTML`<span class="none">none</span>`
                     }</td>
-                    <td>${
-                      records
+                    <td>${playerReq.then(player => records
                         .filter(r => r.run.players.some(p => p.id === player.id))
                         .slice(0, 1)
                         .map(record => HTML`
@@ -186,13 +189,13 @@ import {defaultPath} from '/config';
                             </a>
                           </div>
                         `) || HTML`<span class="none">none</span>`
-                    }</td>
+                    )}</td>
                   </tr>
                 `
-              }))}
+              })}
             </tbody>
           </table>
-        </section>
+        `)}</section>
       `;
     }
   }
@@ -204,6 +207,8 @@ import {defaultPath} from '/config';
       loaded from <a href="https://github.com/speedruncomorg/api/blob/master/version1/README.md#readme">their API</a>.
     </footer>
   `;
+  
+  await Promise.all(blockers);
 };
 
 const zip = (...args) => {
