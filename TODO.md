@@ -23,6 +23,8 @@
         iconUrl: string,
         trophyUrls: string[],
         
+        // these are only multiple for ties:
+        
         gameRecords: Record[]{
           name: string,
           url: string,
