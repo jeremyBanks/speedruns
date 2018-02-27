@@ -1,3 +1,9 @@
+- finish view model
+
+- use this.async
+
+----
+
 - display non-top-3 PBs
 
 - split out your view and display model:
