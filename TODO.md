@@ -1,4 +1,4 @@
-- finish view model
+- finish view model!
 
 - use this.async
 
