@@ -189,6 +189,22 @@ span.time {
   opacity: 0.5;
 }
 
+.in-your-face-dev-message {
+  font-family: monospace;
+  text-align: left;
+  border: 2px dashed currentColor;
+  border-radius: 8px;
+  padding: 32px 16px;
+  margin: 64px 0;
+  animation-name: in-your-face;
+  animation-duration: 1s;
+}
+
+@keyframes in-your-face {
+  from { opacity: 0.0; }
+  to   { opacity: 1.0; }
+}
+
 @media print {
   html,
   body {
