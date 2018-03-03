@@ -1,5 +1,5 @@
 import HTML from '/lib/html.js';
-import {zip, awaitDeep} from '/lib/iteration.js';
+import {zip, devAwaitDeep} from '/lib/iteration.js';
 
 import {defaultPath} from '/config/client.js';
 
@@ -256,7 +256,7 @@ let api; {
       
       // we let the standard render continue below while we wait for the redirect.
       (async () => {
-        const syncModel = await awaitDeep(model);
+        const syncModel = await devAwaitDeep(model);
         document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(syncModel, null, 2)], {type: 'application/json'})));
       })();
     }      
