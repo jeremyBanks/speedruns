@@ -5,6 +5,8 @@ import {defaultPath} from '/config/client.js';
 
 
 const getBestsModel = (gameSlugs, playerSlug) => {
+  const TYPE = '';
+  
   const NOT_IMPLEMENTED = undefined;
   
   const hostname = document.location.host;
@@ -14,7 +16,8 @@ const getBestsModel = (gameSlugs, playerSlug) => {
   const getPlayer = async (slug) => {
     const player = await api(`users/${playerSlug}`);
     return {
-      // Player
+      [TYPE]: 'Player',
+
       id: player.id,
       nick: player.names.international,
       url: player.weblink,
@@ -24,26 +27,28 @@ const getBestsModel = (gameSlugs, playerSlug) => {
   const player = getPlayer(playerSlug);
 
   const games = gameSlugs.map(async (gameSlug) => {
-      const game = await api(`games/${gameSlug}?embed=levels,categories,players`);
+    const game = await api(`games/${gameSlug}?embed=levels,categories,players`);
 
-      const playerRuns = player.then(p => api(`runs?user=${p.id}&game=${game.id}`));
+    const playerRuns = player.then(p => api(`runs?user=${p.id}&game=${game.id}`));
 
-      return {
-        // Game
-        id: game.id,
-        url: game.weblink,
-        nick: game.names.international,
-        
-        iconUrl: NOT_IMPLEMENTED,
-        trophyUrls: NOT_IMPLEMENTED,
-        
-        gameRecords: NOT_IMPLEMENTED,
-        levelRecords: NOT_IMPLEMENTED,
-      };
-    });
+    return {
+      [TYPE]: 'Game',
+
+      id: game.id,
+      url: game.weblink,
+      nick: game.names.international,
+
+      iconUrl: NOT_IMPLEMENTED,
+      trophyUrls: NOT_IMPLEMENTED,
+
+      gameRecords: NOT_IMPLEMENTED,
+      levelRecords: NOT_IMPLEMENTED,
+    };
+  });
   
   return {
-    // BestsView
+    [TYPE]: 'BestsView',
+
     glitchProjectName,
     player,
     games,
@@ -200,7 +205,13 @@ let api; {
     document.location.protocol = 'https:';
   }
 
-  const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
+  let pathString = document.location.pathname;
+  let justJson = false;
+  if (pathString.endsWith('.json')) {
+    justJson = true;
+    pathString = pathString.slice(0, -'.json'.length);
+  }
+  const path = pathString.slice(1).split(/\//g).filter(Boolean);
 
   const defaultName = "bests";
   const title = `${d || defaultName}.glitch.me`;
@@ -235,8 +246,11 @@ let api; {
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-    const model = getModel(gameSlugs, playerSlug);
-    const view = getView(model);
+    const model = getBestsModel(gameSlugs, playerSlug);
+    if (justJson) {
+      document.location = URL.createObjectURL(new Blob([JSON.stringify(model, null, 2)], {type: 'application/json'})); 
+    }      
+    const view = getBestsView(model);
 
     const [fragment, done] = HTML.from(view).fragmentAndDone();
     output.appendChild(fragment);
