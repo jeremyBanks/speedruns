@@ -248,17 +248,17 @@ let api; {
 
     const model = getBestsModel(gameSlugs, playerSlug);
     if (jsonRedirect) {
+      output.appendChild(HTML.fragment`
+        <p class="in-your-face-dev-message">
+          Redirecting to JSON view model data in a moment...
+        </p>
+      `);
+      
       // we let the view rendering proceed if we're waiting for the async flattening.
       (async () => {
-        const sy await awaitDeep(model);
+        const syncModel = await awaitDeep(model);
+        // document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(syncModel, null, 2)], {type: 'application/json'})));
       })();
-      document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(await awaitDeep(model), (k, v) => {
-        if (v && typeof v.then === 'function') {
-          return {'🔴': v.constructor.name || 'Promise'};
-        } else {
-          return v;
-        }
-      }, 2)], {type: 'application/json'})));
     }      
     const view = getBestsView(model);
 
