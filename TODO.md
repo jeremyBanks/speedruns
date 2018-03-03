@@ -1,8 +1,10 @@
 - finish view model!
 
-- use this.async
+- use this.async in HTML
 
 - persist cache on disk and define an expiration policy
+
+- make sure our view model json thingie supports async iterators properly
 
 ----
 

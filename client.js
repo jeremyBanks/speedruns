@@ -7,7 +7,7 @@ import {defaultPath} from '/config/client.js';
 const getBestsModel = (gameSlugs, playerSlug) => {
   const TYPE = '';
 
-  const NOT_IMPLEMENTED = Promise.reject(new Error("not implemented"));
+  const NOT_IMPLEMENTED = '🚧 NOT IMPLEMENTED 🚧';
   
   const hostname = document.location.host;
   const glitchProjectName =
@@ -206,14 +206,12 @@ let api; {
     document.location.protocol = 'https:';
   }
 
-  let pathString = document.location.pathname;
-  let jsonRedirect = false;
-  if (pathString.endsWith('.json')) {
-    jsonRedirect = true;
-    pathString = pathString.slice(0, -'.json'.length);
+  const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
+  const jsonRedirect = 
+  if (path[path.length - 1] === 'json') {
+    path.pop();
   }
-  const path = pathString.slice(1).split(/\//g).filter(Boolean);
-
+  
   const defaultName = "bests";
   const title = `${d || defaultName}.glitch.me`;
 
