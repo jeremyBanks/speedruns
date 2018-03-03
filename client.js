@@ -251,7 +251,7 @@ let api; {
     if (jsonRedirect) {
       const message = await HTML.element`
         <p class="in-your-face-dev-message">
-          Please wait for view model data to load or <button>force the redirect immediately</button>.
+          Loading all view model data. Please wait or <button>force timeout</button>.
         </p>
       `;
       
@@ -263,7 +263,7 @@ let api; {
       
       // we let the standard render continue below while we wait for the redirect.
       (async () => {
-        const syncModel = await devAwaitDeep(model, undefined, forcedTimeout);
+        const syncModel = await devAwaitDeep(model, forcedTimeout);
         document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(syncModel, null, 2)], {type: 'application/json'})));
       })();
     }      

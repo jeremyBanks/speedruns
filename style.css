@@ -196,8 +196,23 @@ span.time {
   border-radius: 32px;
   padding: 16px;
   margin: 64px 0;
-  animation: in-your-face 1s infinite;
+  animation: in-your-face 4s infinite;
   background: #F8F8F8;
+}
+
+.in-your-face-dev-message button {
+  font-family: inherit;
+  border: 2px solid currentColor;
+  cursor: pointer;
+}
+
+.in-your-face-dev-message button:hover {
+  border-color: red;
+}
+
+.in-your-face-dev-message button:active {
+  border-color: red;
+  background: red;
 }
 
 @keyframes in-your-face {
