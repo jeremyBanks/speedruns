@@ -193,16 +193,39 @@ span.time {
   font-family: monospace;
   text-align: left;
   border: 2px dashed currentColor;
-  border-radius: 8px;
-  padding: 32px 16px;
+  border-radius: 32px;
+  padding: 16px;
   margin: 64px 0;
-  animation-name: in-your-face;
-  animation-duration: 1s;
+  animation: in-your-face 1s infinite;
+  background: #F8F8F8;
 }
 
 @keyframes in-your-face {
-  from { opacity: 0.0; }
-  to   { opacity: 1.0; }
+  0% {
+    border-radius: 32px;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 64px;
+  }
+  25% {
+    border-radius: 32px;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 64px;
+  }
+  50% {
+    border-radius: 32px;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 64px;
+  }
+  75% {
+    border-radius: 32px;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 64px;
+  }
+  100% {
+    border-radius: 32px;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 64px;
+  }
 }
 
 @media print {
