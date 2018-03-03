@@ -41,7 +41,7 @@ const getBestsModel = (gameSlugs, playerSlug) => {
       iconUrl: Promise.reject(new Error("not implemented")) || NOT_IMPLEMENTED,
       trophyUrls: NOT_IMPLEMENTED,
 
-      gameRecords: new Promise(),
+      gameRecords: new Promise(x => x),
       levelRecords: NOT_IMPLEMENTED,
     };
   });
@@ -185,11 +185,11 @@ let api; {
 };
 
 
-({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async result => {
+({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async main => {
   (async () => {
     const loadingMessage = document.querySelector('#loading-message');
     try {
-      await result;
+      await main;
       loadingMessage.remove();
     } catch (error) {
       loadingMessage.textContent = `${error}\n\n${error.stack}`;
@@ -206,9 +206,9 @@ let api; {
   }
 
   let pathString = document.location.pathname;
-  let justJson = false;
+  let jsonRedirect = false;
   if (pathString.endsWith('.json')) {
-    justJson = true;
+    jsonRedirect = true;
     pathString = pathString.slice(0, -'.json'.length);
   }
   const path = pathString.slice(1).split(/\//g).filter(Boolean);
@@ -247,7 +247,11 @@ let api; {
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
     const model = getBestsModel(gameSlugs, playerSlug);
-    if (justJson) {
+    if (jsonRedirect) {
+      // we let the view rendering proceed if we're waiting for the async flattening.
+      (async () => {
+        const sy await awaitDeep(model);
+      })();
       document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(await awaitDeep(model), (k, v) => {
         if (v && typeof v.then === 'function') {
           return {'🔴': v.constructor.name || 'Promise'};
