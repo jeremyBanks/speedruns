@@ -46,21 +46,25 @@ const getBestsModel = (gameSlugs, playerSlug) => {
     };
   });
   
-  const blehGames = async (games) {
-    
-  }
+  const blehGames = async function*(games) {
+    for (const game of games) {
+      yield game;
+    }
+    await new Promise(_=>_);
+  };
   
   return {
     [TYPE]: 'BestsView',
 
     glitchProjectName,
     player,
-    games,
+    games: blehGames(games),
   };
 };
 
 
 const getBestsView = async function*(model) {
+  return;
   const playerLink = playerReq.then(player => HTML`<a href="${player.weblink}">${player.names.international}</a>`);
 
   for (const [gameReq, gameRunsReq] of zip(gameReqs, gameRunsReqs)) {
