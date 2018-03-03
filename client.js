@@ -1,5 +1,5 @@
 import HTML from '/lib/html.js';
-import {zip} from '/lib/iteration.js';
+import {zip, awaitDeep} from '/lib/iteration.js';
 
 import {defaultPath} from '/config/client.js';
 
@@ -38,10 +38,10 @@ const getBestsModel = (gameSlugs, playerSlug) => {
       url: game.weblink,
       nick: game.names.international,
 
-      iconUrl: NOT_IMPLEMENTED,
+      iconUrl: Promise.reject(new Error("not implemented")) || NOT_IMPLEMENTED,
       trophyUrls: NOT_IMPLEMENTED,
 
-      gameRecords: NOT_IMPLEMENTED,
+      gameRecords: new Promise(),
       levelRecords: NOT_IMPLEMENTED,
     };
   });
@@ -248,7 +248,7 @@ let api; {
 
     const model = getBestsModel(gameSlugs, playerSlug);
     if (justJson) {
-      document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(model, (k, v) => {
+      document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(await awaitDeep(model), (k, v) => {
         if (v && typeof v.then === 'function') {
           return {'🔴': v.constructor.name || 'Promise'};
         } else {
