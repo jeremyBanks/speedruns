@@ -5,7 +5,7 @@ import {defaultPath} from '/config/client.js';
 
 
 const getBestsModel = (gameSlugs, playerSlug) => {
-  const TYPE = '🔵';
+  const TYPE = '';
   
   const NOT_IMPLEMENTED = undefined;
   
