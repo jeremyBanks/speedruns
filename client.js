@@ -5,9 +5,16 @@ import {defaultPath} from '/config/client.js';
 
 
 const getBestsModel = (gameSlugs, playerSlug) => {
+  const a = {};
+  for (c
+    set BestsView(value) {
+      return Object.assign({'': 'BestsView'}, value);
+    }
+  };
+  
   const getPlayer = async (slug) => {
     const player = await api(`users/${playerSlug}`);
-    return {
+    return {'': 'Player',
       id: player.id,
       url: player.weblink,
       name: player.names.international,
@@ -16,14 +23,14 @@ const getBestsModel = (gameSlugs, playerSlug) => {
   
   const player = getPlayer(playerSlug);
 
-  return {
+  return a.BestsView = {
     player: player,
     games: gameSlugs.map(async (gameSlug) => {
       const game = await api(`games/${gameSlug}?embed=levels,categories,players`);
 
       const playerRuns = player.then(p => api(`runs?user=${p.id}&game=${game.id}`));
 
-      return {
+      return a.Game = {
         id: game.id,
         url: game.weblink,
         name: game.names.international,
@@ -201,7 +208,7 @@ let api; {
       <span></h1>
 
       ${projectName && HTML`
-        <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}?path=s/main.js`}">view/edit source</a></nav>
+        <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}?path=client.js`}">view/edit source</a></nav>
       `}
     </header>
   `);

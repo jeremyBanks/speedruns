@@ -2,6 +2,8 @@
 
 - use this.async
 
+- persist cache on disk and define an expiration policy
+
 ----
 
 - display non-top-3 PBs
