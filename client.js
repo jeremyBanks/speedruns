@@ -6,8 +6,8 @@ import {defaultPath} from '/config/client.js';
 
 const getBestsModel = (gameSlugs, playerSlug) => {
   const TYPE = '';
-  
-  const NOT_IMPLEMENTED = undefined;
+
+  const NOT_IMPLEMENTED = Promise.reject(new Error("not implemented"));
   
   const hostname = document.location.host;
   const glitchProjectName =
@@ -38,7 +38,7 @@ const getBestsModel = (gameSlugs, playerSlug) => {
       url: game.weblink,
       nick: game.names.international,
 
-      iconUrl: Promise.reject(new Error("not implemented")) || NOT_IMPLEMENTED,
+      iconUrl: NOT_IMPLEMENTED,
       trophyUrls: NOT_IMPLEMENTED,
 
       gameRecords: new Promise(x => x),
@@ -46,19 +46,12 @@ const getBestsModel = (gameSlugs, playerSlug) => {
     };
   });
   
-  const blehGames = async function*(games) {
-    for (const game of games) {
-      yield game;
-    }
-    await new Promise(_=>_);
-  };
-  
   return {
     [TYPE]: 'BestsView',
 
     glitchProjectName,
     player,
-    games: blehGames(games),
+    games: games,
   };
 };
 
@@ -256,15 +249,21 @@ let api; {
 
     const model = getBestsModel(gameSlugs, playerSlug);
     if (jsonRedirect) {
-      output.appendChild(HTML.fragment`
+      const message = await HTML.element`
         <p class="in-your-face-dev-message">
-          Redirecting to JSON view model data in a moment...
+          Please wait for view model data to load or <button>force the redirect immediately</button>.
         </p>
-      `);
+      `;
+      
+      const forcedTimeout = new Promise(resolve => {
+        message.querySelector('button').addEventListener('click', resolve);
+      });
+      
+      output.appendChild(message);
       
       // we let the standard render continue below while we wait for the redirect.
       (async () => {
-        const syncModel = await devAwaitDeep(model);
+        const syncModel = await devAwaitDeep(model, undefined, forcedTimeout);
         document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(syncModel, null, 2)], {type: 'application/json'})));
       })();
     }      
