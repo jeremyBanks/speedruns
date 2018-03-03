@@ -207,8 +207,8 @@ let api; {
   }
 
   const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
-  const jsonRedirect = 
-  if (path[path.length - 1] === 'json') {
+  const jsonRedirect = path[path.length - 1] === 'json';
+  if (jsonRedirect) {
     path.pop();
   }
   
@@ -262,7 +262,13 @@ let api; {
       // we let the standard render continue below while we wait for the redirect.
       (async () => {
         const syncModel = await devAwaitDeep(model, forcedTimeout);
-        document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(syncModel, null, 2)], {type: 'application/json'})));
+        const json = JSON.stringify(syncModel, null, 2);
+        document.open();
+        document.write('<!doctype html><pre>')
+        document.write(HTML.string.from(json));
+        document.close();
+        document.querySelector('pre').style.whiteSpace = 'pre-wrap';
+        //document.location.assign(URL.createObjectURL(new Blob([], {type: 'application/json'})));
       })();
     }      
     const view = getBestsView(model);
