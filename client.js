@@ -5,38 +5,48 @@ import {defaultPath} from '/config/client.js';
 
 
 const getBestsModel = (gameSlugs, playerSlug) => {
-  const a = {};
-  for (c
-    set BestsView(value) {
-      return Object.assign({'': 'BestsView'}, value);
-    }
-  };
+  const NOT_IMPLEMENTED = undefined;
   
+  const hostname = document.location.host;
+  const glitchProjectName =
+        hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
+
   const getPlayer = async (slug) => {
     const player = await api(`users/${playerSlug}`);
-    return {'': 'Player',
+    return {
+      // Player
       id: player.id,
+      nick: player.names.international,
       url: player.weblink,
-      name: player.names.international,
     };
   };
   
   const player = getPlayer(playerSlug);
 
-  return a.BestsView = {
-    player: player,
-    games: gameSlugs.map(async (gameSlug) => {
+  const games = gameSlugs.map(async (gameSlug) => {
       const game = await api(`games/${gameSlug}?embed=levels,categories,players`);
 
       const playerRuns = player.then(p => api(`runs?user=${p.id}&game=${game.id}`));
 
-      return a.Game = {
+      return {
+        // Game
         id: game.id,
         url: game.weblink,
-        name: game.names.international,
+        nick: game.names.international,
         
+        iconUrl: NOT_IMPLEMENTED,
+        trophyUrls: NOT_IMPLEMENTED,
+        
+        gameRecords: NOT_IMPLEMENTED,
+        levelRecords: NOT_IMPLEMENTED,
       };
-    }),
+    });
+  
+  return {
+    // BestsView
+    glitchProjectName,
+    player,
+    games,
   };
 };
 
@@ -183,17 +193,17 @@ let api; {
   })();
 
   const hostname = document.location.host;
-  const projectName = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
+  const d = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
 
   // force HTTPS if running on Glitch, where we know it's available.
-  if (projectName && document.location.protocol === 'http:') {
+  if (d && document.location.protocol === 'http:') {
     document.location.protocol = 'https:';
   }
 
   const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
 
   const defaultName = "bests";
-  const title = `${projectName || defaultName}.glitch.me`;
+  const title = `${d || defaultName}.glitch.me`;
 
   document.title = (path.length) ? `${defaultName}…/${path.join('/')}` : title;
 
@@ -207,8 +217,8 @@ let api; {
         <a href="/">${title}</a>
       <span></h1>
 
-      ${projectName && HTML`
-        <nav class="links"><a href="${`https://glitch.com/edit/#!/${projectName}?path=client.js`}">view/edit source</a></nav>
+      ${d && HTML`
+        <nav class="links"><a href="${`https://glitch.com/edit/#!/${d}?path=client.js`}">view/edit source</a></nav>
       `}
     </header>
   `);
