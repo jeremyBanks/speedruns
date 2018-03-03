@@ -46,6 +46,10 @@ const getBestsModel = (gameSlugs, playerSlug) => {
     };
   });
   
+  const blehGames = async (games) {
+    
+  }
+  
   return {
     [TYPE]: 'BestsView',
 
