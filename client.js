@@ -5,7 +5,7 @@ import {defaultPath} from '/config/client.js';
 
 
 const getBestsModel = (gameSlugs, playerSlug) => {
-  const TYPE = '█';
+  const TYPE = '🔵';
   
   const NOT_IMPLEMENTED = undefined;
   
@@ -248,8 +248,12 @@ let api; {
 
     const model = getBestsModel(gameSlugs, playerSlug);
     if (justJson) {
-      document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(model, o => {
-        
+      document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(model, (k, v) => {
+        if (v && typeof v.then === 'function') {
+          return {'🔴': v.constructor.name || 'Promise'};
+        } else {
+          return v;
+        }
       }, 2)], {type: 'application/json'})));
     }      
     const view = getBestsView(model);
