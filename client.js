@@ -254,10 +254,10 @@ let api; {
         </p>
       `);
       
-      // we let the view rendering proceed if we're waiting for the async flattening.
+      // we let the standard render continue below while we wait for the redirect.
       (async () => {
         const syncModel = await awaitDeep(model);
-        // document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(syncModel, null, 2)], {type: 'application/json'})));
+        document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(syncModel, null, 2)], {type: 'application/json'})));
       })();
     }      
     const view = getBestsView(model);
