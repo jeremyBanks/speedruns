@@ -230,8 +230,8 @@ let api; {
 
       ${d && HTML`
         <nav class="links">
-          <a href="${`https://glitch.com/edit/#!/${d}?path=client.js`}">view/edit source</a><br />
-          <a href="/${path.concat('json').join('/')}">view view model</a>
+          <a href="${`https://glitch.com/edit/#!/${d}?path=client.js`}">edit source code</a><br />
+          <a href="/${path.concat('json').join('/')}">show view model</a>
         </nav>
       `}
     </header>
