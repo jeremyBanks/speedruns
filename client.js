@@ -5,7 +5,7 @@ import {defaultPath} from '/config/client.js';
 
 
 const getBestsModel = (gameSlugs, playerSlug) => {
-  const TYPE = '';
+  const TYPE = '█';
   
   const NOT_IMPLEMENTED = undefined;
   
@@ -248,7 +248,9 @@ let api; {
 
     const model = getBestsModel(gameSlugs, playerSlug);
     if (justJson) {
-      document.location = URL.createObjectURL(new Blob([JSON.stringify(model, null, 2)], {type: 'application/json'})); 
+      document.location.assign(URL.createObjectURL(new Blob([JSON.stringify(model, o => {
+        
+      }, 2)], {type: 'application/json'})));
     }      
     const view = getBestsView(model);
 
