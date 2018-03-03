@@ -207,9 +207,10 @@ let api; {
   }
 
   const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
-  const jsonRedirect = path[path.length - 1] === 'json';
-  if (jsonRedirect) {
+  let jsonRedirect = false;
+  while (path[path.length - 1] === 'json') {
     path.pop();
+    jsonRedirect = true;
   }
   
   const defaultName = "bests";
@@ -228,7 +229,10 @@ let api; {
       <span></h1>
 
       ${d && HTML`
-        <nav class="links"><a href="${`https://glitch.com/edit/#!/${d}?path=client.js`}">view/edit source</a></nav>
+        <nav class="links">
+          <a href="${`https://glitch.com/edit/#!/${d}?path=client.js`}">view/edit source</a><br />
+          <a href="/${path.concat('json').join('/')}">view view model</a>
+        </nav>
       `}
     </header>
   `);
@@ -264,11 +268,9 @@ let api; {
         const syncModel = await devAwaitDeep(model, forcedTimeout);
         const json = JSON.stringify(syncModel, null, 2);
         document.open();
-        document.write('<!doctype html><pre>')
-        document.write(HTML.string.from(json));
+        document.write(HTML.string`<!doctype html><pre style="word-wrap: break-word; white-space: pre-wrap;">${json}`)
         document.close();
-        document.querySelector('pre').style.whiteSpace = 'pre-wrap';
-        //document.location.assign(URL.createObjectURL(new Blob([], {type: 'application/json'})));
+        // document.location.assign(URL.createObjectURL(new Blob([], {type: 'application/json'})));
       })();
     }      
     const view = getBestsView(model);

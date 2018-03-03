@@ -147,8 +147,9 @@ header {
 
 header .links {
   float: right;
-  margin-top: 8px;
+  margin-top: 4px;
   font-size: 12px;
+  line-height: 16px;
 }
 
 footer {
