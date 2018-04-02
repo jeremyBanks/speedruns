@@ -93,7 +93,8 @@
       modestbranding: 1,
       autoplay: 1,
       mute: 1,
-      start: Math.floor(startTime.value)
+      start: params.has('t') ? Math.floor(params.get('t')) : undefined,
+      end: params.has('u') ? Math.ceil(params.get('u')) : undefined,
     },
     events: {
       onReady() {
@@ -210,6 +211,10 @@
   
   button {
     padding: 8px;
+  }
+  
+  button:focus {
+    box-shadow: 0 0 6px 1px black; 
   }
   
   .negative {
