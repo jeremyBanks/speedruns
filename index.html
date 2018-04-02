@@ -81,8 +81,7 @@
 
   startTime.onchange = endTime.onchange = updateElapsed;
 
-  const placeholder = document.createElement('span');
-  mainEl.appendChild(placeholder);
+  const placeholder = document.getElementById('player');
   const player = new YT.Player(placeholder, {
     videoId: videoId,
     playerVars: {
@@ -97,6 +96,12 @@
       end: params.has('u') ? Math.ceil(params.get('u')) : undefined,
     },
     events: {
+      onStateChange({data: state}) {
+        if (state === 0) {
+          const seconds = Number(startTime.value);
+          player.seekTo(seconds);
+        }
+      },
       onReady() {
         if (!params.has('t')) {
           startTime.value = (0).toFixed(3);
@@ -137,16 +142,12 @@
 <h1>YouTube Video Timer</h1>
 
 <form>
-  <label>Video ID or URL: <input name="v" value="https://youtu.be/3gJHBA1go5I" /></label>
+  <label>Video URL: <input name="v" value="https://youtu.be/3gJHBA1go5I" /></label>
   <button type="submit">Load Video</button>
 </form>
 
 <main id="main" disabled>
-  <p>
-    You can use the <kbd>,</kbd> and <kbd>.</kbd> keys to seek backwards
-    and forwards by single frames in the YouTube player after
-    clicking on it to pause the video.
-  </p>
+  <div id="player"></div>
 
   <p>
     <label class="ca13513">Start Time: <input id="startTime" type="number" step="0.001" placeholder="1.000" /></label>
@@ -163,6 +164,13 @@
   <p>
     <label class="ca13513">Duration: <input id="elapsedTime" type="number" step="0.001" placeholder="119.00" /></label>
     <span id="elapsedDetail"></span>
+  </p>
+  
+  <p>
+    Tip:
+    You can use the <kbd>,</kbd> and <kbd>.</kbd> keys to seek backwards
+    and forwards by single frames in the YouTube player after
+    clicking on it to pause the video.
   </p>
 </main>
 
@@ -215,6 +223,10 @@
   
   button:focus {
     box-shadow: 0 0 6px 1px black; 
+  }
+  
+  #player {
+    margin-top: 1em;
   }
   
   .negative {
