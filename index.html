@@ -41,11 +41,13 @@
   const elapsedDetail = document.querySelector('#elapsedDetail');
   const startCap = document.querySelector('#startCap');
   const endCap = document.querySelector('#endCap');
+  const gotoStart = document.querySelector('#gotoStart');
+  const gotoSnd = document.querySelector('#gotoSnd');
       
   const updateElapsed = () => {
     elapsedTime.value = ((endTime.value) - Number(startTime.value)).toFixed(3);
     const s = Number(elapsedTime.value)
-    elapsedDetail.textContent = `${(s / 60 / 60) | 0}:${(s / 60) | 0}:${s % 60}`;
+    elapsedDetail.textContent = `${(s / 60 / 60) | 0}:${((s / 60) % 60) | 0}:${s % 60}`;
   };
   
   startTime.onchange = endTime.onchange = updateElapsed;
@@ -78,6 +80,16 @@
           endTime.value = player.getCurrentTime().toFixed(3);
           updateElapsed();
         };
+  
+        gotoStart.onclick = () => {
+          const seconds = Number(startTime.value);
+          player.seekTo(seconds);
+        };
+  
+        gotoEnd.onclick = () => {
+          const seconds = Number(endTime.value);
+          player.seekTo(seconds);
+        };
       
         mainEl.removeAttribute('disabled');
       }
@@ -100,10 +112,13 @@
   </p>
 
   <p>
-    <label>Start Time: <input id="startTime" type="number" step="0.001" placeholder="1.000" /></label> <button id="startCap">Get Video Timestamp</button>
+    <label>Start Time: <input id="startTime" type="number" step="0.001" placeholder="1.000" /></label> <button id="startCap">Get Video Timestamp</button> <button id="gotoStart">
+    goto</button>
+    </button>
   </p>
   <p>
-    <label>End Time: <input id="endTime" type="number" step="0.001" placeholder="120.000" /></label> <button id="endCap">Get Video Timestamp</button>
+    <label>End Time: <input id="endTime" type="number" step="0.001" placeholder="120.000" /></label> <button id="endCap">Get Video Timestamp</button> <button id="gotoEnd">
+    goto</button>
   </p>
   <p>
     <label>Elapsed Time: <input id="elapsedTime" type="number" step="0.001" placeholder="119.00" /> <span id="elapsedDetail"></span></label>
