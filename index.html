@@ -71,10 +71,10 @@
     const elapsed = Math.abs(elapsedTime.value);
     const elapsedText = [
       ...(negative? ['-'] : []),
-      (elapsed / 60 / 60) | 0,
-      ':', ((elapsed / 60) % 60) | 0,
-      ':', (elapsed % 60).toFixed(3)
-    ].join('').replace(/^[0:]+/, '');
+      (elapsed / 60 / 60) | 0, 'h ',
+      ((elapsed / 60) % 60) | 0, 'm ' ,
+      (elapsed % 60).toFixed(3).replace('.', 's '), 'ms'
+    ].join('').replace(/^(0h|0m)/, '');
     elapsedDetail.textContent = elapsedText;
     if (negative) {
       elapsedDetail.classList.add('negative');
