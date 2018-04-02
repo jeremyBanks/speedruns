@@ -97,6 +97,7 @@
     },
     events: {
       onStateChange({data: state}) {
+        console.log(state, getVideoData());
         if (state === 0) {
           const seconds = Number(startTime.value);
           player.seekTo(seconds);
@@ -137,6 +138,9 @@
       }
     }
   });
+    
+  const getVideoData = () => player.getVideoData ? player.getVideoData() : undefined;
+    
 });</script>
 
 <h1>YouTube Video Timer</h1>
@@ -167,10 +171,10 @@
   </p>
   
   <p>
-    Tip:
-    You can use the <kbd>,</kbd> and <kbd>.</kbd> keys to seek backwards
-    and forwards by single frames in the YouTube player after
-    clicking on it to pause the video.
+    <br>
+    Tip: After clicking on the YouTube video player you can 
+    use the comma <kbd>,</kbd> and period <kbd>.</kbd> keys to seek backwards
+    and forwards by single frames.
   </p>
 </main>
 
