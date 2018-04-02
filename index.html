@@ -69,7 +69,7 @@
     v.value = `https://youtu.be/${videoId}?t=${Math.floor(start)}`;
     params.set('t', start);
     params.set('u', end); 
-    history.pushState(undefined, '', '?' + params.toString());
+    history.replaceState(undefined, '', '?' + params.toString());
   };
     
   if (params.has('t')) {
