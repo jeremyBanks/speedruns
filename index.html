@@ -25,7 +25,7 @@
   }
     
   const params = new URLSearchParams(location.search);
-  const videoIdOrUrl = params.get('v') || params.get('video_id');
+  const videoIdOrUrl = params.get('v') || params.get('video_id') || params.get('event_id');
   const videoId = videoIdOrUrl.replace(/^.*[\?\&]v=/, '').replace(/\?.*$/, '').replace(/^.*\//, '');
   params.set('v', videoId);
 
