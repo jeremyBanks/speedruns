@@ -49,8 +49,6 @@
   const gotoStart = document.querySelector('#gotoStart');
   const gotoSnd = document.querySelector('#gotoSnd');
 
-  
-    
   const updateElapsed = () => {
     let end = Number(endTime.value);
     let start = Number(startTime.value);
@@ -73,7 +71,14 @@
     params.set('u', end); 
     history.pushState(undefined, '', '?' + params.toString());
   };
-  
+    
+  if (params.has('t')) {
+    startTime.value = Number(params.get('t')).toFixed(3);
+  }
+  if (params.has('u')) {
+    endTime.value = Number(params.get('u')).toFixed(3);
+  }
+
   startTime.onchange = endTime.onchange = updateElapsed;
 
   const placeholder = document.createElement('span');
@@ -88,11 +93,19 @@
       modestbranding: 1,
       autoplay: 1,
       mute: 1,
+      start: Math.floor(startTime.value)
     },
     events: {
       onReady() {
-        startTime.value = (0).toFixed(3);
-        endTime.value = player.getDuration().toFixed(3);
+  
+        if (!params.has('t')) {
+          startTime.value = (0).toFixed(3);
+        }
+
+        if (!params.has('u')) {
+          endTime.value = player.getDuration().toFixed(3);
+        }
+
         updateElapsed();
   
         startCap.onclick = () => {
