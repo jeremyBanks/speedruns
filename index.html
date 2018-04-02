@@ -24,12 +24,16 @@
     h1.appendChild(document.createTextNode(')'));
   }
     
-  const videoIdOrUrl = new URLSearchParams(location.search).get('videoId') || '';
+  const params = new URLSearchParams(location.search);
+  const videoIdOrUrl = params.get('v') || '';
   const videoId = videoIdOrUrl.replace(/^.*[\?\&]v=/, '').replace(/\?.*$/, '').replace(/^.*\//, '');
+  params.set('v', videoId);
+
+  history.replaceState(undefined, '', '?' + params.toString());
 
   if (!videoId) return;
 
-  document.querySelector('[name=videoId]').value = videoId;
+  document.querySelector('[name=v]').value = videoId;
   
   const YT = await window.YTAPILoaded;
   const mainEl = document.querySelector('#main');
@@ -44,24 +48,30 @@
   const endCap = document.querySelector('#endCap');
   const gotoStart = document.querySelector('#gotoStart');
   const gotoSnd = document.querySelector('#gotoSnd');
-      
+
+  
+    
   const updateElapsed = () => {
     let end = Number(endTime.value);
     let start = Number(startTime.value);
     elapsedTime.value = (end - start).toFixed(3);
     let negative = start > end;
     const elapsed = Math.abs(elapsedTime.value);
-    elapsedDetail.textContent = [
+    const elapsedText = [
       ...(negative? ['-'] : []),
       (elapsed / 60 / 60) | 0,
       ':', ((elapsed / 60) % 60) | 0,
       ':', (elapsed % 60).toFixed(3)
-    ].join('');
+    ].join('').replace(/^[0:]+/, '');
+    elapsedDetail.textContent = elapsedText;
     if (negative) {
       elapsedDetail.classList.add('negative');
     } else {
       elapsedDetail.classList.remove('negative');
     }
+    params.set('t', start);
+    params.set('u', end); 
+    history.pushState(undefined, '', '?' + params.toString());
   };
   
   startTime.onchange = endTime.onchange = updateElapsed;
@@ -114,13 +124,13 @@
 <h1>YouTube Video Timer</h1>
 
 <form>
-  <label>Video ID or URL: <input name="videoId" value="https://youtu.be/3gJHBA1go5I" /></label>
+  <label>Video ID or URL: <input name="v" value="https://youtu.be/3gJHBA1go5I" /></label>
   <button type="submit">Load Video</button>
 </form>
 
 <main id="main" disabled>
   <p>
-    You can use <kbd>,</kbd> and <kbd>.</kbd> to seek backwards
+    You can use the <kbd>,</kbd> and <kbd>.</kbd> keys to seek backwards
     and forwards by single frames in the YouTube player after
     clicking on it to pause the video.
   </p>
@@ -149,6 +159,7 @@
   
   body {
     max-width: 800px;
+    margin: 0 auto;
   }
   
   kbd {
@@ -164,7 +175,7 @@
     user-select: none;
   }
   
-  input, button {
+  main p > * {
     margin: 0 0.5em;
   }
   
@@ -179,7 +190,7 @@
     font-family: monospace;
   }
   
-  [name=videoId] {
+  [name=v] {
     width: 20em;
   }
   
@@ -192,6 +203,7 @@
   }
   
   #elapsedDetail {
+    font-family: monospace;
     user-select: all;
   }
 </style>
