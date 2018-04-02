@@ -47,6 +47,8 @@
   const endCap = document.querySelector('#endCap');
   const gotoStart = document.querySelector('#gotoStart');
   const gotoSnd = document.querySelector('#gotoSnd');
+  const resetStart = document.querySelector('#resetStart');
+  const resetEnd = document.querySelector('#resetEnd');
 
   document.addEventListener('keypress', ({key}) => {
     switch (key) {
@@ -108,7 +110,6 @@
     },
     events: {
       onStateChange({data: state}) {
-        console.log(state, getVideoData());
         if (state === 0) {
           const seconds = Number(startTime.value);
           player.seekTo(seconds);
@@ -124,10 +125,20 @@
         }
 
         updateElapsed();
+        
+        resetStart.onclick = () => {
+          startTime.value = (0).toFixed(3);
+          updateElapsed();
+        };
+        
+        resetEnd.onclick = () => {
+          endTime.value = player.getDuration().toFixed(3);
+          updateElapsed();
+        };
   
         startCap.onclick = () => {
           startTime.value = player.getCurrentTime().toFixed(3);
-          if (endTime.value > startTime.value) {
+          if (+endTime.value < +startTime.value) {
             endTime.value = startTime.value;
           }
           updateElapsed();
@@ -135,7 +146,7 @@
   
         endCap.onclick = () => {
           endTime.value = player.getCurrentTime().toFixed(3);
-          if (endTime.value < startTime.value) {
+          if (+endTime.value < +startTime.value) {
             startTime.value = endTime.value;
           }
           updateElapsed();
@@ -174,7 +185,7 @@
     <label class="ca13513">Start Time: <input id="startTime" type="number" step="0.001" placeholder="1.000" /></label>
     <button id="startCap">↳ Get From Video</button>
     <button id="gotoStart">⬑ Seek Video To</button>
-    <button id="resetStart">Reset ⇤</button>
+    <button id="resetStart">⇤ Reset</button>
   </p>
 
   <p>
@@ -222,7 +233,7 @@
   }
   
   main p > * {
-    margin: 0 0.5em;
+    margin: 0.5em 0.5em;
   }
   
   .ca13513 {
@@ -241,7 +252,9 @@
   }
   
   button {
-    padding: 8px;
+    padding: 0 8px;
+    vertical-align: top;
+    height: 32px;
   }
   
   button:focus {
@@ -255,7 +268,7 @@
   button::first-letter {
     font-family: monospace;
     font-weight: bold;
-    font-size: 2em;
+    font-size: 1.5em;
   }
   
   .negative {
