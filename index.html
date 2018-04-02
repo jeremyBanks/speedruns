@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <title>YouTube Video Timer</title>
-<link rel="icon" href="https://cdn.glitch.com/d22f8341-64bf-49a5-86d6-f88421af5500%2Fthumb.png" />
+<link rel="icon" href="https://cdn.glitch.com/e371a242-89f5-4485-ac98-69538f41b843%2Fthumb.png" />
 
 <script>
   window.YTAPILoaded = new Promise(resolve => {
@@ -13,7 +13,7 @@
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>'use strict'; setTimeout(async () => {
   const projectName = /^[a-z0-9\-]+\.glitch\.me$/.test(document.location.host) ? document.location.host.split('.')[0] : null;
-
+    
   if (projectName) {
     const h1 = document.querySelector('h1');
     const link = document.createElement('a');
@@ -29,11 +29,10 @@
   const videoId = videoIdOrUrl.replace(/^.*[\?\&]v=/, '').replace(/\?.*$/, '').replace(/^.*\//, '');
   params.set('v', videoId);
 
+  const v = document.querySelector('[name=v]');
   history.replaceState(undefined, '', '?' + params.toString());
 
   if (!videoId) return;
-
-  document.querySelector('[name=v]').value = videoId;
   
   const YT = await window.YTAPILoaded;
   const mainEl = document.querySelector('#main');
@@ -67,6 +66,7 @@
     } else {
       elapsedDetail.classList.remove('negative');
     }
+    v.value = `https://youtu.be/${videoId}?t=${Math.floor(start)}`;
     params.set('t', start);
     params.set('u', end); 
     history.pushState(undefined, '', '?' + params.toString());
@@ -97,7 +97,6 @@
     },
     events: {
       onReady() {
-  
         if (!params.has('t')) {
           startTime.value = (0).toFixed(3);
         }
@@ -159,8 +158,9 @@
     <button id="endCap">Get From Video</button>
     <button id="gotoEnd">Set Video To</button>
   </p>
+
   <p>
-    <label class="ca13513"> Duration: <input id="elapsedTime" type="number" step="0.001" placeholder="119.00" /></label>
+    <label class="ca13513">Duration: <input id="elapsedTime" type="number" step="0.001" placeholder="119.00" /></label>
     <span id="elapsedDetail"></span>
   </p>
 </main>
@@ -171,8 +171,9 @@
   }
   
   body {
-    max-width: 800px;
+    max-width: 640px;
     margin: 0 auto;
+    padding: 0;
   }
   
   kbd {
