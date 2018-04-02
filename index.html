@@ -25,7 +25,7 @@
   }
     
   const params = new URLSearchParams(location.search);
-  const videoIdOrUrl = params.get('v') || '';
+  const videoIdOrUrl = params.get('v') || params.get('video_id');
   const videoId = videoIdOrUrl.replace(/^.*[\?\&]v=/, '').replace(/\?.*$/, '').replace(/^.*\//, '');
   params.set('v', videoId);
 
@@ -53,9 +53,11 @@
   document.addEventListener('keypress', ({key}) => {
     switch (key) {
       case 'i':
+        startCap.focus();
         startCap.click();
         break;
       case 'o':
+        endCap.focus();
         endCap.click();
         break;
      }
