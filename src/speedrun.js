@@ -23,25 +23,37 @@ const apiFetch = async path => {
   }
 };
 
-export class Player {
-  constructor() {
-    self.id = void String;
-    self.nick = void String;
-    self.url = void String;
+export class Runner {
+  constructor(...args) {
+    this.id =
+    this.nick =
+    this.isUser =
+    this.url = void this;
+    Object.seal(this);
+    Object.assign(this, ...args);
   }
 
   static async get(slug) {
-    const player = await api(`users/${slug}`);
-    return Object.assign(new Player, {
-      id: player.id,
-      nick: player.names.international,
-      url: player.weblink,
+    const runner = await api(`users/${slug}`);
+    return new Runner({
+      id: runner.id,
+      nick: runner.names.international,
+      url: runner.weblink,
     });
   }
 }
 
 
 export class Game {
+  constructor(...args) {
+    this.id =
+    this.nick =
+    this.categoryId =
+    this.levelId = void this;
+    Object.seal(this);
+    Object.assign(this, ...args);
+  }
+
   async categoryLevelPairs() {
     
   }
@@ -54,14 +66,12 @@ export class CategoryLevel {
 }
 
 export class Run {
-  
-  static async get(slug) {
-    const player = await api(`users/${slug}`);
-    return Object.assign(new Player, {
-      id: player.id,
-      nick: player.names.international,
-      url: player.weblink,
-    });
+  constructor(...args) {
+    this.id =
+    this.runner =
+    this.duration = void this;
+    Object.seal(this);
+    Object.assign(this, ...args);
   }
 }
 
