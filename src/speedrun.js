@@ -23,8 +23,13 @@ const apiFetch = async path => {
   }
 };
 
-
 export class Player {
+  constructor() {
+    self.id = void String;
+    self.nick = void String;
+    self.url = void String;
+  }
+
   static async get(slug) {
     const player = await api(`users/${slug}`);
     return Object.assign(new Player, {
@@ -34,4 +39,32 @@ export class Player {
     });
   }
 }
+
+
+export class Game {
+  async categoryLevelPairs() {
+    
+  }
+}
+
+export class CategoryLevel {
+  async runs() {
+
+  }
+}
+
+export class Run {
+  
+  static async get(slug) {
+    const player = await api(`users/${slug}`);
+    return Object.assign(new Player, {
+      id: player.id,
+      nick: player.names.international,
+      url: player.weblink,
+    });
+  }
+}
+
+
+
 
