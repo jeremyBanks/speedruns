@@ -24,3 +24,16 @@ const apiFetch = async path => {
     return body.data;
   }
 };
+
+
+export class Player {
+  static async get(slug) {
+    const player = await api(`users/${slug}`);
+    return Object.assign(new Player, {
+      id: player.id,
+      nick: player.names.international,
+      url: player.weblink,
+    });
+  }
+}
+

@@ -3,6 +3,8 @@ import {zip, devAwaitDeep} from '/src/iteration.js';
 
 import {defaultPath} from '/config/client.js';
 
+import * as speedrun from '/src/speedrun.js';
+
 
 const getBestsModel = (gameSlugs, playerSlug) => {
   const TYPE = '';
@@ -13,18 +15,7 @@ const getBestsModel = (gameSlugs, playerSlug) => {
   const glitchProjectName =
         hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
 
-  const getPlayer = async (slug) => {
-    const player = await api(`users/${playerSlug}`);
-    return {
-      [TYPE]: 'Player',
-
-      id: player.id,
-      nick: player.names.international,
-      url: player.weblink,
-    };
-  };
-  
-  const player = getPlayer(playerSlug);
+  const player = speedrun.Player.get(playerSlug);
 
   const games = gameSlugs.map(async (gameSlug) => {
     const game = await api(`games/${gameSlug}?embed=levels,categories,players`);
@@ -243,7 +234,17 @@ const getBestsView = async function*(model) {
       // we let the standard render continue below while we wait for the redirect.
       (async () => {
         const syncModel = await devAwaitDeep(model, forcedTimeout);
-        const json = JSON.stringify(syncModel, null, 2);
+        const json = JSON.stringify(syncModel, (_, object) => {
+          if (typeof object !== 'object' || object === null) {
+            return object;
+          }
+          const constructorName = Object.getPrototypeOf(object).constructor.name;
+          if (constructorName === 'Object' || constructorName === 'Array' || '' in 2object) {
+            return object;
+          } else {
+            return Object.assign({'': constructorName}, object);
+          }
+        }, 2);
         document.open();
         document.write(HTML.string`<!doctype html><pre style="word-wrap: break-word; white-space: pre-wrap;">${json}`)
         document.close();
