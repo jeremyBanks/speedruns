@@ -18,13 +18,11 @@ const getBestsModel = (gameSlugs, playerSlug) => {
   const player = speedrun.Player.get(playerSlug);
 
   const games = gameSlugs.map(async (gameSlug) => {
-    const game = await api(`games/${gameSlug}?embed=levels,categories,players`);
+    const game = await speedrun.api(`games/${gameSlug}?embed=levels,categories,players`);
 
-    const playerRuns = player.then(p => api(`runs?user=${p.id}&game=${game.id}`));
+    const playerRuns = player.then(p => speedrun.api(`runs?user=${p.id}&game=${game.id}`));
 
-    return {
-      [TYPE]: 'Game',
-
+    return Object.assign(new class Game {}, {
       id: game.id,
       url: game.weblink,
       nick: game.names.international,
@@ -34,16 +32,14 @@ const getBestsModel = (gameSlugs, playerSlug) => {
 
       gameRecords: new Promise(x => x),
       levelRecords: NOT_IMPLEMENTED,
-    };
+    });
   });
   
-  return {
-    [TYPE]: 'BestsView',
-
+  return Object.assign(new class BestsView {}, {
     glitchProjectName,
     player,
     games: games,
-  };
+  });
 };
 
 
@@ -239,7 +235,7 @@ const getBestsView = async function*(model) {
             return object;
           }
           const constructorName = Object.getPrototypeOf(object).constructor.name;
-          if (constructorName === 'Object' || constructorName === 'Array' || '' in 2object) {
+          if (constructorName === 'Object' || constructorName === 'Array' || '' in object) {
             return object;
           } else {
             return Object.assign({'': constructorName}, object);
