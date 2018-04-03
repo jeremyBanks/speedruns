@@ -2,18 +2,19 @@
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
-export const cache = new window.Map();
-export const get = async path => {
-  if (!cache.has(path)) {
-    const result = await doGet(path);
-    cache.set(path, result);
+export const api = async path => {
+  if (!apiCache.has(path)) {
+    const result = await apiFetch(path);
+    apiCache.set(path, result);
     return result;
   } else {
-    return cache.get(path);
+    return apiCache.get(path);
   }
 };
 
-const doGet = async path => {
+export const apiCache = new window.Map();
+
+const apiFetch = async path => {
   const url = speedrunDotComApiRootUrl + path;
   const response = await window.fetch(url);
   const body = await response.json();
