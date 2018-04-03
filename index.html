@@ -113,8 +113,10 @@
     events: {
       onStateChange({data: state}) {
         if (state === 0) {
-          const seconds = Number(startTime.value);
-          player.seekTo(seconds);
+          // loop?
+          // const seconds = Number(startTime.value);
+          // player.seekTo(seconds);
+          // player.pauseVideo();
         }
       },
       onReady() {
