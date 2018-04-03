@@ -1,5 +1,3 @@
-// speedrun.com API wrapper
-
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
 export const api = async path => {
