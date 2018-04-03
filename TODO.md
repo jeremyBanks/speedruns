@@ -1,3 +1,11 @@
+future Jeremy here.
+
+let's make this a library.
+
+let's display graphs of times over time, such as ours vs WR
+
+-----
+
 - finish view model!
 
 - use this.async in HTML

@@ -1,5 +1,5 @@
-import HTML from '/lib/html.js';
-import {zip, devAwaitDeep} from '/lib/iteration.js';
+import HTML from '/src/html.js';
+import {zip, devAwaitDeep} from '/src/iteration.js';
 
 import {defaultPath} from '/config/client.js';
 
@@ -161,29 +161,6 @@ const getBestsView = async function*(model) {
 };
 
 
-let api; {
-  const apiRoot = '/https://www.speedrun.com/api/v1/';
-  const apiFetch = async path => {
-    const url = apiRoot + path;
-    const response = await fetch(url);
-    const body = await response.json();
-    if (body.status) {
-      throw new Error(`${body.status}: ${body.message}`); 
-    } else {
-      return body.data;
-    }
-  };
-  const apiCache = new Map();
-  api = async path => {
-    if (!apiCache.has(path)) {
-      const result = await apiFetch(path);
-      apiCache.set(path, result);
-      return result;
-    } else {
-      return apiCache.get(path);
-    }
-  };
-};
 
 
 ({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async main => {
