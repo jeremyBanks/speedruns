@@ -19,8 +19,8 @@ const apiFetch = async path => {
   if (body.status) {
     throw new Error(`${body.status}: ${body.message}`); 
   } else {
-    if (body.pagination && body.pagination.max > body.pagination.size) {
-      throw new Error(`${body.pagination.size} items exceeds our max of ${body.pagination.max}`);
+    if (body.pagination && body.pagination.size > body.pagination.max) {
+      throw new Error(`found ${body.pagination.size} items matching request, exceeding our maximum of ${body.pagination.max}`);
     } else {
       return body.data;
     }
@@ -109,7 +109,27 @@ export class CategoryLevelPair {
     const runs = await api(
       `runs?game=${this.gameId}&category=${this.categoryId
       }&status=verified&orderby=verify-date&direction=desc&max=200`);
-    {TODO: runs};
+    return runs.map(data => {
+      let runner;
+      
+      if (data.players.length === 1) {
+        const [playerData] = data.players;
+        if (playerData) {
+          
+        }
+        runner = 
+      } else {
+        runner = new Runner({nick: `${data.players.length} players`});
+      }
+      
+      new Run({
+        runId: data.id,
+        runner,
+        duration: data.times.primary_t,
+        date: data.date,
+        url: data.weblink,
+      });
+    }).slice(0, 1);
   }
 }
 
@@ -119,7 +139,8 @@ export class Run {
     this.runId =
     this.runner =
     this.duration =
-    this.date = void this;
+    this.date = 
+    this.url = void this;
     Object.seal(this);
     Object.assign(this, ...args);
   }
