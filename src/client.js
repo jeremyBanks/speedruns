@@ -14,23 +14,31 @@ const getBestsModel = async () => {
   const runner = speedrun.Runner.get('Banks');
   
   const prints = [];
-  const print = (...args) => prints.push(...args);
+  const print = (line = '') => prints.push(String(line));
   
   const game = await speedrun.Game.get('o1yry26q' || 'wc2');
   const runnables = await game.categoryLevelPairs();
   
-  const zulDare = runnables[3];
-  const runs = await zulDare.runs();
+  const level = runnables[3];
+
+  print(`Level: ${level.nick}`);
+  print();
+
+  const runs = await level.runs();
   runs.sort(compareAll(
-    (a, b) => compareDefault(a.date, b.date),
-    (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
-    (a, b) => compareDefault(a.durationSeconds, b.durationSeconds),
+    (a, b) => -compareDefault(a.date, b.date),
+    (a, b) => -compareDefault(a.dateSubmitted, b.dateSubmitted),
+    (a, b) => -compareDefault(a.durationSeconds, b.durationSeconds),
   ));
 
-  let lastLeastDuration = null;
-  let lastLeastDate = null;
+  print(`World Record Over Time:`);
+
+  let record = null;
   for (const run of runs) {
-    
+    if (!record || run.duration <= record.duration) {
+      record = run;
+      print(`${record.durationText}: ${JSON.stringify(record)}`);
+    }
   }
   
   return {
