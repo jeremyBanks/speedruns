@@ -41,6 +41,7 @@ export class Runner {
   static async get(slug) {
     const runner = await api(`users/${slug}`);
     return new Runner({
+      isUser: true,
       userId: runner.id,
       nick: runner.names.international,
       url: runner.weblink,
@@ -114,12 +115,10 @@ export class CategoryLevelPair {
       
       if (data.players.length === 1) {
         const playerData = data.players[0];
-        if (playerData) {
-          if (playerData.rel === 'user') {
-            return Runner.get(playerData.id);
-          }
+        if (playerData.rel === 'user') {
+          runner = Runner.get(playerData.id);
         } else {
-          return new Runner({
+          runner = new Runner({
             nick: playerData.name,
             isUser: false
           });
@@ -131,14 +130,15 @@ export class CategoryLevelPair {
         });
       }
       
-      new Run({
+      return new Run({
         runId: data.id,
         runner,
-        duration: data.times.primary_t,
+        durationSeconds: data.times.primary_t,
+        durationText: data.times.primary.slice(2).toLowerCase(),
         date: data.date,
         url: data.weblink,
       });
-    }).slice(0, 1);
+    });
   }
 }
 
@@ -147,7 +147,8 @@ export class Run {
     this['ℹ️'] = this.constructor.name;
     this.runId =
     this.runner =
-    this.duration =
+    this.durationSeconds =
+    this.durationText =
     this.date = 
     this.url = void this;
     Object.seal(this);
