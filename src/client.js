@@ -11,15 +11,15 @@ const getBestsModel = async () => {
   const glitchProjectName =
         hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
   
-  const runner = speedrun.Runner.get('Banks');
-  
-  const prints = [];
-  const print = (line = '') => prints.push(String(line));
+  const runner = speedrun.Runner.get('18qyezox' || 'Banks');
   
   const game = await speedrun.Game.get('o1yry26q' || 'wc2');
   const runnables = await game.categoryLevelPairs();
   
   const level = runnables[3];
+  
+  const prints = [];
+  const print = (line = '') => prints.push(String(line));
 
   print(`Level: ${level.nick}`);
   print();
@@ -30,18 +30,48 @@ const getBestsModel = async () => {
     (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
   ));
 
-  print(`World Record Over Time:`);
-
+  const records = [];
   let record = null;
   for (const run of runs) {
     if (!record || run.durationSeconds < record.durationSeconds) {
       record = run;
-      print(`  ${record.date} - ${record.durationText.padStart(6)} - ${(await record.runner).nick}`);
+      records.push(record);
     }
   }
+
+  const personalRecords = [];
+  let record = null;
+  for (const run of runs) {
+    if (run.runner.id !== runner.id) continue; 
+    if (!record || run.durationSeconds < record.durationSeconds) {
+      record = run;
+      personalRecords.push(record);
+    }
+  }
+
+  const maxRecord = Math.max(...records.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
+  const minRecord = Math.min(...records.map(r => r.durationSeconds));
+
+  print(`World Record Over Time:`);
+  for (const record of records) {
+    const outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
+    const indicators = '*' + ''.padEnd(outstandingProgress * 31).replace(/./g, '*');
+    print(`  ${record.date} - ${record.durationText.padStart(6)} - ${(await record.runner).nick.padEnd(12)} ${indicators}`);
+  
+  }
+  print();
+
+  print(`Personal Record Over Time:`);
+  for (const record of personalRecords) {
+    const outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
+    const indicators = '*' + ''.padEnd(outstandingProgress * 31).replace(/./g, '*');
+    print(`  ${record.date} - ${record.durationText.padStart(6)} - ${(await record.runner).nick.padEnd(12)} ${indicators}`);
+  
+  }
+  print();
   
   return {
-    '': prints.map(l => '    ' + l.padEnd(38)),
+    '': prints.map(l => '    ' + l.padEnd(76)),
     glitchProjectName,
     runner,
     game,
