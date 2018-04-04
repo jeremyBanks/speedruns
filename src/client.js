@@ -19,9 +19,16 @@ const getBestsModel = (gameSlugs, runnerSlug) => {
     glitchProjectName,
     runner,
     games: gameSlugs.map(speedrun.Game.get).map(async game => { 
+      game = await game;
       return {
         game: game,
-        categoryLevels: 
+        categoryLevels: game.categoryLevelPairs().then(pairs => pairs.map(async pair => {
+          pair = await pair;
+          return {
+            pair: pair,
+            runs: pair.runs()
+          }
+        })),
       };
     }),
   };
