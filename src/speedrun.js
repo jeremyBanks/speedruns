@@ -69,8 +69,28 @@ export class Game {
       api(`games/${this.gameId}/categories`),
       api(`games/${this.gameId}/levels`)
     ]);
-    
-    return [categories, levels];
+
+    const levelCategories = categories.filter(c => c.type === 'per-level');
+    const gameCategories = categories.filter(c => c.type === 'per-game');
+
+    return [
+      ...gameCategories.map(category => {
+        return new CategoryLevelPair({
+          gameId: this.gameId,
+          levelId: level.id,
+          categoryId: category.id,
+          categoryId: category.id,
+        });
+        return category.name;
+      }),
+      ...levels.map(level => levelCategories.map(category => {
+        return new CategoryLevelPair({
+          gameId: this.gameId,
+          levelId: level.id,
+          categoryId: category.id,
+        });
+      }))
+    ];
   }
 }
 
