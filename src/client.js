@@ -10,70 +10,67 @@ const getBestsModel = async () => {
   const hostname = document.location.host;
   const glitchProjectName =
         hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
-  
-  const runner = await speedrun.Runner.get('18qyezox' || 'Banks');
-  
-  const game = await speedrun.Game.get('o1yry26q' || 'wc2');
-  const runnables = await game.categoryLevelPairs();
-  
-  const level = runnables[3];
-  
-  
+
   const prints = [];
   const print = (line = '') => prints.push(String(line));
+
+  const runner = await speedrun.Runner.get('18qyezox' || 'Banks');
   
-  for (const level of runnables) {
-    print(`Level: ${level.nick}`);
-    print();
+  for (const game of [
+    await speedrun.Game.get('o1yry26q' || 'wc2'),
+    await speedrun.Game.get('wc2btdp')
+  ]) {
+    const runnables = await game.categoryLevelPairs();
 
-    const runs = await level.runs();
-    runs.sort(compareAll(
-      (a, b) => compareDefault(a.date, b.date),
-      (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
-    ));
+    for (const level of runnables) {
+      print(`                                  ${level.nick}`);
 
-    const worldRecords = [];
-    let wr = null;
-    for (const run of runs) {
-      if (!wr || run.durationSeconds < wr.durationSeconds) {
-        wr = run;
-        worldRecords.push(wr);
+      const runs = await level.runs();
+      runs.sort(compareAll(
+        (a, b) => compareDefault(a.date, b.date),
+        (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
+      ));
+
+      const worldRecords = [];
+      let wr = null;
+      for (const run of runs) {
+        if (!wr || run.durationSeconds < wr.durationSeconds) {
+          wr = run;
+          worldRecords.push(wr);
+        }
       }
-    }
 
-    const personalRecords = [];
-    let pr = null;
-    for (const run of runs) {
-      if (run.runner.nick !== runner.nick) continue; 
-      if (!pr || run.durationSeconds < pr.durationSeconds) {
-        pr = run;
-        personalRecords.push(pr);
+      const personalRecords = [];
+      let pr = null;
+      for (const run of runs) {
+        if (run.runner.nick !== runner.nick) continue;
+
+        if (!pr || run.durationSeconds < pr.durationSeconds) {
+          pr = run;
+          personalRecords.push(pr);
+        }
       }
-    }
 
-    const maxRecord = Math.max(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
-    const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
+      const maxRecord = Math.max(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
+      const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
 
-    const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
+      const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
+      for (const record of records) {
+        const outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
+        let indicators = '▐' + ''.padEnd(outstandingProgress * 40).replace(/./g, '█');
+        if (personalRecords.includes(record) && !worldRecords.includes(record)) {
+          indicators = indicators.replace(/./g, '▐');  
+        }
+        print(`  ${record.durationText.padStart(9)} ${record.date} ${(await record.runner).nick.padEnd(12)} ${indicators}`);
 
-    print(`World and Personal Record Over Time:`);
-    for (const record of records) {
-      const outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
-      let indicators = '▐' + ''.padEnd(outstandingProgress * 31).replace(/./g, '█');
-      if (personalRecords.includes(record) && !worldRecords.includes(record)) {
-        indicators = indicators.replace(/./g, '▐');  
       }
-      print(`  ${record.date} - ${record.durationText.padStart(6)} - ${(await record.runner).nick.padEnd(12)} ${indicators}`);
-
+      print();
     }
-    print();
   }
   
   return {
-    '': prints.map(l => '    ' + l.padEnd(76)),
+    '': prints.map(l => l.padEnd(80)),
     glitchProjectName,
-    runner,
-    game,
   };
 };
 
