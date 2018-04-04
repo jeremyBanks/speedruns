@@ -111,13 +111,14 @@ export class CategoryLevelPair {
   async runs() {
     const runs = await api(
       `runs?game=${this.gameId}&category=${this.categoryId}&level=${this.levelId}&status=verified&orderby=date&direction=asc&max=200`);
-    return runs.map(data => {
+    const results = [];
+    for (const data of runs) {
       let runner;
       
       if (data.players.length === 1) {
         const playerData = data.players[0];
         if (playerData.rel === 'user') {
-          runner = Runner.get(playerData.id);
+          runner = await Runner.get(playerData.id);
         } else {
           runner = new Runner({
             nick: playerData.name,
@@ -131,7 +132,7 @@ export class CategoryLevelPair {
         });
       }
       
-      return new Run({
+      results.push(new Run({
         runId: data.id,
         runner,
         durationSeconds: data.times.primary_t,
@@ -139,8 +140,10 @@ export class CategoryLevelPair {
         date: data.date,
         dateTimeSubmitted: data.submitted,
         url: data.weblink,
-      });
-    }).sort(compareAll(
+      }));
+    }
+
+    return results.sort(compareAll(
       (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
       (r, s) => compareDefault(r.date, s.date),
       (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
