@@ -22,11 +22,11 @@ const getBestsModel = (gameSlugs, runnerSlug) => {
       game = await game;
       return {
         game: game,
-        categoryLevels: game.categoryLevelPairs().then(pairs => pairs.map(async pair => {
+        categoryLevels: game.categoryLevelPairs().then(pairs => pairs.slice(3, 4).map(async pair => {
           pair = await pair;
           return {
             pair: pair,
-            runs: await pair.runs()
+            runs: (await pair.runs())
           }
         })),
       };

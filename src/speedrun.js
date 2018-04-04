@@ -136,11 +136,25 @@ export class CategoryLevelPair {
         durationSeconds: data.times.primary_t,
         durationText: data.times.primary.slice(2).toLowerCase(),
         date: data.date,
+        dateTimeSubmitted: data.submitted,
         url: data.weblink,
       });
-    }).sort((r, s) => r.durationSeconds - s.durationSeconds);
+    }).sort(compareAll(
+      (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
+      (r, s) => compareDefault(r.date, s.date),
+      (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
+    ));
   }
 }
+
+const compareAll = (...comparisons) => (a, b) =>
+    comparisons.reduce((m, f) => m || f(a, b), 0);
+
+const compareDefault = (a, b) =>
+    a < b ? -1 :
+    a > b ? 1 :
+    0;
+
 
 export class Run {
   constructor(...args) {
@@ -150,6 +164,7 @@ export class Run {
     this.durationSeconds =
     this.durationText =
     this.date = 
+    this.dateTimeSubmitted = 
     this.url = void this;
     Object.seal(this);
     Object.assign(this, ...args);
