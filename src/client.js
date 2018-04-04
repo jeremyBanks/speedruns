@@ -1,5 +1,5 @@
 import HTML from '/src/html.js';
-import {zip, devAwaitDeep} from '/src/iteration.js';
+import {zip, devAwaitDeep, compareAll, compareDefault} from '/src/utils.js';
 
 import * as speedrun from '/src/speedrun.js';
 
@@ -10,30 +10,34 @@ const getBestsModel = async () => {
   const hostname = document.location.host;
   const glitchProjectName =
         hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
-
-  const gameSlugs = ['wc2', 'wc2btdp'];
-  const runnerSlug = ['Banks'];
   
-  const runner = speedrun.Runner.get(runnerSlug);
+  const runner = speedrun.Runner.get('Banks');
+  
+  const prints = [];
+  const print = (...args) => prints.push(...args);
   
   const game = await speedrun.Game.get('o1yry26q' || 'wc2');
   const runnables = await game.categoryLevelPairs();
   
   const zulDare = runnables[3];
   const runs = await zulDare.runs();
+  runs.sort(compareAll(
+    (a, b) => compareDefault(a.date, b.date),
+    (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
+    (a, b) => compareDefault(a.durationSeconds, b.durationSeconds),
+  ));
+
+  let lastLeastDuration = null;
+  let lastLeastDate = null;
+  for (const run of runs) {
+    
+  }
   
   return {
+    '': prints,
     glitchProjectName,
-    '': `
-
-      ZULDARE! ${zulDare}
-      
-
-
-
-
-
-    `.split(/\n/g),
+    runner,
+    game,
   };
 };
 
