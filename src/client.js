@@ -6,21 +6,26 @@ import {defaultPath} from '/config/client.js';
 import * as speedrun from '/src/speedrun.js';
 
 
-const getBestsModel = (gameSlugs, playerSlug) => {
-  const TYPE = '';
-
+const getBestsModel = (gameSlugs, runnerSlug) => {
   const NOT_IMPLEMENTED = '🚧 NOT IMPLEMENTED 🚧';
   
   const hostname = document.location.host;
   const glitchProjectName =
         hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
 
-  const player = speedrun.Player.get(playerSlug);
+  const runner = speedrun.Runner.get(runnerSlug);
+  
+  const games = gameSlugs.map(speedrun.Game.
+
+  return {
+    glitchProjectName,
+    runner
+  };
 
   const games = gameSlugs.map(async (gameSlug) => {
-    const game = await speedrun.api(`games/${gameSlug}?embed=levels,categories,players`);
+    const game = await speedrun.api(`games/${gameSlug}?embed=levels,categories,runners`);
 
-    const playerRuns = player.then(p => speedrun.api(`runs?user=${p.id}&game=${game.id}`));
+    const runnerRuns = runner.then(p => speedrun.api(`runs?user=${p.id}&game=${game.id}`));
 
     return Object.assign(new class Game {}, {
       id: game.id,
@@ -37,7 +42,7 @@ const getBestsModel = (gameSlugs, playerSlug) => {
   
   return Object.assign(new class BestsView {}, {
     glitchProjectName,
-    player,
+    runner,
     games: games,
   });
 };
@@ -45,7 +50,7 @@ const getBestsModel = (gameSlugs, playerSlug) => {
 
 const getBestsView = async function*(model) {
   return;
-  const playerLink = playerReq.then(player => HTML`<a href="${player.weblink}">${player.names.international}</a>`);
+  const runnerLink = runnerReq.then(runner => HTML`<a href="${runner.weblink}">${runner.names.international}</a>`);
 
   for (const [gameReq, gameRunsReq] of zip(gameReqs, gameRunsReqs)) {
     const icon = gameReq.then(game => HTML`<img src="${game.assets.icon.uri}" alt="">`);
@@ -78,7 +83,7 @@ const getBestsView = async function*(model) {
             <tr>
               <th>Category</th>
               <th>World Record</th>
-              <th>${playerLink}'s Best</th>
+              <th>${runnerLink}'s Best</th>
             </tr>
           </thead>
           <tbody>
@@ -101,7 +106,7 @@ const getBestsView = async function*(model) {
             <tr>
               <th>Level</th>
               <th>World Record</th>
-              <th>${playerLink}'s Best</th>
+              <th>${runnerLink}'s Best</th>
             </tr>
           </thead>
           <tbody>
@@ -120,13 +125,13 @@ const getBestsView = async function*(model) {
                           <a href="${run.weblink}">
                             <span class="time">${run.times.primary.toLowerCase().slice(2).replace(/\D+/g, s => `${s} `).trim()}</span>
                             ${placement(1)}
-                            ${run.players.map(p => p.name || p.id)}
+                            ${run.runners.map(p => p.name || p.id)}
                           </a>
                         </div>
                       `) || HTML`<span class="none">none</span>`
                   }</td>
-                  <td>${playerReq.then(player => records
-                      .filter(r => r.run.players.some(p => p.id === player.id))
+                  <td>${runnerReq.then(runner => records
+                      .filter(r => r.run.runners.some(p => p.id === runner.id))
                       .slice(0, 1)
                       .map(record => HTML`
                         <div>
@@ -206,14 +211,14 @@ const getBestsView = async function*(model) {
   if (path.length === 0) {
     document.location.replace(`/${defaultPath}`);
   } else if (path.length === 1) {
-    const [gamesSlug, playerSlug] = path[0].split('@');
+    const [gamesSlug, runnerSlug] = path[0].split('@');
     if (!gamesSlug) throw new Error("no game(s) in URL");
-    if (!playerSlug) throw new Error("no player in URL");
+    if (!runnerSlug) throw new Error("no runner in URL");
 
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-    const model = getBestsModel(gameSlugs, playerSlug);
+    const model = getBestsModel(gameSlugs, runnerSlug);
     if (jsonRedirect) {
       const message = await HTML.element`
         <p class="in-your-face-dev-message">

@@ -36,7 +36,7 @@ export class Runner {
   static async get(slug) {
     const runner = await api(`users/${slug}`);
     return new Runner({
-      id: runner.id,
+      userId: runner.id,
       nick: runner.names.international,
       url: runner.weblink,
     });
@@ -63,9 +63,12 @@ export class Game {
   }
 
   async categoryLevelPairs() {
-    const categories = await api(`games/${this.gameId}/categories`);
-    const levels = await api(`games/${this.gameId}/levels`);
+    const [categories, levels] = await Promise.all([
+      api(`games/${this.gameId}/categories`),
+      api(`games/${this.gameId}/levels`)
+    ]);
     
+    debugger;
   }
 }
 
@@ -79,7 +82,11 @@ export class CategoryLevel {
   }
 
   async runs() {
+    const runs = api(
+      `runs?game=${this.gameId}&category=${this.categoryId
+      }&status=verified&orderby=verify-date&direction=desc`);
 
+    debugger;
   }
 }
 
