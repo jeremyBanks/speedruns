@@ -69,7 +69,7 @@ const getBests = async () => {
           if (lastWr && personalRecords.includes(record) && !worldRecords.includes(record)) {
             indicators = zip(
               Array.from(lastWrIndicators),
-              Array.from(indicators.replace(/./g, '▐'))).map(([a, b]) => a != ' ' ? a : b).join('');  
+              Array.from(indicators.replace(/./g, '▐'))).map(([a, b]) => a == '█' ? a : b).join('');  
           } else {
             lastWr = record;
             lastWrIndicators = indicators;
