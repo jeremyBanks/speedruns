@@ -53,7 +53,18 @@ export class Game {
     Object.assign(this, ...args);
   }
 
+  static async get(slug) {
+    const data = await api(`games/${slug}`);
+    return new Runner({
+      gameId: data.id,
+      nick: data.names.international,
+      url: data.weblink,
+    });
+  }
+
   async categoryLevelPairs() {
+    const categories = await api(`games/${this.gameId}/categories`);
+    const levels = await api(`games/${this.gameId}/levels`);
     
   }
 }
