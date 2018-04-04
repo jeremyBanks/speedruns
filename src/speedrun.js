@@ -19,7 +19,11 @@ const apiFetch = async path => {
   if (body.status) {
     throw new Error(`${body.status}: ${body.message}`); 
   } else {
-    return body.data;
+    if (body.pagination && body.pagination.max > body.pagination.size) {
+      throw new Error(`${body.pagination.size} items exceeds our max of ${body.pagination.max}`);
+    } else {
+      return body.data;
+    }
   }
 };
 
@@ -102,11 +106,10 @@ export class CategoryLevelPair {
   }
 
   async runs() {
-    const runs = api(
+    const runs = await api(
       `runs?game=${this.gameId}&category=${this.categoryId
-      }&status=verified&orderby=verify-date&direction=desc`);
-
-    debugger;
+      }&status=verified&orderby=verify-date&direction=desc&max=200`);
+    {TODO: runs};
   }
 }
 
