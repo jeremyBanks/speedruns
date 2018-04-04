@@ -10,11 +10,12 @@ const getBests = async () => {
 
   const runner = await speedrun.Runner.get('18qyezox' || 'Banks');
   
+  print();
   for (const game of [
     await speedrun.Game.get('o1yry26q' || 'wc2'),
     await speedrun.Game.get('wc2btdp')
   ]) {
-    print(game.nick);
+    print(`                       ${game.nick}`);
     print();
 
     const runnables = await game.categoryLevelPairs();
@@ -51,6 +52,8 @@ const getBests = async () => {
       const maxRecord = Math.max(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
       const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
 
+      const magnitudeFudge = (Math.log(minRecord) - Math.log(30)) / Math.log(2);
+      
       const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
 
       if (records.length === 0) {
@@ -60,7 +63,7 @@ const getBests = async () => {
         if (records.length === 1) {
           outstandingProgress = 1;
         }
-        let indicators = '▐' + ''.padEnd(outstandingProgress * 40).replace(/./g, '█');
+        let indicators = '▐' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
         if (personalRecords.includes(record) && !worldRecords.includes(record)) {
           indicators = indicators.replace(/./g, '▐');  
         }
@@ -71,7 +74,8 @@ const getBests = async () => {
     }
   }
   
-  return prints.map(l => l.padEnd(80));
+  const f = ''.padEnd(80).replace(/./g, '\'');
+  return [f, ...prints.map(l => l.padEnd(80)), f];
 };
 
 
