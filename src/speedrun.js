@@ -25,9 +25,9 @@ const apiFetch = async path => {
 
 export class Runner {
   constructor(...args) {
-    this.id =
-    this.nick =
     this.isUser =
+    this.userId =
+    this.nick =
     this.url = void this;
     Object.seal(this);
     Object.assign(this, ...args);
@@ -46,10 +46,9 @@ export class Runner {
 
 export class Game {
   constructor(...args) {
-    this.id =
+    this.gameId =
     this.nick =
-    this.categoryId =
-    this.levelId = void this;
+    this.url = void this;
     Object.seal(this);
     Object.assign(this, ...args);
   }
@@ -60,6 +59,14 @@ export class Game {
 }
 
 export class CategoryLevel {
+  constructor(...args) {
+    this.gameId =
+    this.categoryId =
+    this.levelId = void this;
+    Object.seal(this);
+    Object.assign(this, ...args);
+  }
+
   async runs() {
 
   }
@@ -67,14 +74,11 @@ export class CategoryLevel {
 
 export class Run {
   constructor(...args) {
-    this.id =
+    this.runId =
     this.runner =
-    this.duration = void this;
+    this.duration =
+    this.date = void this;
     Object.seal(this);
     Object.assign(this, ...args);
   }
 }
-
-
-
-
