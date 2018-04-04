@@ -58,17 +58,24 @@ const getBests = async () => {
 
       if (records.length === 0) {
         print("                        (no runs)");
-      } else  for (const record of records) {
-        let outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
-        if (records.length === 1) {
-          outstandingProgress = 1;
+      } else {
+        let lastWr = null, lastWrIndicators = null;
+        for (const record of records) {
+          let outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
+          if (records.length === 1) {
+            outstandingProgress = 1;
+          }
+          let indicators = '▐' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
+          if (lastWr && personalRecords.includes(record) && !worldRecords.includes(record)) {
+            indicators = zip(
+              Array.from(lastWrIndicators),
+              Array.from(indicators.replace(/./g, '▐'))).map(([a, b]) => a != ' ' ? a : b).join('');  
+          } else {
+            lastWr = record;
+            lastWrIndicators = indicators;
+          }
+          print(`  ${record.durationText.padStart(9)} ${record.date} ${(await record.runner).nick.padEnd(12)} ${indicators}`);
         }
-        let indicators = '▐' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
-        if (personalRecords.includes(record) && !worldRecords.includes(record)) {
-          indicators = indicators.replace(/./g, '▐');  
-        }
-        print(`  ${record.durationText.padStart(9)} ${record.date} ${(await record.runner).nick.padEnd(12)} ${indicators}`);
-
       }
       print();
     }
