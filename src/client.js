@@ -59,21 +59,29 @@ const getBests = async () => {
       if (records.length === 0) {
         print("                        (no runs)");
       } else {
-        let lastWr = null, lastWrIndicators = null;
+        let lastWr = null, lastWrIndicators = '';
+        let lastPr = null, lastPrIndicators = '';        
+
         for (const record of records) {
           let outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
           if (records.length === 1) {
             outstandingProgress = 1;
           }
           let indicators = '▐' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
-          if (lastWr && personalRecords.includes(record) && !worldRecords.includes(record)) {
-            indicators = zip(
-              Array.from(lastWrIndicators),
-              Array.from(indicators.replace(/./g, '▐'))).map(([a, b]) => a == '█' ? a : b).join('');  
-          } else {
-            lastWr = record;
-            lastWrIndicators = indicators;
+          
+          if (worldRecords.includes(record)) {
+            lastWr = lastWr;
+            lastWrIndicators = '▐' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
           }
+          if (personalRecords.includes(record)) {
+            lastPr = record;
+            lastPrIndicators = '▐' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '▐');
+          }
+
+          indicators = zip(
+            Array.from(lastWrIndicators),
+            Array.from(lastPrIndicators)).map(([a, b]) => (!b || a == '█') ? a : b).join('');
+          
           print(`  ${record.durationText.padStart(9)} ${record.date} ${(await record.runner).nick.padEnd(12)} ${indicators}`);
         }
       }
