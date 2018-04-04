@@ -74,22 +74,18 @@ export class Game {
     const gameCategories = categories.filter(c => c.type === 'per-game');
 
     return [
-      ...gameCategories.map(category => {
-        return new CategoryLevelPair({
-          gameId: this.gameId,
-          levelId: level.id,
-          categoryId: category.id,
-          categoryId: category.id,
-        });
-        return category.name;
-      }),
-      ...levels.map(level => levelCategories.map(category => {
-        return new CategoryLevelPair({
-          gameId: this.gameId,
-          levelId: level.id,
-          categoryId: category.id,
-        });
-      }))
+      ...gameCategories.map(category => new CategoryLevelPair({
+        gameId: this.gameId,
+        levelId: null,
+        categoryId: category.id,
+        name: `${category.name}`,
+      })),
+      ...[].concat(...levels.map(level => levelCategories.map(category => new CategoryLevelPair({
+        gameId: this.gameId,
+        levelId: level.id,
+        categoryId: category.id,
+        name: `${level.name} (${category.name})`,
+      }))))
     ];
   }
 }
@@ -99,7 +95,8 @@ export class CategoryLevelPair {
     this['ℹ️'] = this.constructor.name;
     this.gameId =
     this.categoryId =
-    this.levelId = void this;
+    this.levelId = 
+    this.name = void this;
     Object.seal(this);
     Object.assign(this, ...args);
   }
