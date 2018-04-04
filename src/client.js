@@ -18,57 +18,56 @@ const getBestsModel = async () => {
   
   const level = runnables[3];
   
+  
   const prints = [];
   const print = (line = '') => prints.push(String(line));
+  
+  for (const level of runnables) {
+    print(`Level: ${level.nick}`);
+    print();
 
-  print(`Level: ${level.nick}`);
-  print();
+    const runs = await level.runs();
+    runs.sort(compareAll(
+      (a, b) => compareDefault(a.date, b.date),
+      (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
+    ));
 
-  const runs = await level.runs();
-  runs.sort(compareAll(
-    (a, b) => compareDefault(a.date, b.date),
-    (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
-  ));
-
-  const worldRecords = [];
-  let wr = null;
-  for (const run of runs) {
-    if (!wr || run.durationSeconds < wr.durationSeconds) {
-      wr = run;
-      worldRecords.push(wr);
+    const worldRecords = [];
+    let wr = null;
+    for (const run of runs) {
+      if (!wr || run.durationSeconds < wr.durationSeconds) {
+        wr = run;
+        worldRecords.push(wr);
+      }
     }
-  }
-  
-  const personalRecords = [];
-  let pr = null;
-  for (const run of runs) {
-    if (run.runner.nick !== runner.nick) continue; 
-    if (!pr || run.durationSeconds < pr.durationSeconds) {
-      pr = run;
-      personalRecords.push(pr);
+
+    const personalRecords = [];
+    let pr = null;
+    for (const run of runs) {
+      if (run.runner.nick !== runner.nick) continue; 
+      if (!pr || run.durationSeconds < pr.durationSeconds) {
+        pr = run;
+        personalRecords.push(pr);
+      }
     }
-  }
 
-  const maxRecord = Math.max(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
-  const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
+    const maxRecord = Math.max(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
+    const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
 
-  print(`World Record Over Time:`);
-  for (const record of worldRecords) {
-    const outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
-    const indicators = '*' + ''.padEnd(outstandingProgress * 31).replace(/./g, '*');
-    print(`  ${record.date} - ${record.durationText.padStart(6)} - ${(await record.runner).nick.padEnd(12)} ${indicators}`);
-  
-  }
-  print();
+    const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
 
-  print(`Personal Record Over Time:`);
-  for (const record of personalRecords) {
-    const outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
-    const indicators = '*' + ''.padEnd(outstandingProgress * 31).replace(/./g, '*');
-    print(`  ${record.date} - ${record.durationText.padStart(6)} - ${(await record.runner).nick.padEnd(12)} ${indicators}`);
-  
+    print(`World and Personal Record Over Time:`);
+    for (const record of records) {
+      const outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
+      let indicators = '▐' + ''.padEnd(outstandingProgress * 31).replace(/./g, '█');
+      if (personalRecords.includes(record) && !worldRecords.includes(record)) {
+        indicators = indicators.replace(/./g, '▐');  
+      }
+      print(`  ${record.date} - ${record.durationText.padStart(6)} - ${(await record.runner).nick.padEnd(12)} ${indicators}`);
+
+    }
+    print();
   }
-  print();
   
   return {
     '': prints.map(l => '    ' + l.padEnd(76)),
