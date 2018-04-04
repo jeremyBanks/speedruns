@@ -109,7 +109,7 @@ export class CategoryLevelPair {
   async runs() {
     const runs = await api(
       `runs?game=${this.gameId}&category=${this.categoryId
-      }&status=verified&orderby=verify-date&direction=desc&max=200`);
+      }&status=verified&orderby=date&direction=asc&max=200`);
     return runs.map(data => {
       let runner;
       
@@ -138,7 +138,7 @@ export class CategoryLevelPair {
         date: data.date,
         url: data.weblink,
       });
-    });
+    }).sort((r, s) => r.durationSeconds - s.durationSeconds);
   }
 }
 
