@@ -1,42 +1,44 @@
 import HTML from '/src/html.js';
 import {zip, devAwaitDeep} from '/src/iteration.js';
 
-import {defaultPath} from '/config/client.js';
-
 import * as speedrun from '/src/speedrun.js';
 
 
-const getBestsModel = (gameSlugs, runnerSlug) => {
+const getBestsModel = async () => {
   const NOT_IMPLEMENTED = '🚧 NOT IMPLEMENTED 🚧';
   
   const hostname = document.location.host;
   const glitchProjectName =
         hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
 
+  const gameSlugs = ['wc2', 'wc2btdp'];
+  const runnerSlug = ['Banks'];
+  
   const runner = speedrun.Runner.get(runnerSlug);
+  
+  const game = await speedrun.Game.get('o1yry26q' || 'wc2');
+  const runnables = await game.categoryLevelPairs();
+  
+  const zulDare = runnables[3];
+  const runs = await zulDare.runs();
   
   return {
     glitchProjectName,
-    runner,
-    games: gameSlugs.map(speedrun.Game.get).map(async game => { 
-      game = await game;
-      return {
-        game: game,
-        categoryLevels: game.categoryLevelPairs().then(pairs => pairs.slice(3, 4).map(async pair => {
-          pair = await pair;
-          return {
-            pair: pair,
-            runs: (await pair.runs())
-          }
-        })),
-      };
-    }),
+    '': `
+
+      ZULDARE! ${zulDare}
+      
+
+
+
+
+
+    `.split(/\n/g),
   };
 };
 
 
 const getBestsView = async function*(model) {
-  return model;
   const runnerLink = runnerReq.then(runner => HTML`<a href="${runner.weblink}">${runner.names.international}</a>`);
 
   for (const [gameReq, gameRunsReq] of zip(gameReqs, gameRunsReqs)) {
@@ -195,48 +197,35 @@ const getBestsView = async function*(model) {
 
   const blockers = [];
 
-  if (path.length === 0) {
-    document.location.replace(`/${defaultPath}`);
-  } else if (path.length === 1) {
-    const [gamesSlug, runnerSlug] = path[0].split('@');
-    if (!gamesSlug) throw new Error("no game(s) in URL");
-    if (!runnerSlug) throw new Error("no runner in URL");
+  const model = getBestsModel();
+  if (jsonRedirect || "ONLY JSON FOR YOU FOR NOW") {
+    const message = await HTML.element`
+      <p class="in-your-face-dev-message">
+        Loading all view model data. Please wait or <button>force timeout</button>.
+      </p>
+    `;
 
-    const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
-    if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
+    const forcedTimeout = new Promise(resolve => {
+      message.querySelector('button').addEventListener('click', resolve);
+    });
 
-    const model = getBestsModel(gameSlugs, runnerSlug);
-    if (jsonRedirect) {
-      const message = await HTML.element`
-        <p class="in-your-face-dev-message">
-          Loading all view model data. Please wait or <button>force timeout</button>.
-        </p>
-      `;
-      
-      const forcedTimeout = new Promise(resolve => {
-        message.querySelector('button').addEventListener('click', resolve);
-      });
-      
-      output.appendChild(message);
-      
-      // we let the standard render continue below while we wait for the redirect.
-      (async () => {
-        const syncModel = await devAwaitDeep(model, forcedTimeout);
-        const json = JSON.stringify(syncModel, null, 2);
-        document.open();
-        document.write(HTML.string`<!doctype html><pre style="word-wrap: break-word; white-space: pre-wrap;">${json}`)
-        document.close();
-        // document.location.assign(URL.createObjectURL(new Blob([], {type: 'application/json'})));
-      })();
-    }      
-    const view = getBestsView(model);
+    output.appendChild(message);
 
-    const [fragment, done] = HTML.from(view).fragmentAndDone();
-    output.appendChild(fragment);
-    blockers.push(done);
-  } else {
-    throw new Error("404/invalid URL");
+    // we let the standard render continue below while we wait for the redirect.
+    (async () => {
+      const syncModel = await devAwaitDeep(model, forcedTimeout);
+      const json = JSON.stringify(syncModel, null, 2);
+      document.open();
+      document.write(HTML.string`<!doctype html><pre style="word-wrap: break-word; white-space: pre-wrap;">${json}`)
+      document.close();
+      // document.location.assign(URL.createObjectURL(new Blob([], {type: 'application/json'})));
+    })();
   }
+  const view = getBestsView(model);
+
+  const [fragment, done] = HTML.from(view).fragmentAndDone();
+  output.appendChild(fragment);
+  blockers.push(done);
 
   output.appendChild(HTML.fragment`
     <footer>
