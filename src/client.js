@@ -15,14 +15,15 @@ const getBestsModel = (gameSlugs, runnerSlug) => {
 
   const runner = speedrun.Runner.get(runnerSlug);
   
-  const games = gameSlugs.map(speedrun.Game.get);
-
   return {
     glitchProjectName,
     runner,
-    games,
-    
-    
+    games: gameSlugs.map(speedrun.Game.get).map(async game => { 
+      return {
+        game: game,
+        categoryLevels: 
+      };
+    }),
   };
 };
 
