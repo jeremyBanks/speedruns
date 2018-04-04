@@ -11,7 +11,7 @@ const getBestsModel = async () => {
   const glitchProjectName =
         hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
   
-  const runner = speedrun.Runner.get('18qyezox' || 'Banks');
+  const runner = await speedrun.Runner.get('18qyezox' || 'Banks');
   
   const game = await speedrun.Game.get('o1yry26q' || 'wc2');
   const runnables = await game.categoryLevelPairs();
@@ -30,30 +30,30 @@ const getBestsModel = async () => {
     (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
   ));
 
-  const records = [];
-  let record = null;
+  const worldRecords = [];
+  let wr = null;
   for (const run of runs) {
-    if (!record || run.durationSeconds < record.durationSeconds) {
-      record = run;
-      records.push(record);
+    if (!wr || run.durationSeconds < wr.durationSeconds) {
+      wr = run;
+      worldRecords.push(wr);
     }
   }
-
+  
   const personalRecords = [];
-  let record = null;
+  let pr = null;
   for (const run of runs) {
-    if (run.runner.id !== runner.id) continue; 
-    if (!record || run.durationSeconds < record.durationSeconds) {
-      record = run;
-      personalRecords.push(record);
+    if (run.runner.nick !== runner.nick) continue; 
+    if (!pr || run.durationSeconds < pr.durationSeconds) {
+      pr = run;
+      personalRecords.push(pr);
     }
   }
 
-  const maxRecord = Math.max(...records.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
-  const minRecord = Math.min(...records.map(r => r.durationSeconds));
+  const maxRecord = Math.max(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
+  const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
 
   print(`World Record Over Time:`);
-  for (const record of records) {
+  for (const record of worldRecords) {
     const outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
     const indicators = '*' + ''.padEnd(outstandingProgress * 31).replace(/./g, '*');
     print(`  ${record.date} - ${record.durationText.padStart(6)} - ${(await record.runner).nick.padEnd(12)} ${indicators}`);
