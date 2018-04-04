@@ -15,13 +15,13 @@ const getBests = async () => {
     await speedrun.Game.get('o1yry26q' || 'wc2'),
     await speedrun.Game.get('wc2btdp')
   ]) {
-    print(`                       ${game.nick}`);
+    print(`        ${game.nick}`);
     print();
 
     const runnables = await game.categoryLevelPairs();
 
     for (const level of runnables) {
-      print(`                           ${level.nick}`);
+      print(`            ${level.nick}`);
 
       const runs = await level.runs();
       runs.sort(compareAll(
@@ -52,12 +52,12 @@ const getBests = async () => {
       const maxRecord = Math.max(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
       const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
 
-      const magnitudeFudge = (Math.log(minRecord) - Math.log(30)) / Math.log(2);
+      const magnitudeFudge = (Math.log(minRecord) - Math.log(16)) / Math.log(2);
       
       const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
 
       if (records.length === 0) {
-        print("                               (no runs)");
+        print("                        (no runs)");
       } else  for (const record of records) {
         let outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
         if (records.length === 1) {
@@ -121,7 +121,6 @@ const getBests = async () => {
       ${d && HTML`
         <nav class="links">
           <a href="${`https://glitch.com/edit/#!/${d}?path=client.js`}">edit source code</a><br />
-          <a href="/${path.concat('json').join('/')}">show view model</a>
         </nav>
       `}
     </header>
@@ -133,7 +132,7 @@ const getBests = async () => {
 
   const message = await HTML.element`
     <p class="in-your-face-dev-message">
-      Loading all view model data. Please wait or <button>force timeout</button>.
+      Loading data. Please wait or <button>force timeout</button>.
     </p>
   `;
 
