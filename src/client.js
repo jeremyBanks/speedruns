@@ -4,14 +4,8 @@ import {zip, devAwaitDeep, compareAll, compareDefault} from '/src/utils.js';
 import * as speedrun from '/src/speedrun.js';
 
 
-const getBestsModel = async () => {
-  const NOT_IMPLEMENTED = '🚧 NOT IMPLEMENTED 🚧';
-  
-  const hostname = document.location.host;
-  const glitchProjectName =
-        hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
-
-  const prints = [];
+const getBests = async () => {
+    const prints = [];
   const print = (line = '') => prints.push(String(line));
 
   const runner = await speedrun.Runner.get('18qyezox' || 'Banks');
@@ -20,10 +14,13 @@ const getBestsModel = async () => {
     await speedrun.Game.get('o1yry26q' || 'wc2'),
     await speedrun.Game.get('wc2btdp')
   ]) {
+    print(game.nick);
+    print();
+
     const runnables = await game.categoryLevelPairs();
 
     for (const level of runnables) {
-      print(`                                  ${level.nick}`);
+      print(`                           ${level.nick}`);
 
       const runs = await level.runs();
       runs.sort(compareAll(
@@ -34,7 +31,7 @@ const getBestsModel = async () => {
       const worldRecords = [];
       let wr = null;
       for (const run of runs) {
-        if (!wr || run.durationSeconds < wr.durationSeconds) {
+        if (!wr || run.durationSeconds <= wr.durationSeconds) {
           wr = run;
           worldRecords.push(wr);
         }
@@ -55,8 +52,14 @@ const getBestsModel = async () => {
       const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
 
       const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
-      for (const record of records) {
-        const outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
+
+      if (records.length === 0) {
+        print("                               (no runs)");
+      } else  for (const record of records) {
+        let outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
+        if (records.length === 1) {
+          outstandingProgress = 1;
+        }
         let indicators = '▐' + ''.padEnd(outstandingProgress * 40).replace(/./g, '█');
         if (personalRecords.includes(record) && !worldRecords.includes(record)) {
           indicators = indicators.replace(/./g, '▐');  
@@ -68,114 +71,7 @@ const getBestsModel = async () => {
     }
   }
   
-  return {
-    '': prints.map(l => l.padEnd(80)),
-    glitchProjectName,
-  };
-};
-
-
-const getBestsView = async function*(model) {
-  const runnerLink = runnerReq.then(runner => HTML`<a href="${runner.weblink}">${runner.names.international}</a>`);
-
-  for (const [gameReq, gameRunsReq] of zip(gameReqs, gameRunsReqs)) {
-    const icon = gameReq.then(game => HTML`<img src="${game.assets.icon.uri}" alt="">`);
-    const placement = async (n) => {
-      const suffix =
-          (n % 10 == 1 && n % 100 != 11) ? 'st' :
-          (n % 10 == 2 && n % 100 != 12) ? 'nd' :
-          (n % 10 == 3 && n % 100 != 13) ? 'rd' :
-          'th';
-
-      const nth = `${n}${suffix}`;
-
-      let asset = (await gameReq).assets[`trophy-${nth}`];
-
-      if (asset) {
-        return HTML`<img class="placement" src="${asset.uri}" alt="${nth}">`;
-      } else {
-        return HTML`<span class="placement">${n}<sup>${suffix}</sup></span>`;
-      }
-    };
-
-    yield HTML`
-      <section>${gameReq.then(game => HTML`
-        <h2>${icon} ${game.names.international} ${icon}</h2>
-
-        <h3>${icon} <a href="${game.weblink}/full_game">Full Game</a> ${icon}</h3>
-
-        <table class="game-records">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>World Record</th>
-              <th>${runnerLink}'s Best</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${gameReq.then(game => game.categories.data.map(c => {
-              if (c.type === 'per-game') return HTML`
-                <tr class="">
-                  <th><a href="${c.weblink}">${c.name}</a></th>
-                  <td><span class="none">none</span></td>
-                  <td><span class="none">none</span></td>
-                </tr>
-              `
-            }))}
-          </tbody>
-        </table>
-
-        <h3>${icon} <a href="${game.weblink}/individual_levels">Individual Levels</a> ${icon}</h3>
-
-        <table class="level-records">
-          <thead>
-            <tr>
-              <th>Level</th>
-              <th>World Record</th>
-              <th>${runnerLink}'s Best</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${game.levels.data.map(async level => {
-              const records = (await api(`levels/${level.id}/records?max=200`))[0].runs;
-
-              return HTML`
-                <tr class="">
-                  <th><a href="${level.weblink}">${level.name}</a></th>
-                  <td>${
-                    records
-                      .filter(r => r.place == 1)
-                      .map(r => r.run)
-                      .map(run => HTML`
-                        <div>
-                          <a href="${run.weblink}">
-                            <span class="time">${run.times.primary.toLowerCase().slice(2).replace(/\D+/g, s => `${s} `).trim()}</span>
-                            ${placement(1)}
-                            ${run.runners.map(p => p.name || p.id)}
-                          </a>
-                        </div>
-                      `) || HTML`<span class="none">none</span>`
-                  }</td>
-                  <td>${runnerReq.then(runner => records
-                      .filter(r => r.run.runners.some(p => p.id === runner.id))
-                      .slice(0, 1)
-                      .map(record => HTML`
-                        <div>
-                          <a href="${record.run.weblink}">
-                            <span class="time">${record.run.times.primary.toLowerCase().slice(2).replace(/\D+/g, s => `${s} `).trim()}</span>
-                            ${placement(record.place)}
-                          </a>
-                        </div>
-                      `) || HTML`<span class="none">none</span>`
-                  )}</td>
-                </tr>
-              `
-            })}
-          </tbody>
-        </table>
-      `)}</section>
-    `;
-  }
+  return prints.map(l => l.padEnd(80));
 };
 
 
@@ -202,11 +98,6 @@ const getBestsView = async function*(model) {
   }
 
   const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
-  let jsonRedirect = false;
-  while (path[path.length - 1] === 'json') {
-    path.pop();
-    jsonRedirect = true;
-  }
   
   const defaultName = "bests";
   const title = `${d || defaultName}.glitch.me`;
@@ -234,35 +125,33 @@ const getBestsView = async function*(model) {
 
   const blockers = [];
 
-  const model = getBestsModel();
-  if (jsonRedirect || "ONLY JSON FOR YOU FOR NOW") {
-    const message = await HTML.element`
-      <p class="in-your-face-dev-message">
-        Loading all view model data. Please wait or <button>force timeout</button>.
-      </p>
-    `;
+  const bests = getBests();
 
-    const forcedTimeout = new Promise(resolve => {
-      message.querySelector('button').addEventListener('click', resolve);
-    });
+  const message = await HTML.element`
+    <p class="in-your-face-dev-message">
+      Loading all view model data. Please wait or <button>force timeout</button>.
+    </p>
+  `;
 
-    output.appendChild(message);
+  const forcedTimeout = new Promise(resolve => {
+    message.querySelector('button').addEventListener('click', resolve);
+  });
 
-    // we let the standard render continue below while we wait for the redirect.
-    (async () => {
-      const syncModel = await devAwaitDeep(model, forcedTimeout);
-      const json = JSON.stringify(syncModel, null, 2);
-      document.open();
+  output.appendChild(message);
+
+  // we let the standard render continue below while we wait for the redirect.
+  (async () => {
+    const syncModel = await devAwaitDeep(bests, forcedTimeout);
+    const json = JSON.stringify(syncModel, null, 2);
+    document.open('text/plain');
+    if (document.contentType == 'text/plain') {
+      document.write(json);
+    } else {
       document.write(HTML.string`<!doctype html><pre style="word-wrap: break-word; white-space: pre-wrap;">${json}`)
-      document.close();
-      // document.location.assign(URL.createObjectURL(new Blob([], {type: 'application/json'})));
-    })();
-  }
-  const view = getBestsView(model);
-
-  const [fragment, done] = HTML.from(view).fragmentAndDone();
-  output.appendChild(fragment);
-  blockers.push(done);
+    }
+    document.close();
+    // document.location.assign(URL.createObjectURL(new Blob([], {type: 'application/json'})));
+  })();
 
   output.appendChild(HTML.fragment`
     <footer>
