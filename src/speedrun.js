@@ -113,13 +113,22 @@ export class CategoryLevelPair {
       let runner;
       
       if (data.players.length === 1) {
-        const [playerData] = data.players;
+        const playerData = data.players[0];
         if (playerData) {
-          
+          if (playerData.rel === 'user') {
+            return Runner.get(playerData.id);
+          }
+        } else {
+          return new Runner({
+            nick: playerData.name,
+            isUser: false
+          });
         }
-        runner = 
       } else {
-        runner = new Runner({nick: `${data.players.length} players`});
+        runner = new Runner({
+          nick: `${data.players.length} players`,
+          isUser: false
+        });
       }
       
       new Run({
