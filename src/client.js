@@ -26,7 +26,7 @@ const getBestsModel = (gameSlugs, runnerSlug) => {
           pair = await pair;
           return {
             pair: pair,
-            runs: pair.runs()
+            runs: await pair.runs()
           }
         })),
       };
