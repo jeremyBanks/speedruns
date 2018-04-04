@@ -15,41 +15,20 @@ const getBestsModel = (gameSlugs, runnerSlug) => {
 
   const runner = speedrun.Runner.get(runnerSlug);
   
-  const games = gameSlugs.map(speedrun.Game.
+  const games = gameSlugs.map(speedrun.Game.get);
 
   return {
     glitchProjectName,
-    runner
-  };
-
-  const games = gameSlugs.map(async (gameSlug) => {
-    const game = await speedrun.api(`games/${gameSlug}?embed=levels,categories,runners`);
-
-    const runnerRuns = runner.then(p => speedrun.api(`runs?user=${p.id}&game=${game.id}`));
-
-    return Object.assign(new class Game {}, {
-      id: game.id,
-      url: game.weblink,
-      nick: game.names.international,
-
-      iconUrl: NOT_IMPLEMENTED,
-      trophyUrls: NOT_IMPLEMENTED,
-
-      gameRecords: new Promise(x => x),
-      levelRecords: NOT_IMPLEMENTED,
-    });
-  });
-  
-  return Object.assign(new class BestsView {}, {
-    glitchProjectName,
     runner,
-    games: games,
-  });
+    games,
+    
+    
+  };
 };
 
 
 const getBestsView = async function*(model) {
-  return;
+  return model;
   const runnerLink = runnerReq.then(runner => HTML`<a href="${runner.weblink}">${runner.names.international}</a>`);
 
   for (const [gameReq, gameRunsReq] of zip(gameReqs, gameRunsReqs)) {
@@ -235,17 +214,7 @@ const getBestsView = async function*(model) {
       // we let the standard render continue below while we wait for the redirect.
       (async () => {
         const syncModel = await devAwaitDeep(model, forcedTimeout);
-        const json = JSON.stringify(syncModel, (_, object) => {
-          if (typeof object !== 'object' || object === null) {
-            return object;
-          }
-          const constructorName = Object.getPrototypeOf(object).constructor.name;
-          if (constructorName === 'Object' || constructorName === 'Array' || '' in object) {
-            return object;
-          } else {
-            return Object.assign({'': constructorName}, object);
-          }
-        }, 2);
+        const json = JSON.stringify(syncModel, null, 2);
         document.open();
         document.write(HTML.string`<!doctype html><pre style="word-wrap: break-word; white-space: pre-wrap;">${json}`)
         document.close();

@@ -49,13 +49,14 @@ export class Game {
     this.gameId =
     this.nick =
     this.url = void this;
+    this[''] = this.constructor.name;
     Object.seal(this);
     Object.assign(this, ...args);
   }
 
   static async get(slug) {
     const data = await api(`games/${slug}`);
-    return new Runner({
+    return new Game({
       gameId: data.id,
       nick: data.names.international,
       url: data.weblink,
@@ -77,6 +78,7 @@ export class CategoryLevel {
     this.gameId =
     this.categoryId =
     this.levelId = void this;
+    this[''] = this.constructor.name;
     Object.seal(this);
     Object.assign(this, ...args);
   }
@@ -96,6 +98,7 @@ export class Run {
     this.runner =
     this.duration =
     this.date = void this;
+    this[''] = this.constructor.name;
     Object.seal(this);
     Object.assign(this, ...args);
   }
