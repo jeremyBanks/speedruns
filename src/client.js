@@ -26,23 +26,22 @@ const getBestsModel = async () => {
 
   const runs = await level.runs();
   runs.sort(compareAll(
-    (a, b) => -compareDefault(a.date, b.date),
-    (a, b) => -compareDefault(a.dateSubmitted, b.dateSubmitted),
-    (a, b) => -compareDefault(a.durationSeconds, b.durationSeconds),
+    (a, b) => compareDefault(a.date, b.date),
+    (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
   ));
 
   print(`World Record Over Time:`);
 
   let record = null;
   for (const run of runs) {
-    if (!record || run.duration <= record.duration) {
+    if (!record || run.durationSeconds < record.durationSeconds) {
       record = run;
-      print(`${record.durationText}: ${JSON.stringify(record)}`);
+      print(`  ${record.date} - ${record.durationText.padStart(6)} - ${(await record.runner).nick}`);
     }
   }
   
   return {
-    '': prints,
+    '': prints.map(l => '    ' + l.padEnd(38)),
     glitchProjectName,
     runner,
     game,
