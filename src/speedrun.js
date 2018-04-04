@@ -1,3 +1,5 @@
+import {compareAll, compareDefault} from '/src/utils.js';
+
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
 export const api = async path => {
@@ -145,14 +147,6 @@ export class CategoryLevelPair {
     ));
   }
 }
-
-const compareAll = (...comparisons) => (a, b) =>
-    comparisons.reduce((m, f) => m || f(a, b), 0);
-
-const compareDefault = (a, b) =>
-    a < b ? -1 :
-    a > b ? 1 :
-    0;
 
 
 export class Run {

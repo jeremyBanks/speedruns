@@ -75,3 +75,13 @@ export const devAwaitDeep = async (rootValue, forcedTimeout = new Promise(() => 
   
   return awaitDeepEach(rootValue);
 };
+
+
+export const compareAll = (...comparisons) => (a, b) =>
+    comparisons.reduce((m, f) => m || f(a, b), 0);
+
+
+export const compareDefault = (a, b) =>
+    a < b ? -1 :
+    a > b ? 1 :
+    0;
