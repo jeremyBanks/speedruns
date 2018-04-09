@@ -5,7 +5,7 @@ import * as speedrun from '/src/speedrun.js';
 
 
 const getBests = async (output) => {
-  const print = (line = '') => output.appendChild(HTML.fragment`<div class="line">${line}</div>`);
+  const print = (line = '') => output.appendChild(HTML.fragment`<div class="line">${line || ' '}</div>`);
 
   const runner = await speedrun.Runner.get('18qyezox' || 'Banks');
   
@@ -83,7 +83,7 @@ const getBests = async (output) => {
           const isBanks = personalRecords.includes(record);
           const isBoth = isBanks && worldRecords.includes(record);
           
-          const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace('▐', `</span><span class="banks ${isBanks ? 'current' : ''}">▐`) + `</span>`)
+          const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace(/(.)(▐)/, `$1</span><span class="banks ${isBanks ? 'current' : ''}">$2`) + `</span>`)
           
           const runner = await record.runner;
           print(HTML`  <a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(12)}</a> ${indicatorHTML}`);
