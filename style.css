@@ -268,3 +268,12 @@ span.time {
     color: #000;
   }
 }
+
+.bestsOutput {
+  margin: 32px 0;
+  font-size: 12px;
+}
+
+.bestsOutput > .line {
+  min-height: 1em;
+}

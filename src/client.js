@@ -4,9 +4,8 @@ import {zip, devAwaitDeep, compareAll, compareDefault} from '/src/utils.js';
 import * as speedrun from '/src/speedrun.js';
 
 
-const getBests = async () => {
-    const prints = [];
-  const print = (line = '') => prints.push(String(line));
+const getBests = async (output) => {
+  const print = (line = '') => output.appendChild(HTML.fragment`<div class="line">${line}</div>`);
 
   const runner = await speedrun.Runner.get('18qyezox' || 'Banks');
   
@@ -88,9 +87,6 @@ const getBests = async () => {
       print();
     }
   }
-  
-  const f = ''.padEnd(80).replace(/./g, '\'');
-  return [f, ...prints.map(l => l.padEnd(80)), f];
 };
 
 
@@ -143,33 +139,9 @@ const getBests = async () => {
 
   const blockers = [];
 
-  const bests = getBests();
-
-  const message = await HTML.element`
-    <p class="in-your-face-dev-message">
-      Loading data. Please wait or <button>force timeout</button>.
-    </p>
-  `;
-
-  const forcedTimeout = new Promise(resolve => {
-    message.querySelector('button').addEventListener('click', resolve);
-  });
-
-  output.appendChild(message);
-
-  // we let the standard render continue below while we wait for the redirect.
-  (async () => {
-    const syncModel = await devAwaitDeep(bests, forcedTimeout);
-    const json = JSON.stringify(syncModel, null, 2);
-    document.open('text/plain');
-    if (document.contentType == 'text/plain') {
-      document.write(json);
-    } else {
-      document.write(HTML.string`<!doctype html><pre style="word-wrap: break-word; white-space: pre-wrap;">${json}`)
-    }
-    document.close();
-    // document.location.assign(URL.createObjectURL(new Blob([], {type: 'application/json'})));
-  })();
+  const bestsOutput = HTML.fragment`<pre class="bestsOutput"></pre>`.firstChild;
+  getBests(bestsOutput);
+  output.appendChild(bestsOutput);
 
   output.appendChild(HTML.fragment`
     <footer>
