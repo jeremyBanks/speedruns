@@ -86,12 +86,14 @@ export class Game {
         levelId: null,
         categoryId: category.id,
         nick: `${category.name}`,
+        url: category.weblink,
       })),
       ...[].concat(...levels.map(level => levelCategories.map(category => new CategoryLevelPair({
         gameId: this.gameId,
         levelId: level.id,
         categoryId: category.id,
         nick: `${level.name} (${category.name})`,
+        url: level.weblink,
       }))))
     ];
   }
@@ -103,7 +105,8 @@ export class CategoryLevelPair {
     this.gameId =
     this.categoryId =
     this.levelId = 
-    this.nick = void this;
+    this.nick = 
+    this.url = void this;
     Object.seal(this);
     Object.assign(this, ...args);
   }
