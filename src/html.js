@@ -83,19 +83,10 @@ export class HTMLPieces {
         return HTMLPieces.from(async () => {
           const {value, done} = await iterator.next();
           if (done) return;
-          
+          return [value, doNext()];
         });
       };
       return doNext();
-      
-      return HTMLPieces.from(async () => {
-        // TODO: this shouldn't need to wait for the whole list
-        const pieces = [];
-        for await (const item of content) {
-          pieces.push(HTMLPieces.from(item));
-        }
-        return pieces;
-      });
     } else if (content[Symbol.iterator]) {
       const pieces = [];
       for (const item of content) {
