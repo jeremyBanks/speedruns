@@ -10,7 +10,7 @@ const defaultPath = 'wc2+wc2btdp@banks';
 const getBests = (gameSlugs, playerSlug) => {
   return HTML`<pre class="bestsOutput">${async function*() {  
     const line = (content = '') => HTML`<div class="content">${content || ' '}</div>`;
-    
+
     const runner = await speedrun.Runner.get(playerSlug);
 
     const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
