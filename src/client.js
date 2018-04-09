@@ -4,97 +4,102 @@ import {zip, devAwaitDeep, compareAll, compareDefault} from '/src/utils.js';
 import * as speedrun from '/src/speedrun.js';
 
 
-const getBests = async (output) => {
-  const print = (line = '') => output.appendChild(HTML.fragment`<div class="line">${line || ' '}</div>`);
+const defaultPath = 'wc2+wc2btdp@banks';
 
-  const runner = await speedrun.Runner.get('18qyezox' || 'Banks');
-  
-  const games = [
-    await speedrun.Game.get('o1yry26q' || 'wc2'),
-    await speedrun.Game.get('wc2btdp')
-  ];
-  
-  print(HTML`Historical progression of <a href="${runner.url}">${runner.nick}</a>'s personal bests against the world records:`);
-  print();
-  for (const game of games) {
-    print(HTML`      <a class="game" href="${game.url}">${game.nick}</a>`);
+
+const getBests = (gameSlugs, playerSlug) => {
+  return HTML.fragment`<pre class="bestsOutput">${}</pre>`;
+  const print = (line = '') => bestsOutput.appendChild(HTML.fragment`<div class="line">${line || ' '}</div>`);
+
+  (async() => {  
+    const runner = await speedrun.Runner.get(playerSlug);
+
+    const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
+
+    print(HTML`Historical progression of <a href="${runner.url}">${runner.nick}</a>'s personal bests against the world records:`);
     print();
-
-    const runnables = await game.categoryLevelPairs();
-
-    for (const level of runnables) {
-      print(HTML`          <a class="level" href="${level.url}">${level.nick}</a>`);
-
-      const runs = await level.runs();
-      runs.sort(compareAll(
-        (a, b) => compareDefault(a.date, b.date),
-        (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
-      ));
-
-      const worldRecords = [];
-      let wr = null;
-      for (const run of runs) {
-        if (!wr || run.durationSeconds <= wr.durationSeconds) {
-          wr = run;
-          worldRecords.push(wr);
-        }
-      }
-
-      const personalRecords = [];
-      let pr = null;
-      for (const run of runs) {
-        if (run.runner.nick !== runner.nick) continue;
-
-        if (!pr || run.durationSeconds < pr.durationSeconds) {
-          pr = run;
-          personalRecords.push(pr);
-        }
-      }
-
-      const maxRecord = Math.max(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
-      const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
-
-      const magnitudeFudge = (Math.log(minRecord) - Math.log(16)) / Math.log(2);
-      
-      const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
-
-      if (records.length === 0) {
-        print(HTML`                      <span class="none">(no runs)</span>`);
-      } else {
-        let lastWr = null, lastWrIndicators = '';
-        let lastPr = null, lastPrIndicators = '';        
-
-        for (const record of records) {
-          let outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
-          if (records.length === 1) {
-            outstandingProgress = 1;
-          }
-          
-          if (worldRecords.includes(record)) {
-            lastWr = lastWr;
-            lastWrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
-          }
-          if (personalRecords.includes(record)) {
-            lastPr = record;
-            lastPrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '▐');
-          }
-
-          const indicators = zip(
-            Array.from(lastWrIndicators),
-            Array.from(lastPrIndicators)).map(([a, b]) => a ? a : b).join('');
-
-          const isBanks = personalRecords.includes(record);
-          const isBoth = isBanks && worldRecords.includes(record);
-          
-          const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace(/(.)(▐)/, `$1</span><span class="banks ${isBanks ? 'current' : ''}">$2`) + `</span>`)
-          
-          const runner = await record.runner;
-          print(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(12)}</a> ${indicatorHTML}`);
-        }
-      }
+    for (const game of games) {
+      print(HTML`      <a class="game" href="${game.url}">${game.nick}</a>`);
       print();
+
+      const runnables = await game.categoryLevelPairs();
+
+      for (const level of runnables) {
+        print(HTML`          <a class="level" href="${level.url}">${level.nick}</a>`);
+
+        const runs = await level.runs();
+        runs.sort(compareAll(
+          (a, b) => compareDefault(a.date, b.date),
+          (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
+        ));
+
+        const worldRecords = [];
+        let wr = null;
+        for (const run of runs) {
+          if (!wr || run.durationSeconds <= wr.durationSeconds) {
+            wr = run;
+            worldRecords.push(wr);
+          }
+        }
+
+        const personalRecords = [];
+        let pr = null;
+        for (const run of runs) {
+          if (run.runner.nick !== runner.nick) continue;
+
+          if (!pr || run.durationSeconds < pr.durationSeconds) {
+            pr = run;
+            personalRecords.push(pr);
+          }
+        }
+
+        const maxRecord = Math.max(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
+        const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
+
+        const magnitudeFudge = (Math.log(minRecord) - Math.log(16)) / Math.log(2);
+
+        const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
+
+        if (records.length === 0) {
+          print(HTML`                      <span class="none">(no runs)</span>`);
+        } else {
+          let lastWr = null, lastWrIndicators = '';
+          let lastPr = null, lastPrIndicators = '';        
+
+          for (const record of records) {
+            let outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
+            if (records.length === 1) {
+              outstandingProgress = 1;
+            }
+
+            if (worldRecords.includes(record)) {
+              lastWr = lastWr;
+              lastWrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
+            }
+            if (personalRecords.includes(record)) {
+              lastPr = record;
+              lastPrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '▐');
+            }
+
+            const indicators = zip(
+              Array.from(lastWrIndicators),
+              Array.from(lastPrIndicators)).map(([a, b]) => a ? a : b).join('');
+
+            const isBanks = personalRecords.includes(record);
+            const isBoth = isBanks && worldRecords.includes(record);
+
+            const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace(/(.)(▐)/, `$1</span><span class="banks ${isBanks ? 'current' : ''}">$2`) + `</span>`)
+
+            const runner = await record.runner;
+            print(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(12)}</a> ${indicatorHTML}`);
+          }
+        }
+        print();
+      }
     }
-  }
+  })();
+
+  return bestsOutput;
 };
 
 
@@ -139,17 +144,32 @@ const getBests = async (output) => {
 
       ${d && HTML`
         <nav class="links">
-          <a href="${`https://glitch.com/edit/#!/${d}?path=client.js`}">edit source code</a><br />
+          <a href="${`https://glitch.com/edit/#!/${d}?path=src/client.js`}">edit source code</a><br />
         </nav>
       `}
     </header>
   `);
 
   const blockers = [];
+  
+  if (path.length === 0) {
+    document.location.replace(`/${defaultPath}`);
+  } else if (path.length === 1) {
+    const [gamesSlug, playerSlug] = path[0].split('@');
+    if (!gamesSlug) throw new Error("no game(s) in URL");
+    if (!playerSlug) throw new Error("no player in URL");
 
-  const bestsOutput = HTML.fragment`<pre class="bestsOutput"></pre>`.firstChild;
-  getBests(bestsOutput);
-  output.appendChild(bestsOutput);
+    const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
+    if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
+
+    const content = getBests(gameSlugs, playerSlug);
+    
+    const [fragment, done] = HTML.from(content).fragmentAndDone();
+    output.appendChild(fragment);
+    blockers.push(done);
+  } else {
+    throw new Error("404/invalid URL");
+  }
 
   output.appendChild(HTML.fragment`
     <footer>
