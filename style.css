@@ -186,11 +186,6 @@ span.time {
   font-family: monospace;
 }
 
-.none {
-  font-size: .5em;
-  opacity: 0.5;
-}
-
 .in-your-face-dev-message {
   font-family: monospace;
   text-align: left;
@@ -270,7 +265,6 @@ span.time {
 }
 
 .bestsOutput {
-  margin: 32px 0;
   font-size: 12px;
 }
 
@@ -300,4 +294,23 @@ span.time {
 
 .bestsOutput .banks {
   background: rgba(0, 0, 128, 0.125);
+}
+
+.bestsOutput a.game {
+  display: inline-block;
+  margin-top: 32px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.bestsOutput a.level {
+  display: inline-block;
+  margin-top: 16px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.bestsOutput .none {
+  opacity: 0.5;
 }
