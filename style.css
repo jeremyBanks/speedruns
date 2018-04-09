@@ -281,3 +281,23 @@ span.time {
 .bestsOutput a:not(:hover) {
   color: inherit;
 }
+
+.bestsOutput .best, .bestsOutput .banks, .bestsOutput .both {
+  color: transparent;
+}
+
+.bestsOutput .both {
+  background: linear-gradient(to bottom, #000080 0%, #FFD700 100%);
+}
+
+.bestsOutput .best {
+  background: #FFD700;
+}
+
+.bestsOutput .banks {
+  background: #000080;
+}
+
+.bestsOutput .best + .banks {
+  background: rgba(0, 0, 128, 0.125);
+}

@@ -79,12 +79,15 @@ const getBests = async (output) => {
 
           indicators = zip(
             Array.from(lastWrIndicators),
-            Array.from(lastPrIndicators)).map(([a, b]) => (!b || a == '█') ? a : b).join('');
+            Array.from(lastPrIndicators)).map(([a, b]) => (!b && a == '█') ? a : b).join('');
 
-          const indicatorHTML = HTML.literal(`<span class="${1}">` + indicators.replace(
+          const isBanks = personalRecords.includes(record);
+          const isBoth = isBanks && worldRecords.includes(record);
+          
+          const indicatorHTML = HTML(`<span class="${isBoth ? 'both' : isBanks ? 'banks' : 'best'}">` + indicators.replace('█▐', '█</span><span class="banks">▐') + `</span>`)
           
           const runner = await record.runner;
-          print(HTML`  <a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url}">${runner.nick.padEnd(12)}</a> ${indicators}`);
+          print(HTML`  <a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url}">${runner.nick.padEnd(12)}</a> ${indicatorHTML}`);
         }
       }
       print();
