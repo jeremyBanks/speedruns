@@ -14,13 +14,13 @@ const getBests = async (output) => {
     await speedrun.Game.get('o1yry26q' || 'wc2'),
     await speedrun.Game.get('wc2btdp')
   ]) {
-    print(`        ${game.nick}`);
+    print(HTML`        <a href="${game.url}">${game.nick}</a>`);
     print();
 
     const runnables = await game.categoryLevelPairs();
 
     for (const level of runnables) {
-      print(`            ${level.nick}`);
+      print(HTML`            <a href="${level.url}">${level.nick}</a>`);
 
       const runs = await level.runs();
       runs.sort(compareAll(
@@ -80,8 +80,11 @@ const getBests = async (output) => {
           indicators = zip(
             Array.from(lastWrIndicators),
             Array.from(lastPrIndicators)).map(([a, b]) => (!b || a == '█') ? a : b).join('');
+
+          const indicatorHTML = HTML.literal(`<span class="${1}">` + indicators.replace(
           
-          print(`  ${record.durationText.padStart(9)} ${record.date} ${(await record.runner).nick.padEnd(12)} ${indicators}`);
+          const runner = await record.runner;
+          print(HTML`  <a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url}">${runner.nick.padEnd(12)}</a> ${indicators}`);
         }
       }
       print();

@@ -271,9 +271,13 @@ span.time {
 
 .bestsOutput {
   margin: 32px 0;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .bestsOutput > .line {
   min-height: 1em;
+}
+
+.bestsOutput a:not(:hover) {
+  color: inherit;
 }
