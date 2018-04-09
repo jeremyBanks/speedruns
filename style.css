@@ -266,6 +266,7 @@ span.time {
 
 .bestsOutput {
   font-size: 12px;
+  margin: 32px 0;
 }
 
 .bestsOutput > .line {
@@ -313,4 +314,9 @@ span.time {
 
 .bestsOutput .none {
   opacity: 0.5;
+}
+
+::selection {
+  color: black;
+  background: rgb(200, 225, 255);
 }

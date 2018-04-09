@@ -9,20 +9,21 @@ const getBests = async (output) => {
 
   const runner = await speedrun.Runner.get('18qyezox' || 'Banks');
   
-  print(HTML`Displaying world records and <a href="${runner.url}">${runner.nick}</a>'s personal bests.`)
-  
-  print();
-  for (const game of [
+  const games = [
     await speedrun.Game.get('o1yry26q' || 'wc2'),
     await speedrun.Game.get('wc2btdp')
-  ]) {
-    print(HTML`        <a class="game" href="${game.url}">${game.nick}</a>`);
+  ];
+  
+  print(HTML`Historical progression of <a href="${runner.url}">${runner.nick}</a>'s personal bests against the world records:`);
+  print();
+  for (const game of games) {
+    print(HTML`      <a class="game" href="${game.url}">${game.nick}</a>`);
     print();
 
     const runnables = await game.categoryLevelPairs();
 
     for (const level of runnables) {
-      print(HTML`            <a class="level" href="${level.url}">${level.nick}</a>`);
+      print(HTML`          <a class="level" href="${level.url}">${level.nick}</a>`);
 
       const runs = await level.runs();
       runs.sort(compareAll(
@@ -58,7 +59,7 @@ const getBests = async (output) => {
       const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
 
       if (records.length === 0) {
-        print(HTML`                        <span class="none">(no runs)</span>`);
+        print(HTML`                      <span class="none">(no runs)</span>`);
       } else {
         let lastWr = null, lastWrIndicators = '';
         let lastPr = null, lastPrIndicators = '';        
@@ -88,7 +89,7 @@ const getBests = async (output) => {
           const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace(/(.)(▐)/, `$1</span><span class="banks ${isBanks ? 'current' : ''}">$2`) + `</span>`)
           
           const runner = await record.runner;
-          print(HTML`  <a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(12)}</a> ${indicatorHTML}`);
+          print(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(12)}</a> ${indicatorHTML}`);
         }
       }
       print();
