@@ -9,18 +9,20 @@ const getBests = async (output) => {
 
   const runner = await speedrun.Runner.get('18qyezox' || 'Banks');
   
+  print(HTML`Displaying world records and <a href="${runner.url}">${runner.nick}</a>'s personal bests.`)
+  
   print();
   for (const game of [
     await speedrun.Game.get('o1yry26q' || 'wc2'),
     await speedrun.Game.get('wc2btdp')
   ]) {
-    print(HTML`        <a href="${game.url}">${game.nick}</a>`);
+    print(HTML`        <a class="game" href="${game.url}">${game.nick}</a>`);
     print();
 
     const runnables = await game.categoryLevelPairs();
 
     for (const level of runnables) {
-      print(HTML`            <a href="${level.url}">${level.nick}</a>`);
+      print(HTML`            <a class="level" href="${level.url}">${level.nick}</a>`);
 
       const runs = await level.runs();
       runs.sort(compareAll(
@@ -56,7 +58,7 @@ const getBests = async (output) => {
       const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
 
       if (records.length === 0) {
-        print("                        (no runs)");
+        print(HTML`                        <span class="none">(no runs)</span>`);
       } else {
         let lastWr = null, lastWrIndicators = '';
         let lastPr = null, lastPrIndicators = '';        
@@ -69,11 +71,11 @@ const getBests = async (output) => {
           
           if (worldRecords.includes(record)) {
             lastWr = lastWr;
-            lastWrIndicators = '▐' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
+            lastWrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
           }
           if (personalRecords.includes(record)) {
             lastPr = record;
-            lastPrIndicators = '▐' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '▐');
+            lastPrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '▐');
           }
 
           const indicators = zip(
