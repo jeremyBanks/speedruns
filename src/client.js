@@ -8,24 +8,23 @@ const defaultPath = 'wc2+wc2btdp@banks';
 
 
 const getBests = (gameSlugs, playerSlug) => {
-  return HTML.fragment`<pre class="bestsOutput">${}</pre>`;
-  const print = (line = '') => bestsOutput.appendChild(HTML.fragment`<div class="line">${line || ' '}</div>`);
-
-  (async() => {  
+  return HTML`<pre class="bestsOutput">${async function*() {  
+    const line = (content = '') => HTML`<div class="content">${content || ' '}</div>`;
+    
     const runner = await speedrun.Runner.get(playerSlug);
 
     const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
 
-    print(HTML`Historical progression of <a href="${runner.url}">${runner.nick}</a>'s personal bests against the world records:`);
-    print();
+    yield line(HTML`Historical progression of <a href="${runner.url}">${runner.nick}</a>'s personal bests against the world records:`);
+    yield line();
     for (const game of games) {
-      print(HTML`      <a class="game" href="${game.url}">${game.nick}</a>`);
-      print();
+      yield line(HTML`      <a class="game" href="${game.url}">${game.nick}</a>`);
+      yield line();
 
       const runnables = await game.categoryLevelPairs();
 
       for (const level of runnables) {
-        print(HTML`          <a class="level" href="${level.url}">${level.nick}</a>`);
+        yield line(HTML`          <a class="level" href="${level.url}">${level.nick}</a>`);
 
         const runs = await level.runs();
         runs.sort(compareAll(
@@ -61,7 +60,7 @@ const getBests = (gameSlugs, playerSlug) => {
         const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
 
         if (records.length === 0) {
-          print(HTML`                      <span class="none">(no runs)</span>`);
+          yield line(HTML`                      <span class="none">(no runs)</span>`);
         } else {
           let lastWr = null, lastWrIndicators = '';
           let lastPr = null, lastPrIndicators = '';        
@@ -91,15 +90,13 @@ const getBests = (gameSlugs, playerSlug) => {
             const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace(/(.)(▐)/, `$1</span><span class="banks ${isBanks ? 'current' : ''}">$2`) + `</span>`)
 
             const runner = await record.runner;
-            print(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(12)}</a> ${indicatorHTML}`);
+            yield line(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(12)}</a> ${indicatorHTML}`);
           }
         }
-        print();
+        yield line();
       }
     }
-  })();
-
-  return bestsOutput;
+  }}</pre>`;
 };
 
 
