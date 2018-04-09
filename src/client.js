@@ -90,7 +90,7 @@ const getBests = (gameSlugs, playerSlug) => {
             const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace(/(.)(▐)/, `$1</span><span class="banks ${isBanks ? 'current' : ''}">$2`) + `</span>`)
 
             const runner = await record.runner;
-            yield line(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(12)}</a> ${indicatorHTML}`);
+            yield line(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(14)}</a> ${indicatorHTML}`);
           }
         }
         yield line();
