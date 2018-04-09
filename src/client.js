@@ -66,7 +66,6 @@ const getBests = async (output) => {
           if (records.length === 1) {
             outstandingProgress = 1;
           }
-          let indicators = '▐' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
           
           if (worldRecords.includes(record)) {
             lastWr = lastWr;
@@ -77,17 +76,17 @@ const getBests = async (output) => {
             lastPrIndicators = '▐' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '▐');
           }
 
-          indicators = zip(
+          const indicators = zip(
             Array.from(lastWrIndicators),
-            Array.from(lastPrIndicators)).map(([a, b]) => (!b && a == '█') ? a : b).join('');
+            Array.from(lastPrIndicators)).map(([a, b]) => a ? a : b).join('');
 
           const isBanks = personalRecords.includes(record);
           const isBoth = isBanks && worldRecords.includes(record);
           
-          const indicatorHTML = HTML(`<span class="${isBoth ? 'both' : isBanks ? 'banks' : 'best'}">` + indicators.replace('█▐', '█</span><span class="banks">▐') + `</span>`)
+          const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace('▐', `</span><span class="banks ${isBanks ? 'current' : ''}">▐`) + `</span>`)
           
           const runner = await record.runner;
-          print(HTML`  <a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url}">${runner.nick.padEnd(12)}</a> ${indicatorHTML}`);
+          print(HTML`  <a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(12)}</a> ${indicatorHTML}`);
         }
       }
       print();
