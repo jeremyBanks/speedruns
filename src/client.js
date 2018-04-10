@@ -96,10 +96,9 @@ const getBests = (gameSlugs, playerSlug) => {
             }
           }
           yield line();
-        }();
-      }();
-    }()
-  }</pre>`;
+        }
+      }
+  } }</pre>`;
 };
 
 

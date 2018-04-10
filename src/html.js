@@ -81,10 +81,9 @@ export class HTMLPieces {
       const iterator = content[Symbol.asyncIterator]();
       const doNext = () => {
         return HTMLPieces.from(iterator.next().then(({value, done}) => {
-          const {value, done} = await ;
           if (done) return;
           return [value, doNext()];
-        })());
+        }));
       };
       return doNext();
     } else if (content[Symbol.iterator]) {
@@ -94,7 +93,6 @@ export class HTMLPieces {
       }
       return new HTMLPieces(pieces);
     } else if (typeof content.then === 'function') {
-      // this results in nested pieces. don't we want to avoid that?
       return new HTMLPieces([content.then(HTMLPieces.from)]);
     } else {
       return new HTMLPieces([String(content)]);
