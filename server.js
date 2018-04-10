@@ -1,6 +1,5 @@
 const express = require('express');
 const rp = require('request-promise-native');
-const http2 = require('http2');
 
 
 const app = express();
@@ -37,7 +36,6 @@ app.use((req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-// require('http2').createServer(options, app).listen(8080);
 const listener = app.listen(process.env.PORT, () => {
   console.log(`Your app is listening on port ${listener.address().port}`);
 });
