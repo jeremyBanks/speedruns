@@ -1,4 +1,5 @@
 import {compareAll, compareDefault} from '/src/utils.js';
+import {extraData} from '/src/api-patches.js';
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
@@ -24,7 +25,11 @@ const apiFetch = async path => {
     if (body.pagination && body.pagination.size > body.pagination.max) {
       throw new Error(`found ${body.pagination.size} items matching request, exceeding our maximum of ${body.pagination.max}`);
     } else {
-      return body.data;
+      const data = body.data
+      if (extraData[path]) {
+        data.push(...extraData[path]);
+      }
+      return data;
     }
   }
 };

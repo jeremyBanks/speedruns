@@ -1,14 +1,15 @@
 class UnofficialRun {
-  constructor(playerName, durationSeconds, url, dateTime) {
+  constructor(playerName, durationSeconds, url, date) {
+    this.ℹ️ = this.constructor.name;
     this.weblink = url;
     this.players = [
       {
-          rel: "guest",
+          rel: 'guest',
           name: playerName,
       }
     ];
-    this.submitted = dateTime;
-    this.date = dateTime.split('T')[0];
+    this.submitted = date + 'T00:00:00.000Z';
+    this.date = date;
     
     let durationString;
     {
@@ -29,9 +30,10 @@ class UnofficialRun {
     };
   }
 }
+const R = (...args) => new UnofficialRun(...args);
 
 export const extraData = {
   'runs?game=o1yry26q&category=wdmw5ee2&level=xd17ejqd&status=verified&orderby=date&direction=asc': [
-    new UnofficialRun()
+    R('AverageAvocado', 1721, 'https://youtu.be/10awDV6v9t0?t=51', '2015-06-16')
   ]
 };
