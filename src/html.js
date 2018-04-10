@@ -80,11 +80,11 @@ export class HTMLPieces {
     } else if (content[Symbol.asyncIterator]) {
       const iterator = content[Symbol.asyncIterator]();
       const doNext = () => {
-        return HTMLPieces.from(async () => {
-          const {value, done} = await iterator.next();
+        return HTMLPieces.from(iterator.next().then(({value, done}) => {
+          const {value, done} = await ;
           if (done) return;
           return [value, doNext()];
-        });
+        })());
       };
       return doNext();
     } else if (content[Symbol.iterator]) {
