@@ -52,36 +52,47 @@ export const extraData = {
     run('AverageAvocado', 464, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'ewpjm7lw')]: [ // orc4
+    run('AverageAvocado', 941, _.avoUrlOrc2013, _.avoDateOrc2013),
     run('AverageAvocado', 1143, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'y9mjq5l9')]: [ // orc5
+    run('AverageAvocado', 1444, _.avoUrlOrc2013, _.avoDateOrc2013),
     run('AverageAvocado', 1154, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, '5wkjzk5d')]: [ // orc6
+    run('AverageAvocado', 225, _.avoUrlOrc2013, _.avoDateOrc2013),
     run('AverageAvocado', 224, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, '592zg0g9')]: [ // orc7
+    run('AverageAvocado', 1608, _.avoUrlOrc2013, _.avoDateOrc2013),
     run('AverageAvocado', 1235, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, '29v3ey1w')]: [ // orc8
+    run('AverageAvocado', 1276, _.avoUrlOrc2013, _.avoDateOrc2013),
     run('AverageAvocado', 1066, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'xd4j760d')]: [ // orc9
+    run('AverageAvocado', 1223, _.avoUrlOrc2013, _.avoDateOrc2013),
     run('AverageAvocado', 1180, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'xd0gr00w')]: [ // orc10
+    run('AverageAvocado', 1953, _.avoUrlOrc2013, _.avoDateOrc2013),
     run('AverageAvocado', 1437, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'rw64pvn9')]: [ // orc11
+    run('AverageAvocado', TODODODODOD, _.avoUrlOrc2013, _.avoDateOrc2013),
     run('AverageAvocado', 1675, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'n937507d')]: [ // orc12
+    run('AverageAvocado', TODODODODOD, _.avoUrlOrc2013, _.avoDateOrc2013),
     run('AverageAvocado', 2295, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'z986vj7d')]: [ // orc13
+    run('AverageAvocado', TODODODODOD, _.avoUrlOrc2013, _.avoDateOrc2013),
     run('AverageAvocado', 1761, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'rdn0j5nw')]: [ // orc14
+    run('AverageAvocado', TODODODODOD, _.avoUrlOrc2013, _.avoDateOrc2013),
     run('AverageAvocado', 1833, _.avoUrl2015, _.avoDate2015)
   ],
 
