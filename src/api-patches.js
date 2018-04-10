@@ -166,8 +166,8 @@ export const extraData = {
   [runs(war2x, war2xMission, '5d7vk3gd')]: [ // xhuman12
   ],
 
-  // https://www.youtube.com/playlist?list=PL5b0fctdcCFNBE21S42pVshwj6Bh4adRE
   [runs(war2x, war2xMission, 'kwj5lyn9')]: [ // xorc1
+    run('AverageAvocado', 357, _.avoUrlXOrc2013 = 'https://www.youtube.com/playlist?list=PL5b0fctdcCFNBE21S42pVshwj6Bh4adRE', _.avoDate2013),
     run('AverageAvocado', 284, 'https://youtu.be/eeBgiR8OBlU?t=66', '2015-05-15'),
   ],
   [runs(war2x, war2xMission, 'owo01kow')]: [ // xorc2
