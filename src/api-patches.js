@@ -15,7 +15,7 @@ class UnofficialRun {
     {
       const hours = Math.floor(durationSeconds / (60 * 60));
       const minutes = Math.floor(durationSeconds / 60) % 60;
-      const seconds = Math.floor(durationSeconds) % (60 * 60);
+      const seconds = Math.floor(durationSeconds) % 60;
       const miliseconds = durationSeconds % 1.0;
       if (hours) durationString += `${hours}H`;
       if (minutes) durationString += `${minutes}M`;
