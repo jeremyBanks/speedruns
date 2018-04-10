@@ -39,6 +39,10 @@ const war2xMission = 'wkponpj2';
 
 let _ = {}; 
 export const extraData = {
+  // These are runs that may not qualify as "speed runs" for the purpose of the
+  // speedrun.com leaderboard, but which I'd still like to include in the
+  // historical data.
+
   [runs(war2, war2Mission, 'kwj5l7r9')]: [ // orc1
     run('AverageAvocado', 217, _.avoUrlOrc2013 = 'https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk', _.avoDate2013 = '2013-06-00'),
     run('AverageAvocado', 224, _.avoUrl2015 = 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', _.avoDate2015 = '2015-00-00'),
