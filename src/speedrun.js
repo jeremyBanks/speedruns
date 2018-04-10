@@ -19,8 +19,10 @@ const apiFetch = async path => {
   const url = speedrunDotComApiRootUrl + path;
   const response = await window.fetch(url, {headers: new Headers({
     // we have our own caching, and use this header on both
-    // requet
-    'Cache-Control': 'no-store'})});
+    // request and response to disable the browser cache.
+    // this may improve request parlallizability. maybe.
+    'Cache-Control': 'no-store'
+  })});
   const body = await response.json();
   if (body.status) {
     throw new Error(`${body.status}: ${body.message}`); 

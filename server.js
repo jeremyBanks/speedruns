@@ -4,7 +4,7 @@ const rp = require('request-promise-native');
 
 const app = express();
 
-app.set('json spaces', 2);
+// app.set('json spaces', 2);
 
 // Serve this entire project directoy.
 app.use(express.static('./', {
