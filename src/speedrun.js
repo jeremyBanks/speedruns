@@ -25,8 +25,7 @@ const apiFetch = async path => {
     if (body.pagination && body.pagination.size > body.pagination.max) {
       throw new Error(`found ${body.pagination.size} items matching request, exceeding our maximum of ${body.pagination.max}`);
     } else {
-      const data = body.data
-      debugger;
+      const data = body.data;
       if (extraData[path]) {
         data.push(...extraData[path]);
       }
