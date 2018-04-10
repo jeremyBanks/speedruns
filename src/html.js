@@ -83,7 +83,6 @@ export class HTMLPieces {
         return HTMLPieces.from(async () => {
           const {value, done} = await iterator.next();
           if (done) return;
-          await new Promise(resolve => setTimeout(resolve, 32)); // artificial delay for style
           return [value, doNext()];
         });
       };

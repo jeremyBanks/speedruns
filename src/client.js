@@ -17,83 +17,84 @@ const getBests = (gameSlugs, playerSlug) => {
 
     yield line(HTML`Historical progression of <a href="${runner.url}">${runner.nick}</a>'s personal bests against the world records:`);
     yield line();
-    for (const game of games) {
-      yield line(HTML`      <a class="game" href="${game.url}">${game.nick}</a>`);
-      yield line();
-
-      const runnables = await game.categoryLevelPairs();
-
-      for (const level of runnables) {
-        yield line(HTML`          <a class="level" href="${level.url}">${level.nick}</a>`);
-
-        const runs = await level.runs();
-        runs.sort(compareAll(
-          (a, b) => compareDefault(a.date, b.date),
-          (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
-        ));
-
-        const worldRecords = [];
-        let wr = null;
-        for (const run of runs) {
-          if (!wr || run.durationSeconds <= wr.durationSeconds) {
-            wr = run;
-            worldRecords.push(wr);
-          }
-        }
-
-        const personalRecords = [];
-        let pr = null;
-        for (const run of runs) {
-          if (run.runner.nick !== runner.nick) continue;
-
-          if (!pr || run.durationSeconds < pr.durationSeconds) {
-            pr = run;
-            personalRecords.push(pr);
-          }
-        }
-
-        const maxRecord = Math.max(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
-        const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
-
-        const magnitudeFudge = (Math.log(minRecord) - Math.log(16)) / Math.log(2);
-
-        const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
-
-        if (records.length === 0) {
-          yield line(HTML`                      <span class="none">(no runs)</span>`);
-        } else {
-          let lastWr = null, lastWrIndicators = '';
-          let lastPr = null, lastPrIndicators = '';        
-
-          for (const record of records) {
-            let outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
-            if (records.length === 1) {
-              outstandingProgress = 1;
-            }
-
-            if (worldRecords.includes(record)) {
-              lastWr = lastWr;
-              lastWrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
-            }
-            if (personalRecords.includes(record)) {
-              lastPr = record;
-              lastPrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '▐');
-            }
-
-            const indicators = zip(
-              Array.from(lastWrIndicators),
-              Array.from(lastPrIndicators)).map(([a, b]) => a ? a : b).join('');
-
-            const isBanks = personalRecords.includes(record);
-            const isBoth = isBanks && worldRecords.includes(record);
-
-            const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace(/(.)(▐)/, `$1</span><span class="banks ${isBanks ? 'current' : ''}">$2`) + `</span>`)
-
-            const runner = await record.runner;
-            yield line(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(14)}</a> ${indicatorHTML}`);
-          }
-        }
+    for (const game of games) yield function*() {
+        yield line(HTML`      <a class="game" href="${game.url}">${game.nick}</a>`);
         yield line();
+
+        const runnables = await game.categoryLevelPairs();
+
+        for (const level of runnables) yield function*() {
+          yield line(HTML`          <a class="level" href="${level.url}">${level.nick}</a>`);
+
+          const runs = await level.runs();
+          runs.sort(compareAll(
+            (a, b) => compareDefault(a.date, b.date),
+            (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
+          ));
+
+          const worldRecords = [];
+          let wr = null;
+          for (const run of runs) {
+            if (!wr || run.durationSeconds <= wr.durationSeconds) {
+              wr = run;
+              worldRecords.push(wr);
+            }
+          }
+
+          const personalRecords = [];
+          let pr = null;
+          for (const run of runs) {
+            if (run.runner.nick !== runner.nick) continue;
+
+            if (!pr || run.durationSeconds < pr.durationSeconds) {
+              pr = run;
+              personalRecords.push(pr);
+            }
+          }
+
+          const maxRecord = Math.max(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
+          const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
+
+          const magnitudeFudge = (Math.log(minRecord) - Math.log(16)) / Math.log(2);
+
+          const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
+
+          if (records.length === 0) {
+            yield line(HTML`                      <span class="none">(no runs)</span>`);
+          } else {
+            let lastWr = null, lastWrIndicators = '';
+            let lastPr = null, lastPrIndicators = '';        
+
+            for (const record of records) {
+              let outstandingProgress = (record.durationSeconds - minRecord) / (maxRecord - minRecord);
+              if (records.length === 1) {
+                outstandingProgress = 1;
+              }
+
+              if (worldRecords.includes(record)) {
+                lastWr = lastWr;
+                lastWrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
+              }
+              if (personalRecords.includes(record)) {
+                lastPr = record;
+                lastPrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '▐');
+              }
+
+              const indicators = zip(
+                Array.from(lastWrIndicators),
+                Array.from(lastPrIndicators)).map(([a, b]) => a ? a : b).join('');
+
+              const isBanks = personalRecords.includes(record);
+              const isBoth = isBanks && worldRecords.includes(record);
+
+              const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace(/(.)(▐)/, `$1</span><span class="banks ${isBanks ? 'current' : ''}">$2`) + `</span>`)
+
+              const runner = await record.runner;
+              yield line(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(14)}</a> ${indicatorHTML}`);
+            }
+          }
+          yield line();
+        }
       }
     }
   }}</pre>`;
