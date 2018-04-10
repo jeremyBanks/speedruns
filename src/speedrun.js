@@ -5,11 +5,11 @@ export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
 export const api = async path => {
   if (!apiCache.has(path)) {
-    const result = await apiFetch(path);
+    const result = apiFetch(path).then(null, error => { apiCache.remove(path); throw error; });
     apiCache.set(path, result);
-    return result;
+    return await result;
   } else {
-    return apiCache.get(path);
+    return await apiCache.get(path);
   }
 };
 
