@@ -57,61 +57,62 @@ export const extraData = {
     run('AverageAvocado', 224, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, '592zg0g9')]: [ // orc7
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 1235, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, '29v3ey1w')]: [ // orc8
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 1066, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'xd4j760d')]: [ // orc9
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 1180, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'xd0gr00w')]: [ // orc10
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 1437, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'rw64pvn9')]: [ // orc11
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 1675, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'n937507d')]: [ // orc12
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 2295, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'z986vj7d')]: [ // orc13
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 1761, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'rdn0j5nw')]: [ // orc14
+    run('AverageAvocado', 1833, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
 
   [runs(war2, war2Mission, 'ldyy7ejd')]: [ // human1
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 208, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'n93750nd')]: [ // human2
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 89, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'z986vjgd')]: [ // human3
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 409, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'rdn0j5qw')]: [ // human4
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 710, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'ldyy7ekd')]: [ // human5
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 966, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'gdre4j69')]: [ // human6
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 927, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'nwllx60w')]: [ // human7
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 1008, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'ywe1k4yd')]: [ // human8
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 918, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, '69z3orld')]: [ // human9
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 503, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'r9g20z5d')]: [ // human10
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 1002, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, 'o9xn520w')]: [ // human11
-    run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
+    run('AverageAvocado', 1037, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
   ],
   [runs(war2, war2Mission, '4956oj0d')]: [ // human12
     run('AverageAvocado', 0e00000, 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', '2015-00-00')
