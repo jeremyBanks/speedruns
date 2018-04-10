@@ -11,11 +11,11 @@ const getBests = (gameSlugs, playerSlug) => {
   return HTML`<pre class="bestsOutput">${async function*() {  
     const line = (content = '') => HTML`<div class="content">${content || ' '}</div>`;
 
-    const runner = await speedrun.Runner.get(playerSlug);
-
     const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
 
-    yield line(HTML`Historical progression of <a href="${runner.url}">${runner.nick}</a>'s personal bests against the world records:`);
+    const getRunner = speedrun.Runner.get(playerSlug);
+
+    yield line(getRunner.then(runner => HTML`Historical progression of <a href="${runner.url}">${runner.nick}</a>'s personal bests against the world records:`));
     yield line();
     for (const game of games) yield async function*() {
         yield line(HTML`      <a class="game" href="${game.url}">${game.nick}</a>`);
@@ -40,11 +40,13 @@ const getBests = (gameSlugs, playerSlug) => {
               worldRecords.push(wr);
             }
           }
+          
+          const targetRunner = await getRunner;
 
           const personalRecords = [];
           let pr = null;
           for (const run of runs) {
-            if (run.runner.nick !== runner.nick) continue;
+            if (run.runner.nick !== targetRunner.nick) continue;
 
             if (!pr || run.durationSeconds < pr.durationSeconds) {
               pr = run;
