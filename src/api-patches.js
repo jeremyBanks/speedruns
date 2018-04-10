@@ -36,94 +36,96 @@ const war2 = 'o1yry26q';
 const war2Mission = 'wdmw5ee2';
 const war2x = 'y65zy46e';
 const war2xMission = 'wkponpj2';
-let _ = {};
 
+let _ = {}; 
 export const extraData = {
   [runs(war2, war2Mission, 'kwj5l7r9')]: [ // orc1
-    run('AverageAvocado', 224, _.avoPl2015 = 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', _.avoDate2015 = '2015-00-00'),
-    run('AverageAvocado', 217, _.avoPlOrc2013 = 'https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk', _.avoDate2013 = '2013-05-00')
+    run('AverageAvocado', 217, _.avoUrlOrc2013 = 'https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk', _.avoDateOrc2013 = '2013-05-00'),
+    run('AverageAvocado', 224, _.avoUrl2015 = 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', _.avoDate2015 = '2015-00-00'),
   ],
   [runs(war2, war2Mission, 'owo017vw')]: [ // orc2
-    run('AverageAvocado', 102, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 100, _.avoUrlOrc2013, _.avoDateOrc2013),
+    run('AverageAvocado', 102, _.avoUrl2015, _.avoDate2015),
   ],
   [runs(war2, war2Mission, 'xd17ejqd')]: [ // orc3
-    run('AverageAvocado', 464, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 519, _.avoUrlOrc2013, _.avoDateOrc2013),
+    run('AverageAvocado', 464, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'ewpjm7lw')]: [ // orc4
-    run('AverageAvocado', 1143, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1143, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'y9mjq5l9')]: [ // orc5
-    run('AverageAvocado', 1154, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1154, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, '5wkjzk5d')]: [ // orc6
-    run('AverageAvocado', 224, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 224, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, '592zg0g9')]: [ // orc7
-    run('AverageAvocado', 1235, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1235, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, '29v3ey1w')]: [ // orc8
-    run('AverageAvocado', 1066, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1066, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'xd4j760d')]: [ // orc9
-    run('AverageAvocado', 1180, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1180, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'xd0gr00w')]: [ // orc10
-    run('AverageAvocado', 1437, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1437, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'rw64pvn9')]: [ // orc11
-    run('AverageAvocado', 1675, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1675, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'n937507d')]: [ // orc12
-    run('AverageAvocado', 2295, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 2295, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'z986vj7d')]: [ // orc13
-    run('AverageAvocado', 1761, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1761, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'rdn0j5nw')]: [ // orc14
-    run('AverageAvocado', 1833, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1833, _.avoUrl2015, _.avoDate2015)
   ],
 
   [runs(war2, war2Mission, 'ldyy7ejd')]: [ // human1
-    run('AverageAvocado', 208, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 208, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'n93750nd')]: [ // human2
-    run('AverageAvocado', 89, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 89, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'z986vjgd')]: [ // human3
-    run('AverageAvocado', 409, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 409, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'rdn0j5qw')]: [ // human4
-    run('AverageAvocado', 710, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 710, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'ldyy7ekd')]: [ // human5
-    run('AverageAvocado', 966, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 966, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'gdre4j69')]: [ // human6
-    run('AverageAvocado', 927, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 927, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'nwllx60w')]: [ // human7
-    run('AverageAvocado', 1008, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1008, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'ywe1k4yd')]: [ // human8
-    run('AverageAvocado', 918, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 918, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, '69z3orld')]: [ // human9
-    run('AverageAvocado', 503, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 503, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'r9g20z5d')]: [ // human10
-    run('AverageAvocado', 1002, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1002, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'o9xn520w')]: [ // human11
-    run('AverageAvocado', 1037, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1037, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, '4956oj0d')]: [ // human12
-    run('AverageAvocado', 1180, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1180, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, 'rdqj20k9')]: [ // human13
-    run('AverageAvocado', 2337, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 2337, _.avoUrl2015, _.avoDate2015)
   ],
   [runs(war2, war2Mission, '5d7vk7gd')]: [ // human14
-    run('AverageAvocado', 1462, _.avoPl2015, _.avoDate2015)
+    run('AverageAvocado', 1462, _.avoUrl2015, _.avoDate2015)
   ],
   
   [runs(war2x, war2xMission, 'z986v8gd')]: [ // xhuman1

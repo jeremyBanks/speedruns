@@ -27,7 +27,7 @@ const apiFetch = async path => {
     } else {
       const data = body.data;
       if (extraData[path]) {
-        data.push(...extraData[path]);
+        data.push(...extraData[path].filter(Boolean));
       }
       return data;
     }
