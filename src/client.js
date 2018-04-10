@@ -17,13 +17,13 @@ const getBests = (gameSlugs, playerSlug) => {
 
     yield line(HTML`Historical progression of <a href="${runner.url}">${runner.nick}</a>'s personal bests against the world records:`);
     yield line();
-    for (const game of games) yield function*() {
+    for (const game of games) yield async function*() {
         yield line(HTML`      <a class="game" href="${game.url}">${game.nick}</a>`);
         yield line();
 
         const runnables = await game.categoryLevelPairs();
 
-        for (const level of runnables) yield function*() {
+        for (const level of runnables) yield async function*() {
           yield line(HTML`          <a class="level" href="${level.url}">${level.nick}</a>`);
 
           const runs = await level.runs();
