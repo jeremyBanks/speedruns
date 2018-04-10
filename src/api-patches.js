@@ -1,5 +1,5 @@
 class UnofficialRun {
-  constructor(_, playerName, durationSeconds, url, date) {
+  constructor(playerName, durationSeconds, url, date) {
     this.ℹ️ = this.constructor.name;
     this.weblink = url;
     this.players = [
@@ -32,8 +32,44 @@ class UnofficialRun {
 const runs = (game, category, level) => `runs?game=${game}&category=${category}&level=${level}&status=verified&orderby=date&direction=asc&max=200`;
 const run = (...args) => new UnofficialRun(...args);
 
+const war2x = 'y65zy46e';
+const mission = 'wkponpj2';
+
 export const extraData = {
-  [runs('war2/xorc11', 'y65zy46e', 'wkponpj2', 'rw64pnr9')]: [
+  [runs(war2x, mission, 'kwj5lyn9')]: [ // xorc1
+    run('AverageAvocado', 284, 'https://youtu.be/eeBgiR8OBlU?t=66', '2015-05-15')
+  ],
+  [runs(war2x, mission, 'owo01kow')]: [ // xorc2
+    run('AverageAvocado', 741, 'https://youtu.be/5YjjECd8LMg?t=45', '2015-05-16')
+  ],
+  [runs(war2x, mission, 'xd17e0ed')]: [ // xorc3
+    run('AverageAvocado', 111111111, 'yyyyyyyyyy', '2015-05-22')
+  ],
+  [runs(war2x, mission, 'ewpjmqkw')]: [ // xorc4
+    run('AverageAvocado', 111111111, 'yyyyyyyyyy', '2015-XX-XX')
+  ],
+  [runs(war2x, mission, 'y9mjqp59')]: [ // xorc5
+    run('AverageAvocado', 111111111, 'yyyyyyyyyy', '2015-XX-XX')
+  ],
+  [runs(war2x, mission, '5wkjzr2d')]: [ // xorc6
+    run('AverageAvocado', 111111111, 'yyyyyyyyyy', '2015-XX-XX')
+  ],
+  [runs(war2x, mission, '592zgoo9')]: [ // xorc7
+    run('AverageAvocado', 111111111, 'yyyyyyyyyy', '2015-XX-XX')
+  ],
+  [runs(war2x, mission, '29v3ek3w')]: [ // xorc8
+    run('AverageAvocado', 111111111, 'yyyyyyyyyy', '2015-XX-XX')
+  ],
+  [runs(war2x, mission, 'xd4j732d')]: [ // xorc9
+    run('AverageAvocado', 111111111, 'yyyyyyyyyy', '2015-XX-XX')
+  ],
+  [runs(war2x, mission, 'xd0gr7xw')]: [ // xorc10
+    run('AverageAvocado', 111111111, 'yyyyyyyyyy', '2015-XX-XX')
+  ],
+  [runs(war2x, mission, 'rw64pnr9')]: [ // xorc11
     run('AverageAvocado', 1721, 'https://youtu.be/10awDV6v9t0?t=51', '2015-06-16')
+  ],
+  [runs(war2x, mission, 'n9375gnd')]: [ // xorc12
+    run('AverageAvocado', 111111111, 'yyyyyyyyyy', '2015-XX-XX')
   ],
 };
