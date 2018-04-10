@@ -320,3 +320,11 @@ span.time {
   color: black;
   background: rgb(200, 225, 255);
 }
+
+.bestsOutput * {
+  animation: pop-in 0.25s;
+}
+@keyframes pop-in {
+  0% { opacity: 0; transform: scale(0.125); }
+  100% { opacity: 1; transform: scale(1); }
+}
