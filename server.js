@@ -19,6 +19,12 @@ const apiCache = new Map();
 app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   const url = req.url.slice(1);
   const cached = apiCache.get(url);
+
+  // We already have server-side caching and in-session
+  // client-side caching. We don't need browser caching,
+  // and disabling the cache may improve request paralallizability
+  // in some cases. Our client also applies the header to requests.
+  res.set('Cache-Control', 'no-store');
   
   if (cached) {
     return res.send(await cached);
