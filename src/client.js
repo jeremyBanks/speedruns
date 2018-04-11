@@ -13,9 +13,11 @@ const getBests = (gameSlugs, playerSlug) => {
 
     const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
 
-    const getRunner = speedrun.Runner.get(playerSlug);
+    const getRunner = playerSlug ? speedrun.Runner.get(playerSlug) : Promise.resolve(null);
+    
+    yield line(HTML`Showing world record progressions over time${
+               getRunner.then(runner => runner ? HTML`, with <a href="${runner.url}">${runner.nick}</a>'s personal bests for comparison` : '')}.`);
 
-    yield line(getRunner.then(runner => HTML`Showing world record progressions over time, with <a href="${runner.url}">${runner.nick}</a>'s personal bests for comparison.`));
     yield line();
     yield line("Scales and ranges are not consistent across categories/levels. A consistent linear scale is only used for duration differences between runs within a given category/level.");
     yield line();
@@ -26,7 +28,7 @@ const getBests = (gameSlugs, playerSlug) => {
         const runnables = await game.categoryLevelPairs();
 
         for (const level of runnables) yield async function*() {
-          yield line(HTML`          <a class="level" id="${game.slug}/${level.slug}" href="#${game.slug}/${level.slug}">${level.nick}</a>`);
+          yield line(HTML`          <a class="level" id="${level.slug}" href="#${level.slug}">${level.nick}</a>`);
 
           const runs = await level.runs();
           runs.sort(compareAll(
@@ -46,13 +48,16 @@ const getBests = (gameSlugs, playerSlug) => {
           const targetRunner = await getRunner;
 
           const personalRecords = [];
-          let pr = null;
-          for (const run of runs) {
-            if (run.runner.nick !== targetRunner.nick) continue;
+          
+          if (targetRunner) {
+            let pr = null;
+            for (const run of runs) {
+              if (run.runner.nick !== targetRunner.nick) continue;
 
-            if (!pr || run.durationSeconds < pr.durationSeconds) {
-              pr = run;
-              personalRecords.push(pr);
+              if (!pr || run.durationSeconds < pr.durationSeconds) {
+                pr = run;
+                personalRecords.push(pr);
+              }
             }
           }
 
@@ -160,7 +165,6 @@ const getBests = (gameSlugs, playerSlug) => {
   } else if (path.length === 1) {
     const [gamesSlug, playerSlug] = path[0].split('@');
     if (!gamesSlug) throw new Error("no game(s) in URL");
-    if (!playerSlug) throw new Error("no player in URL");
 
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
