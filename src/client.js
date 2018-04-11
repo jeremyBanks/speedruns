@@ -57,8 +57,8 @@ const getBests = (gameSlugs, playerSlug) => {
           const maxRecord = Math.max(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
           const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
 
-          const magnitudeFudge = (Math.log(minRecord) - Math.log(16)) / Math.log(2);
-          const maxnitudeFudge = (Math.log(maxRecord) - Math.log(64)) / Math.log(2);
+          const magnitudeFudge = Math.ceil(Math.log(minRecord) - Math.log(16)) / Math.log(2);
+          const maxnitudeFudge = Math.floor(Math.log(maxRecord) - Math.log(64)) / Math.log(2);
 
           const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
 
@@ -76,11 +76,11 @@ const getBests = (gameSlugs, playerSlug) => {
 
               if (worldRecords.includes(record)) {
                 lastWr = lastWr;
-                lastWrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge + maxnitudeFudge) + magnitudeFudge).replace(/./g, '█');
+                lastWrIndicators = '█' + ''.padEnd(Math.ceil(outstandingProgress * (40 - magnitudeFudge + maxnitudeFudge) + magnitudeFudge)).replace(/./g, '█');
               }
               if (personalRecords.includes(record)) {
                 lastPr = record;
-                lastPrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge + maxnitudeFudge) + magnitudeFudge).replace(/./g, '▐');
+                lastPrIndicators = '█' + ''.padEnd(Math.ceil(outstandingProgress * (40 - magnitudeFudge + maxnitudeFudge) + magnitudeFudge)).replace(/./g, '▐');
               }
 
               const indicators = zip(
