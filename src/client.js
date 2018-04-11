@@ -4,7 +4,7 @@ import {zip, devAwaitDeep, compareAll, compareDefault} from '/src/utils.js';
 import * as speedrun from '/src/speedrun.js';
 
 
-const defaultPath = 'wc2+wc2btdp@banks';
+const defaultPath = 'wc2+wc2btdp@ZPR';
 
 
 const getBests = (gameSlugs, playerSlug) => {
