@@ -15,11 +15,9 @@ const getBests = (gameSlugs, playerSlug) => {
 
     const getRunner = speedrun.Runner.get(playerSlug);
 
-    yield line(getRunner.then(runner => [
-      HTML`Showing world record progression over time, with <a href="${runner.url}">${runner.nick}</a>'s personal bests for comparison.\n`,
-      HTML`\n`,
-      HTML`A consistent linear scale is used for relative differences .\n`
-    ]));
+    yield line(getRunner.then(runner => HTML`Showing world record progressions over time, with <a href="${runner.url}">${runner.nick}</a>'s personal bests for comparison.`));
+    yield line();
+    yield line("Scales and ranges are not consistent across categories/levels. A consistent linear scale is only used for duration differences between runs within a given category/level.");
     yield line();
     for (const game of games) yield async function*() {
         yield line(HTML`      <a class="game" href="${game.url}">${game.nick}</a>`);
