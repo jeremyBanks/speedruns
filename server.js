@@ -5,10 +5,11 @@ const rp = require('request-promise-native');
 
 const app = express();
 
-// compress responses
-app.use(compression())
+// compress responses.
+app.use(compression());
 
-// app.set('json spaces', 2);
+// pretty print json, or not.
+app.set('json spaces', null);
 
 // Serve this entire project directoy.
 app.use(express.static('./', {
