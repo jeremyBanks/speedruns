@@ -20,13 +20,13 @@ const getBests = (gameSlugs, playerSlug) => {
     yield line("Scales and ranges are not consistent across categories/levels. A consistent linear scale is only used for duration differences between runs within a given category/level.");
     yield line();
     for (const game of games) yield async function*() {
-        yield line(HTML`      <a class="game" href="${game.url}">${game.nick}</a>`);
+        yield line(HTML`      <a class="game" id="${game.slug}" href="#${game.slug}">${game.nick}</a>`);
         yield line();
 
         const runnables = await game.categoryLevelPairs();
 
         for (const level of runnables) yield async function*() {
-          yield line(HTML`          <a class="level" href="${level.url}">${level.nick}</a>`);
+          yield line(HTML`          <a class="level" id="${game.slug}/${level.slug}" href="#${game.slug}/${level.slug}">${level.nick}</a>`);
 
           const runs = await level.runs();
           runs.sort(compareAll(
@@ -183,4 +183,12 @@ const getBests = (gameSlugs, playerSlug) => {
   `);
   
   await Promise.all(blockers);
+  console.log("Rendered successfully! 😁");
+  
+  // toggles the hash value so the browser can scroll to elements that we rendered after page load.
+  const hash = window.location.hash;
+  if (hash > '#') {
+    window.location.hash = '';
+    window.location.hash = hash;
+  }
 };

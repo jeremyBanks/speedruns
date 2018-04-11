@@ -67,6 +67,7 @@ export class Game {
     this['ℹ️'] = this.constructor.name;
     this.gameId =
     this.nick =
+    this.slug =
     this.url = void this;
     Object.seal(this);
     Object.assign(this, ...args);
@@ -78,6 +79,7 @@ export class Game {
       gameId: data.id,
       nick: data.names.international,
       url: data.weblink,
+      slug: data.abbreviation || data.id,
     });
   }
 
@@ -121,6 +123,10 @@ export class CategoryLevelPair {
     Object.assign(this, ...args);
   }
 
+  get slug() {
+    return `${this.categoryId}-${this.levelId}`;
+  }
+  
   async runs() {
     const runs = await api(
       `runs?game=${this.gameId}&category=${this.categoryId}&level=${this.levelId}&status=verified&orderby=date&direction=asc&max=200`);
