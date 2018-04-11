@@ -189,10 +189,14 @@ const getBests = (gameSlugs, playerSlug) => {
   await Promise.all(blockers);
   console.info("Rendered successfully! 😁");
   
-  // toggles the hash value so the browser can scroll to elements that we rendered after page load.
   const hash = window.location.hash;
-  if (hash > '#') {
-    window.location.hash = '';
-    window.location.hash = hash;
+  if (document.scrollingElement.scrollTop === 0 && hash > '#') {
+    const target = document.querySelector(hash);
+    if (target) {
+      target.scrollIntoView({behavior: 'smooth'});
+    } else {
+      window.location.hash = '';
+      window.location.hash = hash;
+    }
   }
 };
