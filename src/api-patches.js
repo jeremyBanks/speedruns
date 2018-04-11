@@ -44,8 +44,8 @@ export const extraData = {
   // historical data we display.
 
   [runs(war2, war2Mission, 'kwj5l7r9')]: [ // orc1
-    run('AverageAvocado', 217, _.avoUrlOrc2013 = 'https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk', _.avoDate2013 = '2013-06-00'),
-    run('AverageAvocado', 224, _.avoUrl2015 = 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', _.avoDate2015 = '2015-00-00'),
+    run('AverageAvocado', 217, _.avoUrlOrc2013 = 'https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk', _.avoDate2013 = '2013-06   '),
+    run('AverageAvocado', 224, _.avoUrl2015 = 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', _.avoDate2015 = '2015      '),
   ],
   [runs(war2, war2Mission, 'owo017vw')]: [ // orc2
     run('AverageAvocado', 100, _.avoUrlOrc2013, _.avoDate2013),
@@ -211,35 +211,34 @@ export const extraData = {
     run('AverageAvocado', 860, 'https://youtu.be/AdtTlUA4sa0?t=56', '2015-05-23'),
   ],
   [runs(war2x, war2xMission, 'y9mjqp59')]: [ // xorc5
-    run('AverageAvocado', 911911, _.avoUrlXOrc2013, _.avoDate2013),
+    run('AverageAvocado', 2409, _.avoUrlXOrc2013, _.avoDate2013),
     run('AverageAvocado', 1039, 'https://youtu.be/mOsxBWDLGjM?t=62', '2015-05-29'),
   ],
   [runs(war2x, war2xMission, '5wkjzr2d')]: [ // xorc6
-    run('AverageAvocado', 911911, _.avoUrlXOrc2013, _.avoDate2013),
+    run('AverageAvocado', 1909, _.avoUrlXOrc2013, _.avoDate2013),
     run('AverageAvocado', 1373, 'https://youtu.be/W5I7WNnARpc?t=47', '2015-05-30'),
   ],
   [runs(war2x, war2xMission, '592zgoo9')]: [ // xorc7
-    run('AverageAvocado', 911911, _.avoUrlXOrc2013, _.avoDate2013),
+    run('AverageAvocado', 2950, _.avoUrlXOrc2013, _.avoDate2013),
     run('AverageAvocado', 1983, 'https://youtu.be/XU5rZn8VNP0?t=62', '2015-06-05'),
   ],
   [runs(war2x, war2xMission, '29v3ek3w')]: [ // xorc8
-    run('AverageAvocado', 911911, _.avoUrlXOrc2013, _.avoDate2013),
+    run('AverageAvocado', 2694, _.avoUrlXOrc2013, _.avoDate2013),
     run('AverageAvocado', 1771, 'https://youtu.be/IoVa94tVuzA?t=36', '2015-06-06'),
   ],
   [runs(war2x, war2xMission, 'xd4j732d')]: [ // xorc9
-    run('AverageAvocado', 911911, _.avoUrlXOrc2013, _.avoDate2013),
+    run('AverageAvocado', 792, _.avoUrlXOrc2013, _.avoDate2013),
     run('AverageAvocado', 578, 'https://youtu.be/KNKMXghZbnY?t=62', '2015-06-12'),
   ],
   [runs(war2x, war2xMission, 'xd0gr7xw')]: [ // xorc10
-    run('AverageAvocado', 911911, _.avoUrlXOrc2013, _.avoDate2013),
+    run('AverageAvocado', 2225, _.avoUrlXOrc2013, _.avoDate2013),
     run('AverageAvocado', 1333, 'https://youtu.be/VjWPkHj3qio?t=66', '2015-06-12'),
   ],
   [runs(war2x, war2xMission, 'rw64pnr9')]: [ // xorc11
-    run('AverageAvocado', 911911, _.avoUrlXOrc2013, _.avoDate2013),
+    run('AverageAvocado', 2536, _.avoUrlXOrc2013, _.avoDate2013),
     run('AverageAvocado', 1721, 'https://youtu.be/10awDV6v9t0?t=51', '2015-06-16'),
   ],
   [runs(war2x, war2xMission, 'n9375gnd')]: [ // xorc12
-    run('AverageAvocado', 911911, _.avoUrlXOrc2013, _.avoDate2013),
     run('AverageAvocado', 2307, 'https://youtu.be/tUgBU_3yO6s?t=54', '2015-06-20'),
   ],
 };
