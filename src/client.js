@@ -193,10 +193,9 @@ const getBests = (gameSlugs, playerSlug) => {
   if (document.scrollingElement.scrollTop === 0 && hash > '#') {
     const target = document.querySelector(hash);
     if (target) {
-      target.scrollIntoView({behavior: 'smooth'});
-    } else {
-      window.location.hash = '';
-      window.location.hash = hash;
+      target.classList.add('target');
     }
+    window.location.hash = '';
+    window.location.hash = hash;
   }
 };
