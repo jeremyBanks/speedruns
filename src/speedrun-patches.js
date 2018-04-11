@@ -14,15 +14,17 @@ class UnofficialRun {
     this.date = date;
     
     let durationString = 'PT';
-    {
+    durationString: {
+      if (durationSeconds === 0) {
+        durationString += '0';
+        break durationString;
+      }
       const hours = Math.floor(durationSeconds / (60 * 60));
       const minutes = Math.floor(durationSeconds / 60) % 60;
-      const seconds = Math.floor(durationSeconds) % 60;
-      const miliseconds = durationSeconds % 1.0;
+      const seconds = durationSeconds % 60; // may include miliseconds
       if (hours) durationString += `${hours}H`;
       if (minutes) durationString += `${minutes}M`;
       if (seconds) durationString += `${seconds}S`;
-      if (miliseconds) throw new Error("not supported!");
     }
 
     this.times = {
