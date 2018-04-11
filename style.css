@@ -312,6 +312,10 @@ span.time {
   font-weight: bold;
 }
 
+.bestsOutput *:target {
+  color: red;
+}
+
 .bestsOutput .none {
   opacity: 0.5;
 }
