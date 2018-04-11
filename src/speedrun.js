@@ -124,7 +124,7 @@ export class CategoryLevelPair {
   }
 
   get slug() {
-    return `${this.categoryId}-${this.levelId}`;
+    return [this.categoryId, this.levelId].filter(Boolean).join('-');
   }
   
   async runs() {
