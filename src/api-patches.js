@@ -153,7 +153,7 @@ export const extraData = {
     run('AverageAvocado', 2337, _.avoUrl2015, _.avoDate2015),
   ],
   [runs(war2, war2Mission, '5d7vk7gd')]: [ // human14
-    run('AverageAvocado', 1810, _, _.avoDate2013),
+    run('AverageAvocado', 1810, 'https://youtu.be/SCLKKmiXRck?t=37', _.avoDate2013),
     run('AverageAvocado', 1462, _.avoUrl2015, _.avoDate2015),
   ],
 
@@ -161,10 +161,10 @@ export const extraData = {
     run('AverageAvocado', 411, _.avoUrlXHuman2013 = 'https://www.youtube.com/playlist?list=PL5b0fctdcCFMrfEc2a3oI_25cPHwmccxG', _.avoDate2013),
   ],
   [runs(war2x, war2xMission, 'rdn0jpqw')]: [ // xhuman2
-    run('AverageAvocado', 911911, _.avoUrlXHuman2013, _.avoDate2013),
+    run('AverageAvocado', 1476, 'https://youtu.be/sXIsb-N66_g?t=44', _.avoDate2013),
   ],
   [runs(war2x, war2xMission, 'ldyy7pkd')]: [ // xhuman3
-    run('AverageAvocado', 911911, _.avoUrlXHuman2013, _.avoDate2013),
+    run('AverageAvocado', 3027, 'https://youtu.be/rzNGZfoQKXQ?t=31', _.avoDate2013),
   ],
   [runs(war2x, war2xMission, 'gdre4q69')]: [ // xhuman4
     run('AverageAvocado', 911911, _.avoUrlXHuman2013, _.avoDate2013),
