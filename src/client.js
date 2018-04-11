@@ -197,5 +197,8 @@ const getBests = (gameSlugs, playerSlug) => {
     }
     window.location.hash = '';
     window.location.hash = hash;
+    if (target) {
+      target.blur();
+    }
   }
 };
