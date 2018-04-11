@@ -30,18 +30,20 @@ const getBests = (gameSlugs, playerSlug) => {
         for (const level of runnables) yield async function*() {
           yield line(HTML`          <a class="level" id="${level.slug}" href="#${level.slug}">${level.nick}</a>`);
 
-          const runs = await level.runs();
-          runs.sort(compareAll(
+          const compareRuns = compareAll(
             (a, b) => compareDefault(a.date, b.date),
-            (a, b) => compareDefault(a.dateSubmitted, b.dateSubmitted),
-          ));
+            (a, b) => compareDefault(a.dateTimeSubmitted, b.dateTimeSubmitted),
+          );
+          
+          const runs = await level.runs();
+          runs.sort(compareRuns);
 
           const worldRecords = [];
           let wr = null;
           for (const run of runs) {
             if (!wr || run.durationSeconds <= wr.durationSeconds) {
+              worldRecords.push(run);
               wr = run;
-              worldRecords.push(wr);
             }
           }
           
@@ -55,8 +57,8 @@ const getBests = (gameSlugs, playerSlug) => {
               if (run.runner.nick !== targetRunner.nick) continue;
 
               if (!pr || run.durationSeconds < pr.durationSeconds) {
+                personalRecords.push(run);
                 pr = run;
-                personalRecords.push(pr);
               }
             }
           }
@@ -68,7 +70,7 @@ const getBests = (gameSlugs, playerSlug) => {
 
           const maxnitudeFudge = Math.floor(Math.min(maxRecord, 60 * 30) / (2 * 60) + (Math.max(0, Math.log(maxRecord) - Math.log(60*60)))/Math.log(1.5));
                                             
-          const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
+          const records = [...new Set([...personalRecords, ...worldRecords])].sort(compareRuns);
 
           if (records.length === 0) {
             yield line(HTML`                      <span class="none">(no runs)</span>`);
