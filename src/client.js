@@ -58,6 +58,7 @@ const getBests = (gameSlugs, playerSlug) => {
           const minRecord = Math.min(...worldRecords.map(r => r.durationSeconds), ...personalRecords.map(r => r.durationSeconds));
 
           const magnitudeFudge = (Math.log(minRecord) - Math.log(16)) / Math.log(2);
+          const maxnitudeFudge = (Math.log(maxRecord) - Math.log(64)) / Math.log(2);
 
           const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
 
@@ -75,11 +76,11 @@ const getBests = (gameSlugs, playerSlug) => {
 
               if (worldRecords.includes(record)) {
                 lastWr = lastWr;
-                lastWrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '█');
+                lastWrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge + maxnitudeFudge) + magnitudeFudge).replace(/./g, '█');
               }
               if (personalRecords.includes(record)) {
                 lastPr = record;
-                lastPrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge) + magnitudeFudge).replace(/./g, '▐');
+                lastPrIndicators = '█' + ''.padEnd(outstandingProgress * (40 - magnitudeFudge + maxnitudeFudge) + magnitudeFudge).replace(/./g, '▐');
               }
 
               const indicators = zip(
@@ -129,7 +130,7 @@ const getBests = (gameSlugs, playerSlug) => {
   const defaultName = "bests";
   const title = `${d || defaultName}.glitch.me`;
 
-  document.title = (path.length) ? `${defaultName}…/${path.join('/')}` : title;
+  document.title = (path.length) ? `${defaultName}/${path.join('/')}` : title;
 
   const output = await HTML.element`<div></div>`; 
   document.querySelector('#main').appendChild(output);
