@@ -21,4 +21,9 @@
   move it there properly. right now it's in a least-efficient limbo.
 
 - persistent and timed server-side caching, instead of just random in-memory.
-- client-side offline fall-back caching with Service Worker Toolbox.
+
+- consider client-side offline fall-back caching with Service Worker Toolbox.
+  this needs to handle the frequent case of the site being temporarily broken
+  because I'm in the middle of editing it. however, consider whether this
+  could affect the performance gains we got from disabling the browser's
+  default caching for API requests.
