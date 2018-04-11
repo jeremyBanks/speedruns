@@ -1,17 +1,22 @@
 <!doctype html>
 <meta charset="utf-8">
+
 <link rel="icon" href="https://cdn.glitch.com/3fc98777-ee3b-4f97-849b-2c8d8e4b62ae%2Fbattle.png">
 <link rel="stylesheet" href="/style.css">
+
 <meta name="viewport" content="width=682, initial-scale=0">
-<script type="module">
-// entry point:
-import '/src/client.js';
-// dependencies to preload:
-import '/src/html.js';
-import '/src/utils.js';
-import '/src/speedrun.js';
-import '/src/speedrun-patches.js';
-</script>
+
 <body class="unloaded">
 <pre id="error-message">Attempting to load page...</pre>
 <main id="main"></main>
+
+<script type="module">
+  // entry point:
+  import '/src/client.js';
+
+  // dependencies to preload:
+  import '/src/html.js';
+  import '/src/utils.js';
+  import '/src/speedrun.js';
+  import '/src/speedrun-patches.js';
+</script>

@@ -5,8 +5,8 @@
     "node": "9.x"
   },
   "dependencies": {
-    "express": "^4.16.2",
-    "request": "^2.83.0",
+    "express": "^4.16.3",
+    "request": "^2.85.0",
     "request-promise-native": "^1.0.5",
     "compression": "^1.7.2"
   },
