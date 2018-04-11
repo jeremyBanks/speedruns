@@ -312,8 +312,22 @@ span.time {
   font-weight: bold;
 }
 
-.bestsOutput *:target {
-  color: red;
+.bestsOutput a.level:target, .bestsOutput a.game:target {
+  padding: 32px 64px;
+  margin: -32px -64px;
+  animation: focus-target 2.0s ease-in;
+  border-radius: 256px;
+}
+.bestsOutput a.game:target {
+  margin-top: calc(16px - 32px);
+  margin-bottom: calc(4px - 32px);
+}
+.bestsOutput a.level:target {
+  margin-top: calc(32px - 32px);
+}
+@keyframes focus-target {
+  0% { background: rgba(255, 255, 128, 1.0); }
+  100% { background: rgba(255, 255, 128, 0.0); }
 }
 
 .bestsOutput .none {
