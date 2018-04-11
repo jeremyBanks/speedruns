@@ -15,7 +15,7 @@ const getBests = (gameSlugs, playerSlug) => {
 
     const getRunner = playerSlug ? speedrun.Runner.get(playerSlug) : Promise.resolve(null);
     
-    yield line(HTML`Showing world record progressions over time${
+    yield line(HTML`World record progressions over time${
                getRunner.then(runner => runner ? HTML`, with <a href="${runner.url}">${runner.nick}</a>'s personal bests for comparison` : '')}.`);
 
     yield line();
