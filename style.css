@@ -322,13 +322,12 @@ span.time {
   background: rgb(200, 225, 255);
 }
 
-body:not(.loaded):not(.error) main {
+body.loading main {
   cursor: progress;
   opacity: 0.25;
 }
 
 #error-message {
-  display: none;
   border: 1px solid red;
   color: red;
   position: fixed;

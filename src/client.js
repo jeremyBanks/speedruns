@@ -119,11 +119,17 @@ const getBests = (gameSlugs, playerSlug) => {
 
 ({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async main => {
   (async () => {
+    document.body.classList.remove('unloaded');
+    document.body.classList.add('loading');
     const errorMessage = document.querySelector('#error-message');
     try {
       await main;
       errorMessage.remove();
+      document.body.classList.remove('loading');
+      document.body.classList.add('loaded');
     } catch (error) {
+      document.body.classList.remove('loading');
+      document.body.classList.add('errored');
       errorMessage.textContent = `${error}\n\n${error.stack}`;
       throw error;
     }
