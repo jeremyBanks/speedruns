@@ -1,8 +1,12 @@
 const express = require('express');
+const compression = require('compression');
 const rp = require('request-promise-native');
 
 
 const app = express();
+
+// compress responses
+app.use(compression())
 
 // app.set('json spaces', 2);
 

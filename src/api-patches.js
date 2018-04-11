@@ -46,7 +46,7 @@ export const extraData = {
   [runs(war2, war2Mission, 'kwj5l7r9')]: [ // orc1
     run('AverageAvocado', 217, _.avoUrlOrc2013 = 'https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk', _.avoDate2013 = '2013-06   '),
     run('AverageAvocado', 224, _.avoUrl2015 = 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', _.avoDate2015 = '2015      '),
-    run('Cire2047', 277, 'https://youtu.be/CSeONuQXKww?t=57', '2011-04-15'),
+    run('Cire2047', 229, 'https://youtu.be/Pl0ZkfDKEsg?t=62', '2011-05-01'),
   ],
   [runs(war2, war2Mission, 'owo017vw')]: [ // orc2
     run('AverageAvocado', 100, _.avoUrlOrc2013, _.avoDate2013),
