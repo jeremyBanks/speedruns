@@ -26,20 +26,6 @@ body {
   to   { opacity: 1.0; }
 }
 
-#loading-message {
-  border: 1px solid red;
-  color: red;
-  position: fixed;
-  right: 4px;
-  bottom: 4px;
-  z-index: 512;
-  background: rgba(0, 0, 0, 0.9375);
-  width: auto;
-  padding: 2em;
-  max-width: 600px;
-  user-select: all;
-}
-
 main {
   color: #000;
   background: #FFF;
@@ -334,4 +320,32 @@ span.time {
 ::selection {
   color: black;
   background: rgb(200, 225, 255);
+}
+
+body:not(.loaded):not(.error) main {
+  cursor: progress;
+  opacity: 0.25;
+}
+
+#error-message {
+  display: none;
+  border: 1px solid red;
+  color: red;
+  position: fixed;
+  right: 4px;
+  bottom: 4px;
+  z-index: 512;
+  background: rgba(0, 0, 0, 0.9375);
+  width: auto;
+  padding: 2em;
+  max-width: 600px;
+  user-select: all;
+}
+
+body.loading #error-message {
+  display: none;
+}
+
+body.errored #error-message {
+  display: block;
 }
