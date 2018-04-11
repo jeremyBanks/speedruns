@@ -15,7 +15,11 @@ const getBests = (gameSlugs, playerSlug) => {
 
     const getRunner = speedrun.Runner.get(playerSlug);
 
-    yield line(getRunner.then(runner => HTML`Historical progression of <a href="${runner.url}">${runner.nick}</a>'s personal bests against the world records:`));
+    yield line(getRunner.then(runner => [
+      HTML`Showing world record progression over time, with <a href="${runner.url}">${runner.nick}</a>'s personal bests for comparison.\n`,
+      HTML`\n`,
+      HTML`A consistent linear scale is used for relative differences .\n`
+    ]));
     yield line();
     for (const game of games) yield async function*() {
         yield line(HTML`      <a class="game" href="${game.url}">${game.nick}</a>`);
@@ -59,8 +63,8 @@ const getBests = (gameSlugs, playerSlug) => {
 
           const magnitudeFudge = Math.ceil((Math.log(minRecord) - Math.log(16)) / Math.log(2));
 
-          const maxnitudeFudge = Math.floor(Math.min(maxRecord, 60 * 60 * 4) / (15 * 60))
-
+          const maxnitudeFudge = Math.floor(Math.min(maxRecord, 60 * 30) / (2 * 60) + (Math.max(0, Math.log(maxRecord) - Math.log(60*60)))/Math.log(1.5));
+                                            
           const records = [...new Set([...personalRecords, ...worldRecords])].sort((a, b) => compareDefault(a.date, b.date))
 
           if (records.length === 0) {
@@ -77,11 +81,11 @@ const getBests = (gameSlugs, playerSlug) => {
 
               if (worldRecords.includes(record)) {
                 lastWr = lastWr;
-                lastWrIndicators = '█' + ''.padEnd(Math.ceil(outstandingProgress * (32 - magnitudeFudge + maxnitudeFudge) + magnitudeFudge)).replace(/./g, '█');
+                lastWrIndicators = '█' + ''.padEnd(Math.ceil(outstandingProgress * (16 - magnitudeFudge + maxnitudeFudge) + magnitudeFudge)).replace(/./g, '█');
               }
               if (personalRecords.includes(record)) {
                 lastPr = record;
-                lastPrIndicators = '█' + ''.padEnd(Math.ceil(outstandingProgress * (32 - magnitudeFudge + maxnitudeFudge) + magnitudeFudge)).replace(/./g, '▐');
+                lastPrIndicators = '█' + ''.padEnd(Math.ceil(outstandingProgress * (16 - magnitudeFudge + maxnitudeFudge) + magnitudeFudge)).replace(/./g, '▐');
               }
 
               const indicators = zip(
