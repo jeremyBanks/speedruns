@@ -313,8 +313,8 @@ span.time {
 .bestsOutput a.level:target {
   padding: 12px;
   margin: -12px;
-  animation: focus-target 0.5s ease-in;
   border-radius: 16px;
+  animation: focus-target 0.25s ease-in;
 }
 @keyframes focus-target {
   0% {
