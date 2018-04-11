@@ -3,9 +3,12 @@ import {extraData} from '/src/speedrun-patches.js';
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
-export const api = async path => {
+export const api = async (path, maxPages = 1) => {
   if (!apiCache.has(path)) {
-    const result = apiFetch(path).then(null, error => { apiCache.delete(path); throw error; });
+    const result = apiFetch(path).then(null, error => {
+      apiCache.delete(path);
+      throw error;
+    });
     apiCache.set(path, result);
     return await result;
   } else {
@@ -27,8 +30,8 @@ const apiFetch = async path => {
   if (body.status) {
     throw new Error(`${body.status}: ${body.message}`); 
   } else {
-    if (body.pagination && body.pagination.size > body.pagination.max) {
-      throw new Error(`found ${body.pagination.size} items matching request, exceeding our maximum of ${body.pagination.max}`);
+    if (body.pagination && body.links.filter(l => l.rel === 'next')) {
+      throw new Error(`got too many results (more than one page (${body.pagination.max}))`);
     } else {
       const data = body.data;
       if (extraData[path]) {

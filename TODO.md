@@ -1,0 +1,5 @@
+- continue optimizing
+  - reduce number of speedrun api requests
+    - sinc
+    - add pagination support in API
+- import more playthrough runs
