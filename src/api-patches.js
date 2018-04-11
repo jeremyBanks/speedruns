@@ -167,31 +167,31 @@ export const extraData = {
     run('AverageAvocado', 3027, 'https://youtu.be/rzNGZfoQKXQ?t=31', _.avoDate2013),
   ],
   [runs(war2x, war2xMission, 'gdre4q69')]: [ // xhuman4
-    run('AverageAvocado', 911911, _.avoUrlXHuman2013, _.avoDate2013),
+    run('AverageAvocado', 1668, _.avoUrlXHuman2013, _.avoDate2013),
   ],
   [runs(war2x, war2xMission, 'nwllx70w')]: [ // xhuman5
-    run('AverageAvocado', 911911, _.avoUrlXHuman2013, _.avoDate2013),
+    run('AverageAvocado', 1921, _.avoUrlXHuman2013, _.avoDate2013),
   ],
   [runs(war2x, war2xMission, 'ywe1k8yd')]: [ // xhuman6
-    run('AverageAvocado', 911911, _.avoUrlXHuman2013, _.avoDate2013),
+    run('AverageAvocado', 1921, 'https://youtu.be/zEpneIWa7pE?t=49', _.avoDate2013),
   ],
   [runs(war2x, war2xMission, '69z3o4ld')]: [ // xhuman7
-    run('AverageAvocado', 911911, _.avoUrlXHuman2013, _.avoDate2013),
+    run('AverageAvocado', 709, _.avoUrlXHuman2013, _.avoDate2013),
   ],
   [runs(war2x, war2xMission, 'r9g2035d')]: [ // xhuman8
-    run('AverageAvocado', 911911, _.avoUrlXHuman2013, _.avoDate2013),
+    run('AverageAvocado', 2529, _.avoUrlXHuman2013, _.avoDate2013),
   ],
   [runs(war2x, war2xMission, 'o9xn5l0w')]: [ // xhuman9
-    run('AverageAvocado', 911911, _.avoUrlXHuman2013, _.avoDate2013),
+    run('AverageAvocado', 2598, _.avoUrlXHuman2013, _.avoDate2013),
   ],
   [runs(war2x, war2xMission, '4956o80d')]: [ // xhuman10
-    run('AverageAvocado', 911911, _.avoUrlXHuman2013, _.avoDate2013),
+    run('AverageAvocado', 1686, _.avoUrlXHuman2013, _.avoDate2013),
   ],
   [runs(war2x, war2xMission, 'rdqj21k9')]: [ // xhuman11
-    run('AverageAvocado', 911911, _.avoUrlXHuman2013, _.avoDate2013),
+    run('AverageAvocado', 1786, _.avoUrlXHuman2013, _.avoDate2013),
   ],
   [runs(war2x, war2xMission, '5d7vk3gd')]: [ // xhuman12
-    run('AverageAvocado', 911911, _.avoUrlXHuman2013, _.avoDate2013),
+    run('AverageAvocado', 607, _.avoUrlXHuman2013, _.avoDate2013),
   ],
 
   [runs(war2x, war2xMission, 'kwj5lyn9')]: [ // xorc1
@@ -199,15 +199,15 @@ export const extraData = {
     run('AverageAvocado', 284, 'https://youtu.be/eeBgiR8OBlU?t=66', '2015-05-15'),
   ],
   [runs(war2x, war2xMission, 'owo01kow')]: [ // xorc2
-    run('AverageAvocado', 911911, _.avoUrlXOrc2013, _.avoDate2013),
+    run('AverageAvocado', 1277, _.avoUrlXOrc2013, _.avoDate2013),
     run('AverageAvocado', 741, 'https://youtu.be/5YjjECd8LMg?t=45', '2015-05-16'),
   ],
   [runs(war2x, war2xMission, 'xd17e0ed')]: [ // xorc3
-    run('AverageAvocado', 911911, _.avoUrlXOrc2013, _.avoDate2013),
+    run('AverageAvocado', 1459, _.avoUrlXOrc2013, _.avoDate2013),
     run('AverageAvocado', 951, 'https://youtu.be/0AnFa52gul0?t=39', '2015-05-22'),
   ],
   [runs(war2x, war2xMission, 'ewpjmqkw')]: [ // xorc4
-    run('AverageAvocado', 911911, _.avoUrlXOrc2013, _.avoDate2013),
+    run('AverageAvocado', 2837, _.avoUrlXOrc2013, _.avoDate2013),
     run('AverageAvocado', 860, 'https://youtu.be/AdtTlUA4sa0?t=56', '2015-05-23'),
   ],
   [runs(war2x, war2xMission, 'y9mjqp59')]: [ // xorc5
