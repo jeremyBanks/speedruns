@@ -119,12 +119,12 @@ const getBests = (gameSlugs, playerSlug) => {
 
 ({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async main => {
   (async () => {
-    const loadingMessage = document.querySelector('#loading-message');
+    const errorMessage = document.querySelector('#error-message');
     try {
       await main;
-      loadingMessage.remove();
+      errorMessage.remove();
     } catch (error) {
-      loadingMessage.textContent = `${error}\n\n${error.stack}`;
+      errorMessage.textContent = `${error}\n\n${error.stack}`;
       throw error;
     }
   })();
@@ -192,6 +192,8 @@ const getBests = (gameSlugs, playerSlug) => {
 
   await Promise.all(blockers);
   console.info("Rendered successfully! 😁");
+  document.body.classList.remove('loading');
+  document.body.classList.add('loaded');
   
   const hash = window.location.hash;
   if (document.scrollingElement.scrollTop === 0 && hash > '#') {
