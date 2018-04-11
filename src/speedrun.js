@@ -1,5 +1,5 @@
 import {compareAll, compareDefault} from '/src/utils.js';
-import {extraData} from '/src/api-patches.js';
+import {extraData} from '/src/speedrun-patches.js';
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 

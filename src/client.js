@@ -185,9 +185,9 @@ const getBests = (gameSlugs, playerSlug) => {
       loaded from <a href="https://github.com/speedruncomorg/api/blob/master/version1/README.md#readme">their API</a>.
     </footer>
   `);
-  
+
   await Promise.all(blockers);
-  console.log("Rendered successfully! 😁");
+  console.info("Rendered successfully! 😁");
   
   // toggles the hash value so the browser can scroll to elements that we rendered after page load.
   const hash = window.location.hash;

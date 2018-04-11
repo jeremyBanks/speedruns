@@ -4,14 +4,13 @@
 <link rel="stylesheet" href="/style.css">
 <meta name="viewport" content="width=682, initial-scale=0">
 <script type="module">
-  // the actual entry point:
-  import '/src/client.js';
-
-  // just preloading dependencies:
-  import '/src/html.js';
-  import '/src/utils.js';
-  import '/src/speedrun.js';
-  import '/src/api-patches.js';
+// entry point:
+import '/src/client.js';
+// dependencies to preload:
+import '/src/html.js';
+import '/src/utils.js';
+import '/src/speedrun.js';
+import '/src/speedrun-patches.js';
 </script>
 <pre id="loading-message">Loading?</pre>
 <main id="main"></main>
