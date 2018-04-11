@@ -1,3 +1,5 @@
+// Extra data to be patched into specific speedrun.com API responses.
+
 class UnofficialRun {
   constructor(playerName, durationSeconds, url, date) {
     this.ℹ️ = this.constructor.name;
