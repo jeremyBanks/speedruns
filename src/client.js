@@ -4,7 +4,7 @@ import {zip, devAwaitDeep, compareAll, compareDefault} from '/src/utils.js';
 import * as speedrun from '/src/speedrun.js';
 
 
-const defaultPath = 'wc2+wc2btdp@ZPR';
+const defaultPath = 'wc2+wc2btdp/banks';
 
 
 const getBests = (gameSlugs, playerSlug) => {
@@ -172,8 +172,8 @@ const getBests = (gameSlugs, playerSlug) => {
   
   if (path.length === 0) {
     document.location.replace(`/${defaultPath}`);
-  } else if (path.length === 1) {
-    const [gamesSlug, playerSlug] = path[0].split('@');
+  } else if (path.length <= 2) {
+    const [gamesSlug, playerSlug] = path;
     if (!gamesSlug) throw new Error("no game(s) in URL");
 
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);

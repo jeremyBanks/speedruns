@@ -126,6 +126,7 @@ export const extraData = {
   [runs(war2, war2Mission, 'n93750nd')]: [ // human2
     run('AverageAvocado', 76, 'https://youtu.be/5_pAZwO4LdY?t=51', _.avoDate2013),
     run('AverageAvocado', 89, _.avoUrl2015, _.avoDate2015),
+    // run('Cire2047', DURATIONDURATION, _.cireUrlHuman = 'https://www.youtube.com/playlist?list=PLC960334B12409C7E', 'DATEDATEDATE'),
   ],
   [runs(war2, war2Mission, 'z986vjgd')]: [ // human3
     run('AverageAvocado', 551, 'https://youtu.be/lhACxCKSrIA?t=51', _.avoDate2013),
