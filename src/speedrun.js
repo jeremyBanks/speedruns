@@ -71,7 +71,8 @@ export class Game {
     this.gameId =
     this.nick =
     this.slug =
-    this.url = void this;
+    this.url =
+    this.icon = void this;
     Object.seal(this);
     Object.assign(this, ...args);
   }
@@ -82,6 +83,7 @@ export class Game {
       gameId: data.id,
       nick: data.names.international,
       url: data.weblink,
+      icon: data.assets.icon.uri,
       slug: data.abbreviation || data.id,
     });
   }
