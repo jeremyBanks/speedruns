@@ -126,27 +126,27 @@ export const extraData = {
   [runs(war2, war2Mission, 'n93750nd')]: [ // human2
     run('AverageAvocado', 76, 'https://youtu.be/5_pAZwO4LdY?t=51', _.avoDate2013),
     run('AverageAvocado', 89, _.avoUrl2015, _.avoDate2015),
-    run('Cire2047', DURATIONDURATION, _.cireUrlHuman = 'https://www.youtube.com/playlist?list=PLC960334B12409C7E', '2011-04-15'),
+    run('Cire2047', 116, _.cireUrlHuman = 'https://www.youtube.com/playlist?list=PLC960334B12409C7E', '2011-04-15'),
   ],
   [runs(war2, war2Mission, 'z986vjgd')]: [ // human3
     run('AverageAvocado', 551, 'https://youtu.be/lhACxCKSrIA?t=51', _.avoDate2013),
     run('AverageAvocado', 409, _.avoUrl2015, _.avoDate2015),
-    run('Cire2047', DURATIONDURATION, _.cireUrlHuman, 'DATEDATEDATE'),
+    run('Cire2047', 882, _.cireUrlHuman, '2011-04-15'),
   ],
   [runs(war2, war2Mission, 'rdn0j5qw')]: [ // human4
     run('AverageAvocado', 989, 'https://youtu.be/n4A0nOJRbcI?t=43', _.avoDate2013),
     run('AverageAvocado', 710, _.avoUrl2015, _.avoDate2015),
-    run('Cire2047', DURATIONDURATION, _.cireUrlHuman, 'DATEDATEDATE'),
+    run('Cire2047', 1309, _.cireUrlHuman, '2011-04-16'),
   ],
   [runs(war2, war2Mission, 'ldyy7ekd')]: [ // human5
     run('AverageAvocado', 908, 'https://youtu.be/-wRQqXiP3-U?t=72', _.avoDate2013),
     run('AverageAvocado', 966, _.avoUrl2015, _.avoDate2015),
-    run('Cire2047', DURATIONDURATION, _.cireUrlHuman, 'DATEDATEDATE'),
+    run('Cire2047', 1569, _.cireUrlHuman, '2011-04-16'),
   ],
   [runs(war2, war2Mission, 'gdre4j69')]: [ // human6
     run('AverageAvocado', 981, 'https://youtu.be/KSwZOZRo1cU?t=34', _.avoDate2013),
     run('AverageAvocado', 927, _.avoUrl2015, _.avoDate2015),
-    run('Cire2047', DURATIONDURATION, _.cireUrlHuman, 'DATEDATEDATE'),
+    run('Cire2047', 1549, _.cireUrlHuman, '2011-05-17'),
   ],
   [runs(war2, war2Mission, 'nwllx60w')]: [ // human7
     run('AverageAvocado', 1246, 'https://youtu.be/QOdjzMpJUYA?t=44', _.avoDate2013),
