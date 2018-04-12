@@ -15,10 +15,13 @@ app.use(compression());
 app.set('json spaces', null);
 
 // Serve this entire project directoy.
-app.use(express.static('./', {
+app.use('assets', express.static('./src/', {
   dotfiles: 'ignore',
   index: ['index.html', '.js']
 }));
+
+app.get('/service-worker.js', (req, res) => {
+  res.sendFile(__dirname + './src/index.html');
 
 // Crudely mirror and cache speedrun.com/api.
 // We never expire/evict values here; we assume the
@@ -47,7 +50,7 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
 
 // Serve index for unknown URLs so it can route them client-side.
 app.use((req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + './src/index.html');
 });
 
 const listener = app.listen(process.env.PORT, () => {

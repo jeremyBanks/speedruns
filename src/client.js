@@ -1,7 +1,7 @@
-import HTML from '/src/html.js';
-import {zip, devAwaitDeep, compareAll, compareDefault} from '/src/utils.js';
+import HTML from '/assets/html.js';
+import {zip, devAwaitDeep, compareAll, compareDefault} from '/assets/utils.js';
 
-import * as speedrun from '/src/speedrun.js';
+import * as speedrun from '/assets/speedrun.js';
 
 
 const defaultPath = '/wc2+wc2btdp';
