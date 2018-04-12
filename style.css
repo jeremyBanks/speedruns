@@ -304,12 +304,12 @@ span.time {
   font-weight: bold;
 }
 
-.bestsOutput a.game:target,
-.bestsOutput a.level:target {
+.bestsOutput a.game:target, .bestsOutput a.game.target,
+.bestsOutput a.level:target, .bestsOutput a.level.target {
   padding: 12px;
   margin: -12px;
   border-radius: 16px;
-  animation: focus-target 0.25s ease-in;
+  animation: focus-target 1.5s ease-in;
 }
 @keyframes focus-target {
   0% {
