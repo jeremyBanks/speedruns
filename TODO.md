@@ -1,16 +1,24 @@
 # To Do
 
-- import more playthrough runs into speedrun-patches.js:
-  - Cire2047 TOD Human:
-    <https://www.youtube.com/playlist?list=PLC960334B12409C7E>
-  - ButcherT BTDP Human:
-    <https://www.youtube.com/playlist?list=PLJJzjR7gApQnC1jBpubBvQ1i-nTh-DP3b>
-  - ButcherT BTDP Orc:
-    <https://www.youtube.com/playlist?list=PLJJzjR7gApQnrV181ney7kYubE1spvLI9>
+## The Big One
 
-- allow guest users to be specified
+Re-render without reload.
 
-- link to player's personal bests instead of speedrun.com profiles
+This shouldn't be hard, and our API caching should make this work pretty
+efficiently with minimal effort.
+
+## Completionism
+
+import more playthrough runs into speedrun-patches.js:
+
+- Cire2047 TOD Human:
+  <https://www.youtube.com/playlist?list=PLC960334B12409C7E>
+- ButcherT BTDP Human:
+  <https://www.youtube.com/playlist?list=PLJJzjR7gApQnC1jBpubBvQ1i-nTh-DP3b>
+- ButcherT BTDP Orc:
+  <https://www.youtube.com/playlist?list=PLJJzjR7gApQnrV181ney7kYubE1spvLI9>
+
+## Other Tech
 
 - continue optimizing:
   - reduce number of speedrun api requests
@@ -30,3 +38,5 @@
   because I'm in the middle of editing it. however, consider whether this
   could affect the performance gains we got from disabling the browser's
   default caching for API requests.
+  - easy solution: load interface from cache (update in background) every time,
+    but always load scripts from server. start with that.

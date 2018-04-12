@@ -4,7 +4,7 @@ import {zip, devAwaitDeep, compareAll, compareDefault} from '/src/utils.js';
 import * as speedrun from '/src/speedrun.js';
 
 
-const defaultPath = 'wc2+wc2btdp/banks';
+const defaultPath = 'wc2+wc2btdp';
 
 
 const getBests = (gameSlugs, runnerSlug) => {
@@ -16,7 +16,8 @@ const getBests = (gameSlugs, runnerSlug) => {
     const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
     
     yield line(HTML`World record progressions over time${
-               runnerSlug ? HTML`, with <a href="/${gamesSlug}/${runnerSlug}">${runnerSlug}</a>'s personal bests for comparison` : ''}.`);
+               runnerSlug ? HTML`, with <a href="/${gamesSlug}/${runnerSlug}">${runnerSlug}</a>'s personal bests for comparison` :
+                 `. Click on a runner to compare their personal bests`}.`);
 
     yield line();
     yield line("Scales and ranges are not consistent across categories/levels. A consistent linear scale is only used for duration differences between runs within a given category/level.");
