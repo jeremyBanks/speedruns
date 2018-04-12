@@ -116,13 +116,13 @@ const getBests = (gameSlugs, runnerSlug) => {
 
 
 
-({set _(_){_._=(async _=>(await _)(_._))(_)}})._ = async main => {
+const main = async () => {
   (async () => {
     document.body.classList.remove('unloaded');
     document.body.classList.add('loading');
     const errorMessage = document.querySelector('#error-message');
     try {
-      await main;
+      await main.done;
       document.body.classList.remove('loading');
       document.body.classList.add('loaded');
     } catch (error) {
@@ -150,7 +150,7 @@ const getBests = (gameSlugs, runnerSlug) => {
   document.title = docTitle;
 
   // navigates to an internal URL and recursively re-invokes main to re-render the page.
-  const goto = url => {
+  const navigateInternal = async url => {
     window.history.pushState(null, docTitle, url);
     return await main();
   };
@@ -179,7 +179,7 @@ const getBests = (gameSlugs, runnerSlug) => {
   const blockers = [];
   
   if (path.length === 0) {
-    return await goto(defaultPath);
+    return await navigateInternal(defaultPath);
   } else if (path.length <= 2) {
     const [gamesSlug, runnerSlug] = path;
     if (!gamesSlug) throw new Error("no game(s) in URL");
@@ -205,10 +205,12 @@ const getBests = (gameSlugs, runnerSlug) => {
   `);
 
   output.addEventListener('click', event => {
-    if (/^/([^/]|$)/.test(event.target.href)) {
+    console.log(event.target.href);
+    if (event.target.host === document.location.host) {
+      console.debug("Handling click internally.");
       event.preventDefault();
       event.stopPropagation();
-      goto(event.target.href);
+      navigateInternal(event.target.href);
     }
   });
 
@@ -230,3 +232,4 @@ const getBests = (gameSlugs, runnerSlug) => {
     }
   }
 };
+main.done = main();
