@@ -7,22 +7,22 @@ import * as speedrun from '/src/speedrun.js';
 const defaultPath = 'wc2+wc2btdp/banks';
 
 
-const getBests = (gameSlugs, playerSlug) => {
+const getBests = (gameSlugs, runnerSlug) => {
   return HTML`<pre class="bestsOutput">${async function*() {  
     const line = (content = '') => HTML`<div class="content">${content || ' '}</div>`;
 
+    const gamesSlug = gameSlugs.join('+');
+    
     const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
-
-    const getRunner = playerSlug ? speedrun.Runner.get(playerSlug) : Promise.resolve(null);
     
     yield line(HTML`World record progressions over time${
-               getRunner.then(runner => runner ? HTML`, with <a href="${runner.url}">${runner.nick}</a>'s personal bests for comparison` : '')}.`);
+               runnerSlug ? HTML`, with <a href="/${gamesSlug}/${runnerSlug}">${runnerSlug}</a>'s personal bests for comparison` : ''}.`);
 
     yield line();
     yield line("Scales and ranges are not consistent across categories/levels. A consistent linear scale is only used for duration differences between runs within a given category/level.");
     yield line();
     for (const game of games) yield async function*() {
-        yield line(HTML`      <a class="game" id="${game.slug}" href="#${game.slug}">${game.nick}</a>`);
+        yield line(HTML`      <a class="game" id="${game.slug}" href="/${game.slug}">${game.nick}</a>`);
         yield line();
 
         const runnables = await game.categoryLevelPairs();
@@ -46,15 +46,13 @@ const getBests = (gameSlugs, playerSlug) => {
               wr = run;
             }
           }
-          
-          const targetRunner = await getRunner;
 
           const personalRecords = [];
           
-          if (targetRunner) {
+          if (runnerSlug) {
             let pr = null;
             for (const run of runs) {
-              if (run.runner.nick !== targetRunner.nick) continue;
+              if (run.runner.nick !== runnerSlug) continue;
 
               if (!pr || run.durationSeconds < pr.durationSeconds) {
                 personalRecords.push(run);
@@ -103,7 +101,7 @@ const getBests = (gameSlugs, playerSlug) => {
               const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace(/(.)(▐)/, `$1</span><span class="banks ${isBanks ? 'current' : ''}">$2`) + `</span>`)
 
               const runner = await record.runner;
-              yield line(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="${runner.url || record.url}">${runner.nick.padEnd(14)}</a> ${indicatorHTML}`);
+              yield line(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="/${gamesSlug}/${runner.nick}">${runner.nick.padEnd(14)}</a> ${indicatorHTML}`);
             }
           }
           yield line();
@@ -173,13 +171,13 @@ const getBests = (gameSlugs, playerSlug) => {
   if (path.length === 0) {
     document.location.replace(`/${defaultPath}`);
   } else if (path.length <= 2) {
-    const [gamesSlug, playerSlug] = path;
+    const [gamesSlug, runnerSlug] = path;
     if (!gamesSlug) throw new Error("no game(s) in URL");
 
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-    const content = getBests(gameSlugs, playerSlug);
+    const content = getBests(gameSlugs, runnerSlug);
     
     const [fragment, done] = HTML.from(content).fragmentAndDone();
     output.appendChild(fragment);
