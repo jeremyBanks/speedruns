@@ -6,6 +6,8 @@
 
 - refactor everything since it's awful
 
+- update data patcher 
+
 - decide whether speedrun-patches.js should exist in client or server, then
   move it there properly. right now it's in a least-efficient limbo.
 
