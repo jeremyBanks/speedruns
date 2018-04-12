@@ -248,13 +248,14 @@ const main = async () => {
 };
 
 let lastLocation = new URL(document.location.href);
-lastLocation.hash = '';
 window.addEventListener('popstate', () => {
-  lastLocation = new URL(document.location.href);
-  lastLocation.hash = '';
-  if (las
-  console.log(`🎈 History state popped, now at ${window.location.href}`);
-  main(); 
+  const newLocation = new URL(document.location.href);
+  if (newLocation.href !== lastLocation.href && new URL('#', newLocation).href === new URL('#', lastLocation).href) {
+    console.debug("🙄 Ignoring hash-only history state change.");
+  } else {
+    console.info(`🎈 History state popped, now at ${window.location.href}`);
+    main();
+  }
 });
 
 main();
