@@ -12,7 +12,7 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
     const line = (content = '') => HTML`<div class="content">${content || ' '}</div>`;
 
     const gamesSlug = gameSlugs.join('+');
-    
+
     const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
     
     yield line(HTML`World record progressions over time${
