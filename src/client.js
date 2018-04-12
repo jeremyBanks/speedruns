@@ -24,13 +24,13 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
                "A consistent linear scale is only used for duration differences between runs within a given category/level.");
     yield line();
     for (const game of games) yield async function*() {
-        yield line(HTML`      <a class="game" id="${game.slug}" href="//${currentHost}/${game.slug}">${game.nick}</a>`);
+        yield line(HTML`      <a class="game" id="${game.slug}" href="//${currentHost}/${game.slug}"><img src="${game.icon}"> ${game.nick}</a>`);
         yield line();
 
         const runnables = await game.categoryLevelPairs();
 
         for (const level of runnables) yield async function*() {
-          yield line(HTML`          <a class="level" id="${level.slug}" href="#${level.slug}">${level.nick}</a>`);
+          yield line(HTML`          <a class="level" id="${level.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#${level.slug}">${level.nick}</a>`);
 
           const compareRuns = compareAll(
             (a, b) => compareDefault(a.date, b.date),
@@ -206,8 +206,7 @@ const doMain = async () => {
     if (target.host == canonicalHost) {
       target.host = document.location.host;
     }
-    if (target.host === document.location.host &&
-        new URL('#', target).href !== new URL('#', document.location).href) {
+    if (target.host === document.location.host) {
       console.debug(`🔗 Internal navigation to ${target.href}`);
       event.preventDefault();
       event.stopPropagation();
