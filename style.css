@@ -325,8 +325,8 @@ span.time {
 body.loading main {
   cursor: progress;
   pointer-events: none;
-  text-events: none;
-  opacity: 0.25;
+  user-select: none;
+  filter: brightness(0.25) blur(2px) ;
 }
 
 #error-message {
