@@ -49,60 +49,73 @@ export const extraData = {
 
   [runs(war2, war2Mission, 'kwj5l7r9')]: [ // orc1
     run('AverageAvocado', 217, _.avoUrlOrc2013 = 'https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk', _.avoDate2013 = '2013-06   '),
-    run('AverageAvocado', 224, _.avoUrl2015 = 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', _.avoDate2015 = '2015      '),
-    run('Cire2047', 229, 'https://youtu.be/Pl0ZkfDKEsg?t=62', '2011-05-01'),
+    run('AverageAvocado', 224, _.avoUrl2015 = 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', _.avoDate2015 = '2015-01   '),
+    run('Cire2047', 229, 'https://youtu.be/Pl0ZkfDKEsg?t=62', _.cireDate2015 = '2015-05   '),
   ],
   [runs(war2, war2Mission, 'owo017vw')]: [ // orc2
     run('AverageAvocado', 100, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 102, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', 188, 'https://youtu.be/4DTZpqWcSiE?t=47', _.cireDate2015),
   ],
   [runs(war2, war2Mission, 'xd17ejqd')]: [ // orc3
     run('AverageAvocado', 519, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 464, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', TIMETIMETIME, 'YOUTUBEYOUTUBE', _.cireDate2015),
   ],
   [runs(war2, war2Mission, 'ewpjm7lw')]: [ // orc4
     run('AverageAvocado', 941, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 1143, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', TIMETIMETIME, 'YOUTUBEYOUTUBE', _.cireDate2015),
   ],
   [runs(war2, war2Mission, 'y9mjq5l9')]: [ // orc5
     run('AverageAvocado', 1444, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 1154, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', TIMETIMETIME, 'YOUTUBEYOUTUBE', _.cireDate2015),
   ],
   [runs(war2, war2Mission, '5wkjzk5d')]: [ // orc6
     run('AverageAvocado', 225, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 224, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', TIMETIMETIME, 'YOUTUBEYOUTUBE', _.cireDate2015),
   ],
   [runs(war2, war2Mission, '592zg0g9')]: [ // orc7
     run('AverageAvocado', 1608, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 1235, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', TIMETIMETIME, 'YOUTUBEYOUTUBE', _.cireDate2015),
   ],
   [runs(war2, war2Mission, '29v3ey1w')]: [ // orc8
     run('AverageAvocado', 1276, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 1066, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', TIMETIMETIME, 'YOUTUBEYOUTUBE', _.cireDate2015),
   ],
   [runs(war2, war2Mission, 'xd4j760d')]: [ // orc9
     run('AverageAvocado', 1223, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 1180, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', TIMETIMETIME, 'YOUTUBEYOUTUBE', _.cireDate2015),
   ],
   [runs(war2, war2Mission, 'xd0gr00w')]: [ // orc10
     run('AverageAvocado', 1953, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 1437, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', TIMETIMETIME, 'YOUTUBEYOUTUBE', _.cireDate2015),
   ],
   [runs(war2, war2Mission, 'rw64pvn9')]: [ // orc11
     run('AverageAvocado', 1891, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 1675, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', TIMETIMETIME, 'YOUTUBEYOUTUBE', _.cireDate2015),
   ],
   [runs(war2, war2Mission, 'n937507d')]: [ // orc12
     run('AverageAvocado', 3065, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 2295, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', TIMETIMETIME, 'YOUTUBEYOUTUBE', _.cireDate2015),
   ],
   [runs(war2, war2Mission, 'z986vj7d')]: [ // orc13
     run('AverageAvocado', 2397, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 1761, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', TIMETIMETIME, 'YOUTUBEYOUTUBE', _.cireDate2015),
   ],
   [runs(war2, war2Mission, 'rdn0j5nw')]: [ // orc14
     run('AverageAvocado', 2508, _.avoUrlOrc2013, _.avoDate2013),
     run('AverageAvocado', 1833, _.avoUrl2015, _.avoDate2015),
+    run('Cire2047', TIMETIMETIME, 'YOUTUBEYOUTUBE', _.cireDate2015),
   ],
 
   [runs(war2, war2Mission, 'ldyy7ejd')]: [ // human1
