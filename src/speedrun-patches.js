@@ -4,14 +4,18 @@ class UnofficialRun {
   constructor(playerName, durationSeconds, url, date) {
     this.ℹ️ = this.constructor.name;
     this.weblink = url;
-    this.players = [
+    this.players = {data: [
       {
           rel: 'guest',
           name: playerName,
       }
-    ];
+    ]};
     this.submitted = date + 'T00:00:00.000Z';
     this.date = date;
+
+    this.level = levelId;
+    this.categoryId = level
+      categoryId: data.category,
     
     let durationString = 'PT';
     durationString: {
