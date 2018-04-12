@@ -29,7 +29,7 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   // client-side caching. We don't need browser caching,
   // and disabling the cache may improve request paralallizability
   // in some cases. Our client also applies the header to requests.
-  res.set('Cache-Control', 'no-store');
+  // res.set('Cache-Control', 'no-store');
   
   if (cached) {
     return res.send(await cached);
