@@ -4,7 +4,7 @@ import {zip, devAwaitDeep, compareAll, compareDefault} from '/src/utils.js';
 import * as speedrun from '/src/speedrun.js';
 
 
-const defaultPath = 'wc2+wc2btdp';
+const defaultPath = '/wc2+wc2btdp';
 
 
 const getBests = (gameSlugs, runnerSlug) => {
@@ -132,7 +132,7 @@ const getBests = (gameSlugs, runnerSlug) => {
       throw error;
     }
   })();
-
+  
   const hostname = document.location.host;
   const d = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
 
@@ -146,10 +146,20 @@ const getBests = (gameSlugs, runnerSlug) => {
   const defaultName = "bests";
   const title = `${d || defaultName}.glitch.me`;
 
-  document.title = (path.length) ? `${defaultName}/${path.join('/')}` : title;
+  const docTitle = (path.length) ? `${defaultName}/${path.join('/')}` : title
+  document.title = docTitle;
 
+  // navigates to an internal URL and recursively re-invokes main to re-render the page.
+  const goto = url => {
+    window.history.pushState(null, docTitle, url);
+    return await main();
+  };
+
+  const mainContainer = document.querySelector('#main');
+  mainContainer.textContent = '';
+  
   const output = await HTML.element`<div></div>`; 
-  document.querySelector('#main').appendChild(output);
+  mainContainer.appendChild(output);
 
   output.appendChild(HTML.fragment`
     <header>
@@ -169,7 +179,7 @@ const getBests = (gameSlugs, runnerSlug) => {
   const blockers = [];
   
   if (path.length === 0) {
-    document.location.replace(`/${defaultPath}`);
+    return await goto(defaultPath);
   } else if (path.length <= 2) {
     const [gamesSlug, runnerSlug] = path;
     if (!gamesSlug) throw new Error("no game(s) in URL");
@@ -193,6 +203,14 @@ const getBests = (gameSlugs, runnerSlug) => {
       loaded from <a href="https://github.com/speedruncomorg/api/blob/master/version1/README.md#readme">their API</a>.
     </footer>
   `);
+
+  output.addEventListener('click', event => {
+    if (/^/([^/]|$)/.test(event.target.href)) {
+      event.preventDefault();
+      event.stopPropagation();
+      goto(event.target.href);
+    }
+  });
 
   await Promise.all(blockers);
   console.info("Rendered successfully! 😁");
