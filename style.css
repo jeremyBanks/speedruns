@@ -341,7 +341,8 @@ body.loading main {
   user-select: all;
 }
 
-body.loading #error-message {
+body.loading #error-message,
+body.loaded #error-message {
   display: none;
 }
 
