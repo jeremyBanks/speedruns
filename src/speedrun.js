@@ -1,8 +1,8 @@
 // A light wrapper for speedrun.com API functionality we're using.
 // Subject to frequent change; not appropriate for general use.
 
-import {compareAll, compareDefault} from '/src/utils.js';
-import {extraData} from '/src/extra-runs.js';
+import {compareAll, compareDefault} from '/assets/utils.js';
+import {extraData} from '/assets/extra-runs.js';
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 

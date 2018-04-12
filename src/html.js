@@ -1,4 +1,4 @@
-import {aarray} from '/src/utils.js';
+import {aarray} from '/assets/utils.js';
 
 
 ADD_A_DEFAULT_CONTENT_SECURITY_POLICY: {
