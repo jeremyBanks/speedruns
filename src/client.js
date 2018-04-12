@@ -29,17 +29,16 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
         yield line(HTML`      <a class="game" id="${game.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#${game.slug}">${game.nick}</a>`);
         yield line();
 
-        const runnables = await game.categoryLevelPairs();
+        const runsByLevel = await game.runsByCategoryLevelPairs();
 
-        for (const level of runnables) yield async function*() {
+        for (const [level, runs] of runsByLevel) yield async function*() {
           yield line(HTML`          <a class="level" id="${level.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#${level.slug}">${level.nick}</a>`);
 
           const compareRuns = compareAll(
             (a, b) => compareDefault(a.date, b.date),
             (a, b) => compareDefault(a.dateTimeSubmitted, b.dateTimeSubmitted),
           );
-          
-          const runs = await level.runs();
+
           runs.sort(compareRuns);
 
           const worldRecords = [];
