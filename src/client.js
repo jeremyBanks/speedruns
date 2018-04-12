@@ -134,24 +134,29 @@ const main = async () => {
   })();
   
   const hostname = document.location.host;
-  const d = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
+  const currentProject = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
 
   // force HTTPS if running on Glitch, where we know it's available.
-  if (d && document.location.protocol === 'http:') {
+  if (currentProject && document.location.protocol === 'http:') {
     document.location.protocol = 'https:';
   }
 
   const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
   
-  const defaultName = "bests";
-  const title = (d && d !== defaultName) ? `${d}.glitch.me` : 'bests.run';
+  const canonicalProject = 'bests';
+  const canonicalHost = 'bests.run';
 
-  const docTitle = (path.length) ? `${(d && d !== defaultName) ? d : 'bests.run'}/${path.join('/')}` : title
+  const currentHost = (currentProject === canonicalProject) ? canonicalHost : hostname;  
+
+  const hasNonDefaultProject = Boolean(currentProject && currentProject !== canonicalProject);
+
+  const docTitle = (path.length) ? `${hasNonDefaultProject ? currentProject : canonicalHost}/${path.join('/')}` : hasNonDefaultProject ? currentHost : canonicalHost
   document.title = docTitle;
 
   // navigates to an internal URL and recursively re-invokes main to re-render the page.
   const navigateInternal = async url => {
     window.history.pushState(null, docTitle, url);
+    document.scrollingElement.scrollTop = 0;
     return await main();
   };
 
@@ -165,12 +170,12 @@ const main = async () => {
     <header>
       <h1><span>
         <img src="${document.querySelector('link[rel=icon]').href}">
-        <a href="/">${title}</a>
+        <a href="//${currentHost}/">${currentHost}</a>
       <span></h1>
 
-      ${d && HTML`
+      ${currentProject && HTML`
         <nav class="links">
-          <a href="${`https://glitch.com/edit/#!/${d}?path=src/client.js`}">edit source code</a><br />
+          <a href="${`https://glitch.com/edit/#!/${currentProject}?path=src/client.js`}">edit source code</a><br />
         </nav>
       `}
     </header>
@@ -205,12 +210,15 @@ const main = async () => {
   `);
 
   output.addEventListener('click', event => {
-    if (event.target.host == 'bests.run'
-    if (event.target.host === document.location.host) {
-      console.debug(`🔗 Internal navigation to ${event.target.href}`);
+    let target = new URL(event.target.href);
+    if (target.host == canonicalHost) {
+      target.host = document.location.host;
+    }
+    if (target.host === document.location.host) {
+      console.debug(`🔗 Internal navigation to ${event.target.target}`);
       event.preventDefault();
       event.stopPropagation();
-      navigateInternal(event.target.href);
+      navigateInternal(target.href);
     }
   });
 
