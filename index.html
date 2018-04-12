@@ -2,7 +2,6 @@
 <meta charset="utf-8">
 
 <link rel="icon" href="/icon.png">
-<link rel="stylesheet" href="/style.css">
 
 <meta name="viewport" content="width=682, initial-scale=0">
 
@@ -25,3 +24,5 @@
     navigator.serviceWorker.register('/service-worker.js');
   });
 </script>
+
+<link rel="preload" href="/style.css" as="style" onload="this.rel='stylesheet'">
