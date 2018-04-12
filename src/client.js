@@ -15,9 +15,11 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
 
     const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
     
-    yield line(HTML`World record progressions over time${
-               runnerSlug ? HTML`, with ${runnerSlug}'s personal bests for comparison` :
-                 `. Click on a runner to compare their personal bests`}.`);
+    if (runnerSlug) {
+      yield line(HTML`World record and ${runnerSlug}'s personal best (<a href="//${currentHost}/${gamesSlug}">remove</a>) progressions over time.`);
+    } else {
+      yield line(HTML`World record progressions over time. Click on a runner to compare their personal bests`);
+    }
 
     yield line();
     yield line("Scales and ranges are not consistent across categories/levels. " +
@@ -54,7 +56,7 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
           if (runnerSlug) {
             let pr = null;
             for (const run of runs) {
-              if (run.runner.nick !== runnerSlug) continue;
+              if (run.runner.nick.toLowerCase() !== runnerSlug.toLowerCase()) continue;
 
               if (!pr || run.durationSeconds < pr.durationSeconds) {
                 personalRecords.push(run);
