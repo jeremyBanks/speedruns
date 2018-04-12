@@ -18,12 +18,11 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
     if (runnerSlug) {
       yield line(HTML`World record and ${runnerSlug}'s personal best (<a href="//${currentHost}/${gamesSlug}">remove</a>) progressions over time.`);
     } else {
-      yield line(HTML`World record progressions over time. Click on a runner to compare their personal bests`);
+      yield line("World record progressions over time. Click a runner name to compare their bests.");
     }
 
     yield line();
-    yield line("Scales and ranges are not consistent across categories/levels. " +
-               "A consistent linear scale is only used for duration differences between runs within a given category/level.");
+    yield line("A consistent linear scale is only used for duration differences between runs within a given category/level, not differences between between categories/levels.");
     yield line();
     for (const game of games) yield async function*() {
         yield line(HTML`      <a class="game" id="${game.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#${game.slug}">${game.nick}</a>`);

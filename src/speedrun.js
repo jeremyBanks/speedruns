@@ -33,7 +33,7 @@ const apiFetch = async path => {
   if (body.status) {
     throw new Error(`${body.status}: ${body.message}`); 
   } else {
-    if (body.pagination && body.links && body.links.filter(l => l.rel === 'next')) {
+    if (body.pagination && body.pagination.links && body.pagination.links.filter(l => l.rel === 'next').length) {
       throw new Error(`got too many results (more than one page (${body.pagination.max}))`);
     } else {
       const data = body.data;

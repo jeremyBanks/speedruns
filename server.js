@@ -5,8 +5,8 @@ const rp = require('request-promise-native');
 
 const app = express();
 
-// enable etags
-app.enable('etag') 
+// enable strong etags
+app.set('etag', 'strong');
 
 // enable compression
 app.use(compression());
