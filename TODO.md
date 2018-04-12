@@ -1,11 +1,5 @@
 # To Do
 
-## The Big One
-
-Re-render without reload.
-
-This shouldn't be hard, and our API caching should make this work pretty
-efficiently with minimal effort.
 
 ## Completionism
 
@@ -32,11 +26,4 @@ import more playthrough runs into speedrun-patches.js:
   move it there properly. right now it's in a least-efficient limbo.
 
 - persistent and timed server-side caching, instead of just random in-memory.
-
-- consider client-side offline fall-back caching with Service Worker Toolbox.
-  this needs to handle the frequent case of the site being temporarily broken
-  because I'm in the middle of editing it. however, consider whether this
-  could affect the performance gains we got from disabling the browser's
-  default caching for API requests.
-  - easy solution: load interface from cache (update in background) every time,
-    but always load scripts from server. start with that.
+  - slightly less urgent once we're not hammering with excessive requests.
