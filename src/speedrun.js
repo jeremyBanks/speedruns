@@ -27,7 +27,7 @@ const apiFetch = async path => {
     // we have our own caching, and use this header on both
     // request and response to disable the browser cache.
     // this may improve request parlallizability. maybe.
-    'Cache-Control': 'no-store'
+    // 'Cache-Control': 'no-store'
   })});
   const body = await response.json();
   if (body.status) {
