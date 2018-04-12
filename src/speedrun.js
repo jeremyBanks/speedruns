@@ -3,7 +3,7 @@ import {extraData} from '/src/speedrun-patches.js';
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
-export const api = async (path, maxPages = 1) => {
+export const api = async (path, maxPages = 6) => {
   if (!apiCache.has(path)) {
     const result = apiFetch(path).then(null, error => {
       apiCache.delete(path);
@@ -88,6 +88,22 @@ export class Game {
     });
   }
 
+  async runsByCategoryLevelPairs() {
+    const runsData = await api(
+      `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200`);
+    
+    const runs = runsData.map(Run.fromApiData);
+
+    return new Map((await this.categoryLevelPairs()).map(pair => [
+      pair,
+      runs.filter(r => r.levelId === pair.levelId && r.categoryId === pair.categoryId).sort(compareAll(
+        (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
+        (r, s) => compareDefault(r.date, s.date),
+        (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
+      ))
+    ]));
+  }
+
   async categoryLevelPairs() {
     const [categories, levels] = await Promise.all([
       api(`games/${this.gameId}/categories`),
@@ -132,42 +148,41 @@ export class CategoryLevelPair {
     return [this.categoryId, this.levelId].filter(Boolean).join('-');
   }
   
-  async runs() {
-    const runs = await api(
-      `runs?game=${this.gameId}&category=${this.categoryId}&level=${this.levelId}&status=verified&orderby=date&direction=asc&max=200`);
-    const results = [];
-    for (const data of runs) {
-      let runner;
-      
-      if (data.players.length === 1) {
-        const playerData = data.players[0];
-        if (playerData.rel === 'user') {
-          runner = await Runner.get(playerData.id);
-        } else {
-          runner = new Runner({
-            nick: playerData.name,
-            isUser: false
-          });
-        }
+  async static fromApiData(data) {
+    let runner;
+
+    if (data.players.length === 1) {
+      const playerData = data.players[0];
+      if (playerData.rel === 'user') {
+        runner = await Runner.get(playerData.id);
       } else {
         runner = new Runner({
-          nick: `${data.players.length} players`,
+          nick: playerData.name,
           isUser: false
         });
       }
-      
-      results.push(new Run({
-        runId: data.id,
-        runner,
-        durationSeconds: data.times.primary_t,
-        durationText: data.times.primary.slice(2).toLowerCase(),
-        date: data.date,
-        dateTimeSubmitted: data.submitted,
-        url: data.weblink,
-      }));
+    } else {
+      runner = new Runner({
+        nick: `${data.players.length} players`,
+        isUser: false
+      });
     }
 
-    return results.sort(compareAll(
+    return new Run({
+      runId: data.id,
+      runner,
+      durationSeconds: data.times.primary_t,
+      durationText: data.times.primary.slice(2).toLowerCase(),
+      date: data.date,
+      dateTimeSubmitted: data.submitted,
+      url: data.weblink,
+    });
+  }
+  
+  async runs() {
+    const runsData = await api(
+      `runs?game=${this.gameId}&category=${this.categoryId}&level=${this.levelId}&status=verified&orderby=date&direction=asc&max=200`);
+    return runsData.map(Run.fromApiData).sort(compareAll(
       (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
       (r, s) => compareDefault(r.date, s.date),
       (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
