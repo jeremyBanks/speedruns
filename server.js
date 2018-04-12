@@ -14,14 +14,22 @@ app.use(compression());
 // disable json pretty print
 app.set('json spaces', null);
 
-// Serve this entire project directoy.
-app.use('assets', express.static('./src/', {
+// We serve all static files under the public path 'assets/' because that's what speedrun.com
+// uses, so by copying that we can avoid clobbering any of their paths we'd like to mirror.
+app.use('/assets', express.static(__dirname + '/src', {
   dotfiles: 'ignore',
   index: ['index.html', '.js']
 }));
+app.use('/assets', express.static(__dirname + '/node_modules', {
+  dotfiles: 'ignore',
+  index: ['README.md']
+}));
 
+// Except for the Service Worker, because it needs to be at the top level. It looks like
+// speedrun.com also treats paths ending in .js as static, so this should be safe.
 app.get('/service-worker.js', (req, res) => {
-  res.sendFile(__dirname + './src/index.html');
+  res.sendFile(__dirname + '/src/service-worker.js');
+});
 
 // Crudely mirror and cache speedrun.com/api.
 // We never expire/evict values here; we assume the
@@ -50,7 +58,7 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
 
 // Serve index for unknown URLs so it can route them client-side.
 app.use((req, res) => {
-  res.sendFile(__dirname + './src/index.html');
+  res.sendFile(__dirname + '/src/index.html');
 });
 
 const listener = app.listen(process.env.PORT, () => {
