@@ -55,7 +55,6 @@ export class Runner {
   
   static fromApiData(runner) {
     if (runner.rel === 'user') {
-      console.log(runner);
       return new Runner({
         isUser: true,
         userId: runner.id,
