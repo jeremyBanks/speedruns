@@ -62,6 +62,23 @@ export class Runner {
       url: runner.weblink,
     });
   }
+  
+  static fromApiData(runner) {
+    if (runner.rel === 'user') {
+      console.log(runner);
+      return new Runner({
+        isUser: true,
+        userId: runner.id,
+        nick: runner.names.international,
+        url: runner.weblink,
+      });
+    } else {
+      return new Runner({
+        nick: runner.name,
+        isUser: false
+      });
+    }
+  }
 }
 
 
@@ -78,7 +95,7 @@ export class Game {
   }
  
   static async get(slug) {
-    const data = await api(`games/${slug}`);
+    const data = await api(`games/${slug}?embed=categories,levels`);
     return new Game({
       gameId: data.id,
       nick: data.names.international,
@@ -89,6 +106,8 @@ export class Game {
   }
 
   async categoryLevelPairs() {
+    
+    // XXXXX -- embed this in the game request instead!
     const [categories, levels] = await Promise.all([
       api(`games/${this.gameId}/categories`),
       api(`games/${this.gameId}/levels`)
@@ -117,7 +136,7 @@ export class Game {
 
   async runsByCategoryLevelPairs() {
     const runsData = await api(
-      `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200`);
+      `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200&embed=players`);
     
     const runs = await Promise.all(runsData.map(Run.fromApiData));
 
@@ -147,16 +166,6 @@ export class CategoryLevelPair {
   get slug() {
     return [this.categoryId, this.levelId].filter(Boolean).join('-');
   }
-  
-  async runs() {
-    const runsData = await api(
-      `runs?game=${this.gameId}&category=${this.categoryId}&level=${this.levelId}&status=verified&orderby=date&direction=asc&max=200`);
-    return (await Promise.all(runsData.map(Run.fromApiData))).sort(compareAll(
-      (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
-      (r, s) => compareDefault(r.date, s.date),
-      (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
-    ));
-  }
 }
 
 
@@ -179,19 +188,11 @@ export class Run {
   static async fromApiData(data) {
     let runner;
 
-    if (data.players.length === 1) {
-      const playerData = data.players[0];
-      if (playerData.rel === 'user') {
-        runner = await Runner.get(playerData.id);
-      } else {
-        runner = new Runner({
-          nick: playerData.name,
-          isUser: false
-        });
-      }
+    if (data.players.data.length === 1) {
+      runner = Runner.fromApiData(data.players.data[0]);
     } else {
       runner = new Runner({
-        nick: `${data.players.length} players`,
+        nick: `${data.players.data.length} players`,
         isUser: false
       });
     }

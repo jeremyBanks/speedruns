@@ -4,7 +4,7 @@
 
 - stop fetching users, just embed them!
 
-- can we also embed levels and categories in the initial 
+- can we also embed levels and categories in the initial game info request?
 
 - decide whether speedrun-patches.js should exist in client or server, then
   move it there properly. right now it's in a least-efficient limbo.
