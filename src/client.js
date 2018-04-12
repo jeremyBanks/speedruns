@@ -123,7 +123,6 @@ const getBests = (gameSlugs, runnerSlug) => {
     const errorMessage = document.querySelector('#error-message');
     try {
       await main;
-      errorMessage.remove();
       document.body.classList.remove('loading');
       document.body.classList.add('loaded');
     } catch (error) {
