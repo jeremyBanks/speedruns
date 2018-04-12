@@ -1,7 +1,7 @@
 # To Do
 
-- add pagination support in API wrapper.
-  currently blocking: https://bests.glitch.me/smb
+- add pagination support in API wrapper.  
+  currently blocking: https://bests.glitch.me/smb  
   Continue to enforce some sanity limit like 6 pages (1200 items).
 
 - fetch levels in parallel with level info, since it doesn't depend on it
