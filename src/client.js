@@ -20,7 +20,8 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
                  `. Click on a runner to compare their personal bests`}.`);
 
     yield line();
-    yield line("Scales and ranges are not consistent across categories/levels. A consistent linear scale is only used for duration differences between runs within a given category/level.");
+    yield line("Scales and ranges are not consistent across categories/levels. " +
+               "A consistent linear scale is only used for duration differences between runs within a given category/level.");
     yield line();
     for (const game of games) yield async function*() {
         yield line(HTML`      <a class="game" id="${game.slug}" href="//${currentHost}/${game.slug}">${game.nick}</a>`);
@@ -245,5 +246,15 @@ const main = async () => {
     throw error;
   }
 };
+
+let lastLocation = new URL(document.location.href);
+lastLocation.hash = '';
+window.addEventListener('popstate', () => {
+  lastLocation = new URL(document.location.href);
+  lastLocation.hash = '';
+  if (las
+  console.log(`🎈 History state popped, now at ${window.location.href}`);
+  main(); 
+});
 
 main();
