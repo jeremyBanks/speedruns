@@ -24,7 +24,7 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
                "A consistent linear scale is only used for duration differences between runs within a given category/level.");
     yield line();
     for (const game of games) yield async function*() {
-        yield line(HTML`      <a class="game" id="${game.slug}" href="//${currentHost}/${game.slug}"><img src="${game.icon}"> ${game.nick}</a>`);
+        yield line(HTML`      <a class="game" id="${game.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#${game.slug}">${game.nick}</a>`);
         yield line();
 
         const runnables = await game.categoryLevelPairs();
@@ -103,7 +103,7 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
               const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace(/(.)(▐)/, `$1</span><span class="banks ${isBanks ? 'current' : ''}">$2`) + `</span>`)
 
               const runner = await record.runner;
-              yield line(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="//${currentHost}/${gamesSlug}/${runner.nick}">${runner.nick.padEnd(14)}</a> ${indicatorHTML}`);
+              yield line(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="//${currentHost}/${gamesSlug}/${runner.nick}#${level.slug}">${runner.nick.padEnd(14)} ${indicatorHTML}</a>`);
             }
           }
           yield line();
@@ -201,8 +201,8 @@ const doMain = async () => {
   `);
 
   output.addEventListener('click', event => {
-    if (event.target.tagName !== 'A') return; 
-    let target = new URL(event.target.href);
+    if (!event.target.closest('a')) return; 
+    let target = new URL(event.target.closest('a').href);
     if (target.host == canonicalHost) {
       target.host = document.location.host;
     }
