@@ -7,7 +7,7 @@ import * as speedrun from '/src/speedrun.js';
 const defaultPath = '/wc2+wc2btdp';
 
 
-const getBests = (gameSlugs, runnerSlug) => {
+const getBests = (gameSlugs, runnerSlug, currentHost) => {
   return HTML`<pre class="bestsOutput">${async function*() {  
     const line = (content = '') => HTML`<div class="content">${content || ' '}</div>`;
 
@@ -16,14 +16,14 @@ const getBests = (gameSlugs, runnerSlug) => {
     const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
     
     yield line(HTML`World record progressions over time${
-               runnerSlug ? HTML`, with <a href="/${gamesSlug}/${runnerSlug}">${runnerSlug}</a>'s personal bests for comparison` :
+               runnerSlug ? HTML`, with <a href="//${currentHost}/${gamesSlug}/${runnerSlug}">${runnerSlug}</a>'s personal bests for comparison` :
                  `. Click on a runner to compare their personal bests`}.`);
 
     yield line();
     yield line("Scales and ranges are not consistent across categories/levels. A consistent linear scale is only used for duration differences between runs within a given category/level.");
     yield line();
     for (const game of games) yield async function*() {
-        yield line(HTML`      <a class="game" id="${game.slug}" href="/${game.slug}">${game.nick}</a>`);
+        yield line(HTML`      <a class="game" id="${game.slug}" href="//${currentHost}/${game.slug}">${game.nick}</a>`);
         yield line();
 
         const runnables = await game.categoryLevelPairs();
@@ -102,7 +102,7 @@ const getBests = (gameSlugs, runnerSlug) => {
               const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace(/(.)(▐)/, `$1</span><span class="banks ${isBanks ? 'current' : ''}">$2`) + `</span>`)
 
               const runner = await record.runner;
-              yield line(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="/${gamesSlug}/${runner.nick}">${runner.nick.padEnd(14)}</a> ${indicatorHTML}`);
+              yield line(HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="//${currentHost}/${gamesSlug}/${runner.nick}">${runner.nick.padEnd(14)}</a> ${indicatorHTML}`);
             }
           }
           yield line();
@@ -192,7 +192,7 @@ const main = async () => {
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-    const content = getBests(gameSlugs, runnerSlug);
+    const content = getBests(gameSlugs, runnerSlug, currentHost);
     
     const [fragment, done] = HTML.from(content).fragmentAndDone();
     output.appendChild(fragment);
