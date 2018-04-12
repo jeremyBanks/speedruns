@@ -5,10 +5,13 @@ const rp = require('request-promise-native');
 
 const app = express();
 
-// compress responses.
+// enable etags
+app.enable('etag') 
+
+// enable compression
 app.use(compression());
 
-// pretty print json, or not.
+// disable json pretty print
 app.set('json spaces', null);
 
 // Serve this entire project directoy.
