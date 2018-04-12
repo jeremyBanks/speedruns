@@ -2,7 +2,7 @@
 // Subject to frequent change; not appropriate for general use.
 
 import {compareAll, compareDefault} from '/src/utils.js';
-import {extraData} from '/src/speedrun-patches.js';
+import {extraData} from '/src/extra-runs.js';
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
@@ -124,6 +124,8 @@ export class Game {
     // TODO: this request shouldn't be blocked on the categoryLevelPairs info we get below
     const runsData = await api(
       `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200&embed=players`);
+
+    // TODO: patch in our extra runs here?
     
     const runs = await Promise.all(runsData.map(Run.fromApiData));
 
