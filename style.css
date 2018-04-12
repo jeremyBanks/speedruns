@@ -37,6 +37,15 @@ main {
   min-width: 596px;
   position: relative;
   text-align: center;
+  
+  transition: 0.25s filter;
+}
+
+body.unloaded main, body.loading main {
+  cursor: progress;
+  pointer-events: none;
+  user-select: none;
+  filter: brightness(0.5) blur(4px);
 }
 
 main > * {
@@ -320,13 +329,6 @@ span.time {
 ::selection {
   color: black;
   background: rgb(200, 225, 255);
-}
-
-body.loading main {
-  cursor: progress;
-  pointer-events: none;
-  user-select: none;
-  filter: brightness(0.25) blur(2px) ;
 }
 
 #error-message {
