@@ -1,3 +1,6 @@
+// A light wrapper for speedrun.com API functionality we're using.
+// Subject to frequent change; not appropriate for general use.
+
 import {compareAll, compareDefault} from '/src/utils.js';
 import {extraData} from '/src/speedrun-patches.js';
 
@@ -118,6 +121,7 @@ export class Game {
   }
 
   async runsByCategoryLevelPairs() {
+    // TODO: this request shouldn't be blocked on the categoryLevelPairs info we get below
     const runsData = await api(
       `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200&embed=players`);
     
