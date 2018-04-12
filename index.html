@@ -18,5 +18,10 @@
   import '/src/html.js';
   import '/src/utils.js';
   import '/src/speedrun.js';
-  import '/src/speedrun-patches.js';\
+  import '/src/speedrun-patches.js';
+ 
+  // service worker to register for next page load
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/src/service-worker.js', {type: 'module'});
+  });
 </script>
