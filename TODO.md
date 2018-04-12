@@ -1,14 +1,16 @@
 # To Do
 
 - import more playthrough runs into speedrun-patches.js:
-  - Cire2047 TOD Orc:
-    <https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc>
   - Cire2047 TOD Human:
     <https://www.youtube.com/playlist?list=PLC960334B12409C7E>
   - ButcherT BTDP Human:
     <https://www.youtube.com/playlist?list=PLJJzjR7gApQnC1jBpubBvQ1i-nTh-DP3b>
   - ButcherT BTDP Orc:
     <https://www.youtube.com/playlist?list=PLJJzjR7gApQnrV181ney7kYubE1spvLI9>
+
+- allow guest users to be specified
+
+- link to player's personal bests instead of speedrun.com profiles
 
 - continue optimizing:
   - reduce number of speedrun api requests
