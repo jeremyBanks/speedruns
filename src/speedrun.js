@@ -88,22 +88,6 @@ export class Game {
     });
   }
 
-  async runsByCategoryLevelPairs() {
-    const runsData = await api(
-      `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200`);
-    
-    const runs = runsData.map(Run.fromApiData);
-
-    return new Map((await this.categoryLevelPairs()).map(pair => [
-      pair,
-      runs.filter(r => r.levelId === pair.levelId && r.categoryId === pair.categoryId).sort(compareAll(
-        (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
-        (r, s) => compareDefault(r.date, s.date),
-        (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
-      ))
-    ]));
-  }
-
   async categoryLevelPairs() {
     const [categories, levels] = await Promise.all([
       api(`games/${this.gameId}/categories`),
@@ -130,6 +114,22 @@ export class Game {
       }))))
     ];
   }
+
+  async runsByCategoryLevelPairs() {
+    const runsData = await api(
+      `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200`);
+    
+    const runs = runsData.map(Run.fromApiData);
+
+    return new Map((await this.categoryLevelPairs()).map(pair => [
+      pair,
+      runs.filter(r => r.levelId === pair.levelId && r.categoryId === pair.categoryId).sort(compareAll(
+        (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
+        (r, s) => compareDefault(r.date, s.date),
+        (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
+      ))
+    ]));
+  }
 }
 
 export class CategoryLevelPair {
@@ -148,7 +148,35 @@ export class CategoryLevelPair {
     return [this.categoryId, this.levelId].filter(Boolean).join('-');
   }
   
-  async static fromApiData(data) {
+  async runs() {
+    const runsData = await api(
+      `runs?game=${this.gameId}&category=${this.categoryId}&level=${this.levelId}&status=verified&orderby=date&direction=asc&max=200`);
+    return (await Promise.all(runsData.map(Run.fromApiData))).sort(compareAll(
+      (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
+      (r, s) => compareDefault(r.date, s.date),
+      (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
+    ));
+  }
+}
+
+
+export class Run {
+  constructor(...args) {
+    this['ℹ️'] = this.constructor.name;
+    this.runId =
+    this.runner =
+    this.durationSeconds =
+    this.durationText =
+    this.date = 
+    this.dateTimeSubmitted = 
+    this.levelId = 
+    this.categoryId = 
+    this.url = void this;
+    Object.seal(this);
+    Object.assign(this, ...args);
+  }
+  
+  static async fromApiData(data) {
     let runner;
 
     if (data.players.length === 1) {
@@ -175,33 +203,9 @@ export class CategoryLevelPair {
       durationText: data.times.primary.slice(2).toLowerCase(),
       date: data.date,
       dateTimeSubmitted: data.submitted,
+      levelId: data.level,
+      categoryId: data.category,
       url: data.weblink,
     });
-  }
-  
-  async runs() {
-    const runsData = await api(
-      `runs?game=${this.gameId}&category=${this.categoryId}&level=${this.levelId}&status=verified&orderby=date&direction=asc&max=200`);
-    return runsData.map(Run.fromApiData).sort(compareAll(
-      (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
-      (r, s) => compareDefault(r.date, s.date),
-      (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
-    ));
-  }
-}
-
-
-export class Run {
-  constructor(...args) {
-    this['ℹ️'] = this.constructor.name;
-    this.runId =
-    this.runner =
-    this.durationSeconds =
-    this.durationText =
-    this.date = 
-    this.dateTimeSubmitted = 
-    this.url = void this;
-    Object.seal(this);
-    Object.assign(this, ...args);
   }
 }
