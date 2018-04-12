@@ -144,9 +144,9 @@ const main = async () => {
   const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
   
   const defaultName = "bests";
-  const title = `${d || defaultName}.glitch.me`;
+  const title = (d && d !== defaultName) ? `${d}.glitch.me` : 'bests.run';
 
-  const docTitle = (path.length) ? `${defaultName}/${path.join('/')}` : title
+  const docTitle = (path.length) ? `${(d && d !== defaultName) ? d : 'bests.run'}/${path.join('/')}` : title
   document.title = docTitle;
 
   // navigates to an internal URL and recursively re-invokes main to re-render the page.
@@ -205,16 +205,18 @@ const main = async () => {
   `);
 
   output.addEventListener('click', event => {
+    if (event.target.host == 'bests.run'
     if (event.target.host === document.location.host) {
-      console.debug("🔗 Handling click internally.", event.target);
+      console.debug(`🔗 Internal navigation to ${event.target.href}`);
       event.preventDefault();
       event.stopPropagation();
       navigateInternal(event.target.href);
     }
   });
 
+  console.debug("😅 Rendering...");
   await Promise.all(blockers);
-  console.info("Rendered successfully!");
+  console.info("😁 Rendered successfully!");
   document.body.classList.remove('loading');
   document.body.classList.add('loaded');
   
