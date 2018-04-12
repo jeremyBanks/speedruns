@@ -38,7 +38,7 @@ main {
   position: relative;
   text-align: center;
   
-  transition: 0.25s filter;
+  transition: 0.1s filter;
 }
 
 body.unloaded main, body.loading main {
