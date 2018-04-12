@@ -1,3 +1,3 @@
 importScripts('/node_modules/sw-toolbox/sw-toolbox.js');
-toolbox.router.get(/^\/https?:\/\//i, toolbox.networkOnly);
-toolbox.router.get(/^\/(?!https?:\/\/)/i, toolbox.fastest);
+toolbox.router.get('/(https://.*)', toolbox.networkFirst);
+toolbox.router.get('/(.*)', toolbox.fastest);
