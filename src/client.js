@@ -139,10 +139,14 @@ const doMain = async () => {
   document.title = docTitle;
 
   // navigates to an internal URL and recursively re-invokes main to re-render the page.
-  const navigateInternal = async url => {
+  const navigateInternal = async (url, replace = false) => {
     document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
     document.body.classList.add('unloaded');
-    window.history.pushState(null, docTitle, url);
+    if (!replace) {
+      window.history.pushState(null, docTitle, url);
+    } else {
+      window.history.replaceState(null, docTitle, url);      
+    }
     document.scrollingElement.scrollTop = 0;
     return await main();
   };
@@ -171,7 +175,7 @@ const doMain = async () => {
   const blockers = [];
   
   if (path.length === 0) {
-    return await navigateInternal(defaultPath);
+    return await navigateInternal(defaultPath, true);
   } else if (path.length <= 2) {
     const [gamesSlug, runnerSlug] = path;
     if (!gamesSlug) throw new Error("no game(s) in URL");
@@ -202,7 +206,8 @@ const doMain = async () => {
     if (target.host == canonicalHost) {
       target.host = document.location.host;
     }
-    if (target.host === document.location.host) {
+    if (target.host === document.location.host &&
+        new URL('#', target).href !== new URL('#', document.location).href) {
       console.debug(`🔗 Internal navigation to ${target.href}`);
       event.preventDefault();
       event.stopPropagation();
@@ -221,11 +226,7 @@ const doMain = async () => {
     const target = document.querySelector(hash);
     if (target) {
       target.classList.add('target');
-    }
-    window.location.hash = '';
-    window.location.hash = hash;
-    if (target) {
-      target.blur();
+      target.scrollIntoView();
     }
   }
 };
@@ -250,12 +251,17 @@ const main = async () => {
 let lastLocation = new URL(document.location.href);
 window.addEventListener('popstate', () => {
   const newLocation = new URL(document.location.href);
-  if (newLocation.href !== lastLocation.href && new URL('#', newLocation).href === new URL('#', lastLocation).href) {
-    console.debug("🙄 Ignoring hash-only history state change.");
+  if (newLocation.href !== lastLocation.href) {
+    if (new URL('#', newLocation).href !== new URL('#', lastLocation).href) {
+      console.info(`🎈 History state popped, now at ${window.location.href}`);
+      main();
+    } else {
+      console.debug("🙄 Ignoring hash-only history state change.");
+    }
   } else {
-    console.info(`🎈 History state popped, now at ${window.location.href}`);
-    main();
+    console.debug("🤔 Ignoring non-URL-changing history state change.");
   }
+  lastLocation = newLocation;
 });
 
 main();
