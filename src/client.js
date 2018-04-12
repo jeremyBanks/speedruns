@@ -205,9 +205,8 @@ const main = async () => {
   `);
 
   output.addEventListener('click', event => {
-    console.log(event.target.href);
     if (event.target.host === document.location.host) {
-      console.debug("Handling click internally.");
+      console.debug("🔗 Handling click internally.", event.target);
       event.preventDefault();
       event.stopPropagation();
       navigateInternal(event.target.href);
@@ -215,7 +214,7 @@ const main = async () => {
   });
 
   await Promise.all(blockers);
-  console.info("Rendered successfully! 😁");
+  console.info("Rendered successfully!");
   document.body.classList.remove('loading');
   document.body.classList.add('loaded');
   
