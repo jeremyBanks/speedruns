@@ -16,7 +16,7 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
     const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
     
     if (runnerSlug) {
-      yield line(HTML`World record and ${runnerSlug}'s personal best (<a href="//${currentHost}/${gamesSlug}">remove</a>) progressions over time.`);
+      yield line(HTML`World record and ${runnerSlug}'s personal best [<a href="//${currentHost}/${gamesSlug}">remove</a>] progressions over time.`);
     } else {
       yield line("World record progressions over time. Click a runner name to compare their bests.");
     }
@@ -24,8 +24,9 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
     yield line();
     yield line("A consistent linear scale is only used for duration differences between runs within a given category/level, not differences between between categories/levels.");
     yield line();
+
     for (const game of games) yield async function*() {
-        yield line(HTML`      <a class="game" id="${game.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#${game.slug}">${game.nick}</a>`);
+        yield line(HTML`      <a class="game" id="${game.slug}" href="//${currentHost}/${game.slug}${runnerSlug ? `/${runnerSlug}` : ''}">${game.nick}</a>`);
         yield line();
 
         const runsByLevel = await game.runsByCategoryLevelPairs();
