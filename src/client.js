@@ -16,7 +16,7 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
     const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
     
     yield line(HTML`World record progressions over time${
-               runnerSlug ? HTML`, with <a href="//${currentHost}/${gamesSlug}/${runnerSlug}">${runnerSlug}</a>'s personal bests for comparison` :
+               runnerSlug ? HTML`, with ${runnerSlug}'s personal bests for comparison` :
                  `. Click on a runner to compare their personal bests`}.`);
 
     yield line();
@@ -118,12 +118,13 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
 
 const main = async () => {
   (async () => {
-    document.body.classList.remove('unloaded');
+    document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
     document.body.classList.add('loading');
+
     const errorMessage = document.querySelector('#error-message');
     try {
       await main.done;
-      document.body.classList.remove('loading');
+      document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
       document.body.classList.add('loaded');
     } catch (error) {
       document.body.classList.remove('loading');
@@ -225,7 +226,7 @@ const main = async () => {
   console.debug("😅 Rendering...");
   await Promise.all(blockers);
   console.info("😁 Rendered successfully!");
-  document.body.classList.remove('loading');
+  document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
   document.body.classList.add('loaded');
   
   const hash = window.location.hash;

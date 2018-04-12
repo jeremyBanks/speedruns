@@ -4,7 +4,7 @@ import {extraData} from '/src/speedrun-patches.js';
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
 export const api = async (path, maxPages = 1) => {
-  if (!apiCache.has(path)) {
+  if (!apiCache.has(path) || true) {
     const result = apiFetch(path).then(null, error => {
       apiCache.delete(path);
       throw error;
