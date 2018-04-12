@@ -116,24 +116,7 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
 
 
 
-const main = async () => {
-  (async () => {
-    document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
-    document.body.classList.add('loading');
-
-    const errorMessage = document.querySelector('#error-message');
-    try {
-      await main.done;
-      document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
-      document.body.classList.add('loaded');
-    } catch (error) {
-      document.body.classList.remove('loading');
-      document.body.classList.add('errored');
-      errorMessage.textContent = `${error}\n\n${error.stack}`;
-      throw error;
-    }
-  })();
-  
+const doMain = async () => {
   const hostname = document.location.host;
   const currentProject = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
 
@@ -156,6 +139,8 @@ const main = async () => {
 
   // navigates to an internal URL and recursively re-invokes main to re-render the page.
   const navigateInternal = async url => {
+    document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
+    document.body.classList.add('unloaded');
     window.history.pushState(null, docTitle, url);
     document.scrollingElement.scrollTop = 0;
     return await main();
@@ -211,12 +196,13 @@ const main = async () => {
   `);
 
   output.addEventListener('click', event => {
+    if (event.target.tagName !== 'A') return; 
     let target = new URL(event.target.href);
     if (target.host == canonicalHost) {
       target.host = document.location.host;
     }
     if (target.host === document.location.host) {
-      console.debug(`🔗 Internal navigation to ${event.target.target}`);
+      console.debug(`🔗 Internal navigation to ${target.href}`);
       event.preventDefault();
       event.stopPropagation();
       navigateInternal(target.href);
@@ -242,4 +228,22 @@ const main = async () => {
     }
   }
 };
-main.done = main();
+
+const main = async () => {
+  document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
+  document.body.classList.add('loading');
+
+  const errorMessage = document.querySelector('#error-message');
+  try {
+    await doMain();
+    document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
+    document.body.classList.add('loaded');
+  } catch (error) {
+    document.body.classList.remove('loading');
+    document.body.classList.add('errored');
+    errorMessage.textContent = `${error}\n\n${error.stack}`;
+    throw error;
+  }
+};
+
+main();
