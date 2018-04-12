@@ -52,16 +52,6 @@ export class Runner {
     Object.seal(this);
     Object.assign(this, ...args);
   }
-
-  static async get(slug) {
-    const runner = await api(`users/${slug}`);
-    return new Runner({
-      isUser: true,
-      userId: runner.id,
-      nick: runner.names.international,
-      url: runner.weblink,
-    });
-  }
   
   static fromApiData(runner) {
     if (runner.rel === 'user') {
@@ -89,34 +79,19 @@ export class Game {
     this.nick =
     this.slug =
     this.url =
-    this.icon = void this;
+    this.icon =
+    this.categoryLevelPairs = void this;
     Object.seal(this);
     Object.assign(this, ...args);
   }
  
   static async get(slug) {
     const data = await api(`games/${slug}?embed=categories,levels`);
-    return new Game({
-      gameId: data.id,
-      nick: data.names.international,
-      url: data.weblink,
-      icon: data.assets.icon.uri,
-      slug: data.abbreviation || data.id,
-    });
-  }
-
-  async categoryLevelPairs() {
     
-    // XXXXX -- embed this in the game request instead!
-    const [categories, levels] = await Promise.all([
-      api(`games/${this.gameId}/categories`),
-      api(`games/${this.gameId}/levels`)
-    ]);
+    const levelCategories = data.categories.data.filter(c => c.type === 'per-level');
+    const gameCategories = data.categories.data.filter(c => c.type === 'per-game');
 
-    const levelCategories = categories.filter(c => c.type === 'per-level');
-    const gameCategories = categories.filter(c => c.type === 'per-game');
-
-    return [
+    const categoryLevelPairs = [
       ...gameCategories.map(category => new CategoryLevelPair({
         gameId: this.gameId,
         levelId: null,
@@ -124,7 +99,7 @@ export class Game {
         nick: `${category.name}`,
         url: category.weblink,
       })),
-      ...[].concat(...levels.map(level => levelCategories.map(category => new CategoryLevelPair({
+      ...[].concat(...data.levels.data.map(level => levelCategories.map(category => new CategoryLevelPair({
         gameId: this.gameId,
         levelId: level.id,
         categoryId: category.id,
@@ -132,6 +107,15 @@ export class Game {
         url: level.weblink,
       }))))
     ];
+    
+    return new Game({
+      gameId: data.id,
+      nick: data.names.international,
+      url: data.weblink,
+      icon: data.assets.icon.uri,
+      slug: data.abbreviation || data.id,
+      categoryLevelPairs,
+    });
   }
 
   async runsByCategoryLevelPairs() {
@@ -140,7 +124,7 @@ export class Game {
     
     const runs = await Promise.all(runsData.map(Run.fromApiData));
 
-    return new Map((await this.categoryLevelPairs()).map(pair => [
+    return new Map(this.categoryLevelPairs.map(pair => [
       pair,
       runs.filter(r => r.levelId === pair.levelId && r.categoryId === pair.categoryId).sort(compareAll(
         (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
