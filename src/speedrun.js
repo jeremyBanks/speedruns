@@ -119,7 +119,7 @@ export class Game {
     const runsData = await api(
       `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200`);
     
-    const runs = runsData.map(Run.fromApiData);
+    const runs = await Promise.all(runsData.map(Run.fromApiData));
 
     return new Map((await this.categoryLevelPairs()).map(pair => [
       pair,
