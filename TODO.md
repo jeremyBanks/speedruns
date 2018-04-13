@@ -1,6 +1,6 @@
 # To Do
 
-- fetch levels in parallel with level info, since it doesn't depend on it
+- # DO THIS fetch levels in parallel with level info, since it doesn't depend on it
 
 - add pagination support in API wrapper.  
   currently blocking: https://bests.glitch.me/smb  
