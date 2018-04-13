@@ -17,3 +17,13 @@
 - embedded video player?
 
 - user pages?
+
+- events? hard to do that without a dom...
+  - it probably wouldn't actually be that hard to allow DOM content to be
+    embedded, but it could ruin the immutability. Maybe if we grab the
+    outerHTML immediately for the purpose of text output, so you're only
+    affected if you're using DOM output? nb: immediately detach for more
+    deteriminism.
+    this could be reasonable -- components would be the breaking point
+    within which rendering occurs.
+
