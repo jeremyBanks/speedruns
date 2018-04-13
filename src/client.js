@@ -18,7 +18,7 @@ class BestsReport extends Component {
       const games = Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
       const gamesRunsByCategoryLevelPairs = Promise.all(gameSlugs.map(s => speedrun.runsByCategoryLevelPairs(s)));
       const gamePairs = zip(await games, await gamesRunsByCategoryLevelPairs);
-zip
+
       if (runnerSlug) {
         yield line(HTML`World record and ${runnerSlug}'s personal best [<a href="//${currentHost}/${gamesSlug}">remove</a>] progressions over time.`);
       } else {
