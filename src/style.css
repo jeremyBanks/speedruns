@@ -264,10 +264,6 @@ span.time {
   margin: 16px 0;
 }
 
-.BestsReport+* > .line {
-  min-height: 1em;
-}
-
 .BestsReport+* a:not(:hover) {
   color: inherit;
 }
