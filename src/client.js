@@ -214,8 +214,11 @@ const doMain = async (locationProvider) => {
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
     const content = new BestsReport({gameSlugs, runnerSlug, currentHost});
-    // we could call setState on this!
+
+    // .element() creates/returns a single element bound to the state of the component,
+    //  which will be re-rendered when it's updated with .setState().
     const element = content.element();
+
     output.appendChild(content.element());
     blockers.push(content.rendered.done());
   } else {

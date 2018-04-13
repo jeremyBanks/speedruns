@@ -19,7 +19,7 @@ export class Component {
     
     this.rendered = this.constructor.render(props);
 
-    Object.freeze(this);
+    Object.seal(this);
   }
   
   setProps(props) {
@@ -27,17 +27,17 @@ export class Component {
 
     this.rendered = this.constructor.render(props);
 
-    if (this._element) {
-      this._element.textContent = '';
-      this._element.appendChild(this.rendered.fragment())
+    if (this.element_) {
+      this.element_.textContent = '';
+      this.element_.appendChild(this.rendered.fragment())
     }
   }
 
   element() {
     if (this.element_ === null) {
-      this._element_ = document.createElement('bester-component');
-      this._element.classList.add(...this.classNames);
-      this._element.appendChild(this.rendered.fragment());
+      this.element_ = document.createElement('bester-component');
+      this.element_.classList.add(...this.classNames);
+      this.element_.appendChild(this.rendered.fragment());
     }
     return this.element_;
   }
