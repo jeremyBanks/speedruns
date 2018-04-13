@@ -1,3 +1,7 @@
+// bester.Component subclasses render an Object of props into a bester.HTML
+// instance, and add some class-name-based CSS classes to a prefix placeholder
+// element facilitate styling and dedbugging.
+
 import {HTML, TO_HTML} from '/assets/bester/html.js';
 
 
@@ -12,7 +16,7 @@ export class Component {
       currentClass = Object.getPrototypeOf(currentClass);
     }
     
-    this.rendered = HTML`<script class="${classNames.map(c => `-${c}`).join(` `)}"></script>${this.constructor.render(props)}`;
+    this.rendered = HTML`<before-bester-component class="${classNames.map(c => `-${c}`).join(` `)}"></before-bester-component>${this.constructor.render(props)}`;
 
     Object.freeze(this);
   }

@@ -1,7 +1,3 @@
-* {
-  box-sizing: border-box; 
-}
-
 html {
   background: #222;
   overflow-y: scroll;
@@ -352,4 +348,8 @@ body.loaded #error-message {
 
 body.errored #error-message {
   display: block;
+}
+
+before-bester-component {
+  display: none;
 }
