@@ -22,8 +22,12 @@
   - it probably wouldn't actually be that hard to allow DOM content to be
     embedded, but it could ruin the immutability. Maybe if we grab the
     outerHTML immediately for the purpose of text output, so you're only
-    affected if you're using DOM output? nb: immediately detach for more
-    deteriminism.
-    this could be reasonable -- components would be the breaking point
-    within which rendering occurs.
+    affected if you're using DOM output? or get both, and check if they change?
+    probably awful. nb: immediately detach for more deteriminism.
+    parsing/rendering at component boundaries might be reasonable.
+    do we have a post-render bind-events step? seems abusable.
+    componentDidUpdate()?
+
+maybe come up with a few actual uses before engineering in the abstract.
+that's part of the point here: feel out actual use patterns.
 
