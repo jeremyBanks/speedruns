@@ -45,6 +45,9 @@ class ThisShouldNeverHappenError extends Error {
 };
 
 
+export const TO_HTML = Symbol('TO_HTML');
+
+
 const placeholderClassSuffixes = crypto.getRandomValues(new Uint32Array(256));
 
 
@@ -77,6 +80,8 @@ export class HTMLPieces {
       return new HTMLPieces([]);
     } else if (content === null) {
       return new HTMLPieces(['null']);
+    } else if (typeof content === 'object' && typeof content[TO_HTML] === 'function') {
+      return HTMLPiece.from(content[TO_HTML]());
     } else if (typeof content === 'function') {
       return HTMLPieces.from(content());
     } else if (content[Symbol.asyncIterator]) {
