@@ -18,7 +18,7 @@ app.set('json spaces', null);
 // uses, so by copying that we can avoid clobbering any of their paths we'd like to mirror.
 app.use('/assets', express.static(__dirname + '/src', {
   dotfiles: 'ignore',
-  index: ['index.html', '.js']
+  index: ['index.html', 'README.md']
 }));
 app.use('/assets', express.static(__dirname + '/node_modules', {
   dotfiles: 'ignore',
