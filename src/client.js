@@ -148,6 +148,8 @@ const doMain = async () => {
       window.history.replaceState(null, docTitle, url);      
     }
     document.scrollingElement.scrollTop = 0;
+    // calling main within a function within a function called by main.
+    // possibly not ideal
     return await main();
   };
 

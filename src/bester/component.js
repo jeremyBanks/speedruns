@@ -1,22 +1,24 @@
-import {TO_HTML} from '/assets/bester/html.js';
+import {HTML, TO_HTML} from '/assets/bester/html.js';
 
 
 export class Component {
   constructor(props = null) {
-    this.props = null;
-    this.render = null;
-    // this.state? nope.
+    this.props = props;
+    this.rendered = Promise.resolve(this.constructor.render(props).fragment()).then();
     Object.freeze(this);
-    this.setProps(props);
   }
-  
-  this
 
   [TO_HTML]() {
-    return this.render;
+    return this.rendered;
   }
 
-  render() {
+  static render(props) {
     throw new Error("not implemented"); 
+  }
+}
+
+export class JSONPre extends Component {
+  static render(props) {
+    return HTML.element`<pre>${JSON.stringify(props, null, 2)}</pre>`;
   }
 }
