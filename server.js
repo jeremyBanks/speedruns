@@ -20,15 +20,14 @@ app.use('/assets', express.static(__dirname + '/src', {
   dotfiles: 'ignore',
   index: ['index.html', 'README.md']
 }));
-app.use('/assets', express.static(__dirname + '/node_modules', {
-  dotfiles: 'ignore',
-  index: ['README.md']
-}));
 
 // Except for the Service Worker, because it needs to be at the top level. It looks like
 // speedrun.com also treats paths ending in .js as static, so this should be safe.
 app.get('/service-worker.js', (req, res) => {
   res.sendFile(__dirname + '/service-worker.js');
+});
+app.get('/service-worker-toolbox.js', (req, res) => {
+  res.sendFile(__dirname + '/node_modules/sw-toolbox/sw-toolbox.js');
 });
 
 // Crudely mirror and cache speedrun.com/api.
