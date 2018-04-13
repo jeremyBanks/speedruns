@@ -1,5 +1,7 @@
 // HTML templating!
 
+// TODO: make sure that we also include iterator return (not yield) values, if they exist.
+
 import {aarray} from '/assets/bester/utils.js';
 
 
