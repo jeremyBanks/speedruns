@@ -11,3 +11,8 @@
 
 - decide whether speedrun-patches.js should exist in client or server, then
   move it there properly. right now it's in a least-efficient limbo.
+
+## Ideas?
+
+- embedded video player?
+- user pages?
