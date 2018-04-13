@@ -1,12 +1,14 @@
 import HTML from '/assets/bester/html.js';
 import {zip, devAwaitDeep, compareAll, compareDefault} from '/assets/bester/utils.js';
+import {Component} from '/assets/bester/component.js';
 
 import * as speedrun from '/assets/speedrun.js';
 
 
 const defaultPath = '/wc2+wc2btdp';
 
-const getBests = (gameSlugs, runnerSlug, currentHost) => {
+class BestsPage extends Component {
+  static render(props) {
   return HTML`<pre class="bestsOutput">${async function*() {  
     const line = (content = '') => HTML`<div class="content">${content || ' '}</div>`;
 
@@ -115,18 +117,15 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
 };
 
 
-// ------------
-const useHttpOrHttps = (hostname) => {
+
+const doMain = async () => {
+  const hostname = document.location.host;
   const currentProject = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
   
   // force HTTPS if running on Glitch, where we know it's available.
   if (currentProject && document.location.protocol === 'http:') {
     document.location.protocol = 'https:';
   }
-};
-
-const doMain = async () => {
-  useHttpOrHttps(document.location.host, currentProject);
 
   const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
   
