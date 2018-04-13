@@ -125,29 +125,43 @@ class LocationProvider {
     this.currentProject = this.hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? this.hostname.split('.')[0] : null;
     this.canonicalProject = 'bests';
     this.canonicalHost = 'bests.run';
-    this.currentHost = (this.currentProject === this.canonicalProject) ? this.canonicalHost : this.hostname; 
+    this.currentHost = (this.currentProject === this.canonicalProject) ? this.canonicalHost : this.hostname;
+    this.path = document.location.pathname.slice(1).split(/\//g).filter(Boolean); 
+    this.hasNonDefaultProject = Boolean(currentProject && currentProject !== canonicalProject);
+    this.docTitle = (this.path.length) ? `${this.hasNonDefaultProject ? currentProject : canonicalHost}/${this.path.join('/')}` : this.hasNonDefaultProject ? currentHost : canonicalHost
+    
+  }
+  
+  setupDocument() {
+    if (currentProject && document.location.protocol === 'http:') {
+      document.location.protocol = 'https:';
+    }
+
+    document.title = docTitle;
   }
 }
 
-const setupDocument = (hostname, currentHost, currentProject) => {
+const setupDocument = (hostname, currentProject, canonicalProject, canonicalHost, currentHost, path) => {
   // force HTTPS if running on Glitch, where we know it's available.
   if (currentProject && document.location.protocol === 'http:') {
     document.location.protocol = 'https:';
   }
 
-  const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
-  
-  const canonicalProject = 'bests';
-  const canonicalHost = 'bests.run';
-
   const hasNonDefaultProject = Boolean(currentProject && currentProject !== canonicalProject);
-
-  const docTitle = (path.length) ? `${hasNonDefaultProject ? currentProject : canonicalHost}/${path.join('/')}` : hasNonDefaultProject ? currentHost : canonicalHost
   document.title = docTitle;
 };
 
 const doMain = async (locationProvider) => {
-  setupDocument(hostname, currentHost, currentProject);
+  const { hostname, 
+         currentProject, 
+         canonicalProject, 
+         canonicalHost, 
+         currentHost, 
+         path,
+         docTitle
+        } = locationProvider;
+  
+  locationProvider.setupDocument();
   
   // navigates to an internal URL and recursively re-invokes main to re-render the page.
   const navigateInternal = async (url, replace = false) => {
@@ -249,7 +263,7 @@ const main = async () => {
 
   const errorMessage = document.querySelector('#error-message');
   try {
-    await doMain();
+    await doMain(new LocationProvider());
     document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
     document.body.classList.add('loaded');
   } catch (error) {
