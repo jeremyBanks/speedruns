@@ -11,12 +11,13 @@ export class Component {
 
     const classNames = [];
     let currentClass = this.constructor;
-    while (currentClass && currentClass.name && currentClass !== Object) {
+    while (currentClass && currentClass.name && currentClass !== Component) {
       classNames.push(currentClass.name);
       currentClass = Object.getPrototypeOf(currentClass);
     }
     
-    this.rendered = HTML`<before-bester-component class="${classNames.join(" ")}"></before-bester-component>${this.constructor.render(props)}`;
+    this.rendered = 
+      HTML`<bester-component class="${classNames.join(" ")}">${this.constructor.render(props)}</bester-component>`;
 
     Object.freeze(this);
   }
