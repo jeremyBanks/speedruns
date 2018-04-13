@@ -259,53 +259,53 @@ span.time {
   }
 }
 
-.bestsOutput {
+.BestsReport {
   font-size: 12px;
   margin: 16px 0;
 }
 
-.bestsOutput > .line {
+.BestsReport > .line {
   min-height: 1em;
 }
 
-.bestsOutput a:not(:hover) {
+.BestsReport a:not(:hover) {
   color: inherit;
 }
 
-.bestsOutput .best, .bestsOutput .banks, .bestsOutput .both {
+.BestsReport .best, .BestsReport .banks, .BestsReport .both {
   color: transparent;
 }
 
-.bestsOutput .both {
+.BestsReport .both {
   background: linear-gradient(to bottom, #000080 0%, #FFD700 100%);
 }
 
-.bestsOutput .best {
+.BestsReport .best {
   background: linear-gradient(to bottom, #DFA700 0%, #FFD700 100%);
 }
 
-.bestsOutput .banks.current {
+.BestsReport .banks.current {
   background: linear-gradient(to bottom, #000080 0%, rgba(0, 0, 128, 0.125) 100%);
 }
 
-.bestsOutput .banks {
+.BestsReport .banks {
   background: rgba(0, 0, 128, 0.125);
 }
 
-.bestsOutput a.game {
+.BestsReport a.game {
   display: inline-block;
   font-size: 16px;
   font-weight: bold;
 }
 
-.bestsOutput a.level {
+.BestsReport a.level {
   display: inline-block;
   font-size: 14px;
   font-weight: bold;
 }
 
-.bestsOutput a.game:target, .bestsOutput a.game.target,
-.bestsOutput a.level:target, .bestsOutput a.level.target {
+.BestsReport a.game:target, .BestsReport a.game.target,
+.BestsReport a.level:target, .BestsReport a.level.target {
   padding: 12px;
   margin: -12px;
   border-radius: 16px;
@@ -322,7 +322,7 @@ span.time {
   }
 }
 
-.bestsOutput .none {
+.BestsReport .none {
   opacity: 0.5;
 }
 

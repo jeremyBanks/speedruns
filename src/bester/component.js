@@ -3,7 +3,7 @@ import {HTML, TO_HTML} from '/assets/bester/html.js';
 
 export class Component {
   constructor(props = null) {
-    this.props = props;
+    this.props = Object.freeze(Object.assign({}, props));
     this.rendered = HTML.from(this.constructor.render(props)).element().then(element => {
       element.classList.add(this.constructor.name);
       return element;
