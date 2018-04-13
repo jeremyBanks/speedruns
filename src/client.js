@@ -219,7 +219,7 @@ const doMain = async (locationProvider) => {
     //  which will be re-rendered when it's updated with .setState().
     const element = content.element();
 
-    output.appendChild(content.element());
+    output.appendChild(element);
     blockers.push(content.rendered.done());
   } else {
     throw new Error("404/invalid URL");
