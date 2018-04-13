@@ -204,6 +204,11 @@ export class HTMLPieces {
     return fragment;
   }
 
+  async done() {
+    const [fragment, done] = this.fragmentAndDone();
+    return done;
+  }
+
   async element() {
     const [fragment, done] = this.fragmentAndDone();
     await done;

@@ -8,7 +8,6 @@ import {HTML, TO_HTML} from '/assets/bester/html.js';
 export class Component {
   constructor(props = null) {
     this.props = Object.freeze(Object.assign({}, props));
-
     this.element_ = null;
 
     this.classNames = [];
@@ -22,12 +21,23 @@ export class Component {
 
     Object.freeze(this);
   }
+  
+  setProps(props) {
+    this.props = Object.freeze(Object.assign({}, this.props, props));
+
+    this.rendered = this.constructor.render(props);
+
+    if (this._element) {
+      this._element.textContent = '';
+      this._element.appendChild(this.rendered.fragment())
+    }
+  }
 
   element() {
     if (this.element_ === null) {
       this._element_ = document.createElement('bester-component');
       this._element.classList.add(...this.classNames);
-      this._element.appendChild(this.rendered.fragment);
+      this._element.appendChild(this.rendered.fragment());
     }
     return this.element_;
   }
