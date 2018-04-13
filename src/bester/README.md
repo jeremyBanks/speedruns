@@ -1,0 +1,1 @@
+`bester/` is some libraries that can sort-of be treated as a standalone micro-framework: nothing in here should have non-`bester/` dependencies.
