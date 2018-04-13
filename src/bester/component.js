@@ -16,7 +16,7 @@ export class Component {
       currentClass = Object.getPrototypeOf(currentClass);
     }
     
-    this.rendered = HTML`<before-bester-component class="${classNames.map(c => `-${c}`).join(` `)}"></before-bester-component>${this.constructor.render(props)}`;
+    this.rendered = HTML`<before-bester-component class="${classNames.join(" ")}"></before-bester-component>${this.constructor.render(props)}`;
 
     Object.freeze(this);
   }
