@@ -81,7 +81,7 @@ export class HTMLPieces {
     } else if (content === null) {
       return new HTMLPieces(['null']);
     } else if (typeof content === 'object' && typeof content[TO_HTML] === 'function') {
-      return HTMLPiece.from(content[TO_HTML]());
+      return HTMLPieces.from(content[TO_HTML]());
     } else if (typeof content === 'function') {
       return HTMLPieces.from(content());
     } else if (content[Symbol.asyncIterator]) {

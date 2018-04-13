@@ -10,7 +10,7 @@ const defaultPath = '/wc2+wc2btdp';
 class BestsReport extends Component {
   static render(props) {
     const {gameSlugs, runnerSlug, currentHost} = props;
-    return HTML`<pre>${async function*() {  
+    return HTML`<pre class="BestsReport">${async function*() {  
       const line = (content = '') => HTML`<div class="content">${content || ' '}</div>`;
 
       const gamesSlug = gameSlugs.join('+');
@@ -127,38 +127,32 @@ class LocationProvider {
     this.canonicalHost = 'bests.run';
     this.currentHost = (this.currentProject === this.canonicalProject) ? this.canonicalHost : this.hostname;
     this.path = document.location.pathname.slice(1).split(/\//g).filter(Boolean); 
-    this.hasNonDefaultProject = Boolean(currentProject && currentProject !== canonicalProject);
-    this.docTitle = (this.path.length) ? `${this.hasNonDefaultProject ? currentProject : canonicalHost}/${this.path.join('/')}` : this.hasNonDefaultProject ? currentHost : canonicalHost
-    
+    this.hasNonDefaultProject = Boolean(this.currentProject && this.currentProject !== this.canonicalProject);
+  }
+  
+  get docTitle() {
+    return (this.path.length) ? `${this.hasNonDefaultProject 
+      ? this.currentProject : this.canonicalHost}/${this.path.join('/')}` 
+      : this.hasNonDefaultProject ? this.currentHost : this.canonicalHost;
   }
   
   setupDocument() {
-    if (currentProject && document.location.protocol === 'http:') {
+    if (this.currentProject && document.location.protocol === 'http:') {
       document.location.protocol = 'https:';
     }
 
-    document.title = docTitle;
+    document.title = this.docTitle;
   }
 }
 
-const setupDocument = (hostname, currentProject, canonicalProject, canonicalHost, currentHost, path) => {
-  // force HTTPS if running on Glitch, where we know it's available.
-  if (currentProject && document.location.protocol === 'http:') {
-    document.location.protocol = 'https:';
-  }
-
-  const hasNonDefaultProject = Boolean(currentProject && currentProject !== canonicalProject);
-  document.title = docTitle;
-};
-
 const doMain = async (locationProvider) => {
   const { hostname, 
-         currentProject, 
-         canonicalProject, 
-         canonicalHost, 
-         currentHost, 
-         path,
-         docTitle
+          currentProject, 
+          canonicalProject, 
+          canonicalHost, 
+          currentHost, 
+          path,
+          docTitle
         } = locationProvider;
   
   locationProvider.setupDocument();
@@ -210,7 +204,7 @@ const doMain = async (locationProvider) => {
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-    const content = new BestsPage({gameSlugs, runnerSlug, currentHost});
+    const content = new BestsReport({gameSlugs, runnerSlug, currentHost});
     
     const [fragment, done] = HTML.from(content).fragmentAndDone();
     output.appendChild(fragment);

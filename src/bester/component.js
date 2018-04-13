@@ -12,10 +12,7 @@ export class Component {
       currentClass = Object.getPrototypeOf(currentClass);
     }
     
-    this.rendered = HTML.from(this.constructor.render(props)).element().then(element => {
-      element.classList.add(...classNames.reverse());
-      return element;
-    });
+    this.rendered = HTML.from(this.constructor.render(props));
 
     Object.freeze(this);
   }
