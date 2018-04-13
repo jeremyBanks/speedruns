@@ -1,7 +1,5 @@
 # To Do
 
-- use Component/templates as the basis for some refactoring
-
 - add pagination support in API wrapper.  
   currently blocking: https://bests.glitch.me/smb  
   Continue to enforce some sanity limit like 6 pages (1200 items).

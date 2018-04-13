@@ -39,7 +39,7 @@ class BestsReportGame extends Component {
     const runsByLevel = await game.runsByCategoryLevelPairs();
 
     for (const [level, runs] of runsByLevel) {
-      yield new BestsReportRun({level, runs, runnerSlug, currentHost});
+      yield new BestsReportRun({level, runs, runnerSlug, currentHost, gamesSlug});
     }
     yield "\n";
     yield "\n";
