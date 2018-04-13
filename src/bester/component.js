@@ -2,14 +2,15 @@ import {TO_HTML} from '/assets/bester/html.js';
 
 
 export class Component {
-  constructor(data = null) {
-    this.data = null;
+  constructor(props = null) {
+    this.props = null;
     this.render = null;
-    Object.freeze(this
-    this.setData(data);
+    // this.state? nope.
+    Object.freeze(this);
+    this.setProps(props);
   }
   
-  
+  this
 
   [TO_HTML]() {
     return this.render;
