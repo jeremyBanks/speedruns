@@ -4,7 +4,10 @@ import {HTML, TO_HTML} from '/assets/bester/html.js';
 export class Component {
   constructor(props = null) {
     this.props = props;
-    this.rendered = Promise.resolve(this.constructor.render(props).fragment()).then();
+    this.rendered = HTML.from(this.constructor.render(props)).element().then(element => {
+      element.classList.add(this.constructor.name);
+      return element;
+    });
     Object.freeze(this);
   }
 
@@ -15,10 +18,21 @@ export class Component {
   static render(props) {
     throw new Error("not implemented"); 
   }
+  
+  static Basic(render) {
+    const cl class extends Component {
+      static render(props) {
+        return render(props);
+      }
+    };
+  }
 }
 
-export class JSONPre extends Component {
+const defineComponent = render => 
+
+
+const JSONPre extends Component {
   static render(props) {
-    return HTML.element`<pre>${JSON.stringify(props, null, 2)}</pre>`;
+    return HTML`<pre>${JSON.stringify(props, null, 2)}</pre>`;
   }
 }

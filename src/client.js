@@ -115,22 +115,25 @@ const getBests = (gameSlugs, runnerSlug, currentHost) => {
 };
 
 
-
-
-const doMain = async () => {
-  const hostname = document.location.host;
+// ------------
+const useHttpOrHttps = (hostname) => {
   const currentProject = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
-
+  
   // force HTTPS if running on Glitch, where we know it's available.
   if (currentProject && document.location.protocol === 'http:') {
     document.location.protocol = 'https:';
   }
+};
+
+const doMain = async () => {
+  useHttpOrHttps(document.location.host, currentProject);
 
   const path = document.location.pathname.slice(1).split(/\//g).filter(Boolean);
   
   const canonicalProject = 'bests';
   const canonicalHost = 'bests.run';
 
+  // hostname has been refactored out of this function
   const currentHost = (currentProject === canonicalProject) ? canonicalHost : hostname;  
 
   const hasNonDefaultProject = Boolean(currentProject && currentProject !== canonicalProject);
