@@ -119,26 +119,29 @@ export class Game {
       categoryLevelPairs,
     });
   }
-
-  async runsByCategoryLevelPairs() {
-    // TODO: this request shouldn't be blocked on the categoryLevelPairs info we get below
-    const runsData = await api(
-      `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200&embed=players`);
-
-    // TODO: patch in our extra runs here?
-    
-    const runs = await Promise.all(runsData.map(Run.fromApiData));
-
-    return new Map(this.categoryLevelPairs.map(pair => [
-      pair,
-      runs.filter(r => r.levelId === pair.levelId && r.categoryId === pair.categoryId).sort(compareAll(
-        (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
-        (r, s) => compareDefault(r.date, s.date),
-        (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
-      ))
-    ]));
-  }
 }
+
+export const runsByCategoryLevelPairs = async (gameSlug) => {
+  const runsData = await api(
+    `runs?game=${gameSlug}&status=verified&orderby=date&direction=asc&max=200&embed=players`);
+
+// TODO: patch in our extra runs here?
+
+  let game = Game.get(gameSlug);  
+  let runs = Promise.all(runsData.map(Run.fromApiData));
+
+  game = await game;
+  run = await runs;
+  
+  return new Map(game.categoryLevelPairs.map(pair => [
+    pair,
+    runs.filter(r => r.levelId === pair.levelId && r.categoryId === pair.categoryId).sort(compareAll(
+      (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
+      (r, s) => compareDefault(r.date, s.date),
+      (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
+    ))
+  ]));
+};
 
 export class CategoryLevelPair {
   constructor(...args) {
