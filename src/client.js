@@ -214,10 +214,10 @@ const doMain = async (locationProvider) => {
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
     const content = new BestsReport({gameSlugs, runnerSlug, currentHost});
-    
-    const [fragment, done] = HTML.from(content).fragmentAndDone();
-    output.appendChild(fragment);
-    blockers.push(done);
+    // we could call setState on this!
+    const element = content.element();
+    output.appendChild(content.element());
+    blockers.push(content.rendered.done());
   } else {
     throw new Error("404/invalid URL");
   }
