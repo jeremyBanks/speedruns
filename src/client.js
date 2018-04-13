@@ -6,8 +6,6 @@ import * as speedrun from '/assets/speedrun.js';
 
 const defaultPath = '/wc2+wc2btdp';
 
-foo bar;
-
 const getBests = (gameSlugs, runnerSlug, currentHost) => {
   return HTML`<pre class="bestsOutput">${async function*() {  
     const line = (content = '') => HTML`<div class="content">${content || ' '}</div>`;
