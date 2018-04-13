@@ -9,10 +9,11 @@
 
 - update data patcher to live in API classes
 
-- decide whether speedrun-patches.js should exist in client or server, then
-  move it there properly. right now it's in a least-efficient limbo.
+- update speedrun-patches.js to create normal speedrun.Run objects, and update
+  speedrun.Run to patch them in itself, instead of messy with the API response data.
 
 ## Ideas?
 
 - embedded video player?
+
 - user pages?
