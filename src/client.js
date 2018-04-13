@@ -1,5 +1,5 @@
 import HTML from '/assets/bester/html.js';
-import {zip, devAwaitDeep, compareAll, compareDefault} from '/assets/utils.js';
+import {zip, devAwaitDeep, compareAll, compareDefault} from '/assets/bester/utils.js';
 
 import * as speedrun from '/assets/speedrun.js';
 
