@@ -121,7 +121,6 @@ export class Game {
   }
 
   async runsByCategoryLevelPairs() {
-    // TODO: this request shouldn't be blocked on the categoryLevelPairs info we get below
     const runsData = await api(
       `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200&embed=players`);
 
