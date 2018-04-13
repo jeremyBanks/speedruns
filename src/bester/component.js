@@ -7,12 +7,12 @@ export class Component {
 
     const classNames = [];
     let currentClass = this.constructor;
-    while (currentClass && currentClass !== Component) {
+    while (currentClass && currentClass.name && currentClass !== Object) {
       classNames.push(currentClass.name);
       currentClass = Object.getPrototypeOf(currentClass);
     }
     
-    this.rendered = HTML.from(this.constructor.render(props));
+    this.rendered = HTML`<script class="${classNames.map(c => `-${c}`).join(` `)}"></script>${this.constructor.render(props)}`;
 
     Object.freeze(this);
   }

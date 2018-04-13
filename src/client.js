@@ -10,7 +10,7 @@ const defaultPath = '/wc2+wc2btdp';
 class BestsReport extends Component {
   static render(props) {
     const {gameSlugs, runnerSlug, currentHost} = props;
-    return HTML`<pre class="BestsReport">${async function*() {  
+    return HTML`<pre>${async function*() {  
       const line = (content = '') => HTML`<div class="content">${content || ' '}</div>`;
 
       const gamesSlug = gameSlugs.join('+');
