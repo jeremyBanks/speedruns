@@ -9,21 +9,31 @@ export class Component {
   constructor(props = null) {
     this.props = Object.freeze(Object.assign({}, props));
 
-    const classNames = [];
+    this.element_ = null;
+
+    this.classNames = [];
     let currentClass = this.constructor;
     while (currentClass && currentClass.name && currentClass !== Component) {
-      classNames.push(currentClass.name);
+      this.classNames.push(currentClass.name);
       currentClass = Object.getPrototypeOf(currentClass);
     }
     
-    this.rendered = 
-      HTML`<bester-component class="${classNames.join(" ")}">${this.constructor.render(props)}</bester-component>`;
+    this.rendered = this.constructor.render(props);
 
     Object.freeze(this);
   }
 
+  element() {
+    if (this.element_ === null) {
+      this._element_ = document.createElement('bester-component');
+      this._element.classList.add(...this.classNames);
+      this._element.appendChild(this.rendered.fragment);
+    }
+    return this.element_;
+  }
+
   [TO_HTML]() {
-    return this.rendered;
+    return HTML`<bester-component class="${this.classNames.join(" ")}">${this.rendered}</bester-component>`;
   }
 
   static render(props) {
