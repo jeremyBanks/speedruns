@@ -1,3 +1,7 @@
+before-bester-component {
+  display: none;
+}
+
 html {
   background: #222;
   overflow-y: scroll;
@@ -255,53 +259,53 @@ span.time {
   }
 }
 
-.-BestsReport+* {
+.BestsReport+* {
   font-size: 12px;
   margin: 16px 0;
 }
 
-.-BestsReport+* > .line {
+.BestsReport+* > .line {
   min-height: 1em;
 }
 
-.-BestsReport+* a:not(:hover) {
+.BestsReport+* a:not(:hover) {
   color: inherit;
 }
 
-.-BestsReport+* .best, .-BestsReport+* .banks, .-BestsReport+* .both {
+.BestsReport+* .best, .BestsReport+* .banks, .BestsReport+* .both {
   color: transparent;
 }
 
-.-BestsReport+* .both {
+.BestsReport+* .both {
   background: linear-gradient(to bottom, #000080 0%, #FFD700 100%);
 }
 
-.-BestsReport+* .best {
+.BestsReport+* .best {
   background: linear-gradient(to bottom, #DFA700 0%, #FFD700 100%);
 }
 
-.-BestsReport+* .banks.current {
+.BestsReport+* .banks.current {
   background: linear-gradient(to bottom, #000080 0%, rgba(0, 0, 128, 0.125) 100%);
 }
 
-.-BestsReport+* .banks {
+.BestsReport+* .banks {
   background: rgba(0, 0, 128, 0.125);
 }
 
-.-BestsReport+* a.game {
+.BestsReport+* a.game {
   display: inline-block;
   font-size: 16px;
   font-weight: bold;
 }
 
-.-BestsReport+* a.level {
+.BestsReport+* a.level {
   display: inline-block;
   font-size: 14px;
   font-weight: bold;
 }
 
-.-BestsReport+* a.game:target, .-BestsReport+* a.game.target,
-.-BestsReport+* a.level:target, .-BestsReport+* a.level.target {
+.BestsReport+* a.game:target, .BestsReport+* a.game.target,
+.BestsReport+* a.level:target, .BestsReport+* a.level.target {
   padding: 12px;
   margin: -12px;
   border-radius: 16px;
@@ -318,7 +322,7 @@ span.time {
   }
 }
 
-.-BestsReport+* .none {
+.BestsReport+* .none {
   opacity: 0.5;
 }
 
@@ -348,8 +352,4 @@ body.loaded #error-message {
 
 body.errored #error-message {
   display: block;
-}
-
-before-bester-component {
-  display: none;
 }
