@@ -18,20 +18,9 @@ export class Component {
   static render(props) {
     throw new Error("not implemented"); 
   }
-  
-  static Basic(render) {
-    const cl class extends Component {
-      static render(props) {
-        return render(props);
-      }
-    };
-  }
 }
 
-const defineComponent = render => 
-
-
-const JSONPre extends Component {
+class JSONPre extends Component {
   static render(props) {
     return HTML`<pre>${JSON.stringify(props, null, 2)}</pre>`;
   }
