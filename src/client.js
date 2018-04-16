@@ -1,13 +1,13 @@
 import HTML from '/assets/bester/html.js';
 import {zip, devAwaitDeep, compareAll, compareDefault} from '/assets/bester/utils.js';
-import {Component} from '/assets/bester/component.js';
+import {RootComponent, Component} from '/assets/bester/component.js';
 
 import * as speedrun from '/assets/speedrun.js';
 
 
 const defaultPath = '/wc2+wc2btdp';
 
-class BestsReport extends Component {
+class BestsReport extends RootComponent {
   static render({gameSlugs, runnerSlug, currentHost}) {
     return HTML`<pre>${async function*() {  
       const gamesSlug = gameSlugs.join('+');

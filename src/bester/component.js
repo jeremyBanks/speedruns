@@ -3,27 +3,16 @@
 // element facilitate styling and dedbugging.
 
 import {HTML, TO_HTML} from '/assets/bester/html.js';
+import {LazySymbolScope} from '/assets/bester/utils.js';
 
 
-class LazySymbolScope {
-  constructor() {
-    return new Proxy(this, LazySymbolScope.handler); 
-  }
-}
-                       
-LazySymbolScope.handler = {
-  set(this, key, value, proxy) {
-      this[key] = value;
-      console.log('PROXY SET');
-      return true;
-  }
-});
-
-const internal = new LazySymbolScope();
+const internal = new LazySymbolScope('internal ');
 
 
 export class Component {
   constructor(props = null) {
+    
+    console.log(this);
     this.props = Object.freeze(Object.assign({}, props));
     this.element_ = null;
 
@@ -39,10 +28,7 @@ export class Component {
     Object.seal(this);
   }
 
-  // const private = new LazySymbolScope();
-  // XXX: Shhould we only publish this on the root?
-  // [private.setProps](props) {
-  setProps(props) {
+  [internal.setProps](props) {
     this.props = Object.freeze(Object.assign({}, this.props, props));
 
     this.rendered = this.constructor.render(props);
@@ -68,6 +54,13 @@ export class Component {
 
   static render(props) {
     throw new Error("not implemented"); 
+  }
+}
+
+// FOR NOW, only the root component allows its props to be changed, so that everything must be re-rendered at once.
+export class RootComponent extends Component {
+  setProps(...args) {
+    return [internal.setProps](...args);
   }
 }
 
