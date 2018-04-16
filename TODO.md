@@ -14,6 +14,8 @@
 
 ## Ideas?
 
+- do we even want to allow partial re-rendering? maybe only allow re-rendering from the top level for now.
+
 - embedded video player?
 
 - user pages?
