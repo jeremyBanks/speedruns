@@ -5,6 +5,23 @@
 import {HTML, TO_HTML} from '/assets/bester/html.js';
 
 
+class LazySymbolScope {
+  constructor() {
+    return new Proxy(this, LazySymbolScope.handler); 
+  }
+}
+                       
+LazySymbolScope.handler = {
+  set(this, key, value, proxy) {
+      this[key] = value;
+      console.log('PROXY SET');
+      return true;
+  }
+});
+
+const internal = new LazySymbolScope();
+
+
 export class Component {
   constructor(props = null) {
     this.props = Object.freeze(Object.assign({}, props));
