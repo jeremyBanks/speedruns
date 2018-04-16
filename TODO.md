@@ -38,3 +38,4 @@ okay did something:
 maybe come up with a few actual uses before engineering in the abstract.
 that's part of the point here: feel out actual use patterns.
 
+- async iterators of props? probably really stupid idea.

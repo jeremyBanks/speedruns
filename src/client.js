@@ -213,11 +213,14 @@ const doMain = async (locationProvider) => {
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-    const content = new BestsReport({gameSlugs: ['zoombinis'], runnerSlug: 'Uglie', currentHost});
-    setTimeout(() => {
-      // look, it works! that's the only reason this is here. delete it later.
-      content.props = {gameSlugs, runnerSlug, currentHost};
-    }, 400);
+    const content = new BestsReport({gameSlugs, runnerSlug, currentHost});
+    // setTimeout(() => {
+    //   // look, it works! that's the only reason this is here. delete it later.
+    //   content.props = {gameSlugs: ['zoombinis'], runnerSlug: 'Uglie', currentHost};
+    //   setTimeout(() => {
+    //     content.props = {gameSlugs, runnerSlug, currentHost};
+    //   }, 1000);
+    // }, 3000);
 
     output.appendChild(content.element);
     blockers.push(content.rendered);
