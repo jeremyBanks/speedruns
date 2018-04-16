@@ -22,19 +22,11 @@ export class Component {
 
     this[internal.props] = null;
     this[internal.element] = null;
-    this[internal.rendered] = null;
+    this[internal.renderedHTML] = null;
 
     Object.seal(this);
 
     this[internal.setProps](props);
-  }
-
-  get rendered() {
-    return this[internal.rendered].done();
-  }
-
-  onRendered() {
-    // called after a render completes, if its props are still current.
   }
 
   get props() {
@@ -45,15 +37,23 @@ export class Component {
     throw new Error("not implemented"); 
   }
 
+  get rendered() {
+    return this[internal.renderedHTML].done().then(() => this);
+  }
+
+  onRendered() {
+    // called after a render completes, if its props are still current.
+  }
+
   [HTML.fromThis]() {
-    return HTML`<bester-component class="${this[internal.classNames].join(" ")}">${this[internal.rendered]}</bester-component>`;
+    return HTML`<bester-component class="${this[internal.classNames].join(" ")}">${this[internal.renderedHTML]}</bester-component>`;
   }
 
   [internal.getElement]() {
     if (!this[internal.element]) {
       this[internal.element] = document.createElement('bester-component');
       this[internal.element].classList.add(...this[internal.classNames]);
-      this[internal.element].appendChild(this[internal.rendered].fragment());
+      this[internal.element].appendChild(this[internal.renderedHTML].fragment());
     }
     return this[internal.element];
   }
@@ -61,20 +61,20 @@ export class Component {
   [internal.setProps](props) {
     this[internal.props] = Object.freeze(Object.assign({}, this.props, props));
 
-    this[internal.rendered] = this.constructor.render(props);
+    this[internal.renderedHTML] = HTML.from(this.constructor.render(props));
+    if (this[internal.element]) {
+      this[internal.element].textContent = '';
+      this[internal.element].appendChild(this[internal.renderedHTML].fragment())
+    }
+
     let renderedProps = this.props;
-    this[internal.rendered].then(result => {
+    this[internal.renderedHTML].done().then(result => {
       if (this.props !== renderedProps) {
         return;
       }
-      
-      this.onRender();
-    });
 
-    if (this[internal.element]) {
-      this[internal.element].textContent = '';
-      this[internal.element].appendChild(this[internal.rendered].fragment())
-    }
+      this.onRendered();
+    });
   }
 }
 
