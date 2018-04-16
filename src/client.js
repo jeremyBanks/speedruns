@@ -145,7 +145,7 @@ class LocationProvider {
       : this.hasNonDefaultProject ? this.currentHost : this.canonicalHost;
   }
   
-  setupDocument() {
+  updateDocument() {
     if (this.currentProject && document.location.protocol === 'http:') {
       document.location.protocol = 'https:';
     }
@@ -164,7 +164,7 @@ const doMain = async (locationProvider) => {
           docTitle
         } = locationProvider;
   
-  locationProvider.setupDocument();
+  locationProvider.updateDocument();
   
   // navigates to an internal URL and recursively re-invokes main to re-render the page.
   const navigateInternal = async (url, replace = false) => {
@@ -213,13 +213,13 @@ const doMain = async (locationProvider) => {
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-    const content = new BestsReport({gameSlugs, runnerSlug, currentHost});
+    const content = new BestsReport({gameSlugs: ['zoombinis'], runnerSlug: 'Uglie', currentHost});
+    setTimeout(() => {
+      // look, it works! that's the only reason this is here. delete it later.
+      content.props = {gameSlugs, runnerSlug, currentHost};
+    }, 400);
 
-    // .element() creates/returns a single element bound to the state of the component,
-    //  which will be re-rendered when it's updated with .setState().
-    const element = content.element;
-
-    output.appendChild(element);
+    output.appendChild(content.element);
     blockers.push(content.rendered);
   } else {
     throw new Error("404/invalid URL");
