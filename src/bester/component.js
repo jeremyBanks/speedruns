@@ -6,6 +6,7 @@ import {HTML} from '/assets/bester/html.js';
 import {LazySymbolScope} from '/assets/bester/utils.js';
 
 
+// We want it to be slightly inconvenient to violate our interfaces.
 const internal = new LazySymbolScope('internal ');
 
 
@@ -26,6 +27,10 @@ export class Component {
     Object.seal(this);
 
     this[internal.setProps](props);
+  }
+  
+  get rendered() {
+    return this[internal.rendered].done();
   }
 
   get props() {
@@ -63,6 +68,7 @@ export class Component {
 
 
 // FOR NOW, only a root component allows its props to be changed, so everything must be re-rendered at once.
+// Maybe we could call this an application, and give it some 
 export class RootComponent extends Component {
   get element() {
     return this[internal.getElement]();
