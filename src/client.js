@@ -217,10 +217,10 @@ const doMain = async (locationProvider) => {
 
     // .element() creates/returns a single element bound to the state of the component,
     //  which will be re-rendered when it's updated with .setState().
-    const element = content.element();
+    const element = content.element;
 
     output.appendChild(element);
-    blockers.push(content.rendered.done());
+    blockers.push(content.rendered);
   } else {
     throw new Error("404/invalid URL");
   }
