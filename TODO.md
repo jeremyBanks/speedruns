@@ -29,6 +29,11 @@
     parsing/rendering at component boundaries might be reasonable.
     do we have a post-render bind-events step? seems abusable.
     componentDidUpdate()?
+    
+okay did something:
+  - onElementCreated() will be called immediate for event binding on the root element.
+  - onRendered() will be called deferred for event binding on any child elements.
+
 
 maybe come up with a few actual uses before engineering in the abstract.
 that's part of the point here: feel out actual use patterns.
