@@ -2,7 +2,7 @@
 // instance, and add some class-name-based CSS classes to a prefix placeholder
 // element facilitate styling and dedbugging.
 
-import {HTML, TO_HTML} from '/assets/bester/html.js';
+import {HTML, HTML.fromThis} from '/assets/bester/html.js';
 import {LazySymbolScope} from '/assets/bester/utils.js';
 
 
@@ -11,21 +11,36 @@ const internal = new LazySymbolScope('internal ');
 
 export class Component {
   constructor(props = null) {
-    
-    console.log(this);
-    this.props = Object.freeze(Object.assign({}, props));
-    this.element_ = null;
-
     this.classNames = [];
     let currentClass = this.constructor;
     while (currentClass && currentClass.name && currentClass !== Component) {
       this.classNames.push(currentClass.name);
       currentClass = Object.getPrototypeOf(currentClass);
     }
-    
-    this.rendered = this.constructor.render(props);
+
+    this.element_ = null;
+    this.props = null;
 
     Object.seal(this);
+    
+    this[internal.setProps](props);
+  }
+
+  static render(props) {
+    throw new Error("not implemented"); 
+  }
+
+  [HTML.fromThis]() {
+    return HTML`<bester-component class="${this.classNames.join(" ")}">${this.rendered}</bester-component>`;
+  }
+
+  [internal.getElement]() {
+    if (this.element_ === null) {
+      this.element_ = document.createElement('bester-component');
+      this.element_.classList.add(...this.classNames);
+      this.element_.appendChild(this.rendered.fragment());
+    }
+    return this.element_;
   }
 
   [internal.setProps](props) {
@@ -38,34 +53,15 @@ export class Component {
       this.element_.appendChild(this.rendered.fragment())
     }
   }
-
-  element() {
-    if (this.element_ === null) {
-      this.element_ = document.createElement('bester-component');
-      this.element_.classList.add(...this.classNames);
-      this.element_.appendChild(this.rendered.fragment());
-    }
-    return this.element_;
-  }
-
-  [TO_HTML]() {
-    return HTML`<bester-component class="${this.classNames.join(" ")}">${this.rendered}</bester-component>`;
-  }
-
-  static render(props) {
-    throw new Error("not implemented"); 
-  }
 }
 
-// FOR NOW, only the root component allows its props to be changed, so that everything must be re-rendered at once.
+// FOR NOW, only a root component allows its props to be changed, so everything must be re-rendered at once.
 export class RootComponent extends Component {
-  setProps(...args) {
-    return [internal.setProps](...args);
+  getElement() {
+    return [internal.getElement]();
   }
-}
 
-class JSONPre extends Component {
-  static render(props) {
-    return HTML`<pre>${JSON.stringify(props, null, 2)}</pre>`;
+  setProps(props) {
+    return [internal.setProps](props);
   }
 }
