@@ -47,7 +47,7 @@ export class Component {
 
   [internal.getElement]() {
     if (!this[internal.element]) {
-      console.debug('🔨 Creating element for ');
+      console.debug(`🔨 Creating element for ${this[internal.classNames][0]}.`);
       this[internal.element] = document.createElement('bester-component');
       this[internal.element].classList.add(...this[internal.classNames]);
       this[internal.element].appendChild(this[internal.renderedHTML].fragment());
@@ -71,6 +71,7 @@ export class Component {
           return;
         }
 
+        console.debug(`🍹 Rendered element contents for ${this[internal.classNames][0]}.`);
         Promise.resolve().then(() => this[internal.onElementRendered](this.element));
       });
     }
@@ -110,5 +111,12 @@ export class RootComponent extends Component {
 
   onElementRendered() {
     // called after a render completes, if its props are still current.
+  }
+
+  // Consider adding a new common parent of Component types, instead of violate the Liskov substitution principle by killing this method.
+  // If we did that, maybe we should stop making element() lazy, and make it part of setting props on an ElementComponent.
+  // maybe rename to not say "root", to allow for eventuall nested element-associated components, but that requires major templating improvements.
+  [HTML.fromThis]() {
+    throw new Error("cannot convert a RootComponent to HTML directly, you should just use this.element instead");
   }
 }
