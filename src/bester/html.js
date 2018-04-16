@@ -174,11 +174,11 @@ export class HTMLPieces {
     if (doc.body.children.length !== 1) {
       throw new Error(`found ${doc.body.children.length} elements expecting 1 in wrapper document body`);
     }
-    const result = doc.body.firstElementChild.content;
+    const fragment = doc.body.firstElementChild.content;
 
     const blockers = [];
     for (const [selector, replacement] of placeholders) {
-      const matches = result.querySelectorAll(selector);
+      const matches = fragment.querySelectorAll(selector);
       if (matches.length !== 1) {
         throw new SyntaxError(
           "Probably got async element value when not expecting element. " +
@@ -193,7 +193,7 @@ export class HTMLPieces {
       blockers.push(done);
     }
 
-    return [result, Promise.all(blockers).then(() => result)];
+    return [fragment, Promise.all(blockers).then(() => fragment)];
   }
 
   fragment() {

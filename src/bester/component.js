@@ -28,9 +28,13 @@ export class Component {
 
     this[internal.setProps](props);
   }
-  
+
   get rendered() {
     return this[internal.rendered].done();
+  }
+
+  onRendered() {
+    // called after a render completes, if its props are still current.
   }
 
   get props() {
@@ -58,6 +62,14 @@ export class Component {
     this[internal.props] = Object.freeze(Object.assign({}, this.props, props));
 
     this[internal.rendered] = this.constructor.render(props);
+    let renderedProps = this.props;
+    this[internal.rendered].then(result => {
+      if (this.props !== renderedProps) {
+        return;
+      }
+      
+      this.onRender();
+    });
 
     if (this[internal.element]) {
       this[internal.element].textContent = '';
@@ -68,7 +80,8 @@ export class Component {
 
 
 // FOR NOW, only a root component allows its props to be changed, so everything must be re-rendered at once.
-// Maybe we could call this an application, and give it some 
+// Maybe we could call this an Application, and give it some of the router logic too, accepting a location object?
+// or maybe just do that in our subclass, not here.
 export class RootComponent extends Component {
   get element() {
     return this[internal.getElement]();
