@@ -21,7 +21,10 @@ export class Component {
 
     Object.seal(this);
   }
-  
+
+  // const private = new LazySymbolScope();
+  // XXX: Shhould we only publish this on the root?
+  // [private.setProps](props) {
   setProps(props) {
     this.props = Object.freeze(Object.assign({}, this.props, props));
 
