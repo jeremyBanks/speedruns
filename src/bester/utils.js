@@ -25,6 +25,22 @@ export const compareDefault = (a, b) =>
     0;
 
 
+export class LazySymbolScope {
+  constructor(prefix = '') {
+    return new Proxy(this, {
+      get(self, key, proxy) {
+        let value = Reflect.get(...arguments);
+        if (!value) {
+          value = Symbol(`${prefix}${key}`);
+          self[key] = value;
+        }
+        return value;
+      }
+    }); 
+  }
+}
+
+
 export const devAwaitDeep = async (rootValue, forcedTimeout = new Promise(() => {}), maxTimeout = 0x10000) => {
   const timeout = Promise.race([forcedTimeout.then(() => ({
     '⏱️': 'Pending Promise',
