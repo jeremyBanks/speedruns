@@ -1,6 +1,7 @@
 const express = require('express');
 const compression = require('compression');
 const rp = require('request-promise-native');
+const serveIndex = require('serve-index');
 
 
 const app = express();
@@ -16,6 +17,12 @@ app.set('json spaces', null);
 
 // We serve all static files under the public path 'assets/' because that's what speedrun.com
 // uses, so by copying that we can avoid clobbering any of their paths we'd like to mirror.
+
+// Serve directory indexes for public/ftp folder (with icons)
+app.use('/assets', serveIndex(__dirname + '/src', {
+  view: 'details',
+  icons: true,
+}));
 app.use('/assets', express.static(__dirname + '/src', {
   dotfiles: 'ignore',
   index: ['index.html', 'README.md']
