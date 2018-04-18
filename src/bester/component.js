@@ -7,30 +7,37 @@ import {LazySymbolScope} from '/assets/bester/utils.js';
 
 
 // We want it to be slightly inconvenient to violate our interfaces.
-const internal = new LazySymbolScope('internal ');
-
+const {
+  classNames,
+  props,
+  element,
+  renderedHTML,
+  getElement,
+  setProps,
+  onElementCreated,
+  onElementRendered
+} = new LazySymbolScope('internal ');
 
 export class Component {
   constructor(props = null) {
-    const classNames = [];
+    const classes = [];
     let currentClass = this.constructor;
     while (currentClass && currentClass.name && currentClass !== Component) {
-      classNames.push(currentClass.name);
       currentClass = Object.getPrototypeOf(currentClass);
     }
-    this[internal.classNames] = classNames;
+    this[classNames] = classes.map(c => c.name);
 
-    this[internal.props] = null;
-    this[internal.element] = null;
-    this[internal.renderedHTML] = null;
+    this[props] = null;
+    this[element] = null;
+    this[renderedHTML] = null;
 
     Object.seal(this);
 
-    this[internal.setProps](props);
+    this[setProps](props);
   }
 
   get props() {
-    return this[internal.props];
+    return this[props];
   }
 
   static render(props) {
@@ -38,48 +45,48 @@ export class Component {
   }
 
   get rendered() {
-    return this[internal.renderedHTML].done().then(() => this);
+    return this[renderedHTML].done().then(() => this);
   }
 
   [HTML.fromThis]() {
-    return HTML`<bester-component class="${this[internal.classNames].join(" ")}">${this[internal.renderedHTML]}</bester-component>`;
+    return HTML`<bester-component class="${this[classNames].join(" ")}">${this[renderedHTML]}</bester-component>`;
   }
 
-  [internal.getElement]() {
-    if (!this[internal.element]) {
-      console.debug(`🔨 Creating element for ${this[internal.classNames][0]}.`);
-      this[internal.element] = document.createElement('bester-component');
-      this[internal.element].classList.add(...this[internal.classNames]);
-      this[internal.element].appendChild(this[internal.renderedHTML].fragment());
+  [getElement]() {
+    if (!this[element]) {
+      console.debug(`🔨 Creating element for ${this[classNames][0]}.`);
+      this[element] = document.createElement('bester-component');
+      this[element].classList.add(...this[classNames]);
+      this[element].appendChild(this[renderedHTML].fragment());
       
-      Promise.resolve().then(() => this[internal.onElementCreated]());
+      Promise.resolve().then(() => this[onElementCreated]());
     }
-    return this[internal.element];
+    return this[element];
   }
 
-  [internal.setProps](props) {
-    this[internal.props] = Object.freeze(Object.assign({}, this.props, props));
+  [setProps](props) {
+    this[props] = Object.freeze(Object.assign({}, this.props, props));
 
-    this[internal.renderedHTML] = HTML.from(this.constructor.render(props));
-    if (this[internal.element]) {
-      this[internal.element].textContent = '';
-      this[internal.element].appendChild(this[internal.renderedHTML].fragment());
+    this[renderedHTML] = HTML.from(this.constructor.render(props));
+    if (this[element]) {
+      this[element].textContent = '';
+      this[element].appendChild(this[renderedHTML].fragment());
       
       let renderedProps = this.props;
-      this[internal.renderedHTML].done().then(result => {
+      this[renderedHTML].done().then(result => {
         if (this.props !== renderedProps) {
           return;
         }
 
-        console.debug(`🍹 Rendered element contents for ${this[internal.classNames][0]}.`);
-        Promise.resolve().then(() => this[internal.onElementRendered](this.element));
+        console.debug(`🍹 Rendered element contents for ${this[classNames][0]}.`);
+        Promise.resolve().then(() => this[onElementRendered](this.element));
       });
     }
   }
 
-  [internal.onElementCreated]() {}
+  [onElementCreated]() {}
 
-  [internal.onElementRendered]() {}
+  [onElementRendered]() {}
 }
 
 
@@ -90,14 +97,14 @@ export class Component {
 // because otherwise this.element doesn't exist or isn't actually being used.
 export class RootComponent extends Component {
   get element() {
-    return this[internal.getElement]();
+    return this[getElement]();
   }
 
   set props(props) {
-    this[internal.setProps](props);
+    this[setProps](props);
   }
   
-  [internal.onElementCreated]() {
+  [onElementCreated]() {
     this.onElementCreated();
   }
 
@@ -105,7 +112,7 @@ export class RootComponent extends Component {
     // called after an associated element is created, if ever.
   }
   
-  [internal.onElementRendered]() {
+  [onElementRendered]() {
     this.onElementRendered();
   }
 
