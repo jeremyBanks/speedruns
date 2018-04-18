@@ -2,7 +2,7 @@
 // Subject to frequent change; not appropriate for general use.
 
 import {compareAll, compareDefault} from '/assets/bester/utils.js';
-import {extraData} from '/assets/extra-runs.js';
+import {extraRunsByCategoryLevelPairByGame} from '/assets/extra-runs.js';
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
