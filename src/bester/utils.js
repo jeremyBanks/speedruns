@@ -5,7 +5,7 @@ export const zip = (...args) => {
   return longest.map((_, i) => args.map(array => array[i]));
 };
 
-// Loops up a series of property names starting from the subject, until one is null/undefined.
+// Loops up a series of property names starting from the subject, until one is null or undefined.
 export const nProps = (subject, ...propNames) => {
   let destination = subject;
   for (const propName of propNames) {

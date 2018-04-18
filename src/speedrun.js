@@ -120,21 +120,20 @@ export class Game {
   async runsByCategoryLevelPairs() {
     const runsData = await api(
       `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200&embed=players`);
-
-    // TODO: patch in our extra runs here?
     
     const runs = await Promise.all(runsData.map(Run.fromApiData));
     
-    const extraRuns = nProps(extraRuns, this.gameId, this.categoryId, this.levelId);
-    
-    return new Map(this.categoryLevelPairs.map(pair => [
+    return new Map(await Promise.all(this.categoryLevelPairs.map(async pair => [
       pair,
-      runs.filter(r => r.levelId === pair.levelId && r.categoryId === pair.categoryId).sort(compareAll(
-        (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
-        (r, s) => compareDefault(r.date, s.date),
-        (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
-      ))
-    ]));
+      runs
+        .filter(r => r.levelId === pair.levelId && r.categoryId === pair.categoryId)
+        .concat(await Promise.all((nProps(extraRuns, this.gameId, pair.categoryId, pair.levelId) || []).map(Run.fromApiData)))
+        .sort(compareAll(
+          (r, s) => compareDefault(r.durationSeconds, s.durationSeconds),
+          (r, s) => compareDefault(r.date, s.date),
+          (r, s) => compareDefault(r.dateTimeSubmitted, s.dateTimeSubmitted),
+        ))
+    ])));
   }
 }
 
