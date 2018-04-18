@@ -6,7 +6,8 @@ import {HTML} from '/assets/bester/html.js';
 import {LazySymbolScope} from '/assets/bester/utils.js';
 
 
-// We want it to be slightly inconvenient to violate our interfaces.
+// We want it to be slightly inconvenient to violate our interfaces,
+// so we define these symbols to use for our "internal" interfaces.
 const {
   classNames,
   props,
@@ -18,11 +19,13 @@ const {
   onElementRendered
 } = new LazySymbolScope('internal ');
 
+
 export class Component {
   constructor(props = null) {
     const classes = [];
     let currentClass = this.constructor;
     while (currentClass && currentClass.name && currentClass !== Component) {
+      classes.push(currentClass);
       currentClass = Object.getPrototypeOf(currentClass);
     }
     this[classNames] = classes.map(c => c.name);
