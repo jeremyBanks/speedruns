@@ -36,6 +36,9 @@ app.get('/service-worker.js', (req, res) => {
 app.get('/service-worker-toolbox.js', (req, res) => {
   res.sendFile(__dirname + '/node_modules/sw-toolbox/sw-toolbox.js');
 });
+app.get('/service-worker-toolbox.js.map', (req, res) => {
+  res.sendFile(__dirname + '/node_modules/sw-toolbox/sw-toolbox.js.map');
+});
 
 // Crudely mirror and cache speedrun.com/api.
 // We never expire/evict values here; we assume the
