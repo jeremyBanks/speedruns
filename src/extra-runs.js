@@ -41,15 +41,17 @@ const run = (...args) => new UnofficialRun(...args);
 
 const _ = {};
 
-export const extraRunsByCategoryLevelPairByGame = new Map([
-  ["WarCraft 2" && 'o1yry26q', new Map([
-    [["Orc 1" && "kwj5l7r9", "Mission" && 'wdmw5ee2'], [
-      run('AverageAvocado', 217, _.avoUrlOrc2013 = 'https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk', _.avoDate2013 = '2013-06   '),
-      run('AverageAvocado', 224, _.avoUrl2015 = 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', _.avoDate2015 = '2015-01   '),
-      run('Cire2047', 229, 'https://youtu.be/Pl0ZkfDKEsg?t=62', '2011-05-01'),
-    ]],
-  ])],
-]);
+export const extraRuns = {
+  'o1yry26q': { // WarCraft 2
+    'wdmw5ee2': { // Mission
+      'kwj5l7r9': [ // Orc 1
+        run('AverageAvocado', 217, _.avoUrlOrc2013 = 'https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk', _.avoDate2013 = '2013-06   '),
+        run('AverageAvocado', 224, _.avoUrl2015 = 'https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R', _.avoDate2015 = '2015-01   '),
+        run('Cire2047', 229, 'https://youtu.be/Pl0ZkfDKEsg?t=62', '2011-05-01'),
+      ]
+    }
+  }
+};
 
 const war2 = 'o1yry26q';
 const war2Mission = 'wdmw5ee2';
