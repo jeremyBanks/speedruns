@@ -130,7 +130,7 @@ class BestsReportRun extends Component {
 
 class LocationProvider {
   constructor() {
-    this.hostname = document.location.host;
+    this.hostname = document.location.host.replace(/^bests\.run$/, 'bests.glitch.me');
     this.currentProject = this.hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? this.hostname.split('.')[0] : null;
     this.canonicalProject = 'bests';
     this.canonicalHost = 'bests.run';
