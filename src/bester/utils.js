@@ -5,6 +5,19 @@ export const zip = (...args) => {
   return longest.map((_, i) => args.map(array => array[i]));
 };
 
+// Loops up a series of property names starting from the subject, until one is null/undefined.
+export const nProps = (subject, ...propNames) => {
+  let destination = subject;
+  for (const propName of propNames) {
+    if (destination === null || destination === undefined) {
+      break;
+    }
+    destination = destination[propName];
+  }
+  return destination;
+};
+
+
 // converts an async iterator into a sync array.
 export const aarray = async (iterable) => {
   const values = [];

@@ -1,8 +1,8 @@
 // A light wrapper for speedrun.com API functionality we're using.
 // Subject to frequent change; not appropriate for general use.
 
-import {compareAll, compareDefault} from '/assets/bester/utils.js';
-import {extraRunsByCategoryLevelPairByGame} from '/assets/extra-runs.js';
+import {compareAll, compareDefault, nProps} from '/assets/bester/utils.js';
+import {extraRuns} from '/assets/extra-runs.js';
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
@@ -36,10 +36,7 @@ const apiFetch = async path => {
     if (body.pagination && body.pagination.links && body.pagination.links.filter(l => l.rel === 'next').length) {
       throw new Error(`got too many results (more than one page (${body.pagination.max}))`);
     } else {
-      const data = body.data;
-      if (extraData[path]) {
-        data.push(...extraData[path].filter(Boolean));
-      }
+      const {data} = body;
       return data;
     }
   }
@@ -127,7 +124,9 @@ export class Game {
     // TODO: patch in our extra runs here?
     
     const runs = await Promise.all(runsData.map(Run.fromApiData));
-
+    
+    const extraRuns = nProps(extraRuns, this.gameId, this.categoryId, this.levelId);
+    
     return new Map(this.categoryLevelPairs.map(pair => [
       pair,
       runs.filter(r => r.levelId === pair.levelId && r.categoryId === pair.categoryId).sort(compareAll(
