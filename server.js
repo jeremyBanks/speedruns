@@ -4,8 +4,8 @@ import rp from 'request-promise-native';
 import serveIndex from 'serve-index';
 
 
-import {setFet
-
+import {setFetch} from '/assets/speedrun.js';
+setFetch(rp.get);
 
 const app = express();
 
