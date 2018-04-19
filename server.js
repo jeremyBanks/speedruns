@@ -1,7 +1,7 @@
-const express = require('express');
-const compression = require('compression');
-const rp = require('request-promise-native');
-const serveIndex = require('serve-index');
+import express from 'express';
+import compression from 'compression';
+import rp from 'request-promise-native';
+import serveIndex from 'serve-index';
 
 
 const app = express();
@@ -14,6 +14,11 @@ app.use(compression());
 
 // disable json pretty print
 app.set('json spaces', null);
+
+
+// Hard-coded until we have an ES-module-friendly alternative,
+// such as https://github.com/tc39/proposal-import-meta
+const __dirname = '/app';
 
 // We serve all static files under the public path 'assets/' because that's what speedrun.com
 // uses, so by copying that we can avoid clobbering any of their paths we'd like to mirror.
