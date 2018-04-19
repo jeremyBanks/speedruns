@@ -19,16 +19,17 @@ export const api = async (path, maxPages = 6) => {
   }
 };
 
-export const apiCache = new window.Map();
+export const apiCache = new Map();
+
+// Allow an alternative fetch() function to be patched in, for in-browser use.
+// TODO: consider splitting browser dependencies into a separate module, which
+// our server-side loader can rewrite to point to a different location.
+let fetch = typeof window !== 'undefined' && window.fetch || (() => { throw new Error("no fetch() implementation available"); });
+export const setFetch = (newFetch) => { fetch = newFetch; };
 
 const apiFetch = async path => {
   const url = speedrunDotComApiRootUrl + path;
-  const response = await window.fetch(url, {headers: new Headers({
-    // we have our own caching, and use this header on both
-    // request and response to disable the browser cache.
-    // this may improve request parlallizability. maybe.
-    // 'Cache-Control': 'no-store'
-  })});
+  const response = await fetch(url);
   const body = await response.json();
   if (body.status) {
     throw new Error(`${body.status}: ${body.message}`); 
