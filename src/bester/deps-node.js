@@ -10,4 +10,5 @@ const URL = url.URL;
 export {URL};
 
 import fetch from 'node-fetch';
-export {fetch};
+const fetch_ = (url) => fetch(`http://localhost:${process.env.PORT}${url}`);
+export {fetch_ as fetch};
