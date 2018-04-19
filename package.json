@@ -13,6 +13,6 @@
     "serve-index": "^1.9.1"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node --harmony_async_iteration --experimental-modules --loader ./module-loader.mjs server.js"
   }
 }
