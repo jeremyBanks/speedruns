@@ -25,13 +25,11 @@ export function resolve(specifier, parentModuleURL = baseURL, defaultResolve) {
     return defaultResolve(specifier, parentModuleURL);
   }
 
-  specifier = specifier.replace(/^\/assets\/bester\/external\.js$/, `${baseURL.pathname}external-node.js`);
+  specifier = specifier.replace(/^\/assets\/bester\/deps\.js$/, `${baseURL.pathname}/src/bester/deps-node.js`);
   specifier = specifier.replace(/^\/assets\//, `${baseURL.pathname}src/`);
 
   // local modules
   const resolved = new url.URL(specifier, parentModuleURL);
-
-  console.log(specifier, resolved.href);
 
   const ext = path.extname(resolved.pathname);
   if (ext !== '.js') {

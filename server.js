@@ -4,7 +4,9 @@ import rp from 'request-promise-native';
 import serveIndex from 'serve-index';
 
 
+// We don't use this yet, but don't want to break it.
 import '/assets/speedrun.js';
+
 
 const app = express();
 
