@@ -1,6 +1,7 @@
 import HTML from '/assets/bester/html.js';
 import {zip, devAwaitDeep, compareAll, compareDefault} from '/assets/bester/utils.js';
 import {RootComponent, Component} from '/assets/bester/component.js';
+import {document, window} from '/assets/bester/external.js';
 
 import * as speedrun from '/assets/speedrun.js';
 
@@ -256,7 +257,7 @@ const doMain = async (locationProvider) => {
   document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
   document.body.classList.add('loaded');
   
-  const hash = window.location.hash;
+  const hash = document.location.hash;
   if (document.scrollingElement.scrollTop === 0 && hash > '#') {
     const target = document.querySelector(hash);
     if (target) {
@@ -288,7 +289,7 @@ window.addEventListener('popstate', () => {
   const newLocation = new URL(document.location.href);
   if (newLocation.href !== lastLocation.href) {
     if (new URL('#', newLocation).href !== new URL('#', lastLocation).href) {
-      console.info(`🎈 History state popped, now at ${window.location.href}`);
+      console.info(`🎈 History state popped, now at ${document.location.href}`);
       main();
     } else {
       console.debug("🙄 Ignoring hash-only history state change.");

@@ -4,6 +4,7 @@
 
 import {HTML} from '/assets/bester/html.js';
 import {LazySymbolScope} from '/assets/bester/utils.js';
+import {document} from '/assets/bester/external.js';
 
 
 // We want it to be slightly inconvenient to violate our interfaces,
