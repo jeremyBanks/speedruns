@@ -24,6 +24,7 @@ app.set('json spaces', null);
 // such as https://github.com/tc39/proposal-import-meta
 const __dirname = '/app';
 
+
 // We serve all static files under the public path 'assets/' because that's what speedrun.com
 // uses, so by copying that we can avoid clobbering any of their paths we'd like to mirror.
 
