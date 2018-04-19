@@ -1,7 +1,7 @@
 import HTML from '/assets/bester/html.js';
 import {zip, devAwaitDeep, compareAll, compareDefault} from '/assets/bester/utils.js';
 import {RootComponent, Component} from '/assets/bester/component.js';
-import {document, window} from '/assets/bester/external.js';
+import {document, window} from '/assets/bester/deps.js';
 
 import * as speedrun from '/assets/speedrun.js';
 

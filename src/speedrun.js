@@ -3,7 +3,7 @@
 
 import {compareAll, compareDefault, nProps} from '/assets/bester/utils.js';
 import {extraRuns} from '/assets/extra-runs.js';
-import {fetch} from '/assets/bester/external.js';
+import {fetch} from '/assets/bester/deps.js';
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 

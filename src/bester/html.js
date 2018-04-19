@@ -3,7 +3,7 @@
 // TODO: make sure that we also include iterator return (not yield) values, if they exist.
 
 import {aarray, inBrowser} from '/assets/bester/utils.js';
-import {document} from '/assets/bester/external.js';
+import {document} from '/assets/bester/deps.js';
 
 
 ADD_A_DEFAULT_CONTENT_SECURITY_POLICY: {
