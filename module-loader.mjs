@@ -26,7 +26,7 @@ export function resolve(specifier, parentModuleURL = baseURL, defaultResolve) {
   }
 
   // local modules
-  const resolved = new url.URL(specifier.replace(/^\/assets\//, './src/'), parentModuleURL);
+  const resolved = new url.URL(specifier.replace(/^\/assets\//, `${baseURL.pathname}src/`), parentModuleURL);
   const ext = path.extname(resolved.pathname);
   if (ext !== '.js') {
     throw new Error(

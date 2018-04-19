@@ -2,10 +2,12 @@
 
 // TODO: make sure that we also include iterator return (not yield) values, if they exist.
 
-import {aarray} from '/assets/bester/utils.js';
+import {aarray, inBrowser} from '/assets/bester/utils.js';
 
 
 ADD_A_DEFAULT_CONTENT_SECURITY_POLICY: {
+  if (!inBrowser) break ADD_A_DEFAULT_CONTENT_SECURITY_POLICY;
+
   // The HTML`${}` escaping is non-contextual, so it can't protect against
   // some types of unsafe interpolation, such as in script tag content.
   // A Content Security Policy can help. If the document doesn't appear to

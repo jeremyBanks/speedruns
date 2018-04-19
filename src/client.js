@@ -7,7 +7,7 @@ import * as speedrun from '/assets/speedrun.js';
 
 const defaultPath = '/wc2+wc2btdp';
 
-class BestsReport extends RootComponent {
+export class BestsReport extends RootComponent {
   static render({gameSlugs, runnerSlug, currentHost}) {
     return HTML`<pre>${async function*() {  
       const gamesSlug = gameSlugs.join('+');
