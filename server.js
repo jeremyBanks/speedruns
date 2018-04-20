@@ -58,7 +58,7 @@ const apiCache = new Map();
 app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   const url = req.url.slice(1);
   const cached = apiCache.get(url);
-  
+
   if (cached) {
     return res.send(await cached);
   }
@@ -71,12 +71,18 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
 });
 
 import {BestsReport} from '/assets/components.js';
+import fs from 'fs';
 app.get('/ssr', async (req, res) => {
+  const index = await new Promise((resolve, reject) => fs.readFile(__dirname + '/src/index.html', 'utf8', (err, data) => { err ? reject(err) : resolve(data); }));
+
   const component = new BestsReport({gameSlugs: ['wc2'], runnerSlug: 'banks', currentHost: req.get('host')});
   res.set('Content-Type', 'text/html');
   try {
     const body = await HTML.from(component).string();
-    return res.send(body);
+    return res.send(index
+                    .replace('</main>', body + '</main>')
+                    .replace('type="module"', 'type="disabled-module"')
+                    .replace('class="unloaded"', 'class="loaded"'));
   } catch (error) {
     res.status(500);
     console.log(error);
