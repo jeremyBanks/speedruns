@@ -95,7 +95,12 @@ const doMain = async (locationProvider) => {
   output.appendChild(await HTML.element`${new Footer()}`);
 
   output.addEventListener('click', event => {
-    if (!event.target.closest('a')) return; 
+    // only catch unmodified left clicks.
+    if (event.buttons > 1) return;
+    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+
+    if (!event.target.closest('a')) return;
+
     let target = new URL(event.target.closest('a').href);
     if (target.host == canonicalHost) {
       target.host = document.location.host;
