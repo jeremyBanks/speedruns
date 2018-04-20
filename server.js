@@ -72,25 +72,31 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
 
 import {BestsReport, Header, Footer} from '/assets/components.js';
 import fs from 'fs';
-app.get('/ssr', async (req, res) => {
+app.use(async (req, res) => {
   const index = await new Promise((resolve, reject) => fs.readFile(__dirname + '/src/index.html', 'utf8', (err, data) => { err ? reject(err) : resolve(data); }));
-
   res.set('Content-Type', 'text/html');
+
+  const [gamesSlug, runnerSlug] = req.url.slice(1).split(/\//g);
+  const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
+
+  let body = '';
   try {
-    const body = await HTML.string`
-      ${new Header({req.get('host'), currentHost})}
+    body = await HTML.string`<div>
+      ${new Header({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
+      ${gamesSlug ? new BestsReport({gameSlugs, runnerSlug, currentHost: req.get('host')}) : undefined}
       ${new Footer()}
-      ${new BestsReport({gameSlugs: ['wc2'], runnerSlug: 'banks', currentHost: req.get('host')})}
-    `;
-    return res.send(index
-                    .replace('</main>', body + '</main>')
-                    .replace('type="module"', 'type="disabled-module"')
-                    .replace('class="unloaded"', 'class="loaded"'));
+    </div>`;
   } catch (error) {
-    res.status(500);
-    console.log(error);
-    return res.json(error);
+    body = await HTML.string`<div>
+      ${new Header({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
+      ${new BestsReport({gameSlugs, runnerSlug, currentHost: req.get('host')})}
+      ${new Footer()}
+    </div>`;
+    body = await HTML.string`<pre>${error}\n${error.stack}</pre>`;
   }
+  return res.send(index
+                  .replace('unloaded', body + 'loading')
+                  .replace('</main>', body + '</main>'));
 });
 
 // Serve index for unknown URLs so it can route them client-side.

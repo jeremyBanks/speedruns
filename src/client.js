@@ -61,10 +61,8 @@ const doMain = async (locationProvider) => {
   };
 
   const mainContainer = document.querySelector('#main');
-  mainContainer.textContent = '';
   
   const output = await HTML.element`<div></div>`; 
-  mainContainer.appendChild(output);
 
   output.appendChild(await HTML.element`${new Header({currentProject, currentHost})}`);
 
@@ -110,8 +108,11 @@ const doMain = async (locationProvider) => {
     }
   });
 
+  
   console.debug("😅 Rendering...");
   await Promise.all(blockers);
+  mainContainer.textContent = '';
+  mainContainer.appendChild(output);
   console.info("😁 Rendered successfully!");
   document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
   document.body.classList.add('loaded');
