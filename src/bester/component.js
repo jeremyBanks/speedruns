@@ -127,7 +127,7 @@ export class RootComponent extends Component {
   // Consider adding a new common parent of Component types, instead of violate the Liskov substitution principle by killing this method.
   // If we did that, maybe we should stop making element() lazy, and make it part of setting props on an ElementComponent.
   // maybe rename to not say "root", to allow for eventuall nested element-associated components, but that requires major templating improvements.
-  [HTML.fromThis]() {
-    throw new Error("cannot convert a RootComponent to HTML directly, you should just use this.element instead");
-  }
+  // [HTML.fromThis]() {
+  //   throw new Error("cannot convert a RootComponent to HTML directly, you should just use this.element instead");
+  // }
 }
