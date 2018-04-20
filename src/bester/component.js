@@ -22,7 +22,7 @@ const {
 
 
 export class Component {
-  constructor(props = null) {
+  constructor(props = {}) {
     const classes = [];
     let currentClass = this.constructor;
     while (currentClass && currentClass.name && currentClass !== Component) {

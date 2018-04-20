@@ -70,15 +70,18 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   return res.json(await result);
 });
 
-import {BestsReport} from '/assets/components.js';
+import {BestsReport, Header, Footer} from '/assets/components.js';
 import fs from 'fs';
 app.get('/ssr', async (req, res) => {
   const index = await new Promise((resolve, reject) => fs.readFile(__dirname + '/src/index.html', 'utf8', (err, data) => { err ? reject(err) : resolve(data); }));
 
-  const component = new BestsReport({gameSlugs: ['wc2'], runnerSlug: 'banks', currentHost: req.get('host')});
   res.set('Content-Type', 'text/html');
   try {
-    const body = await HTML.from(component).string();
+    const body = await HTML.string`
+      ${new Header({req.get('host'), currentHost})}
+      ${new Footer()}
+      ${new BestsReport({gameSlugs: ['wc2'], runnerSlug: 'banks', currentHost: req.get('host')})}
+    `;
     return res.send(index
                     .replace('</main>', body + '</main>')
                     .replace('type="module"', 'type="disabled-module"')
