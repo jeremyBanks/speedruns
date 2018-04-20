@@ -74,6 +74,7 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
 
 import {BestsReport, Header, Footer} from '/assets/components.js';
 import fs from 'fs';
+let bodyCache = {};
 app.use(async (req, res) => {
   const index = await new Promise((resolve, reject) => fs.readFile(__dirname + '/src/index.html', 'utf8', (err, data) => { err ? reject(err) : resolve(data); }));
   res.set('Content-Type', 'text/html');
@@ -82,19 +83,24 @@ app.use(async (req, res) => {
   const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
 
   let body = '';
-  try {
-    body = await HTML.string`<div>
-      ${new Header({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
-      ${gamesSlug ? new BestsReport({gameSlugs, runnerSlug, currentHost: req.get('host')}) : undefined}
-      ${new Footer()}
-    </div>`;
-  } catch (error) {
-    body = await HTML.string`<div>
-      ${new Header({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
-      ${new BestsReport({gameSlugs, runnerSlug, currentHost: req.get('host')})}
-      ${new Footer()}
-    </div>`;
-    body = await HTML.string`<pre>${error}\n${error.stack}</pre>`;
+  if (bodyCache[req.path]) {
+    body = bodyCache[req.path];
+  } else {
+    try {
+      body = await HTML.string`<div>
+        ${new Header({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
+        ${gamesSlug ? new BestsReport({gameSlugs, runnerSlug, currentHost: req.get('host')}) : undefined}
+        ${new Footer()}
+      </div>`;
+      bodyCache[req.path] = body;
+    } catch (error) {
+      body = await HTML.string`<div>
+        ${new Header({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
+        ${new BestsReport({gameSlugs, runnerSlug, currentHost: req.get('host')})}
+        ${new Footer()}
+      </div>`;
+      body = await HTML.string`<pre>${error}\n${error.stack}</pre>`;
+    }
   }
   return res.send(index
                   .replace('unloaded', 'loaded')
