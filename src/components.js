@@ -4,6 +4,35 @@ import {RootComponent, Component} from '/assets/bester/component.js';
 
 import * as speedrun from '/assets/speedrun.js';
 
+
+export class Header extends Component {
+  static render({currentHost, currentProject}) {
+    return HTML`<header>
+      <h1><span>
+        <img src="/assets/icon.png">
+        <a href="//${currentHost}/">${currentHost}</a>
+      <span></h1>
+
+      ${currentProject && HTML`
+        <nav class="links">
+          <a href="${`https://glitch.com/edit/#!/${currentProject}?path=src/client.js`}">edit source code</a><br />
+        </nav>
+      `}
+    </header>`;
+  }
+}
+
+
+export class Footer extends Component {
+  static render({}) {
+    return HTML`<footer>
+      This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>,
+      used under <a href="https://creativecommons.org/licenses/by-nc/4.0/">the CC BY-NC license</a> and
+      loaded from <a href="https://github.com/speedruncomorg/api/blob/master/version1/README.md#readme">their API</a>.
+    </footer>`;
+  }
+}
+
 export class BestsReport extends RootComponent {
   static render({gameSlugs, runnerSlug, currentHost}) {
     return HTML`<pre>${async function*() {  
