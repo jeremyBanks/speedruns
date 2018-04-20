@@ -128,8 +128,8 @@ const doMain = async (locationProvider) => {
 };
 
 const main = async () => {
-  document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
-  document.body.classList.add('loading');
+  // document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
+  // document.body.classList.add('loading');
 
   const errorMessage = document.querySelector('#error-message');
   try {
