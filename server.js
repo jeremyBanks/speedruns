@@ -5,7 +5,7 @@ import serveIndex from 'serve-index';
 
 
 // We don't use this yet, but don't want to break it.
-import '/assets/speedrun.js';
+import * as speedrun from '/assets/speedrun.js';
 
 
 const app = express();
@@ -67,6 +67,11 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   apiCache.set(url, result);
 
   return res.json(await result);
+});
+
+app.get('/ssr', async (req, res) => {
+  const war2 = await speedrun.Game.get('war2');
+  return res.json(war2);
 });
 
 // Serve index for unknown URLs so it can route them client-side.
