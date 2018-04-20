@@ -69,9 +69,12 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   return res.json(await result);
 });
 
+import {BestsReport} from '/assets/components.js';
 app.get('/ssr', async (req, res) => {
-  const war2 = await speedrun.Game.get('war2');
-  return res.json(war2);
+  const component = new BestsReport({gameSlugs: ['wc2'], runnerSlug: 'banks', currentHost: req.get('host')});
+  res.set('Content-Type', 'text/html');
+  const body = await component.rendered.string;
+  return res.send(body);
 });
 
 // Serve index for unknown URLs so it can route them client-side.

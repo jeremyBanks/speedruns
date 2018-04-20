@@ -2,8 +2,8 @@
 
 // TODO: make sure that we also include iterator return (not yield) values, if they exist.
 
-import {aarray, inBrowser} from '/assets/bester/utils.js';
-import {document} from '/assets/bester/deps.js';
+import {aarray} from '/assets/bester/utils.js';
+import {document, window} from '/assets/bester/deps.js';
 
 
 ADD_A_DEFAULT_CONTENT_SECURITY_POLICY: {
@@ -52,7 +52,8 @@ class ThisShouldNeverHappenError extends Error {
 };
 
 
-const placeholderClassSuffixes = crypto.getRandomValues(new Uint32Array(256));
+// const placeholderClassSuffixes = crypto.getRandomValues(new Uint32Array(256));
+const placeholderClassSuffixes = new Array(256).fill().map(() => `tmp-${String(Math.random()).slice(2)}`);
 
 
 export class HTMLPieces {
@@ -238,11 +239,10 @@ HTML.prototype = HTMLPieces.prototype;
 
 export default HTML;
 
-
-export class PromiseComment extends Comment {
+export class PromiseComment extends (window ? window.Comment : Object) {
   constructor(content) {
     super(`Promise (pending)`);
-    
+
     const promise = (async () => {
       try {
         const result = await content;
