@@ -6,6 +6,7 @@ import serveIndex from 'serve-index';
 
 // We don't use this yet, but don't want to break it.
 import * as speedrun from '/assets/speedrun.js';
+import HTML from '/assets/bester/html.js';
 
 
 const app = express();
@@ -73,8 +74,14 @@ import {BestsReport} from '/assets/components.js';
 app.get('/ssr', async (req, res) => {
   const component = new BestsReport({gameSlugs: ['wc2'], runnerSlug: 'banks', currentHost: req.get('host')});
   res.set('Content-Type', 'text/html');
-  const body = await component.rendered.string;
-  return res.send(body);
+  try {
+    const body = await HTML.from(component).string();
+    return res.send(body);
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+    return res.json(error);
+  }
 });
 
 // Serve index for unknown URLs so it can route them client-side.
