@@ -131,7 +131,7 @@ export class HTMLPieces {
         yield syncPiece;
       } else if (syncPiece instanceof HTMLPieces) {
         for await (const subPiece of syncPiece.flatResolvedPieces()) {
-          yield syncPiece;
+          yield subPiece;
         }
       } else {
         throw new ThisShouldNeverHappenError(
@@ -142,7 +142,7 @@ export class HTMLPieces {
 
   string() {
     if (this.async) {
-      return aarray(this.flatResolvedPieces()).then(pieces => pieces.join);
+      return aarray(this.flatResolvedPieces()).then(pieces => pieces.join(''));
     } else {
       return this.pieces.join(''); 
     }
