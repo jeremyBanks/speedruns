@@ -47,9 +47,11 @@ app.get('/service-worker.js', (req, res) => {
 app.get('/service-worker-toolbox.js', (req, res) => {
   res.sendFile(__dirname + '/node_modules/sw-toolbox/sw-toolbox.js');
 });
-app.get('/service-worker-toolbox.js.map', (req, res) => {
+app.get('/sw-toolbox.js.map', (req, res) => {
   res.sendFile(__dirname + '/node_modules/sw-toolbox/sw-toolbox.js.map');
 });
+
+app.get('/favicon.ico', (req, res) => { res.status(404); res.end(); });
 
 // Crudely mirror and cache speedrun.com/api.
 // We never expire/evict values here; we assume the
@@ -95,7 +97,7 @@ app.use(async (req, res) => {
     body = await HTML.string`<pre>${error}\n${error.stack}</pre>`;
   }
   return res.send(index
-                  .replace('unloaded', body + 'loading')
+                  .replace('unloaded', 'loaded')
                   .replace('</main>', body + '</main>'));
 });
 
