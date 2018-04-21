@@ -11,9 +11,11 @@
     "compression": "^1.7.2",
     "sw-toolbox": "^3.6.0",
     "serve-index": "^1.9.1",
-    "node-fetch": "^2.1.2"
+    "node-fetch": "^2.1.2",
+    "cloc": "^2.3.3"
   },
   "scripts": {
+    "prestart": "cloc --exclude-dir=node_modules .",
     "start": "node --harmony_async_iteration --experimental-modules --loader ./module-loader.mjs server.js"
   }
 }
