@@ -1,23 +1,40 @@
 import {RootComponent, Component} from '/assets/bester/component.js';
 
 
+// A router has only one prop, pathname, which is automatically set and updated from the document.
+// It also hooks internal link presses to handle them itself.
 export class Router extends RootComponent {
-  get onElementCreated() {
+  get title() {
+    throw new Error("get title() not implemented");
+  }
+
+  onElementCreated() {
     const document = this.element.currentDocument;
     
     this.props = {
       pathname: document.location.pathname
     };
-    
-    document.title = this.title;
 
+    this.addPopStateListener(document);
+    this.addClickListener(document);
+  }
+  
+  onElementRendered() {
+    const document = this.element.currentDocument;
+
+    document.title = this.title;
+  }
+  
+  addPopStateListener(document) {
     let lastLocation = new URL(document.location.href);
-    window.addEventListener('popstate', () => {
+    document.window.addEventListener('popstate', () => {
       const newLocation = new URL(document.location.href);
       if (newLocation.href !== lastLocation.href) {
         if (new URL('#', newLocation).href !== new URL('#', lastLocation).href) {
           console.info(`🎈 History state popped, now at ${document.location.href}`);
-          main();
+          this.props = {
+            pathname: document.location.pathname
+          };
         } else {
           console.debug("🙄 Ignoring hash-only history state change.");
         }
@@ -27,8 +44,8 @@ export class Router extends RootComponent {
       lastLocation = newLocation;
     });
   }
-
-  get title() {
-    throw new Error("get title() not implemented");
+  
+  addClickListener(document) {
+    // TODO
   }
 }
