@@ -35,3 +35,5 @@ that's part of the point here: feel out actual use patterns.
 - async iterators of props? probably really stupid idea.
 
 - Test assumption that current approach will release the model from memory post-render in common case.
+
+- why is render static?
