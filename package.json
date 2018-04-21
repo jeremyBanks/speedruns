@@ -15,7 +15,7 @@
     "cloc": "^2.3.3"
   },
   "scripts": {
-    "prestart": " ",
+    "prestart": "cloc . --exclude-dir=node_modules --not-match-d=data --force-lang=JavaScript,mjs --quiet --by-file --include-lang=JavaScript | head -n-1 | tail -n+3 | sort | tail -n+4",
     "start": "node --harmony_async_iteration --experimental-modules --loader ./module-loader.mjs server.js"
   }
 }
