@@ -8,6 +8,8 @@
 
 - some amount of feature detection or better error handling, so we don't clobber the server-side render in safari where the client-side render fails.
 
+- can we run our post-render hooks client-side, by walking up the DOM and associating tag names with classes? probably not.
+
 
 ## Ideas?
 
