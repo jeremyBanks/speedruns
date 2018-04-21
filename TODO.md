@@ -1,4 +1,4 @@
-# To Do
+# To Do or maybe just ideas
 
 - add pagination support in API wrapper.  
   currently blocking: https://bests.glitch.me/smb  
@@ -8,10 +8,7 @@
 
 - some amount of feature detection or better error handling, so we don't clobber the server-side render in safari where the client-side render fails.
 
-- can we run our post-render hooks client-side, by walking up the DOM and associating tag names with classes? probably not.
-
-
-## Ideas?
+- can we run our post-render hooks client-side, by walking up the DOM and associating tag names with classes? probably not, since we'd need to also pass in data to reconstruct the model props for the callback to use.
 
 - embedded video player?
 
@@ -36,3 +33,5 @@ maybe come up with a few actual uses before engineering in the abstract.
 that's part of the point here: feel out actual use patterns.
 
 - async iterators of props? probably really stupid idea.
+
+- Test assumption that current approach will release the model from memory post-render in common case.
