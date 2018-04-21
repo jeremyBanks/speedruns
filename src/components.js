@@ -41,7 +41,7 @@ export class BestsReport extends RootComponent {
       const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
 
       if (runnerSlug) {
-        yield HTML`World record and ${runnerSlug}'s personal best [<a href="//${currentHost}/${gamesSlug}">remove</a>] progressions over time.\n`;
+        yield HTML`World record and ${runnerSlug}'s personal best <span no-print>[<a ref="//${currentHost}/${gamesSlug}">remove</a>] </span>progressions over time.\n`;
       } else {
         yield "World record progressions over time. Click a runner name to compare their bests.\n";
       }
