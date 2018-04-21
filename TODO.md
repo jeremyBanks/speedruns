@@ -4,8 +4,10 @@
   currently blocking: https://bests.glitch.me/smb  
   Continue to enforce some sanity limit like 6 pages (1200 items).
 
-- refactor everything since it's awful
-  hey chris is helping with this!
+- move URL parsing login to a "router" component or something so the server can reuse.
+
+- some amount of feature detection or better error handling, so we don't clobber the server-side render in safari where the client-side render fails.
+
 
 ## Ideas?
 
