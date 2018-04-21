@@ -66,6 +66,7 @@ export class Component {
     return this[element];
   }
 
+  // Note that this replaces all existing props, not just named ones.
   [setProps](props) {
     this[props] = Object.freeze(Object.assign({}, this.props, props));
 
