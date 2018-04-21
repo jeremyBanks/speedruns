@@ -27,6 +27,7 @@ body {
 }
 
 main {
+  display: block;
   color: #000;
   background: #FFF;
   font: 16px sans-serif;
@@ -235,30 +236,6 @@ span.time {
   }
 }
 
-@media print {
-  html,
-  body {
-    padding: 0;
-    margin: 0;
-    background: white;
-  }
-
-  main {
-    margin-top: 0;
-    padding-top: 0;
-    background: white;
-  }
-
-  header,
-  footer {
-    display: none !important;
-  }
-
-  a, a:visited  {
-    color: #000;
-  }
-}
-
 .BestsReport pre {
   font-size: 12px;
   margin: 16px 0;
@@ -348,4 +325,37 @@ body.loaded #error-message {
 
 body.errored #error-message {
   display: block;
+}
+
+@media print {
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    background: white;
+  }
+
+  main {
+    margin-top: 0;
+    padding-top: 0;
+    background: white;
+  }
+
+  header,
+  footer {
+    display: none !important;
+  }
+
+  a, a:visited  {
+    color: #000;
+  }
+  
+  .BestsReport .best, .BestsReport .both, .BestsReport .banks  {
+    color: black;
+    background: transparent;
+  }
+  
+  [no-print] {
+    display: none !important;
+  }
 }
