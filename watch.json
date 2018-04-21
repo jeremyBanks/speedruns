@@ -1,5 +1,5 @@
 {
-  "throttle": 1000,
+  "throttle": 200,
   "restart": {
     "include": [
       "\\.js$",
