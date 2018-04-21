@@ -3,12 +3,10 @@
 // element facilitate styling and dedbugging.
 
 import {HTML} from '/assets/bester/html.js';
-import {LazySymbolScope} from '/assets/bester/utils.js';
 import {document} from '/assets/bester/deps.js';
+import {LazySymbolScope} from '/assets/bester/utils.js';
 
 
-// We want it to be slightly inconvenient to violate our interfaces,
-// so we define these symbols to use for our "internal" interfaces.
 const {
   classNames,
   props,
@@ -114,6 +112,7 @@ export class RootComponent extends Component {
 
   onElementCreated() {
     // called after an associated element is created, if ever.
+    // XXX: this doesn't wait for it to be attached to the document? so it better use currentDoc or somehting.
   }
   
   [onElementRendered]() {
