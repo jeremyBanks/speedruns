@@ -1,6 +1,3 @@
-export const inBrowser = typeof window === 'object' && typeof document === 'object';
-
-
 // like Python's itertools.zip_longest
 // from stackoverflow.com/a/10284006
 export const zip = (...args) => {
