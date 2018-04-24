@@ -16,9 +16,11 @@ export class Header extends Component {
     return {
       display: 'inline',
       border: {
-        _: '2px solid #000',
-        left: {radius: '10px 6px'},
-        right: {radius: '32px 2px'},
+        bottom: {
+          _: '2px solid #000',
+          left: {radius: '10px 6px'},
+          right: {radius: '32px 2px'},
+        }
       },
       position: 'relative',
       top: '-7px',
@@ -35,9 +37,9 @@ export class Header extends Component {
   
   get linksStyle() {
     return {
-      'float': 'right',
-      'margin-top': '4px',
-      'font-size': '12px',
+      float: 'right',
+      margin: {top: '4px'},
+      font: {size: '12px'},
       'line-height': '16px',
       'text-align': 'right'
     };
