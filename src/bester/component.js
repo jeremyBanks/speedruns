@@ -25,12 +25,14 @@ export const styles = styleObj => HTML`style="${styleAttrValue(styleObj)}"`;
 export const styleAttrValue = (styleObj, propPrefix = '') => {
   return Object.keys(styleObj).map(key => {
     const value = styleObj[key];
+    if (key === '_') key = '';
+    const propName = [propPrefix, key].filter(Boolean).join('-');
     if (typeof value === 'string') {
-      return `${propPrefix}${key}: ${value};`
+      return `${propName}: ${value};`
     } else if (typeof value === 'number' && Number.isFinite(value)) {
-      return `${propPrefix}${key}: ${value};`
+      return `${propName}: ${value};`
     } else if (value && typeof value === 'object') {
-      return styleAttrValue(value, key !== '_' ? `${propPrefix}${key}-` : propPrefix);
+      return styleAttrValue(value, propName);
     } else {
       throw new TypeError("css value has unexpected type");
     }
