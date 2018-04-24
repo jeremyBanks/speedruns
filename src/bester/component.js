@@ -3,6 +3,7 @@
 // element facilitate styling and dedbugging.
 
 import {HTML} from './html.js';
+import {style} from './style.js';
 import {document} from './deps.js';
 import {LazySymbolScope} from './utils.js';
 
@@ -15,42 +16,8 @@ const {
   getElement,
   setProps,
   onElementCreated,
-  onElementRendered,
-  styleAttrValue
+  onElementRendered
 } = new LazySymbolScope('internal ');
-
-
-// A set of CSS style property values, which may also be used as an HTML string style attribute.
-class Style {
-  constructor(...args) {
-    Object.assign(this, ...args);
-    Object.freeze(this);
-  }
-  
-  [HTML.fromThis]() {
-    return HTML`style="${Style.attrValue(this)}"`
-  }
-
-  static attrValue(data, propPrefix = '') {
-    return Object.keys(data).map(key => {
-      const value = data[key];
-      if (key === '_') key = '';
-      const propName = [propPrefix, key].filter(Boolean).join('-');
-      if (typeof value === 'string') {
-        return `${propName}: ${value};`
-      } else if (typeof value === 'number' && Number.isFinite(value)) {
-        return `${propName}: ${value};`
-      } else if (value && typeof value === 'object') {
-        return this.attrValue(value, propName);
-      } else {
-        throw new TypeError("css value has unexpected type");
-      }
-    }).join(' ');
-  }  
-}
-
-
-export const style = data => new Style(data);
 
 
 export class Component {
@@ -72,6 +39,7 @@ export class Component {
     this[renderedHTML] = null;
 
     Object.seal(this);
+    // We don't freeze because we do allow the props to be changed in some cases.
 
     this[setProps](props);
   }
@@ -79,9 +47,9 @@ export class Component {
   // by default, components should just pass through their contents, but we expect
   // many subclasses to override this.
   get style() {
-    return {
+    return style({
       'display': 'contents'
-    };
+    });
   }
 
   get props() {
@@ -97,7 +65,7 @@ export class Component {
   }
 
   [HTML.fromThis]() {
-    return HTML`<bester-component class="${this[classNames].join(" ")}" ${style(this.style)}>${this[renderedHTML]}</bester-component>`;
+    return HTML`<bester-component class="${this[classNames].join(" ")}" ${this.style}>${this[renderedHTML]}</bester-component>`;
   }
 
   [getElement]() {
