@@ -20,6 +20,7 @@
   import '/assets/bester/component.js';
   import '/assets/bester/deps.js';
   import '/assets/bester/html.js';
+  import '/assets/bester/router.js';
   import '/assets/bester/utils.js';
   import '/assets/data/runs.js';
   import '/assets/components.js';
@@ -29,8 +30,136 @@
   navigator.serviceWorker.register('/service-worker.js');
 </script>
 
+<style>
+html {
+  background: #222;
+  overflow-y: scroll;
+}
+
+pre {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  animation-name: appear;
+  animation-delay: 0.5s;
+  animation-duration: .125s;
+  animation-fill-mode: both;
+}
+
+@keyframes appear {
+  from { opacity: 0.0; }
+  to   { opacity: 1.0; }
+}
+
+main {
+  display: block;
+  color: #000;
+  background: #FFF;
+  font: 16px sans-serif;
+  padding: 24px 0;
+  margin: 16px auto;
+  width: 100%;
+  max-width: 640px;
+  min-width: 596px;
+  position: relative;
+  text-align: center;
   
-<script>
-// allow components to be styled in internet explorer
-document.createElement('bester-component');
-</script>
+  transition: 0.1s filter;
+}
+
+body.unloaded main, body.loading main {
+  cursor: progress;
+  pointer-events: none;
+  user-select: none;
+  filter: brightness(0.5) blur(4px);
+}
+
+main > * {
+  width: 588px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+img {
+  --max-size: calc(.5em + .5ex);
+  max-width: var(--max-size);
+  max-height: var(--max-size);
+  vertical-align: baseline;
+  pointer-events: none;
+}
+
+a, a:visited  {
+  color: #008;
+  text-decoration: none;
+  text-decoration-color: black;
+}
+  
+a:not(:hover) {
+  color: inherit;
+}
+
+::selection {
+  color: black;
+  background: rgb(200, 225, 255);
+}
+
+#error-message {
+  border: 1px solid red;
+  color: red;
+  position: fixed;
+  right: 4px;
+  bottom: 4px;
+  z-index: 512;
+  background: rgba(0, 0, 0, 0.9375);
+  width: auto;
+  padding: 2em;
+  max-width: 600px;
+  user-select: all;
+}
+
+body.loading #error-message,
+body.loaded #error-message {
+  display: none;
+}
+
+body.errored #error-message {
+  display: block;
+}
+
+@media print {
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    background: white;
+  }
+
+  main {
+    margin-top: 0;
+    padding-top: 0;
+    background: white;
+  }
+
+  header,
+  footer {
+    display: none !important;
+  }
+
+  a, a:visited  {
+    color: #000;
+  }
+  
+  .BestsReport .best, .BestsReport .both, .BestsReport .banks  {
+    color: black;
+    background: transparent;
+  }
+  
+  [no-print] {
+    display: none !important;
+  }
+}
+</style>
