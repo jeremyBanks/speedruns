@@ -14,15 +14,15 @@ export class Header extends Component {
   
   get headerTextStyle() {
     return {
-      'display': 'inline',
-      'border': {
-        '': '2px solid #000',
-        'left-radius': '10px 6px',
-        'right-radius': '32px 2px',
+      display: 'inline',
+      border: {
+        _: '2px solid #000',
+        left: {radius: '10px 6px'},
+        right: {radius: '32px 2px'},
       },
-      'position': 'relative',
-      'top': '-7px',
-      'padding-right': '4px'
+      position: 'relative',
+      top: '-7px',
+      padding: {right: '4px'}
     };
   }
   
