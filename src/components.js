@@ -138,7 +138,7 @@ class BestsReportGame extends Component {
 
 class BestsReportRun extends Component {
   async *render({level, runs, runnerSlug, currentHost, gamesSlug}) {
-    yield HTML`          <a class="level" id="${level.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#${level.slug}">${level.nick}</a>\n`;
+    yield HTML`          <a class="level" id="level-${level.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#level-${level.slug}">${level.nick}</a>\n`;
 
     const compareRuns = compareAll(
       (a, b) => compareDefault(a.date, b.date),
