@@ -1,6 +1,6 @@
 import HTML from '/assets/bester/html.js';
 import {zip, devAwaitDeep, compareAll, compareDefault} from '/assets/bester/utils.js';
-import {RootComponent, Component} from '/assets/bester/component.js';
+import {RootComponent, Component, styles} from '/assets/bester/component.js';
 
 import * as speedrun from '/assets/speedrun.js';
 
@@ -14,11 +14,21 @@ export class Header extends Component {
       <span></h1>
 
       ${currentProject && HTML`
-        <nav class="links">
+        <nav class="links" ${styles(this.linksStyle)}>
           <a href="${`https://glitch.com/edit/#!/${currentProject}?path=src/client.js`}">edit source code</a><br />
         </nav>
       `}
     </header>`;
+  }
+  
+  get styles() {
+    return Object.assign({
+      'text-align': 'left'
+    }, super.styles());
+  }
+  
+  get linksStyle() {
+    
   }
 }
 
