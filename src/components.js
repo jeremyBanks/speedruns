@@ -152,7 +152,17 @@ class BestsReportRun extends Component {
     });
   }
   
-  
+  graphBarStyle({worldRecord = false, personalBest = false, previousPersonalBest = false}) {
+    return style({
+      color: 'transparent',
+      background:
+        (worldRecord && personalBest) ? 'linear-gradient(to bottom, #000080 0%, #FFD700 100%)' :
+        (worldRecord) ? 'linear-gradient(to bottom, #DFA700 0%, #FFD700 100%)' :
+        (personalBest) ? 'linear-gradient(to bottom, #000080 0%, rgba(0, 0, 128, 0.125) 100%)' :
+        (previousPersonalBest) ? 'rgba(0, 0, 128, 0.125)' :
+        'magenta'
+    });
+  }
   
   async *render({level, runs, runnerSlug, currentHost, gamesSlug}) {
     yield HTML`          <a ${this.levelLinkStyle} id="level-${level.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#level-${level.slug}">${level.nick}</a>\n`;
@@ -221,10 +231,10 @@ class BestsReportRun extends Component {
           Array.from(lastWrIndicators),
           Array.from(lastPrIndicators)).map(([a, b]) => a ? a : b).join('');
 
-        const isBanks = personalRecords.includes(record);
-        const isBoth = isBanks && worldRecords.includes(record);
+        const isPersonal = personalRecords.includes(record);
+        const isBoth = isPersonal && worldRecords.includes(record);
 
-        const indicatorHTML = HTML(`<span class="${isBanks ? 'both' : 'best'}">` + indicators.replace(/(.)(▐)/, `$1</span><span class="banks ${isBanks ? 'current' : ''}">$2`) + `</span>`)
+        const indicatorHTML = HTML(`<span ${this.graphBarStyle({worldRecord: true, personalBest: isPersonal})}>` + indicators.replace(/(.)(▐)/, `$1</span><span ${HTML.string`${this.graphBarStyle({personalBest: isPersonal, previousPersonalBest: !isPersonal})}">$2`) + `</span>`)
 
         const runner = await record.runner;
         yield HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="//${currentHost}/${gamesSlug}/${runner.nick}#${level.slug}">${runner.nick.padEnd(14)} ${indicatorHTML}</a>\n`;
