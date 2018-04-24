@@ -2,9 +2,9 @@
 // instance, and add some class-name-based CSS classes to a prefix placeholder
 // element facilitate styling and dedbugging.
 
-import {HTML} from '/assets/bester/html.js';
-import {document} from '/assets/bester/deps.js';
-import {LazySymbolScope} from '/assets/bester/utils.js';
+import {HTML} from './html.js';
+import {document} from './deps.js';
+import {LazySymbolScope} from './utils.js';
 
 
 const {

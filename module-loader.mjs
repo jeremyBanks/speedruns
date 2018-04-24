@@ -26,6 +26,7 @@ export function resolve(specifier, parentModuleURL = baseURL, defaultResolve) {
   }
 
   specifier = specifier.replace(/^\/assets\/bester\/deps\.js$/, `${baseURL.pathname}/src/bester/deps-node.js`);
+  specifier = specifier.replace(/^\.\/deps\.js$/, `${baseURL.pathname}/src/bester/deps-node.js`);
   specifier = specifier.replace(/^\/assets\//, `${baseURL.pathname}src/`);
 
   // local modules
