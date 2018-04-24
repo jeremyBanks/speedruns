@@ -37,6 +37,17 @@ export class Component {
 
     this[setProps](props);
   }
+  
+  get styleAttributeValue() {
+    const styles = this.styles;
+    return Object.keys(styles).map(key => `${key}: ${styles[key]};`).join(' ');
+  }
+  
+  get styles() {
+    return {
+      'display': 'contents'
+    };
+  }
 
   get props() {
     return this[props];
@@ -51,7 +62,7 @@ export class Component {
   }
 
   [HTML.fromThis]() {
-    return HTML`<bester-component class="${this[classNames].join(" ")}">${this[renderedHTML]}</bester-component>`;
+    return HTML`<bester-component class="${this[classNames].join(" ")}" style="${this.styleAttributeValue}">${this[renderedHTML]}</bester-component>`;
   }
 
   [getElement]() {
@@ -59,6 +70,7 @@ export class Component {
       console.debug(`🔨 Creating element for ${this[classNames][0]}.`);
       this[element] = document.createElement('bester-component');
       this[element].classList.add(...this[classNames]);
+      this[element].setAttribute('style', this.styleAttributeValue);
       this[element].appendChild(this[renderedHTML].fragment());
       
       Promise.resolve().then(() => this[onElementCreated]());
