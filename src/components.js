@@ -8,7 +8,7 @@ import * as speedrun from '/assets/speedrun.js';
 export class Header extends Component {
   get styles() {
     return {
-      'text-align': 'left'
+      text: {align: 'left'}
     };
   }
   
@@ -116,7 +116,7 @@ class BestsReportGame extends Component {
       display: 'inline-block',
       font: {
         size: '16px',
-        weight': 'bold'
+        weight: 'bold'
       }
     };
   }
