@@ -1,12 +1,12 @@
 import HTML from '/assets/bester/html.js';
 import {zip, devAwaitDeep, compareAll, compareDefault} from '/assets/bester/utils.js';
-import {RootComponent, Component, styles} from '/assets/bester/component.js';
+import {RootComponent, Component, style} from '/assets/bester/component.js';
 
 import * as speedrun from '/assets/speedrun.js';
 
 
 export class Header extends Component {
-  get styles() {
+  get style() {
     return {
       text: {align: 'left'}
     };
@@ -47,13 +47,13 @@ export class Header extends Component {
 
   render({currentHost, currentProject}) {
     return HTML`<header>
-      <h1 ${styles(this.headerTextStyle)}><span ${styles(this.headerTextInnerStyle)}>
+      <h1 ${style(this.headerTextStyle)}><span ${style(this.headerTextInnerStyle)}>
         <img src="/assets/icon.png">
         <a href="//${currentHost}/">${currentHost}</a>
       <span></h1>
 
       ${currentProject && HTML`
-        <nav class="links" ${styles(this.linksStyle)}>
+        <nav class="links" ${style(this.linksStyle)}>
           <a href="${`https://glitch.com/edit/#!/${currentProject}?path=src/client.js`}">edit source code</a><br />
         </nav>
       `}
@@ -63,7 +63,7 @@ export class Header extends Component {
 
 
 export class Footer extends Component {
-  get styles() {
+  get style() {
     return {
       font: {size: '0.75em'},
       margin: {top: '128px'}
@@ -80,7 +80,7 @@ export class Footer extends Component {
 }
 
 export class BestsReport extends RootComponent {
-  get preStyles() {
+  get preStyle() {
     return {
       font: {size: '12px'},
       margin: '16px 0'
@@ -88,7 +88,7 @@ export class BestsReport extends RootComponent {
   }
 
   render({gameSlugs, runnerSlug, currentHost}) {
-    return HTML`<pre ${styles(this.preStyles)}>${async function*() {  
+    return HTML`<pre ${style(this.preStyle)}>${async function*() {  
       const gamesSlug = gameSlugs.join('+');
 
       const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
@@ -111,7 +111,7 @@ export class BestsReport extends RootComponent {
 };
 
 class BestsReportGame extends Component { 
-  get gameLinkStyles() {
+  get gameLinkStyle() {
     return {
       display: 'inline-block',
       font: {
@@ -122,7 +122,7 @@ class BestsReportGame extends Component {
   }
 
   async *render({game, currentHost, gamesSlug, runnerSlug}) {
-    yield HTML`      <a ${styles(this.gameLinkStyles)} id="${game.slug}" href="//${currentHost}/${game.slug}${runnerSlug ? `/${runnerSlug}` : ''}">${game.nick}</a>\n`;
+    yield HTML`      <a ${style(this.gameLinkStyle)} id="${game.slug}" href="//${currentHost}/${game.slug}${runnerSlug ? `/${runnerSlug}` : ''}">${game.nick}</a>\n`;
     yield "\n";
 
     const runsByLevel = await game.runsByCategoryLevelPairs();
@@ -137,8 +137,24 @@ class BestsReportGame extends Component {
 
 
 class BestsReportRun extends Component {
+  get noRunsTextStyle() {
+    return {opacity: 0.5};
+  }
+
+  get levelLinkStyle() {
+    return {
+      display: 'inline-block',
+      font: {
+        size: '16px',
+        weight: 'bold'
+      }
+    };
+  }
+  
+  
+  
   async *render({level, runs, runnerSlug, currentHost, gamesSlug}) {
-    yield HTML`          <a class="level" id="level-${level.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#level-${level.slug}">${level.nick}</a>\n`;
+    yield HTML`          <a ${style(levelLinkStyle)} id="level-${level.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#level-${level.slug}">${level.nick}</a>\n`;
 
     const compareRuns = compareAll(
       (a, b) => compareDefault(a.date, b.date),
@@ -180,7 +196,7 @@ class BestsReportRun extends Component {
     const records = [...new Set([...personalRecords, ...worldRecords])].sort(compareRuns);
 
     if (records.length === 0) {
-      yield HTML`                      <span class="none">(no runs)</span>\n`;
+      yield HTML`                      <span ${style(this.noRunsTextStyle)}>(no runs)</span>\n`;
     } else {
       let lastWr = null, lastWrIndicators = '';
       let lastPr = null, lastPrIndicators = '';        

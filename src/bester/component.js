@@ -19,7 +19,7 @@ const {
 } = new LazySymbolScope('internal ');
 
 
-export const styles = styleObj => HTML`style="${styleAttrValue(styleObj)}"`;
+export const style = styleObj => HTML`style="${styleAttrValue(styleObj)}"`;
 
 
 export const styleAttrValue = (styleObj, propPrefix = '') => {
@@ -84,7 +84,7 @@ export class Component {
   }
 
   [HTML.fromThis]() {
-    return HTML`<bester-component class="${this[classNames].join(" ")}" ${styles(this.styles)}>${this[renderedHTML]}</bester-component>`;
+    return HTML`<bester-component class="${this[classNames].join(" ")}" ${style(this.style)}>${this[renderedHTML]}</bester-component>`;
   }
 
   [getElement]() {
