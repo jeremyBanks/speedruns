@@ -2,7 +2,7 @@
 
 - add support for categories-slugs, maybe like:
 
-      /wc2+wc2btdp-/banks
+      /smwext/world_1/@banks
 
 - add pagination support in API wrapper.  
   currently blocking: https://bests.glitch.me/smb  
