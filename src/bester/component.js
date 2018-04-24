@@ -62,7 +62,9 @@ export class Component {
 
     this[setProps](props);
   }
-  
+
+  // by default, components should just pass through their contents, but we expect
+  // many subclasses to override this.
   get styles() {
     return {
       'display': 'contents'

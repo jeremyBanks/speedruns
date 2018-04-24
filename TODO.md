@@ -1,5 +1,9 @@
 # To Do or maybe just ideas
 
+- add support for categories-slugs, maybe like:
+
+      /wc2+wc2btdp-/banks
+
 - add pagination support in API wrapper.  
   currently blocking: https://bests.glitch.me/smb  
   Continue to enforce some sanity limit like 6 pages (1200 items).
