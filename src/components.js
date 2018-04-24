@@ -5,22 +5,7 @@ import {RootComponent, Component, styles} from '/assets/bester/component.js';
 import * as speedrun from '/assets/speedrun.js';
 
 
-export class Header extends Component {  
-  render({currentHost, currentProject}) {
-    return HTML`<header>
-      <h1 ${styles(this.headerTextStyle)}><span ${styles(this.headerTextInnerStyle)}>
-        <img src="/assets/icon.png">
-        <a href="//${currentHost}/">${currentHost}</a>
-      <span></h1>
-
-      ${currentProject && HTML`
-        <nav class="links" ${styles(this.linksStyle)}>
-          <a href="${`https://glitch.com/edit/#!/${currentProject}?path=src/client.js`}">edit source code</a><br />
-        </nav>
-      `}
-    </header>`;
-  }
-  
+export class Header extends Component {
   get styles() {
     return {
       'text-align': 'left'
@@ -30,9 +15,11 @@ export class Header extends Component {
   get headerTextStyle() {
     return {
       'display': 'inline',
-      'border-bottom': '2px solid #000',
-      'border-bottom-left-radius': '10px 6px',
-      'border-bottom-right-radius': '32px 2px',
+      'border': {
+        '': '2px solid #000',
+        'left-radius': '10px 6px',
+        'right-radius': '32px 2px',
+      },
       'position': 'relative',
       'top': '-7px',
       'padding-right': '4px'
@@ -55,10 +42,32 @@ export class Header extends Component {
       'text-align': 'right'
     };
   }
+
+  render({currentHost, currentProject}) {
+    return HTML`<header>
+      <h1 ${styles(this.headerTextStyle)}><span ${styles(this.headerTextInnerStyle)}>
+        <img src="/assets/icon.png">
+        <a href="//${currentHost}/">${currentHost}</a>
+      <span></h1>
+
+      ${currentProject && HTML`
+        <nav class="links" ${styles(this.linksStyle)}>
+          <a href="${`https://glitch.com/edit/#!/${currentProject}?path=src/client.js`}">edit source code</a><br />
+        </nav>
+      `}
+    </header>`;
+  }
 }
 
 
 export class Footer extends Component {
+  get styles() {
+    return {
+      'font-size': '0.75em',
+      'margin-top': '128px'
+    };
+  }
+
   render({}) {
     return HTML`<footer>
       This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>,
@@ -66,16 +75,16 @@ export class Footer extends Component {
       loaded from <a href="https://github.com/speedruncomorg/api/blob/master/version1/README.md#readme">their API</a>.
     </footer>`;
   }
-
-  get styles() {
-    return {
-      'font-size': '0.75em',
-      'margin-top': '128px'
-    };
-  }
 }
 
 export class BestsReport extends RootComponent {
+  get preStyles() {
+    return {
+      'font-size': '12px',
+      'margin': '16px 0'
+    };
+  }
+
   render({gameSlugs, runnerSlug, currentHost}) {
     return HTML`<pre ${styles(this.preStyles)}>${async function*() {  
       const gamesSlug = gameSlugs.join('+');
@@ -97,16 +106,17 @@ export class BestsReport extends RootComponent {
       }
     } }</pre>`;
   }
-  
-  get preStyles() {
-    return {
-      'font-size': '12px',
-      'margin': '16px 0'
-    };
-  }
 };
 
-class BestsReportGame extends Component {
+class BestsReportGame extends Component { 
+  get gameLinkStyles() {
+    return {
+      'display': 'inline-block',
+      'font-size': '16px',
+      'font-weight': 'bold'
+    };
+  }
+
   async *render({game, currentHost, gamesSlug, runnerSlug}) {
     yield HTML`      <a ${styles(this.gameLinkStyles)} id="${game.slug}" href="//${currentHost}/${game.slug}${runnerSlug ? `/${runnerSlug}` : ''}">${game.nick}</a>\n`;
     yield "\n";
@@ -118,14 +128,6 @@ class BestsReportGame extends Component {
     }
     yield "\n";
     yield "\n";
-  }
-  
-  get gameLinkStyles() {
-    return {
-      'display': 'inline-block',
-      'font-size': '16px',
-      'font-weight': 'bold'
-    };
   }
 }
 
