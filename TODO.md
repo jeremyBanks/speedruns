@@ -3,12 +3,11 @@
 - improve timestamp formatting
   see https://bests.glitch.me/smwext/banks#level-9kvpep8k for bad example
 
+- move URL parsing login to a "router" component or something so the server can reuse.
+
 - add support for categories-slugs, maybe like:
 
       /smwext/world_1/@banks
-
-- move URL parsing login to a "router" component or something so the server can reuse.
-
 - some amount of feature detection or better error handling, so we don't clobber the server-side render in safari where the client-side render fails.
 
 - can we run our post-render hooks client-side, by walking up the DOM and associating tag names with classes? probably not, since we'd need to also pass in data to reconstruct the model props for the callback to use.
