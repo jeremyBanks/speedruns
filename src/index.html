@@ -97,6 +97,10 @@ a, a:visited  {
   text-decoration: none;
   text-decoration-color: black;
 }
+
+a:hover {
+  color: #00F;
+}
   
 a:not(:hover) {
   color: inherit;
@@ -129,6 +133,21 @@ body.loaded #error-message {
 body.errored #error-message {
   display: block;
 }
+  
+pre {
+  white-space: pre-wrap;
+  text-align: left;
+  overflow-x: auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Trebuchet MS', sans-serif;
+}
+
+h2, h3, h4, h5, h6 {
+  margin: 1em;
+}
+
 
 @media print {
   html,
