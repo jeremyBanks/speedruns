@@ -30,8 +30,8 @@ export class Header extends Component {
   
   get headerTextInnerStyle() {
     return {
-      'position': 'relative',
-      'top': '7px'
+      position: 'relative',
+      top: '7px'
     };
   }
   
