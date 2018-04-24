@@ -106,7 +106,7 @@ export class BestsReport extends RootComponent {
       for (const game of games) {
         yield BestsReportGame.of({game, currentHost, gamesSlug, runnerSlug});
       }
-    } }</pre>`;
+    }}</pre>`;
   }
 };
 
