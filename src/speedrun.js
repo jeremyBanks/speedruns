@@ -7,7 +7,7 @@ import {fetch} from '/assets/bester/deps.js';
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
-export const api = async (path, maxPages = 6) => {
+export const api = async (path, maxPages = 1) => {
   if (!apiCache.has(path)) {
     const result = apiFetch(path).then(null, error => {
       apiCache.delete(path);
@@ -22,18 +22,21 @@ export const api = async (path, maxPages = 6) => {
 
 export const apiCache = new Map();
 
-const apiFetch = async (path, maxPages = Infinity, pastPages = 0) => {
-  const url = speedrunDotComApiRootUrl + path;
+const apiFetch = async (path, maxPages = Infinity, pastPages = 0, offset = 0) => {
+  if (pastPages > maxPages) {
+      throw new Error(`got too many results (more than ${maxPages} pages/ ${offset} items)`);
+  }
+  const url = speedrunDotComApiRootUrl + path + `&offset=${offset}`;
   const response = await fetch(url);
-  const body = await response.json();
+  const body = await response.json();3
   if (body.status) {
     throw new Error(`${body.status}: ${body.message}`); 
   } else {
-    
+    const {data} = body;
     if (body.pagination && body.pagination.links && body.pagination.links.filter(l => l.rel === 'next').length) {
-      throw new Error(`got too many results (more than one page (${body.pagination.max}))`);
+      const rest = apiFetch(path, maxPages, pastPages + 1, offset + body.pagination.max);
+      return data.concat(rest);
     } else {
-      const {data} = body;
       return data;
     }
   }
