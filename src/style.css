@@ -122,33 +122,6 @@ h2, h3, h4, h5, h6 {
   margin: 1em;
 }
 
-h1 {
-  display: inline;
-  border-bottom: 2px solid #000;
-  border-bottom-left-radius: 10px 6px;
-  border-bottom-right-radius: 32px 2px;
-  position: relative;
-  top: -7px;
-  padding-right: 4px;
-}
-
-h1 span {
-  position: relative;
-  top: 7px;
-}
-
-header {
-  text-align: left;
-}
-
-header .links {
-  float: right;
-  margin-top: 4px;
-  font-size: 12px;
-  line-height: 16px;
-  text-align: right;
-}
-
 footer {
   font-size: 0.75em;
   margin-top: 128px;
