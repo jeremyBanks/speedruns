@@ -6,9 +6,9 @@ import * as speedrun from '/assets/speedrun.js';
 
 
 export class Header extends Component {
-  static render({currentHost, currentProject}) {
+  render({currentHost, currentProject}) {
     return HTML`<header>
-      <h1><span>
+      <h1 ${styles(this.headerTextStyle)}><span ${styles(this.headerTextInnerStyle)}>
         <img src="/assets/icon.png">
         <a href="//${currentHost}/">${currentHost}</a>
       <span></h1>
@@ -22,19 +22,44 @@ export class Header extends Component {
   }
   
   get styles() {
-    return Object.assign({
+    return {
       'text-align': 'left'
-    }, super.styles());
+    };
+  }
+  
+  get headerTextStyle() {
+    return {
+      'display': 'inline',
+      'border-bottom': '2px solid #000',
+      'border-bottom-left-radius': '10px 6px',
+      'border-bottom-right-radius': '32px 2px',
+      'position': 'relative',
+      'top': '-7px',
+      'padding-right': '4px'
+    };
+  }
+  
+  get headerTextInnerStyle() {
+    return {
+      'position': 'relative',
+      'top': '7px'
+    };
   }
   
   get linksStyle() {
-    
+    return {
+      'float': 'right',
+      'margin-top': '4px',
+      'font-size': '12px',
+      'line-height': '16px',
+      'text-align': 'right'
+    };
   }
 }
 
 
 export class Footer extends Component {
-  static render({}) {
+  render({}) {
     return HTML`<footer>
       This site displays data from <a href="https://www.speedrun.com/about">speedrun.com</a>,
       used under <a href="https://creativecommons.org/licenses/by-nc/4.0/">the CC BY-NC license</a> and
@@ -44,7 +69,7 @@ export class Footer extends Component {
 }
 
 export class BestsReport extends RootComponent {
-  static render({gameSlugs, runnerSlug, currentHost}) {
+  render({gameSlugs, runnerSlug, currentHost}) {
     return HTML`<pre>${async function*() {  
       const gamesSlug = gameSlugs.join('+');
 
@@ -68,7 +93,7 @@ export class BestsReport extends RootComponent {
 };
 
 class BestsReportGame extends Component {
-  static async *render({game, currentHost, gamesSlug, runnerSlug}) {
+  async *render({game, currentHost, gamesSlug, runnerSlug}) {
     yield HTML`      <a class="game" id="${game.slug}" href="//${currentHost}/${game.slug}${runnerSlug ? `/${runnerSlug}` : ''}">${game.nick}</a>\n`;
     yield "\n";
 
@@ -84,7 +109,7 @@ class BestsReportGame extends Component {
 
 
 class BestsReportRun extends Component {
-  static async *render({level, runs, runnerSlug, currentHost, gamesSlug}) {
+  async *render({level, runs, runnerSlug, currentHost, gamesSlug}) {
     yield HTML`          <a class="level" id="${level.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#${level.slug}">${level.nick}</a>\n`;
 
     const compareRuns = compareAll(

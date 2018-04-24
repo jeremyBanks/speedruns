@@ -19,6 +19,10 @@ const {
 } = new LazySymbolScope('internal ');
 
 
+export const styles = styleObj =>
+    HTML`style="${Object.keys(styleObj).map(key => `${key}: ${styleObj[key]};`).join(' ')}"`;
+
+
 export class Component {
   constructor(props = {}) {
     const classes = [];
@@ -38,11 +42,6 @@ export class Component {
     this[setProps](props);
   }
   
-  get styleAttributeValue() {
-    const styles = this.styles;
-    return Object.keys(styles).map(key => `${key}: ${styles[key]};`).join(' ');
-  }
-  
   get styles() {
     return {
       'display': 'contents'
@@ -53,7 +52,7 @@ export class Component {
     return this[props];
   }
 
-  static render(props) {
+  render(props) {
     throw new Error("not implemented"); 
   }
 
@@ -62,7 +61,7 @@ export class Component {
   }
 
   [HTML.fromThis]() {
-    return HTML`<bester-component class="${this[classNames].join(" ")}" style="${this.styleAttributeValue}">${this[renderedHTML]}</bester-component>`;
+    return HTML`<bester-component class="${this[classNames].join(" ")}" ${styles(this.styles)}>${this[renderedHTML]}</bester-component>`;
   }
 
   [getElement]() {
@@ -82,7 +81,7 @@ export class Component {
   [setProps](props) {
     this[props] = Object.freeze(Object.assign({}, this.props, props));
 
-    this[renderedHTML] = HTML.from(this.constructor.render(props));
+    this[renderedHTML] = HTML.from(this.render(props));
     if (this[element]) {
       this[element].textContent = '';
       this[element].appendChild(this[renderedHTML].fragment());
