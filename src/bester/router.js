@@ -1,4 +1,4 @@
-import {RootComponent, Component} from '/assets/bester/component.js';
+import {RootComponent, Component} from './component.js';
 
 
 // A router has only one prop, pathname, which is automatically set and updated from the document.

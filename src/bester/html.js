@@ -2,8 +2,8 @@
 
 // TODO: make sure that we also include iterator return (not yield) values, if they exist.
 
-import {aarray} from '/assets/bester/utils.js';
-import {document, window} from '/assets/bester/deps.js';
+import {aarray} from './utils.js';
+import {document, window} from './deps.js';
 
 
 ADD_A_DEFAULT_CONTENT_SECURITY_POLICY: {
