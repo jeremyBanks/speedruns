@@ -1,7 +1,7 @@
 import HTML from '/assets/bester/html.js';
 import {zip, devAwaitDeep, compareAll, compareDefault} from '/assets/bester/utils.js';
 import {RootComponent, Component} from '/assets/bester/component.js';
-import {style} from '/assets/bester/style.js';
+import {Style, style} from '/assets/bester/style.js';
 
 import * as speedrun from '/assets/speedrun.js';
 
@@ -152,8 +152,8 @@ class BestsReportRun extends Component {
     });
   }
   
-  graphBarStyle({worldRecord = false, personalBest = false, previousPersonalBest = false}) {
-    return style({
+  graphBarStyleAttrStringFixMe({worldRecord = false, personalBest = false, previousPersonalBest = false}) {
+    return Style.attrValue({
       color: 'transparent',
       background:
         (worldRecord && personalBest) ? 'linear-gradient(to bottom, #000080 0%, #FFD700 100%)' :
@@ -234,7 +234,7 @@ class BestsReportRun extends Component {
         const isPersonal = personalRecords.includes(record);
         const isBoth = isPersonal && worldRecords.includes(record);
 
-        const indicatorHTML = HTML(`<span ${this.graphBarStyle({worldRecord: true, personalBest: isPersonal})}>` + indicators.replace(/(.)(▐)/, `$1</span><span ${HTML.string`${this.graphBarStyle({personalBest: isPersonal, previousPersonalBest: !isPersonal})}">$2`) + `</span>`)
+        const indicatorHTML = HTML(`<span style="${this.graphBarStyleAttrStringFixMe({worldRecord: true, personalBest: isPersonal})}">` + indicators.replace(/(.)(▐)/, `$1</span><span style="${this.graphBarStyleAttrStringFixMe({personalBest: isPersonal, previousPersonalBest: !isPersonal})}">$2`) + `</span>`)
 
         const runner = await record.runner;
         yield HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="//${currentHost}/${gamesSlug}/${runner.nick}#${level.slug}">${runner.nick.padEnd(14)} ${indicatorHTML}</a>\n`;

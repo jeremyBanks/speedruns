@@ -2,8 +2,12 @@
 
 - improve timestamp formatting
   see https://bests.glitch.me/smwext/banks#level-9kvpep8k for bad example
+  
+- make graph code understandable
 
 - move URL parsing login to a "router" component or something so the server can reuse.
+
+- reconsider top-level error handling -- since we now have a static render to fall back to (unless it has an error?)
 
 - add support for categories-slugs, maybe like:
 
