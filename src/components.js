@@ -1,19 +1,20 @@
 import HTML from '/assets/bester/html.js';
 import {zip, devAwaitDeep, compareAll, compareDefault} from '/assets/bester/utils.js';
-import {RootComponent, Component, style} from '/assets/bester/component.js';
+import {RootComponent, Component} from '/assets/bester/component.js';
+import {style} from '/assets/bester/style.js';
 
 import * as speedrun from '/assets/speedrun.js';
 
 
 export class Header extends Component {
   get style() {
-    return {
+    return style({
       text: {align: 'left'}
-    };
+    });
   }
   
   get headerTextStyle() {
-    return {
+    return style({
       display: 'inline',
       border: {
         bottom: {
@@ -25,35 +26,35 @@ export class Header extends Component {
       position: 'relative',
       top: '-7px',
       padding: {right: '4px'}
-    };
+    });
   }
   
   get headerTextInnerStyle() {
-    return {
+    return style({
       position: 'relative',
       top: '7px'
-    };
+    });
   }
   
   get linksStyle() {
-    return {
+    return style({
       float: 'right',
       margin: {top: '4px'},
       font: {size: '12px'},
       line: {height: '16px'},
       text: {align: 'right'}
-    };
+    });
   }
 
   render({currentHost, currentProject}) {
     return HTML`<header>
-      <h1 ${style(this.headerTextStyle)}><span ${style(this.headerTextInnerStyle)}>
+      <h1 ${this.headerTextStyle}><span ${this.headerTextInnerStyle}>
         <img src="/assets/icon.png">
         <a href="//${currentHost}/">${currentHost}</a>
       <span></h1>
 
       ${currentProject && HTML`
-        <nav class="links" ${style(this.linksStyle)}>
+        <nav class="links" ${this.linksStyle}>
           <a href="${`https://glitch.com/edit/#!/${currentProject}?path=src/client.js`}">edit source code</a><br />
         </nav>
       `}
@@ -64,10 +65,10 @@ export class Header extends Component {
 
 export class Footer extends Component {
   get style() {
-    return {
+    return style({
       font: {size: '0.75em'},
       margin: {top: '128px'}
-    };
+    });
   }
 
   render({}) {
@@ -81,14 +82,14 @@ export class Footer extends Component {
 
 export class BestsReport extends RootComponent {
   get preStyle() {
-    return {
+    return style({
       font: {size: '12px'},
       margin: '16px 0'
-    };
+    });
   }
 
   render({gameSlugs, runnerSlug, currentHost}) {
-    return HTML`<pre ${style(this.preStyle)}>${async function*() {  
+    return HTML`<pre ${this.preStyle}>${async function*() {  
       const gamesSlug = gameSlugs.join('+');
 
       const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
@@ -112,17 +113,17 @@ export class BestsReport extends RootComponent {
 
 class BestsReportGame extends Component { 
   get gameLinkStyle() {
-    return {
+    return style({
       display: 'inline-block',
       font: {
         size: '16px',
         weight: 'bold'
       }
-    };
+    });
   }
 
   async *render({game, currentHost, gamesSlug, runnerSlug}) {
-    yield HTML`      <a ${style(this.gameLinkStyle)} id="${game.slug}" href="//${currentHost}/${game.slug}${runnerSlug ? `/${runnerSlug}` : ''}">${game.nick}</a>\n`;
+    yield HTML`      <a ${this.gameLinkStyle} id="${game.slug}" href="//${currentHost}/${game.slug}${runnerSlug ? `/${runnerSlug}` : ''}">${game.nick}</a>\n`;
     yield "\n";
 
     const runsByLevel = await game.runsByCategoryLevelPairs();
@@ -138,23 +139,23 @@ class BestsReportGame extends Component {
 
 class BestsReportRun extends Component {
   get noRunsTextStyle() {
-    return {opacity: 0.5};
+    return style({opacity: 0.5});
   }
 
   get levelLinkStyle() {
-    return {
+    return style({
       display: 'inline-block',
       font: {
         size: '16px',
         weight: 'bold'
       }
-    };
+    });
   }
   
   
   
   async *render({level, runs, runnerSlug, currentHost, gamesSlug}) {
-    yield HTML`          <a ${style(this.levelLinkStyle)} id="level-${level.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#level-${level.slug}">${level.nick}</a>\n`;
+    yield HTML`          <a ${this.levelLinkStyle} id="level-${level.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#level-${level.slug}">${level.nick}</a>\n`;
 
     const compareRuns = compareAll(
       (a, b) => compareDefault(a.date, b.date),
@@ -196,7 +197,7 @@ class BestsReportRun extends Component {
     const records = [...new Set([...personalRecords, ...worldRecords])].sort(compareRuns);
 
     if (records.length === 0) {
-      yield HTML`                      <span ${style(this.noRunsTextStyle)}>(no runs)</span>\n`;
+      yield HTML`                      <span ${this.noRunsTextStyle}>(no runs)</span>\n`;
     } else {
       let lastWr = null, lastWrIndicators = '';
       let lastPr = null, lastPrIndicators = '';        
