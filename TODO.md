@@ -1,12 +1,11 @@
 # To Do or maybe just ideas
 
+- improve timestamp formatting
+  see https://bests.glitch.me/smwext/banks#level-9kvpep8k for bad example
+
 - add support for categories-slugs, maybe like:
 
       /smwext/world_1/@banks
-
-- add pagination support in API wrapper.  
-  currently blocking: https://bests.glitch.me/smb  
-  Continue to enforce some sanity limit like 6 pages (1200 items).
 
 - move URL parsing login to a "router" component or something so the server can reuse.
 
