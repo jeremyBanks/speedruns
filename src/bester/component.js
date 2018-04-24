@@ -19,19 +19,23 @@ const {
 } = new LazySymbolScope('internal ');
 
 
-export const styles = (styleObj, propPrefix = '') =>
-    HTML`style="${Object.keys(styleObj).map(key => {
-      const value = styleObj[key];
-      if (typeof value === 'string') {
-        return `${propPrefix}${key}: ${value};`
-      } else if (typeof value === 'number' && Number.isFinite(value)) {
-        return `${propPrefix}${key}: ${value};`
-      } else if (value && typeof value === 'object') {
-        return styles(value, `${key}-`);
-      } else {
-        throw new TypeError("css value has unexpected type");
-      }
-    }).join(' ')}"`;
+export const styles = styleObj => HTML`style="${styleAttrValue(styleObj)}"`;
+
+
+export const styleAttrValue = (styleObj, propPrefix = '') => {
+  return Object.keys(styleObj).map(key => {
+    const value = styleObj[key];
+    if (typeof value === 'string') {
+      return `${propPrefix}${key}: ${value};`
+    } else if (typeof value === 'number' && Number.isFinite(value)) {
+      return `${propPrefix}${key}: ${value};`
+    } else if (value && typeof value === 'object') {
+      return styleAttrValue(value, key !== '_' ? `${propPrefix}${key}-` : propPrefix);
+    } else {
+      throw new TypeError("css value has unexpected type");
+    }
+  }).join(' ');
+};
 
 
 export class Component {
