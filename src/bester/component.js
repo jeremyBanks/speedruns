@@ -24,6 +24,10 @@ export const styles = styleObj =>
 
 
 export class Component {
+  static of(props) {
+    return new this(props);
+  }
+
   constructor(props = {}) {
     const classes = [];
     let currentClass = this.constructor;
