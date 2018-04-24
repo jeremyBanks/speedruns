@@ -15,29 +15,42 @@ const {
   getElement,
   setProps,
   onElementCreated,
-  onElementRendered
+  onElementRendered,
+  styleAttrValue
 } = new LazySymbolScope('internal ');
 
 
-export const style = styleObj => HTML`style="${styleAttrValue(styleObj)}"`;
+// A set of CSS style property values, which may also be used as an HTML string style attribute.
+class Style {
+  constructor(...args) {
+    Object.assign(this, ...args);
+    Object.freeze(this);
+  }
+  
+  [HTML.fromThis]() {
+    return HTML`style="${Style.attrValue(this)}"`
+  }
+
+  static attrValue(data, propPrefix = '') {
+    return Object.keys(data).map(key => {
+      const value = data[key];
+      if (key === '_') key = '';
+      const propName = [propPrefix, key].filter(Boolean).join('-');
+      if (typeof value === 'string') {
+        return `${propName}: ${value};`
+      } else if (typeof value === 'number' && Number.isFinite(value)) {
+        return `${propName}: ${value};`
+      } else if (value && typeof value === 'object') {
+        return this.attrValue(value, propName);
+      } else {
+        throw new TypeError("css value has unexpected type");
+      }
+    }).join(' ');
+  }  
+}
 
 
-export const styleAttrValue = (styleObj, propPrefix = '') => {
-  return Object.keys(styleObj).map(key => {
-    const value = styleObj[key];
-    if (key === '_') key = '';
-    const propName = [propPrefix, key].filter(Boolean).join('-');
-    if (typeof value === 'string') {
-      return `${propName}: ${value};`
-    } else if (typeof value === 'number' && Number.isFinite(value)) {
-      return `${propName}: ${value};`
-    } else if (value && typeof value === 'object') {
-      return styleAttrValue(value, propName);
-    } else {
-      throw new TypeError("css value has unexpected type");
-    }
-  }).join(' ');
-};
+export const style = data => new Style(data);
 
 
 export class Component {
@@ -65,7 +78,7 @@ export class Component {
 
   // by default, components should just pass through their contents, but we expect
   // many subclasses to override this.
-  get styles() {
+  get style() {
     return {
       'display': 'contents'
     };
