@@ -17,14 +17,3 @@
 .BestsReport .banks {
   background: rgba(0, 0, 128, 0.125);
 }
-
-
-.BestsReport a.level {
-  display: inline-block;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.BestsReport .none {
-  opacity: 0.5;
-}
