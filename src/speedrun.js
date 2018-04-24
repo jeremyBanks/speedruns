@@ -22,13 +22,14 @@ export const api = async (path, maxPages = 6) => {
 
 export const apiCache = new Map();
 
-const apiFetch = async path => {
+const apiFetch = async (path, maxPages = Infinity, pastPages = 0) => {
   const url = speedrunDotComApiRootUrl + path;
   const response = await fetch(url);
   const body = await response.json();
   if (body.status) {
     throw new Error(`${body.status}: ${body.message}`); 
   } else {
+    
     if (body.pagination && body.pagination.links && body.pagination.links.filter(l => l.rel === 'next').length) {
       throw new Error(`got too many results (more than one page (${body.pagination.max}))`);
     } else {
