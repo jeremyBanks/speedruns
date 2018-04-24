@@ -40,8 +40,8 @@ export class Header extends Component {
       float: 'right',
       margin: {top: '4px'},
       font: {size: '12px'},
-      'line-height': '16px',
-      'text-align': 'right'
+      line: {height: '16px'},
+      text: {align: 'right'}
     };
   }
 
@@ -65,8 +65,8 @@ export class Header extends Component {
 export class Footer extends Component {
   get styles() {
     return {
-      'font-size': '0.75em',
-      'margin-top': '128px'
+      font: {size: '0.75em'},
+      margin: {top: '128px'}
     };
   }
 
@@ -82,8 +82,8 @@ export class Footer extends Component {
 export class BestsReport extends RootComponent {
   get preStyles() {
     return {
-      'font-size': '12px',
-      'margin': '16px 0'
+      font: {size: '12px'},
+      margin: '16px 0'
     };
   }
 
@@ -113,9 +113,11 @@ export class BestsReport extends RootComponent {
 class BestsReportGame extends Component { 
   get gameLinkStyles() {
     return {
-      'display': 'inline-block',
-      'font-size': '16px',
-      'font-weight': 'bold'
+      display: 'inline-block',
+      font: {
+        size: '16px',
+        weight': 'bold'
+      }
     };
   }
 
