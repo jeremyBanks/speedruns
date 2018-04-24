@@ -66,11 +66,18 @@ export class Footer extends Component {
       loaded from <a href="https://github.com/speedruncomorg/api/blob/master/version1/README.md#readme">their API</a>.
     </footer>`;
   }
+
+  get styles() {
+    return {
+      'font-size': '0.75em',
+      'margin-top': '128px'
+    };
+  }
 }
 
 export class BestsReport extends RootComponent {
   render({gameSlugs, runnerSlug, currentHost}) {
-    return HTML`<pre>${async function*() {  
+    return HTML`<pre ${styles(this.preStyles)}>${async function*() {  
       const gamesSlug = gameSlugs.join('+');
 
       const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
@@ -90,11 +97,18 @@ export class BestsReport extends RootComponent {
       }
     } }</pre>`;
   }
+  
+  get preStyles() {
+    return {
+      'font-size': '12px',
+      'margin': '16px 0'
+    };
+  }
 };
 
 class BestsReportGame extends Component {
   async *render({game, currentHost, gamesSlug, runnerSlug}) {
-    yield HTML`      <a class="game" id="${game.slug}" href="//${currentHost}/${game.slug}${runnerSlug ? `/${runnerSlug}` : ''}">${game.nick}</a>\n`;
+    yield HTML`      <a ${styles(this.gameLinkStyles)} id="${game.slug}" href="//${currentHost}/${game.slug}${runnerSlug ? `/${runnerSlug}` : ''}">${game.nick}</a>\n`;
     yield "\n";
 
     const runsByLevel = await game.runsByCategoryLevelPairs();
@@ -104,6 +118,14 @@ class BestsReportGame extends Component {
     }
     yield "\n";
     yield "\n";
+  }
+  
+  get gameLinkStyles() {
+    return {
+      'display': 'inline-block',
+      'font-size': '16px',
+      'font-weight': 'bold'
+    };
   }
 }
 
