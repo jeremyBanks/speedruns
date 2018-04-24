@@ -64,7 +64,7 @@ const doMain = async (locationProvider) => {
   
   const output = await HTML.element`<div></div>`; 
 
-  output.appendChild(await HTML.element`${new Header({currentProject, currentHost})}`);
+  output.appendChild(await HTML.element`${Header.of({currentProject, currentHost})}`);
 
   const blockers = [];
   
@@ -77,14 +77,7 @@ const doMain = async (locationProvider) => {
     const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
     if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-    const content = new BestsReport({gameSlugs, runnerSlug, currentHost});
-    // setTimeout(() => {
-    //   // look, it works! that's the only reason this is here. delete it later.
-    //   content.props = {gameSlugs: ['zoombinis'], runnerSlug: 'Uglie', currentHost};
-    //   setTimeout(() => {
-    //     content.props = {gameSlugs, runnerSlug, currentHost};
-    //   }, 1000);
-    // }, 3000);
+    const content = BestsReport.of({gameSlugs, runnerSlug, currentHost});
 
     output.appendChild(content.element);
     blockers.push(content.rendered);
@@ -92,7 +85,7 @@ const doMain = async (locationProvider) => {
     throw new Error("404/invalid URL");
   }
 
-  output.appendChild(await HTML.element`${new Footer()}`);
+  output.appendChild(await HTML.element`${Footer.of()}`);
 
   output.addEventListener('click', event => {
     // only catch unmodified left clicks.

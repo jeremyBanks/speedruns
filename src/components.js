@@ -5,7 +5,7 @@ import {RootComponent, Component, styles} from '/assets/bester/component.js';
 import * as speedrun from '/assets/speedrun.js';
 
 
-export class Header extends Component {
+export class Header extends Component {  
   render({currentHost, currentProject}) {
     return HTML`<header>
       <h1 ${styles(this.headerTextStyle)}><span ${styles(this.headerTextInnerStyle)}>
@@ -86,7 +86,7 @@ export class BestsReport extends RootComponent {
       yield "\n";
 
       for (const game of games) {
-        yield new BestsReportGame({game, currentHost, gamesSlug, runnerSlug});
+        yield BestsReportGame.of({game, currentHost, gamesSlug, runnerSlug});
       }
     } }</pre>`;
   }
@@ -100,7 +100,7 @@ class BestsReportGame extends Component {
     const runsByLevel = await game.runsByCategoryLevelPairs();
 
     for (const [level, runs] of runsByLevel) {
-      yield new BestsReportRun({level, runs, runnerSlug, currentHost, gamesSlug});
+      yield BestsReportRun.of({level, runs, runnerSlug, currentHost, gamesSlug});
     }
     yield "\n";
     yield "\n";
