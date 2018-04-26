@@ -2,6 +2,7 @@ import express from 'express';
 import compression from 'compression';
 import rp from 'request-promise-native';
 import serveIndex from 'serve-index';
+import commonmark from 'commonmark';
 
 
 // We don't use this yet, but don't want to break it.
@@ -49,6 +50,30 @@ app.get('/service-worker-toolbox.js', (req, res) => {
 });
 app.get('/sw-toolbox.js.map', (req, res) => {
   res.sendFile(__dirname + '/node_modules/sw-toolbox/sw-toolbox.js.map');
+});
+
+app.get('/TODO', async (req, res) => {
+  const input = await new Promise((resolve, reject) => fs.readFile(__dirname + '/TODO.md', 'utf8', (err, data) => { err ? reject(err) : resolve(data); }));
+  const reader = new commonmark.Parser();
+  const writer = new commonmark.HtmlRenderer({safe: true});
+  const result = writer.render(reader.parse(input));
+  res.set('Content-Type', 'text/html');
+  res.send(`<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+body {
+  font-family: sans-serif;
+  max-width: 640px;
+
+}
+</style>
+</head>
+<body>
+${result}
+</body>
+</html>`);
 });
 
 app.get('/favicon.ico', (req, res) => { res.status(404); res.end(); });

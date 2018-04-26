@@ -12,7 +12,8 @@
     "sw-toolbox": "^3.6.0",
     "serve-index": "^1.9.1",
     "node-fetch": "^2.1.2",
-    "cloc": "^2.3.3"
+    "cloc": "^2.3.3",
+    "commonmark": "^0.28.1"
   },
   "scripts": {
     "prestart": "cloc . --exclude-dir=node_modules --not-match-d=data --force-lang=JavaScript,mjs --quiet --by-file --include-lang=JavaScript | head -n-1 | tail -n+3 | sort | tail -n+4",
