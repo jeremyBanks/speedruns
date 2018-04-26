@@ -131,18 +131,25 @@ app.use(async (req, res) => {
     body = bodyCache[req.path];
   } else {
     try {
-      body = await HTML.string`<div>
-        ${new Header({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
-        ${gamesSlug ? new BestsReport({gameSlugs, runnerSlug, currentHost: req.get('host')}) : undefined}
-        ${new Footer()}
-      </div>`;
-      bodyCache[req.path] = body;
+      body = await Promise.race([
+        (async () => {
+          const result = await HTML.string`<div>
+            ${new Header({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
+            ${gamesSlug ? new BestsReport({gameSlugs, runnerSlug, currentHost: req.get('host')}) : undefined}
+            ${new Footer()}
+          </div>`;  
+          bodyCache[req.path] = result;
+          return result;
+        })(),
+        (async () => {
+          // if it takes more than a moment to load the data, fall back to client.
+          // the caching will already handle reusing the backend requests started
+          // here when data is requested for the client-side render.
+          await new Promise(resolve => setTimeout(resolve, 250));
+          return HTML.string`<p>Loading data from speedrun.com...</pre>`;
+        })(),
+      ]);
     } catch (error) {
-      body = await HTML.string`<div>
-        ${new Header({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
-        ${new BestsReport({gameSlugs, runnerSlug, currentHost: req.get('host')})}
-        ${new Footer()}
-      </div>`;
       body = await HTML.string`<pre>${error}\n${error.stack}</pre>`;
     }
   }
