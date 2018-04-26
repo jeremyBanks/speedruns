@@ -55,7 +55,7 @@ export class Header extends Component {
 
       ${currentProject && HTML`
         <nav class="links" ${this.linksStyle}>
-          <a href="${`https://glitch.com/edit/#!/${currentProject}?path=src/client.js`}">edit source code</a><br />
+          <a href="${`https://glitch.com/edit/#!/${currentProject}?path=src/client.js`}">edit on Glitch</a><br />
         </nav>
       `}
     </header>`;
