@@ -66,6 +66,7 @@ app.get('/*.md', async (req, res, next) => {
 <head>
 <title>${req.url}</title>
 <meta charset="utf-8" />
+<link rel="icon" href="/assets/icon.png">
 <style>
 body {
   font-family: sans-serif;
