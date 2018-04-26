@@ -52,26 +52,42 @@ app.get('/sw-toolbox.js.map', (req, res) => {
   res.sendFile(__dirname + '/node_modules/sw-toolbox/sw-toolbox.js.map');
 });
 
-app.get('/TODO', async (req, res) => {
-  const input = await new Promise((resolve, reject) => fs.readFile(__dirname + '/TODO.md', 'utf8', (err, data) => { err ? reject(err) : resolve(data); }));
+app.get('/*.md', async (req, res, next) => {
+  const input = await new Promise((resolve, reject) => fs.readFile(__dirname + req.url, 'utf8', (err, data) => { err ? reject(err) : resolve(data); }));
   const reader = new commonmark.Parser();
   const writer = new commonmark.HtmlRenderer({safe: true});
   const result = writer.render(reader.parse(input));
+  const projectName = process.env.PROJECT_NAME || undefined;
+  
   res.set('Content-Type', 'text/html');
-  res.send(`<!doctype html>
+          
+  res.send(await HTML.string`<!doctype html>
 <html>
 <head>
+<title>${req.url}</title>
 <meta charset="utf-8" />
 <style>
 body {
   font-family: sans-serif;
   max-width: 640px;
-
+  margin: 32px;
+}
+.edit-link {
+  position: absolute;
+  padding: 16px;
+  background: #EEE;
+  top: 0;
+  right: 0;
 }
 </style>
 </head>
 <body>
-${result}
+${projectName && HTML`
+  <div class="edit-link"><a href="https://glitch.com/edit/#!/${projectName}?path=${req.url.slice(1)}">edit on </a></div>
+`}
+<main>
+  ${HTML(result)}
+</main>
 </body>
 </html>`);
 });
