@@ -78,12 +78,14 @@ body {
   background: #EEE;
   top: 0;
   right: 0;
+  border-left: 1px solid #DDD;
+  border-bottom: 1px solid #DDD;
 }
 </style>
 </head>
 <body>
 ${projectName && HTML`
-  <div class="edit-link"><a href="https://glitch.com/edit/#!/${projectName}?path=${req.url.slice(1)}">edit on </a></div>
+  <div class="edit-link"><a href="https://glitch.com/edit/#!/${projectName}?path=${req.url.slice(1)}">edit on Glitch</a></div>
 `}
 <main>
   ${HTML(result)}
