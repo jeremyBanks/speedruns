@@ -1,7 +1,7 @@
 # To Do or maybe just ideas
 
-- improve timestamp formatting
-  see https://bests.glitch.me/smwext/banks#level-9kvpep8k for bad example
+- improve timestamp formatting  
+  see <https://bests.glitch.me/smwext/banks#level-9kvpep8k> for bad example
   
 - make graph code understandable
 
