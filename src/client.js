@@ -80,7 +80,7 @@ const doMain = async (showIncomplete = false) => {
 
 const main = async () => {
   let wasUnloaded = false;
-  if (document.body.classList.contains('unloaded')) {
+  if (!document.body.classList.contains('loaded')) {
     wasUnloaded = true;
     document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
     document.body.classList.add('loading');
