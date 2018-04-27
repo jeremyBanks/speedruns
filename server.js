@@ -144,21 +144,22 @@ app.use(async (req, res) => {
           return result;
         })(),
         (async () => {
-          // if it takes more than a moment to load the data, fall back to client.
-          // the caching will already handle reusing the backend requests started
-          // here when data is requested for the client-side render.
-          await new Promise(resolve => setTimeout(resolve, 250));
-          state.push('unloaded');
-          return await HTML.string`<div>
+          // time-out server side render at 1s, but all required fetches will continue in background.
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          const result = await HTML.string`<div>
             ${Header.of({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
-            <pre>Loading data from speedrun.com...</pre>
+            <p>
+              Still loading data from speedrun.com. Please try again in a minute.
+            </p>
             ${Footer.of()}
-          </div>`;  
+          </div>`;
+          state.push('errored');
+          return result;
         })(),
       ]);
     } catch (error) {
       state.push('errored');
-      return HTML.string`<div>
+      body = await HTML.string`<div>
             ${Header.of({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
             <pre>${error}\n${error.stack}</pre>
             ${Footer.of()}
@@ -168,9 +169,9 @@ app.use(async (req, res) => {
   if (state[0] === 'loaded') {
     res.status(200); // full response
   } else if (state[0] === 'errored') {
-    res.status(200 || 500); // maybe-persistent error
+    res.status(500); // maybe-persistent error
   } else {
-    res.status(200 || 504); // gateway timeout
+    res.status(504); // gateway timeout
   }
   res.set('Content-Type', 'text/html');
   return res.send(index
