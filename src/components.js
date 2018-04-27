@@ -27,7 +27,11 @@ export class BestsRouter extends RootComponent {
     const pathNames = url.pathname.slice(1) && url.pathname.slice(1).split(/\//g) || [];
     
     if (pathNames.length === 0) {
-      return this.render({url: new URL(defaultPath, url.href)});
+      return [
+        Header.of({currentProject: projectName, currentHost: hostName}),
+        HomeBody.of(),
+        Footer.of()
+      ];
     } else if (pathNames.length <= 2) {
       const [gamesSlug, runnerSlug] = pathNames;
       if (!gamesSlug) throw new Error(`no game(s) in URL, ${JSON.stringify(pathNames)}`);
@@ -49,15 +53,19 @@ export class BestsRouter extends RootComponent {
 
 class HomeBody extends Component {
   render({}) {
-    return HTML`<pre>
-This site lets you compare personal and world record progressions over time.</p>
+    return HTML`
+      <p>This site lets you compare personal and world record progressions over time.</p>
 
-      <p>Examples:</p>
-
-      <ul>
-        <
-      </ul>
-    `
+      <p>
+        Examples:
+        <code><a href="/wc2+wc2btdp/banks">/wc2+wc2btdp/banks</a></code>,
+        <code><a href="/smwext/QuiteSuperMario#level-xd1rnr7k">/smwext/QuiteSuperMario#level-xd1rnr7k</a></code>.
+      </p>
+    `;
+  }
+  
+  get style() {
+    return style({text: {align: 'left'}});
   }
 }
 
@@ -152,7 +160,7 @@ export class BestsReport extends RootComponent {
       const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
 
       if (runnerSlug) {
-        yield HTML`World record and ${runnerSlug}'s personal best <span no-print>[<a href="//${currentHost}/${gamesSlug}">remove</a>] </span>progressions over time.\n`;
+        yield HTML`World record and ${runnerSlug}'s personal best <span>[<a href="//${currentHost}/${gamesSlug}">remove</a>] </span>progressions over time.\n`;
       } else {
         yield "World record progressions over time. Click a runner name to compare their bests.\n";
       }
@@ -295,7 +303,7 @@ class BestsReportRun extends Component {
         const indicatorHTML = HTML(`<span style="${this.graphBarStyleAttrStringFixMe({worldRecord: true, personalBest: isPersonal})}">` + indicators.replace(/(.)(▐)/, `$1</span><span style="${this.graphBarStyleAttrStringFixMe({personalBest: isPersonal, previousPersonalBest: !isPersonal})}">$2`) + `</span>`)
 
         const runner = await record.runner;
-        yield HTML`<a href="${record.url}">${record.durationText.padStart(10)} ${record.date}</a> <a href="//${currentHost}/${gamesSlug}/${runner.nick}#level-${level.slug}">${runner.nick.padEnd(14)} ${indicatorHTML}</a>\n`;
+        yield HTML`<a href="${record.url}">${record.durationText.padStart(10)} ${record.date}</a> <a href="//${currentHost}/${gamesSlug}/${runner.nick}#level-${level.slug}">${runner.nick.padEnd(15)} ${indicatorHTML}</a>\n`;
       }
     }
     yield "\n";
