@@ -2,20 +2,17 @@
 
 - refactor graph code, as it is currently very dense, hacky, and difficult to understand.
 
-- add support for category/level paths
+- add support for category/level paths (also forcing change of user paths), maybe like this:
 
-# brain storming
-
-- add support for categories-slugs, maybe like:
-
-      /smwext/world_1/@banks
-  
-  I guess these could accept either level or category ids, and it would
-  allow multiple with `+`. (combined as OR, not and.)
+      /smwext/world_1+world_2/@banks+@zpr
 
 - some amount of feature detection or better error handling, so we don't clobber the server-side render in safari where the client-side render fails.
 
-- move URL parsing login to a "router" component or something so the server can reuse.
+
+- move URL parsing login to a "router" component.
+  https://glitch.com/edit/#!/bests?path=src/bester/router.js:23:37
+
+# brain storming
 
 - reconsider top-level error handling -- since we now have a static render to fall back to (unless it has an error?)
 
@@ -38,7 +35,6 @@
 okay did something:
   - onElementCreated() will be called immediate for event binding on the root element.
   - onRendered() will be called deferred for event binding on any child elements.
-
 
 maybe come up with a few actual uses before engineering in the abstract.
 that's part of the point here: feel out actual use patterns.

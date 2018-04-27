@@ -15,6 +15,7 @@ export class Router extends RootComponent {
       pathname: document.location.pathname
     };
 
+    // NOTE that these are never removed from the document.
     this.addPopStateListener(document);
     this.addClickListener(document);
   }
