@@ -172,16 +172,19 @@ export class Run {
   }
   
   static normalizeDurationText(durationText) {
-    const match = /^[A-Z]{2}(?:([0-9]{1,2})H)?(?:([0-9]{1,2})M)?(?:([0-9]{1,2})(?:\.([0-9]{1,3}))?S)?$/.exec(durationText);
-    if (!match) {
-      console.error(`failed to normalize duration: ${durationText}`);
-      return durationText;
-    }
-    const [full, hours, minutes, seconds, miliseconds] = match;
+    const match = /^[A-Z]{2}(?:([0-9]{1,2})H)?(?:([0-9]{1,2})M)?(?:([0-9]{1,2})(?:\.([0-9]{1,3}))?S)?$/i.exec(durationText);
+    if (!match) throw new Error(`failed to normalize duration: ${durationText}`);    const [full, hours, minutes, seconds, miliseconds] = match;
     const pieces = [];
-    if (hours) pieces.push(String(hours).padStart(2, '0'), 'H');
-    if (minutes) pieces.push(String(hours).padStart(2, '0'), 'M');
-    if (hours) pieces.push(String(hours).padStart(2, '0'), 'H');
+    if (hours != null) pieces.push(String(Number(hours)).padStart(2, pieces.length ? '0' : ' '), 'h');
+    if (minutes != null) pieces.push(String(Number(minutes)).padStart(2, pieces.length ? '0' : ' '), 'm');
+    if (seconds != null || miliseconds != null) {
+      pieces.push(String(Number(seconds || 0)).padStart(2, pieces.length ? '0' : ' '));
+      if (miliseconds != null) {
+        pieces.push('.', String(Number(miliseconds)).padStart(3, '0'));
+      }
+      pieces.push('s');
+    }
+    return pieces.join('');
   }
   
   static async fromApiData(data) {

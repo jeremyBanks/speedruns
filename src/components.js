@@ -237,7 +237,7 @@ class BestsReportRun extends Component {
         const indicatorHTML = HTML(`<span style="${this.graphBarStyleAttrStringFixMe({worldRecord: true, personalBest: isPersonal})}">` + indicators.replace(/(.)(▐)/, `$1</span><span style="${this.graphBarStyleAttrStringFixMe({personalBest: isPersonal, previousPersonalBest: !isPersonal})}">$2`) + `</span>`)
 
         const runner = await record.runner;
-        yield HTML`<a href="${record.url}">${record.durationText.padStart(9)} ${record.date}</a> <a href="//${currentHost}/${gamesSlug}/${runner.nick}#level-${level.slug}">${runner.nick.padEnd(14)} ${indicatorHTML}</a>\n`;
+        yield HTML`<a href="${record.url}">${record.durationText.padStart(10)} ${record.date}</a> <a href="//${currentHost}/${gamesSlug}/${runner.nick}#level-${level.slug}">${runner.nick.padEnd(14)} ${indicatorHTML}</a>\n`;
       }
     }
     yield "\n";
