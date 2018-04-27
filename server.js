@@ -121,8 +121,7 @@ import fs from 'fs';
 let bodyCache = {};
 app.use(async (req, res) => {
   const index = await new Promise((resolve, reject) => fs.readFile(__dirname + '/src/index.html', 'utf8', (err, data) => { err ? reject(err) : resolve(data); }));
-  res.set('Content-Type', 'text/html');
-
+  
   const [gamesSlug, runnerSlug] = req.url.slice(1).split(/\//g);
   const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
 
@@ -158,6 +157,14 @@ app.use(async (req, res) => {
       body = await HTML.string`<pre>${error}\n${error.stack}</pre>`;
     }
   }
+  if (state[0] === 'loaded') {
+    res.status(200); // full response
+  } else if (state[0] === 'errored') {
+    res.status(500); // maybe-persistent error
+  } else {
+    res.status(504); // gateway timeout
+  }
+  res.set('Content-Type', 'text/html');
   return res.send(index
                   .replace('unloaded', state[0])
                   .replace('</main>', body + '</main>'));
