@@ -2,6 +2,12 @@
 
 - improve timestamp formatting  
   see <https://bests.glitch.me/smwext/banks#level-9kvpep8k> for bad example
+
+- bug fixes:
+
+  - unknown game shouldn't cause an error
+
+- time-out server-side render if it's taking too long
   
 - make graph code understandable
 
