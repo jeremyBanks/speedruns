@@ -136,12 +136,9 @@ app.use(async (req, res) => {
     try {
       body = await Promise.race([
         (async () => {
-          return await HTML.from(BestsRouter.of({url: new url.URL(req.path, `https://${req.hostname}/`)})).string();
           const result = await HTML.string`<div>
-            ${Header.of({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
-            ${gamesSlug ? new BestsReport({gameSlugs, runnerSlug, currentHost: req.get('host')}) : undefined}
-            ${Footer.of()}
-          </div>`;  
+            ${BestsRouter.of({url: new url.URL(req.path, `https://${req.hostname}/`)})}
+          `;
           bodyCache[req.path] = result;
           state.push('loaded');
           return result;
@@ -152,7 +149,7 @@ app.use(async (req, res) => {
           // here when data is requested for the client-side render.
           await new Promise(resolve => setTimeout(resolve, 250));
           state.push('unloaded');
-          return HTML.string`<div>
+          return await HTML.string`<div>
             ${Header.of({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
             <pre>Loading data from speedrun.com...</pre>
             ${Footer.of()}
