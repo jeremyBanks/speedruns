@@ -6,48 +6,8 @@ import {Style, style} from '/assets/bester/style.js';
 
 import * as speedrun from '/assets/speedrun.js';
 
-export class BestsRouter extends RootComponent {
-  title({url} = this.props) {
-    const hostName = url.host;
-    const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : null;
-    const shortName = projectName || hostName;
-    const pathNames = url.pathname.slice(1) && url.pathname.slice(1).split(/\//g) || [];
 
-    return (pathNames.length === 0) ? hostName : `${shortName}/${pathNames.join('/')}`;
-  }
-  
-  render({url}) {
-    const hostName = url.host;
-    const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : null;
-    const shortName = projectName || hostName;
-    const pathNames = url.pathname.slice(1) && url.pathname.slice(1).split(/\//g) || [];
-    
-    if (pathNames.length === 0) {
-      return [
-        Header.of({currentProject: projectName, currentHost: hostName}),
-        HomeBody.of(),
-        Footer.of()
-      ];
-    } else if (pathNames.length <= 2) {
-      const [gamesSlug, runnerSlug] = pathNames;
-      if (!gamesSlug) throw new Error(`no game(s) in URL, ${JSON.stringify(pathNames)}`);
-
-      const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
-      if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
-
-      return [
-        Header.of({currentProject: projectName, currentHost: hostName}),
-        BestsReport.of({gameSlugs, runnerSlug, currentHost: hostName}),
-        Footer.of()
-      ];
-    } else {
-      throw new Error("404/invalid URL");
-    }
-   }
-}
-
-
-class HomeBody extends Component {
+export class HomeBody extends Component {
   render({}) {
     return HTML`
       <p>This site lets you compare personal and world record progressions over time.</p>
@@ -57,8 +17,8 @@ class HomeBody extends Component {
       </p>
 
       <ul>
-        <li><code><a href="/wc2+wc2btdp/banks">/wc2+wc2btdp/banks</a></code></li>
-        <li><code><a href="/smwext/QuiteSuperMario#level-xd1rnr7k">/smwext/QuiteSuperMario#level-xd1rnr7k</a></code></li>
+        <li><code><a href="/wc2+wc2btdp/@banks">/wc2+wc2btdp/@banks</a></code></li>
+        <li><code><a href="/smwext/@QuiteSuperMario#level-xd1rnr7k">/smwext/@QuiteSuperMario#level-xd1rnr7k</a></code></li>
       </ul>
     `;
   }

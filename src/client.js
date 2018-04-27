@@ -1,7 +1,7 @@
 import HTML from '/assets/bester/html.js';
 import {document, window, URL} from '/assets/bester/deps.js';
 import {Component, RootComponent} from '/assets/bester/component.js';
-import {BestsRouter} from '/assets/components.js';
+import {BestsRouter} from '/assets/router.js';
 
 const doMain = async (showIncomplete = false) => {
   const currentHost = document.location.host;
