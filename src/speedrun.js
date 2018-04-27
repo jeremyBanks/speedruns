@@ -171,6 +171,19 @@ export class Run {
     Object.assign(this, ...args);
   }
   
+  static normalizeDurationText(durationText) {
+    const match = /^[A-Z]{2}(?:([0-9]{1,2})H)?(?:([0-9]{1,2})M)?(?:([0-9]{1,2})(?:\.([0-9]{1,3}))?S)?$/.exec(durationText);
+    if (!match) {
+      console.error(`failed to normalize duration: ${durationText}`);
+      return durationText;
+    }
+    const [full, hours, minutes, seconds, miliseconds] = match;
+    const pieces = [];
+    if (hours) pieces.push(String(hours).padStart(2, '0'), 'H');
+    if (minutes) pieces.push(String(hours).padStart(2, '0'), 'M');
+    if (hours) pieces.push(String(hours).padStart(2, '0'), 'H');
+  }
+  
   static async fromApiData(data) {
     let runner;
 
@@ -187,7 +200,7 @@ export class Run {
       runId: data.id,
       runner,
       durationSeconds: data.times.primary_t,
-      durationText: data.times.primary.slice(2).toLowerCase(),
+      durationText: Run.normalizeDurationText(data.times.primary),
       date: data.date,
       dateTimeSubmitted: data.submitted,
       levelId: data.level,
