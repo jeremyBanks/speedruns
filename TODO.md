@@ -10,6 +10,16 @@
 
 - move link handling/client-side-reload into the "router" component.
 
+- user pages?
+
+      /@Banks
+  
+  Showing their personal bests in every level/category they've run.
+  
+  The API gives us the list of levels and categories:
+  <https://www.speedrun.com/api/v1/users/Banks/personal-bests>
+
+
 # brain storming
 
 - reconsider top-level error handling -- since we now have a static render to fall back to (unless it has an error?)
@@ -17,8 +27,6 @@
 - can we run our post-render hooks client-side, by walking up the DOM and associating tag names with classes? probably not, since we'd need to also pass in data to reconstruct the model props for the callback to use.
 
 - embedded video player?
-
-- user pages?
 
 - events? hard to do that without a dom...
   - it probably wouldn't actually be that hard to allow DOM content to be
