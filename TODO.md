@@ -8,6 +8,9 @@
 - add support for categories-slugs, maybe like:
 
       /smwext/world_1/@banks
+  
+  I guess these could accept either level or category ids, and it would
+  allow multiple with `+`. (combined as OR, not and.)
 
 - some amount of feature detection or better error handling, so we don't clobber the server-side render in safari where the client-side render fails.
 
