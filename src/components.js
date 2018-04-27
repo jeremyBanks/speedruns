@@ -6,6 +6,46 @@ import {Style, style} from '/assets/bester/style.js';
 import * as speedrun from '/assets/speedrun.js';
 
 
+const defaultPath = '/wc2+wc2btdp/banks';
+
+
+export class BestsRouter extends RootComponent {
+  title({url} = this.props) {
+    const hostName = url.host;
+    const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : null;
+    const shortName = projectName || hostName;
+    const pathNames = url.pathname.slice(1) && url.pathname.slice(1).split(/\//g) || [];
+
+    return (pathNames.length === 0) ? hostName : `${shortName}/${pathNames.join('/')}`;
+  }
+  
+  render({url}) {
+    const hostName = url.host;
+    const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : null;
+    const shortName = projectName || hostName;
+    const pathNames = url.pathname.slice(1) && url.pathname.slice(1).split(/\//g) || [];
+    
+    if (pathNames.length === 0) {
+      return this.render({url: new URL(defaultPath, url)});
+    } else if (pathNames.length <= 2) {
+      const [gamesSlug, runnerSlug] = pathNames;
+      if (!gamesSlug) throw new Error(`no game(s) in URL, ${JSON.stringify(pathNames)}`);
+
+      const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
+      if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
+
+      return [
+        Header.of({currentProject: projectName, currentHost: hostName}),
+        BestsReport.of({gameSlugs, runnerSlug, currentHost: hostName}),
+        Footer.of()
+      ];
+    } else {
+      throw new Error("404/invalid URL");
+    }
+   }
+}
+
+
 export class Header extends Component {
   get style() {
     return style({

@@ -1,47 +1,7 @@
 import HTML from '/assets/bester/html.js';
 import {document, window, URL} from '/assets/bester/deps.js';
 import {Component, RootComponent} from '/assets/bester/component.js';
-import {BestsReport, Header, Footer} from '/assets/components.js';
-
-
-const defaultPath = '/wc2+wc2btdp/banks';
-
-
-class BestsRouter extends RootComponent {
-  title({url} = this.props) {
-    const hostName = url.host;
-    const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : null;
-    const shortName = projectName || hostName;
-    const pathNames = url.pathname.slice(1) && url.pathname.slice(1).split(/\//g) || [];
-
-    return (pathNames.length === 0) ? hostName : `${shortName}/${pathNames.join('/')}`;
-  }
-  
-  render({url}) {
-    const hostName = url.host;
-    const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : null;
-    const shortName = projectName || hostName;
-    const pathNames = url.pathname.slice(1) && url.pathname.slice(1).split(/\//g) || [];
-    
-    if (pathNames.length === 0) {
-      return this.render({url: new URL(defaultPath, url)});
-    } else if (pathNames.length <= 2) {
-      const [gamesSlug, runnerSlug] = pathNames;
-      if (!gamesSlug) throw new Error(`no game(s) in URL, ${JSON.stringify(pathNames)}`);
-
-      const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
-      if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
-
-      return [
-        Header.of({currentProject: projectName, currentHost: hostName}),
-        BestsReport.of({gameSlugs, runnerSlug, currentHost: hostName}),
-        Footer.of()
-      ];
-    } else {
-      throw new Error("404/invalid URL");
-    }
-   }
-}
+import {BestsRouter} from '/assets/components.js';
 
 const doMain = async (showIncomplete = false) => {
   const currentHost = document.location.host;

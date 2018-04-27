@@ -4,6 +4,8 @@ import rp from 'request-promise-native';
 import serveIndex from 'serve-index';
 import commonmark from 'commonmark';
 
+import url from 'url';
+
 
 // We don't use this yet, but don't want to break it.
 import * as speedrun from '/assets/speedrun.js';
@@ -116,7 +118,7 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   return res.json(await result);
 });
 
-import {BestsReport, Header, Footer} from '/assets/components.js';
+import {BestsRouter, BestsReport, Header, Footer} from '/assets/components.js';
 import fs from 'fs';
 let bodyCache = {};
 app.use(async (req, res) => {
@@ -134,10 +136,11 @@ app.use(async (req, res) => {
     try {
       body = await Promise.race([
         (async () => {
+          return await HTML.from(BestsRouter.of({url: new url.URL(req.path, `https://${req.hostname}/`)})).string();
           const result = await HTML.string`<div>
-            ${new Header({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
+            ${Header.of({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
             ${gamesSlug ? new BestsReport({gameSlugs, runnerSlug, currentHost: req.get('host')}) : undefined}
-            ${new Footer()}
+            ${Footer.of()}
           </div>`;  
           bodyCache[req.path] = result;
           state.push('loaded');
@@ -149,12 +152,20 @@ app.use(async (req, res) => {
           // here when data is requested for the client-side render.
           await new Promise(resolve => setTimeout(resolve, 250));
           state.push('unloaded');
-          return HTML.string`<p>Loading data from speedrun.com...</pre>`;
+          return HTML.string`<div>
+            ${Header.of({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
+            <pre>Loading data from speedrun.com...</pre>
+            ${Footer.of()}
+          </div>`;  
         })(),
       ]);
     } catch (error) {
       state.push('errored');
-      body = await HTML.string`<pre>${error}\n${error.stack}</pre>`;
+      return HTML.string`<div>
+            ${Header.of({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
+            <pre>${error}\n${error.stack}</pre>
+            ${Footer.of()}
+          </div>`;
     }
   }
   if (state[0] === 'loaded') {
