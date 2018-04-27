@@ -4,7 +4,9 @@ import {URL} from '/assets/bester/deps.js';
 import {RootComponent, Component} from '/assets/bester/component.js';
 import {Style, style} from '/assets/bester/style.js';
 
-import {Header, BestsReport, Footer, HomeBody} from '/assets/components.js';
+import {Header, Footer} from '/assets/common.js';
+import {BestsReport} from '/assets/reports.js';
+import {HomeBody} from '/assets/home.js';
 
 
 export class BestsRouter extends RootComponent {
