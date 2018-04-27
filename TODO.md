@@ -2,24 +2,18 @@
 
 - improve timestamp formatting  
   see <https://bests.glitch.me/smwext/banks#level-9kvpep8k> for bad example
-
-- bug fixes:
-
-  - unknown game shouldn't cause an error
-
-- time-out server-side render if it's taking too long
   
 - make graph code understandable
-
-- move URL parsing login to a "router" component or something so the server can reuse.
-
-- reconsider top-level error handling -- since we now have a static render to fall back to (unless it has an error?)
 
 - add support for categories-slugs, maybe like:
 
       /smwext/world_1/@banks
 
 - some amount of feature detection or better error handling, so we don't clobber the server-side render in safari where the client-side render fails.
+
+- move URL parsing login to a "router" component or something so the server can reuse.
+
+- reconsider top-level error handling -- since we now have a static render to fall back to (unless it has an error?)
 
 - can we run our post-render hooks client-side, by walking up the DOM and associating tag names with classes? probably not, since we'd need to also pass in data to reconstruct the model props for the callback to use.
 
