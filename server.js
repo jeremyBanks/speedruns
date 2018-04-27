@@ -21,7 +21,7 @@ app.set('etag', 'strong');
 app.use(compression());
 
 // disable json pretty print
-app.set('json spaces', 2);
+app.set('json spaces', null);
 
 
 // Hard-coded until we have an ES-module-friendly alternative,
