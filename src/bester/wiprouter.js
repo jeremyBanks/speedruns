@@ -65,7 +65,7 @@ export class Router extends RootComponent {
     document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
     document.body.classList.add('unloaded');
 
-    return await main();
+    return main();
   }
   
   addClickListener(document) {
