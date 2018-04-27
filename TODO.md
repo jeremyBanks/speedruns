@@ -1,5 +1,7 @@
 # to do
 
+- what the fuuuuck is happening to my error pages? /404
+
 - refactor graph code, as it is currently very dense, hacky, and difficult to understand.
 
 - add support for category/level paths (also forcing change of user paths), maybe like this:
@@ -11,7 +13,6 @@
 - some amount of feature detection or better error handling, so we don't clobber the server-side render in safari where the client-side render fails.
 
 
-- move URL parsing login to a "router" component.
 - move link handling/client-side-reload into the "router" component.
 
 # brain storming

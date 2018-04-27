@@ -21,12 +21,10 @@ export class BestsRouter extends RootComponent {
   }
   
   render({url}) {
-    console.log(String(url));
     const hostName = url.host;
     const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : null;
     const shortName = projectName || hostName;
     const pathNames = url.pathname.slice(1) && url.pathname.slice(1).split(/\//g) || [];
-    console.log(JSON.stringify(pathNames));
     
     if (pathNames.length === 0) {
       return this.render({url: new URL(defaultPath, url.href)});
@@ -46,6 +44,21 @@ export class BestsRouter extends RootComponent {
       throw new Error("404/invalid URL");
     }
    }
+}
+
+
+class HomeBody extends Component {
+  render({}) {
+    return HTML`<pre>
+This site lets you compare personal and world record progressions over time.</p>
+
+      <p>Examples:</p>
+
+      <ul>
+        <
+      </ul>
+    `
+  }
 }
 
 
