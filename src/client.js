@@ -8,22 +8,16 @@ const defaultPath = '/wc2+wc2btdp/banks';
 
 
 class BestsRouter extends RootComponent {
-  get title() {
-    const {url} = this.props;
-
+  title({url} = this.props) {
     const hostName = url.host;
     const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : null;
     const shortName = projectName || hostName;
     const pathNames = url.pathname.slice(1) && url.pathname.slice(1).split(/\//g) || [];
 
-    const title = 
-      (pathNames.length === 0) ? hostName : `${shortName}/${pathNames.join('/')}`;
+    return (pathNames.length === 0) ? hostName : `${shortName}/${pathNames.join('/')}`;
   }
   
   render({url}) {
-    // hmmmm!
-    document.title = this.title;
-
     const hostName = url.host;
     const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : null;
     const shortName = projectName || hostName;
@@ -73,10 +67,12 @@ const doMain = async (showIncomplete = false) => {
 
   const blockers = [];
   
-  const content = BestsRouter.of({url: document.location});
+  const router = BestsRouter.of({url: document.location});
 
-  output.appendChild(content.element);
-  blockers.push(content.rendered);
+  document.title = router.title();
+
+  output.appendChild(router.element);
+  blockers.push(router.rendered);
 
   output.addEventListener('click', event => {
     // only catch unmodified left clicks.
