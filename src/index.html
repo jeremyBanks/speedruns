@@ -1,6 +1,12 @@
 <!doctype html>
 <meta charset="utf-8">
 
+<script>
+  if (document.location.protocol === 'http:')
+    document.location.protocol = 'https:';
+</script>
+
+<meta http-equiv="Content-Security-Policy" value="default-src 'self'; img-src *">
 <meta name="viewport" content="width=682, initial-scale=0">
 
 <link rel="icon" href="/assets/icon.png">
@@ -12,22 +18,22 @@
 <main id="main"></main>
 
 <script type="module">
-  // entry point:
-  import '/assets/client.js';
+// entry point:
+import '/assets/client.js';
 
-  // immediately load all dependencies:
-  import '/assets/bester/component.js';
-  import '/assets/bester/style.js';
-  import '/assets/bester/deps.js';
-  import '/assets/bester/html.js';
-  import '/assets/bester/router.js';
-  import '/assets/bester/utils.js';
-  import '/assets/data/runs.js';
-  import '/assets/components.js';
-  import '/assets/speedrun.js';
- 
-  // register/update service worker for next page load:
-  navigator.serviceWorker.register('/service-worker.js');
+// immediately load all dependencies:
+import '/assets/bester/component.js';
+import '/assets/bester/style.js';
+import '/assets/bester/deps.js';
+import '/assets/bester/html.js';
+import '/assets/bester/router.js';
+import '/assets/bester/utils.js';
+import '/assets/data/runs.js';
+import '/assets/components.js';
+import '/assets/speedrun.js';
+
+// register/update service worker for next page load:
+navigator.serviceWorker.register('/service-worker.js');
 </script>
 
 <style>

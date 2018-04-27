@@ -8,31 +8,23 @@ const defaultPath = '/wc2+wc2btdp';
 
 
 class BestsRouter extends Component {
-   
+  render({url}) {
+    const hostName = url.host;
+    const projectName = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
+    const shortName = projectName || hostName;
+    const pathNames = url.pathname.slice(1).split(/\//g);
+
+    const title = 
+      (pathNames.length === 0) ? hostName : `${shortName}/${this.path.join('/')}`;
+    
+    
+   }
 }
 
 
-class LocationProvider {
-  constructor() {
-    this.hostname = document.location.host.replace(/^bests\.run$/, 'bests.glitch.me');
-    this.currentProject = this.hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? this.hostname.split('.')[0] : null;
-    this.canonicalProject = 'bests';
-    this.canonicalHost = 'bests.run';
-    this.currentHost = (this.currentProject === this.canonicalProject) ? this.canonicalHost : this.hostname;
-    this.path = document.location.pathname.slice(1).split(/\//g).filter(Boolean); 
-    this.hasNonDefaultProject = Boolean(this.currentProject && this.currentProject !== this.canonicalProject);
-  }
   
-  get docTitle() {
-    return (this.path.length) ? `${this.hasNonDefaultProject 
-      ? this.currentProject : this.canonicalHost}/${this.path.join('/')}` 
-      : this.hasNonDefaultProject ? this.currentHost : this.canonicalHost;
-  }
   
   updateDocument() {
-    if (this.currentProject && document.location.protocol === 'http:') {
-      document.location.protocol = 'https:';
-    }
 
     document.title = this.docTitle;
   }
