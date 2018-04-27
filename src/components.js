@@ -80,6 +80,7 @@ export class Footer extends Component {
   }
 }
 
+
 export class BestsReport extends RootComponent {
   get preStyle() {
     return style({
@@ -110,6 +111,7 @@ export class BestsReport extends RootComponent {
     }}</pre>`;
   }
 };
+
 
 class BestsReportGame extends Component { 
   get gameLinkStyle() {
