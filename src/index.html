@@ -13,10 +13,6 @@
 
 <body class="unloaded">
 
-<pre id="error-message">Attempting to load page...</pre>
-
-<main id="main"></main>
-
 <script type="module">
 // entry point:
 import '/assets/client.js';
@@ -32,7 +28,7 @@ import '/assets/components.js';
 import '/assets/speedrun.js';
 
 // register/update service worker for next page load:
-navigator.serviceWorker.register('/service-worker.js');
+// navigator.serviceWorker.register('/service-worker.js');
 </script>
 
 <style>
@@ -187,3 +183,7 @@ h2, h3, h4, h5, h6 {
   }
 }
 </style>
+
+<pre id="error-message">Attempting to load page...</pre>
+
+<main id="main"></main>

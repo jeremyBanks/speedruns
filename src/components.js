@@ -1,5 +1,6 @@
 import HTML from '/assets/bester/html.js';
 import {zip, devAwaitDeep, compareAll, compareDefault} from '/assets/bester/utils.js';
+import {URL} from '/assets/bester/deps.js';
 import {RootComponent, Component} from '/assets/bester/component.js';
 import {Style, style} from '/assets/bester/style.js';
 

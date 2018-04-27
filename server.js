@@ -108,7 +108,7 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   const cached = apiCache.get(url);
 
   if (cached) {
-    return res.send(await cached);
+    return res.json(await cached);
   }
 
   console.log("GETting", url);
@@ -138,7 +138,7 @@ app.use(async (req, res) => {
         (async () => {
           const result = await HTML.string`<div>
             ${BestsRouter.of({url: new url.URL(req.path, `https://${req.hostname}/`)})}
-          `;
+          </div>`;
           bodyCache[req.path] = result;
           state.push('loaded');
           return result;
@@ -168,9 +168,9 @@ app.use(async (req, res) => {
   if (state[0] === 'loaded') {
     res.status(200); // full response
   } else if (state[0] === 'errored') {
-    res.status(500); // maybe-persistent error
+    res.status(200 || 500); // maybe-persistent error
   } else {
-    res.status(504); // gateway timeout
+    res.status(200 || 504); // gateway timeout
   }
   res.set('Content-Type', 'text/html');
   return res.send(index

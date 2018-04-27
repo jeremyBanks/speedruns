@@ -9,6 +9,6 @@ import url from 'url';
 const URL = url.URL;
 export {URL};
 
-import fetch from 'node-fetch';
-const fetch_ = (url) => fetch(`http://localhost:${process.env.PORT}${url}`);
+import {default as nfetch} from 'node-fetch';
+const fetch_ = (url) => nfetch(`http://localhost:${process.env.PORT}${url}`);
 export {fetch_ as fetch};
