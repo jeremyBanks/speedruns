@@ -6,10 +6,6 @@ import {Style, style} from '/assets/bester/style.js';
 
 import * as speedrun from '/assets/speedrun.js';
 
-
-const defaultPath = '/wc2+wc2btdp/banks';
-
-
 export class BestsRouter extends RootComponent {
   title({url} = this.props) {
     const hostName = url.host;
@@ -58,9 +54,12 @@ class HomeBody extends Component {
 
       <p>
         Examples:
-        <code><a href="/wc2+wc2btdp/banks">/wc2+wc2btdp/banks</a></code>,
-        <code><a href="/smwext/QuiteSuperMario#level-xd1rnr7k">/smwext/QuiteSuperMario#level-xd1rnr7k</a></code>.
       </p>
+
+      <ul>
+        <li><code><a href="/wc2+wc2btdp/banks">/wc2+wc2btdp/banks</a></code></li>
+        <li><code><a href="/smwext/QuiteSuperMario#level-xd1rnr7k">/smwext/QuiteSuperMario#level-xd1rnr7k</a></code></li>
+      </ul>
     `;
   }
   

@@ -1,7 +1,5 @@
 # to do
 
-- what the fuuuuck is happening to my error pages? /404
-
 - refactor graph code, as it is currently very dense, hacky, and difficult to understand.
 
 - add support for category/level paths (also forcing change of user paths), maybe like this:
@@ -9,9 +7,6 @@
       /smwext/world_1+world_2/@banks+@zpr
       
   where level/category slugs either be their slugs or their ids
-
-- some amount of feature detection or better error handling, so we don't clobber the server-side render in safari where the client-side render fails.
-
 
 - move link handling/client-side-reload into the "router" component.
 
