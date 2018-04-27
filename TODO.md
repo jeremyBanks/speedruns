@@ -10,7 +10,7 @@
 
 
 - move URL parsing login to a "router" component.
-  https://glitch.com/edit/#!/bests?path=src/bester/router.js:23:37
+- move link handling/client-side-reload into the "router" component.
 
 # brain storming
 

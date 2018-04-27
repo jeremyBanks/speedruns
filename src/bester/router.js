@@ -1,6 +1,9 @@
 import {RootComponent, Component} from './component.js';
 
 
+// XXXX THIS IS NOT BEING USED
+// 
+
 // A router has only one prop, pathname, which is automatically set and updated from the document.
 // It also hooks internal link presses to handle them itself.
 export class Router extends RootComponent {
@@ -12,10 +15,11 @@ export class Router extends RootComponent {
     const document = this.element.currentDocument;
     
     this.props = {
-      pathname: document.location.pathname
+      url: document.location.pathname + document.location.query + document.location.hash
     };
 
-    // NOTE that these are never removed from the document.
+    // NOTE that since we never remove these from the document,
+    // you probably don't want create multiple Router instances.
     this.addPopStateListener(document);
     this.addClickListener(document);
   }
@@ -34,7 +38,7 @@ export class Router extends RootComponent {
         if (new URL('#', newLocation).href !== new URL('#', lastLocation).href) {
           console.info(`🎈 History state popped, now at ${document.location.href}`);
           this.props = {
-            pathname: document.location.pathname
+            url: document.location.pathname + document.location.query + document.location.hash
           };
         } else {
           console.debug("🙄 Ignoring hash-only history state change.");
@@ -46,7 +50,39 @@ export class Router extends RootComponent {
     });
   }
   
+  navigate(url) {
+    if (!replace) {
+      window.history.pushState(null, docTitle, url);
+    } else {
+      window.history.replaceState(null, docTitle, url);      
+    }
+    document.scrollingElement.scrollTop = 0;
+    
+    this.state = {
+      
+    }
+    
+    document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
+    document.body.classList.add('unloaded');
+
+    return await main();
+  }
+  
   addClickListener(document) {
-    // TODO
+    document.addEventListener('click', event => {
+      // only catch unmodified left clicks.
+      if (event.buttons > 1) return;
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+
+      if (!event.target.closest('a')) return;
+
+      let target = new URL(event.target.closest('a').href);
+      if (target.host === document.location.host) {
+        console.debug(`🔗 Internal navigation to ${target.href}`);
+        event.preventDefault();
+        event.stopPropagation();
+        this.navigate(target.href);
+      }
+    });
   }
 }

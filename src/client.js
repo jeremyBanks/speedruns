@@ -7,6 +7,11 @@ import {BestsReport, Header, Footer} from '/assets/components.js';
 const defaultPath = '/wc2+wc2btdp';
 
 
+class BestsRouter extends Component {
+   
+}
+
+
 class LocationProvider {
   constructor() {
     this.hostname = document.location.host.replace(/^bests\.run$/, 'bests.glitch.me');
