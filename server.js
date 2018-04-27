@@ -119,7 +119,8 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
 });
 
 import {BestsRouter} from '/assets/router.js';
-import {BestsReport, Header, Footer} from '/assets/components.js';
+import {BestsReport} from '/assets/reports.js';
+import {Header, Footer} from '/assets/common.js';
 import fs from 'fs';
 let bodyCache = {};
 app.use(async (req, res) => {
