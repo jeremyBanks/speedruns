@@ -179,7 +179,7 @@ export class Run {
     if (minutes != null) pieces.push(String(Number(minutes)).padStart(2, pieces.length ? '0' : ' '), 'm');
     if (seconds != null || miliseconds != null) {
       pieces.push(String(Number(seconds || 0)).padStart(2, pieces.length ? '0' : ' '));
-      if (hoursmiliseconds != null) {
+      if (hours == null && miliseconds != null) {
         pieces.push('.', String(Number(miliseconds)).padStart(3, '0'));
       }
       pieces.push('s');
