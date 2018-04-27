@@ -29,14 +29,11 @@ class BestsRouter extends Component {
       const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
       if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
 
-
       return [
-        
-        ]
-
-  output.appendChild(await HTML.element`${Header.of({currentProject, currentHost})}`);
-  output.appendChild(await HTML.element`${Footer.of()}`);
-      return BestsReport.of({gameSlugs, runnerSlug, currentHost: hostName});
+        Header.of({currentProject: projectName, currentHost: hostName}),
+        BestsReport.of({gameSlugs, runnerSlug, currentHost: hostName}),
+        Footer.of()
+      ];
     } else {
       throw new Error("404/invalid URL");
     }
