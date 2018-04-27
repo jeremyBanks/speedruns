@@ -1,9 +1,10 @@
-# To Do or maybe just ideas
+# to do
 
-- improve timestamp formatting  
-  see <https://bests.glitch.me/smwext/banks#level-9kvpep8k> for bad example
-  
-- make graph code understandable
+- refactor graph code, as it is currently very dense, hacky, and difficult to understand.
+
+- add support for category/level paths
+
+# brain storming
 
 - add support for categories-slugs, maybe like:
 
