@@ -18,7 +18,11 @@
   
   The API gives us the list of levels and categories:
   <https://www.speedrun.com/api/v1/users/Banks/personal-bests>
+  
+  This could be the preferred link for user runner links, while non-user runner 
+  links may still link in-page as they currently do.
 
+- be preactive and copy the general API?
 
 # brain storming
 
