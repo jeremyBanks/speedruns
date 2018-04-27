@@ -127,7 +127,9 @@ app.use(async (req, res) => {
   const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
 
   let body = '';
+  const state = [];
   if (bodyCache[req.path]) {
+    state.push('loaded');
     body = bodyCache[req.path];
   } else {
     try {
@@ -139,6 +141,7 @@ app.use(async (req, res) => {
             ${new Footer()}
           </div>`;  
           bodyCache[req.path] = result;
+          state.push('loaded');
           return result;
         })(),
         (async () => {
@@ -146,15 +149,17 @@ app.use(async (req, res) => {
           // the caching will already handle reusing the backend requests started
           // here when data is requested for the client-side render.
           await new Promise(resolve => setTimeout(resolve, 250));
+          state.push('unloaded');
           return HTML.string`<p>Loading data from speedrun.com...</pre>`;
         })(),
       ]);
     } catch (error) {
+      state.push('errored');
       body = await HTML.string`<pre>${error}\n${error.stack}</pre>`;
     }
   }
   return res.send(index
-                  .replace('unloaded', 'loaded')
+                  .replace('unloaded', state[0])
                   .replace('</main>', body + '</main>'));
 });
 

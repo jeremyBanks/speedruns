@@ -33,7 +33,7 @@ class LocationProvider {
   }
 }
 
-const doMain = async (locationProvider) => {
+const doMain = async (locationProvider, showIncomplete = false) => {
   const { hostname, 
           currentProject, 
           canonicalProject, 
@@ -108,9 +108,18 @@ const doMain = async (locationProvider) => {
 
   
   console.debug("😅 Rendering...");
+  if (showIncomplete) {
+    mainContainer.textContent = '';
+    mainContainer.appendChild(output);
+  }
+    
   await Promise.all(blockers);
-  mainContainer.textContent = '';
-  mainContainer.appendChild(output);
+
+  if (!showIncomplete) {
+    mainContainer.textContent = '';
+    mainContainer.appendChild(output);
+  }
+
   console.info("😁 Rendered successfully!");
   document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
   document.body.classList.add('loaded');
@@ -126,12 +135,16 @@ const doMain = async (locationProvider) => {
 };
 
 const main = async () => {
-  // document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
-  // document.body.classList.add('loading');
+  let wasUnloaded = false;
+  if (document.body.classList.contains('unloaded')) {
+    wasUnloaded = true;
+    document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
+    document.body.classList.add('loading');
+  }
 
   const errorMessage = document.querySelector('#error-message');
   try {
-    await doMain(new LocationProvider());
+    await doMain(new LocationProvider(), wasUnloaded);
     document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
     document.body.classList.add('loaded');
   } catch (error) {
