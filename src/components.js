@@ -20,13 +20,15 @@ export class BestsRouter extends RootComponent {
   }
   
   render({url}) {
+    console.log(String(url));
     const hostName = url.host;
     const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : null;
     const shortName = projectName || hostName;
     const pathNames = url.pathname.slice(1) && url.pathname.slice(1).split(/\//g) || [];
+    console.log(JSON.stringify(pathNames));
     
     if (pathNames.length === 0) {
-      return this.render({url: new URL(defaultPath, url)});
+      return this.render({url: new URL(defaultPath, url.href)});
     } else if (pathNames.length <= 2) {
       const [gamesSlug, runnerSlug] = pathNames;
       if (!gamesSlug) throw new Error(`no game(s) in URL, ${JSON.stringify(pathNames)}`);
