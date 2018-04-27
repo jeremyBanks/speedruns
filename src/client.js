@@ -1,55 +1,59 @@
 import HTML from '/assets/bester/html.js';
-import {document, window} from '/assets/bester/deps.js';
+import {document, window, URL} from '/assets/bester/deps.js';
 import {Component} from '/assets/bester/component.js';
 import {BestsReport, Header, Footer} from '/assets/components.js';
 
 
-const defaultPath = '/wc2+wc2btdp';
+const defaultPath = '/wc2+wc2btdp/banks';
 
 
 class BestsRouter extends Component {
   render({url}) {
     const hostName = url.host;
-    const projectName = hostname.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostname.split('.')[0] : null;
+    const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : null;
     const shortName = projectName || hostName;
     const pathNames = url.pathname.slice(1).split(/\//g);
 
     const title = 
       (pathNames.length === 0) ? hostName : `${shortName}/${this.path.join('/')}`;
+
+    // wow!
+    document.title = title;
     
-    
+    if (pathNames.length === 0) {
+      return this.render({url: new URL(defaultPath, url)});
+    } else if (pathNames.length <= 2) {
+      const [gamesSlug, runnerSlug] = pathNames;
+      if (!gamesSlug) throw new Error("no game(s) in URL");
+
+      const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
+      if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
+
+
+      return [
+        
+        ]
+
+  output.appendChild(await HTML.element`${Header.of({currentProject, currentHost})}`);
+  output.appendChild(await HTML.element`${Footer.of()}`);
+      return BestsReport.of({gameSlugs, runnerSlug, currentHost: hostName});
+    } else {
+      throw new Error("404/invalid URL");
+    }
    }
 }
 
-
-  
-  
-  updateDocument() {
-
-    document.title = this.docTitle;
-  }
-}
-
 const doMain = async (locationProvider, showIncomplete = false) => {
-  const { hostname, 
-          currentProject, 
-          canonicalProject, 
-          canonicalHost, 
-          currentHost, 
-          path,
-          docTitle
-        } = locationProvider;
-  
-  locationProvider.updateDocument();
+  const currentHost = document.location.host;
   
   // navigates to an internal URL and recursively re-invokes main to re-render the page.
   const navigateInternal = async (url, replace = false) => {
     document.body.classList.remove('unloaded', 'loading', 'loaded', 'errored');
     document.body.classList.add('unloaded');
     if (!replace) {
-      window.history.pushState(null, docTitle, url);
+      window.history.pushState(null, url, url);
     } else {
-      window.history.replaceState(null, docTitle, url);      
+      window.history.replaceState(null, url, url);      
     }
     document.scrollingElement.scrollTop = 0;
     // calling main within a function within a function called by main.
@@ -61,28 +65,12 @@ const doMain = async (locationProvider, showIncomplete = false) => {
   
   const output = await HTML.element`<div></div>`; 
 
-  output.appendChild(await HTML.element`${Header.of({currentProject, currentHost})}`);
-
   const blockers = [];
   
-  if (path.length === 0) {
-    return await navigateInternal(defaultPath, true);
-  } else if (path.length <= 2) {
-    const [gamesSlug, runnerSlug] = path;
-    if (!gamesSlug) throw new Error("no game(s) in URL");
+  const content = BestsRouter.of({url: document.location});
 
-    const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
-    if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
-
-    const content = BestsReport.of({gameSlugs, runnerSlug, currentHost});
-
-    output.appendChild(content.element);
-    blockers.push(content.rendered);
-  } else {
-    throw new Error("404/invalid URL");
-  }
-
-  output.appendChild(await HTML.element`${Footer.of()}`);
+  output.appendChild(content.element);
+  blockers.push(content.rendered);
 
   output.addEventListener('click', event => {
     // only catch unmodified left clicks.
@@ -92,9 +80,6 @@ const doMain = async (locationProvider, showIncomplete = false) => {
     if (!event.target.closest('a')) return;
 
     let target = new URL(event.target.closest('a').href);
-    if (target.host == canonicalHost) {
-      target.host = document.location.host;
-    }
     if (target.host === document.location.host) {
       console.debug(`🔗 Internal navigation to ${target.href}`);
       event.preventDefault();
