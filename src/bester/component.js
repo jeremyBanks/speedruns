@@ -8,6 +8,7 @@ import {document} from './deps.js';
 import {LazySymbolScope} from './utils.js';
 
 
+const internal = new LazySymbolScope('internal ');
 const {
   classNames,
   props,
@@ -17,7 +18,7 @@ const {
   setProps,
   onElementCreated,
   onElementRendered
-} = new LazySymbolScope('internal ');
+} = internal;
 
 
 export class Component {
@@ -34,14 +35,14 @@ export class Component {
     }
     this[classNames] = classes.map(c => c.name);
 
-    this[props] = null;
+    this[internal.props] = {};
     this[element] = null;
     this[renderedHTML] = null;
 
     Object.seal(this);
     // We don't freeze because we do allow the props to be changed in some cases.
 
-    this[setProps](props);
+    this[setProps](props || {});
   }
 
   // by default, components should just pass through their contents, but we expect
@@ -83,7 +84,7 @@ export class Component {
 
   // Note that this replaces all existing props, not just named ones.
   [setProps](props) {
-    this[props] = Object.freeze(Object.assign({}, this.props, props));
+    this[internal.props] = Object.freeze(Object.assign({}, props));
 
     this[renderedHTML] = HTML.from(this.render(props));
     if (this[element]) {
@@ -116,6 +117,10 @@ export class Component {
 export class RootComponent extends Component {
   get element() {
     return this[getElement]();
+  }
+
+  get props() {
+    return this[props];
   }
 
   set props(props) {
