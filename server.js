@@ -118,7 +118,8 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   return res.json(await result);
 });
 
-import {BestsRouter, BestsReport, Header, Footer} from '/assets/components.js';
+import {BestsRouter} from '/assets/router.js';
+import {BestsReport, Header, Footer} from '/assets/components.js';
 import fs from 'fs';
 let bodyCache = {};
 app.use(async (req, res) => {
@@ -171,7 +172,7 @@ app.use(async (req, res) => {
   } else if (state[0] === 'errored') {
     res.status(500); // maybe-persistent error
   } else {
-    res.status(504); // gateway timeout
+    res.status(504); // still 'loading' - gateway timeout
   }
   res.set('Content-Type', 'text/html');
   return res.send(index
