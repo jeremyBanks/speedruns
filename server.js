@@ -178,7 +178,7 @@ app.use(async (req, res) => {
   res.set('Content-Type', 'text/html');
   return res.send(index
                   .replace('unloaded', state[0])
-                  .replace(`import '/assets/main.js';`, await recursiveReaddir('src').then(files => files.filter(s => /\.js$/i.test(s)).map(s => `import ${JSON.stringify(s.replace(/^src\//, '/assets/'))};`).sort().join('\n')))
+                  .replace(`import '/assets/main.js';`, await recursiveReaddir('src').then(files => files.filter(s => /\.js$/i.test(s) && !s.includes('-node') ).map(s => `import ${JSON.stringify(s.replace(/^src\//, '/assets/'))};`).sort().join('\n')))
                   .replace('</main>', body + '</main>'));
 });
 
