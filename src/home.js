@@ -10,13 +10,18 @@ export class HomeBody extends Component {
     });
   }
 
-  render({}) {
+  render({makePath}) {
+    const link = opts => {
+      const path = makePath(opts);
+      return HTML`<a href="${path}">${path}</a>`;
+    }
+
     return HTML`
       <p>This site compares personal and world record speed run progress over time.</p>
 
 <pre>
                      <u>Example URLs</u>
-<span ${this.labelStyle}>        runner view:</span> <a href="/@banks">/@banks</a>
+<span ${this.labelStyle}>        runner view:</span> ${link({userSlugs: ['banks']})}
 <span ${this.labelStyle}>          game view:</span> <a href="/wc2">/sc1</a>
 <span ${this.labelStyle}>   + multiple games:</span> <a href="/wc2+wc2btdp">/wc2+wc2btdp</a>
 <span ${this.labelStyle}>   + personal bests:</span> <a href="/wc2+wc2btdp/@zpr">/wc2+wc2btdp/@zpr</a>
