@@ -10,11 +10,15 @@ import {LazySymbolScope} from './src/bester/utils.js';
 const internal = new LazySymbolScope('internal ');
 const {
   DB,
+  CACHE,
   TABLE,
   INIT,
 } = internal;
 
 
+
+// okay god what does this need to be?
+// a two-tier cache, with promises committed in-memory, but never put in the database unless they resolve successfully.
 export class SqliteStringMap {
   constructor(name) {
     name = String(name);
@@ -36,13 +40,14 @@ export class SqliteStringMap {
       }
     );
     
+    this[CACHE] = new Map();
     this[TABLE] = this[INIT]();
   }
   
   async [INIT]() {
     await this[DB].authenticate();
     const tableName = this.constructor.name || 'kv';
-    return this[DB].define(tableName, {
+    const table = this[DB].define(tableName, {
       k: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -53,6 +58,8 @@ export class SqliteStringMap {
         allowNull: false
       }
     });
+    await table.sync();
+    return table;
   }
   
   async clear() {
@@ -62,25 +69,40 @@ export class SqliteStringMap {
   
   async get(key) {
     key = String(key);
+
+    const cached = this[CACHE].get(key);
+    if (cached !== undefined) {
+      return cached;
+    }
+    
     const table = await this[TABLE];
     const results = await table.findAll({
-      where: {
+      [Sequelize.Op.where]: {
         k: key
       }
     })
     
-    console.log(results);
-    return results[0].dataValues.v;
+    if (results.length === 0) {
+      return undefined;
+    } else {
+      return results[0].dataValues.v;
+    }
   }
 
   async set(key, value) {
-    return await this.upsert(key, value);
-  }
-
-  async upsert(key, value) {
     key = String(key);
-    value = String(value);
-    const table = await this[TABLE];
-    return await table.upsert({k: key, v: value});
+    this[CACHE].set(key, value);
+    
+    try {
+      // if value is async, we want to resolve before committing to database
+      const syncValue = String(await value);
+      const table = await this[TABLE];
+      return await table.upsert({k: key, v: value});
+    } catch (ex) {
+      // if promise or commit fails, also remove from in-memory cache:
+      if (this[CACHE].get(key) === value) {
+        this[CACHE].remove(key);
+      }
+    }
   }
 }
