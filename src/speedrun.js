@@ -163,7 +163,10 @@ export class CategoryLevelPair {
     if (slug === this.slug) return true;
     if (slug === this.categoryId) return true;
     if (slug === this.levelId) return true;
-    if (this.levelId.replace(/[^a-z0-9\-]+/, '-)
+    if (this.levelNick && slug === this.levelNick.replace(/[^a-z0-9]+/i, '-').toLowerCase()) return true;
+    if (this.categoryNick && slug === this.categoryNick.replace(/[^a-z0-9]+/i, '-').toLowerCase()) return true;
+    if (this.levelNick && this.categoryNick && slug === `${this.levelNick}-${this.categoryNick}`.replace(/[^a-z0-9]+/i, '-').toLowerCase()) return true;
+    return false;
   }
 }
 

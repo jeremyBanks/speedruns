@@ -75,7 +75,7 @@ class BestsReportGame extends Component {
         }
       }
 
-      yield BestsReportLevel.of({level, runs, runnerSlugs, gamesSlug});
+      yield BestsReportLevel.of({game, level, runs, runnerSlugs});
     }
     yield "\n";
     yield "\n";
@@ -110,8 +110,8 @@ class BestsReportLevel extends Component {
     });
   }
   
-  async *render({level, runs, runnerSlugs, gamesSlug}) {
-    yield HTML`          <a ${this.levelLinkStyle} id="level-${level.slug}" href="/${gamesSlug}$#level-${level.slug}">${level.nick}</a>\n`;
+  async *render({game, level, runs, runnerSlugs}) {
+    yield HTML`          <a ${this.levelLinkStyle} href="/${game.slug}/${level.slug}">${level.nick}</a>\n`;
 
     const compareRuns = compareAll(
       (a, b) => compareDefault(a.date, b.date),
@@ -191,7 +191,7 @@ class BestsReportLevel extends Component {
         const indicatorHTML = HTML(`<span style="${this.graphBarStyleAttrStringFixMe({worldRecord: true, personalBest: isPersonal})}">` + indicators.replace(/(.)(▐)/, `$1</span><span style="${this.graphBarStyleAttrStringFixMe({personalBest: isPersonal, previousPersonalBest: !isPersonal})}">$2`) + `</span>`)
 
         const runner = await record.runner;
-        yield HTML`<a href="${record.url}">${record.durationText.padStart(10)} ${record.date}</a> <a href="/${gamesSlug}/@${runner.nick}#level-${level.slug}">${runner.nick.padEnd(15)} ${indicatorHTML}</a>\n`;
+        yield HTML`<a href="${record.url}">${record.durationText.padStart(10)} ${record.date}</a> <a href="/@${runner.nick}">${runner.nick.padEnd(15)}</a> <a href="/${game.slug}/@${runner.nick}">${indicatorHTML}</a>\n`;
       }
     }
     yield "\n";
