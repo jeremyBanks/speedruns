@@ -7,7 +7,7 @@ import {fetch} from '/assets/bester/deps.js';
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
-export const api = async (path, maxPages = 6) => {
+export const api = async (path, maxPages = 16) => {
   if (!apiCache.has(path)) {
     const result = apiFetch(path, maxPages).then(null, error => {
       apiCache.delete(path);
@@ -24,11 +24,11 @@ export const apiCache = new Map();
 
 const apiFetch = async (path, maxPages = Infinity, pastPages = 0, offset = 0) => {
   if (pastPages >= maxPages) {
-      throw new Error(`got too many results (more than ${maxPages} pages/${offset} items)`);
+      throw new Error(`got too many results for ${path} (more than ${maxPages} pages/${offset} items)`);
   }
-  const url = speedrunDotComApiRootUrl + path + `&offset=${offset}`;
+  const url = speedrunDotComApiRootUrl + path + (path.includes('?') ? '&' : '?') + `offset=${offset}`;
   const response = await fetch(url);
-  const body = await response.json();3
+  const body = await response.json();
   if (body.status) {
     throw new Error(`${body.status}: ${body.message}`); 
   } else {
@@ -69,12 +69,15 @@ export class Runner {
     }
   }
 
-  static getGamesAndLevels(slug) {
+  static async getGamesAndLevels(slug) {
     const gameSlugs = new Set();
     const levelSlugs = new Set();
     
     const data = await api(`users/${slug}/personal-bests`);
-    
+    for (const {run} of data) {
+      gameSlugs.add(run.game);
+      if (run.level) levelSlugs.add(run.level);
+    }
     
     return {gameSlugs: [...gameSlugs], levelSlugs: [...levelSlugs]};
   }
