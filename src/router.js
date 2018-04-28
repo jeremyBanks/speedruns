@@ -56,10 +56,6 @@ export class BestsRouter extends RootComponent {
     }
     
     if (gameSlugs.length) {
-      if (levelSlugs.length) {
-        throw new Error("level view not implemented");
-      }
-
       yield BestsReport.of({
         gameSlugs,
         levelSlugs,
