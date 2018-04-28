@@ -28,9 +28,6 @@ export class BestsReport extends RootComponent {
 
       const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
 
-      yield "World record progressions over time. Click a runner name to see their personal bests.\n";
-
-      yield "\n";
       yield "A consistent linear scale is only used for duration differences between runs within a given category/level, not differences between between categories/levels.\n";
       yield "\n";
 
