@@ -100,12 +100,14 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   const cached = await apiCache.get(url);
 
   if (cached) {
-    return res.json(await cached);
+    return res.json( cached);
   }
 
   console.log("GETting", url);
   const result = rp.get(url, {simple: false}).then(JSON.parse);
-  await apiCache.set(url, result);
+  
+  // We don't await/block on the result of the set.
+  apiCache.set(url, result);
 
   return res.json(await result);
 });
