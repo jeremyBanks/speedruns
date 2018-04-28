@@ -76,7 +76,9 @@ export class Runner {
     const data = await api(`users/${slug}/personal-bests`);
     for (const {run} of data) {
       gameSlugs.add(run.game);
-      if (run.level) levelSlugs.add(run.level);
+      if (run.level && run.category) {
+        levelSlugs.add('run.level);
+      }
     }
     
     return {gameSlugs: [...gameSlugs], levelSlugs: [...levelSlugs]};
