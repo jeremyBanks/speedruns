@@ -88,13 +88,16 @@ ${projectName && HTML`
 
 app.get('/favicon.ico', (req, res) => { res.sendFile(__dirname + '/src/icon.png'); });
 
+
+import {SqliteStringMap} from './sqlite-string-map.js';
+
 // Crudely mirror and cache speedrun.com/api.
 // We never expire/evict values here; we assume the
 // process won't live long enough for it to matter.
-const apiCache = new Map();
+const apiCache = new SqliteStringMap('api-cache');
 app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   const url = req.url.slice(1);
-  const cached = apiCache.get(url);
+  const cached = await apiCache.get(url);
 
   if (cached) {
     return res.json(await cached);
@@ -102,7 +105,7 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
 
   console.log("GETting", url);
   const result = rp.get(url, {simple: false}).then(JSON.parse);
-  apiCache.set(url, result);
+  await apiCache.set(url, result);
 
   return res.json(await result);
 });
