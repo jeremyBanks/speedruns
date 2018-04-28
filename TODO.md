@@ -1,5 +1,7 @@
 # to do
 
+- add cache expiry, now that we have persistent server-side caching.
+
 - refactor graph code, as it is currently very dense, hacky, and difficult to understand.
 
 - add support for category/level paths (also forcing change of user paths), maybe like this:

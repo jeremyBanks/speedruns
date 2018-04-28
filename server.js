@@ -95,7 +95,8 @@ import {SqliteStringMap} from './sqlite-string-map.js';
 // We never expire/evict values here; we assume the
 // process won't live long enough for it to matter.
 const apiCache = new SqliteStringMap('api-cache');
-apiCache.clear();
+// apiCache.clear();
+
 app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   const url = req.url.slice(1);
   const cached = await apiCache.get(url);

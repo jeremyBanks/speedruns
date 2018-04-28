@@ -28,6 +28,9 @@ const assertString = s => {
 
 // okay god what does this need to be?
 // a two-tier cache, with promises committed in-memory, but never put in the database unless they resolve successfully.
+
+// oh and also we updatedAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 6 /* 6 hours ago */) }
+
 export class SqliteStringMap {
   constructor(name) {
     name = String(name);
@@ -45,7 +48,8 @@ export class SqliteStringMap {
         },
         // Security note: the database is saved to the file `database.sqlite` on the local filesystem. It's deliberately placed in the `.data` directory
         // which doesn't get copied if someone remixes the project.
-        storage: '.data/database.sqlite'
+        storage: '.data/database.sqlite',
+        logging: false,
       }
     );
     
@@ -86,12 +90,13 @@ export class SqliteStringMap {
     
     const table = await this[TABLE];
     const results = await table.findAll({
-      [Sequelize.Op.where]: {
+      where: {
         k: key
       }
     })
     
     if (results.length === 0) {
+      this[CACHE].set(key, undefined);
       return undefined;
     } else {
       const value = results[0].dataValues.v;
@@ -105,7 +110,7 @@ export class SqliteStringMap {
     value = Promise.resolve(value).then(assertString);
 
     this[CACHE].set(key, value);
-    
+
     try {
       // if value is async, we want to resolve before committing to database
       const syncValue = await value;
