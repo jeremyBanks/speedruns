@@ -25,11 +25,10 @@ const assertString = s => {
 };
 
 
-
 // okay god what does this need to be?
 // a two-tier cache, with promises committed in-memory, but never put in the database unless they resolve successfully.
 
-// oh and also we updatedAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 6 /* 6 hours ago */) }
+// oh and also we expire data after some hours. 
 
 export class SqliteStringMap {
   constructor(name) {
@@ -91,7 +90,8 @@ export class SqliteStringMap {
     const table = await this[TABLE];
     const results = await table.findAll({
       where: {
-        k: key
+        k: key,
+        updatedAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 6 /* 6 hours ago */) }
       }
     })
     
