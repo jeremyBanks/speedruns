@@ -52,7 +52,7 @@ class BestsReportGame extends Component {
   }
 
   async *render({game, currentHost, gamesSlug, runnerSlug}) {
-    yield HTML`      <a ${this.gameLinkStyle} id="${game.slug}" href="//${currentHost}/${game.slug}${runnerSlug ? `/${runnerSlug}` : ''}">${game.nick}</a>\n`;
+    yield HTML`      <a ${this.gameLinkStyle} id="${game.slug}" href="//${currentHost}/${game.slug}${runnerSlug ? `/@${runnerSlug}` : ''}">${game.nick}</a>\n`;
     yield "\n";
 
     const runsByLevel = await game.runsByCategoryLevelPairs();
@@ -94,7 +94,7 @@ class BestsReportRun extends Component {
   }
   
   async *render({level, runs, runnerSlug, currentHost, gamesSlug}) {
-    yield HTML`          <a ${this.levelLinkStyle} id="level-${level.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/${runnerSlug}` : ''}#level-${level.slug}">${level.nick}</a>\n`;
+    yield HTML`          <a ${this.levelLinkStyle} id="level-${level.slug}" href="//${currentHost}/${gamesSlug}${runnerSlug ? `/@${runnerSlug}` : ''}#level-${level.slug}">${level.nick}</a>\n`;
 
     const compareRuns = compareAll(
       (a, b) => compareDefault(a.date, b.date),
@@ -166,7 +166,7 @@ class BestsReportRun extends Component {
         const indicatorHTML = HTML(`<span style="${this.graphBarStyleAttrStringFixMe({worldRecord: true, personalBest: isPersonal})}">` + indicators.replace(/(.)(▐)/, `$1</span><span style="${this.graphBarStyleAttrStringFixMe({personalBest: isPersonal, previousPersonalBest: !isPersonal})}">$2`) + `</span>`)
 
         const runner = await record.runner;
-        yield HTML`<a href="${record.url}">${record.durationText.padStart(10)} ${record.date}</a> <a href="//${currentHost}/${gamesSlug}/${runner.nick}#level-${level.slug}">${runner.nick.padEnd(15)} ${indicatorHTML}</a>\n`;
+        yield HTML`<a href="${record.url}">${record.durationText.padStart(10)} ${record.date}</a> <a href="//${currentHost}/${gamesSlug}/@${runner.nick}#level-${level.slug}">${runner.nick.padEnd(15)} ${indicatorHTML}</a>\n`;
       }
     }
     yield "\n";
