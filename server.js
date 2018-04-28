@@ -21,7 +21,7 @@ app.set('etag', 'strong');
 app.use(compression());
 
 // disable json pretty print
-app.set('json spaces', null);
+app.set('json spaces', 2);
 
 
 // Hard-coded until we have an ES-module-friendly alternative,
@@ -117,7 +117,6 @@ app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
 });
 
 import {BestsRouter} from '/assets/router.js';
-import {BestsReport} from '/assets/reports.js';
 import {Header, Footer} from '/assets/common.js';
 import fs from 'fs';
 import recursiveReaddir from 'recursive-readdir';

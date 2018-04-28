@@ -7,16 +7,17 @@ import {Style, style} from '/assets/bester/style.js';
 import * as speedrun from '/assets/speedrun.js';
 
 
-// TODO: rename this to GamePage or something
-export class BestsReport extends RootComponent {
+export class ReportPage extends RootComponent {
   get preStyle() {
     return style({
       font: {size: '12px'},
       margin: '16px 0'
     });
   }
+}
 
-  // levelSlugs!!!
+
+export class GamesReportPage extends ReportPage {
   render({makePath, gameSlugs, runnerSlugs, levelSlugs}) {
     const runnerSlug = runnerSlugs[0];
     if (runnerSlugs.length > 1) {
@@ -32,11 +33,16 @@ export class BestsReport extends RootComponent {
       yield "\n";
 
       for (const game of games) {
-        yield BestsReportGame.of({game, gamesSlug, runnerSlug});
+        yield BestsReportGame.of({game, gamesSlug, runnerSlug, levelSlugs});
       }
     }}</pre>`;
   }
 };
+
+
+export class RunnerReportPage extends ReportPage {
+  
+}
 
 
 class BestsReportGame extends Component { 
@@ -50,13 +56,17 @@ class BestsReportGame extends Component {
     });
   }
 
-  async *render({game, gamesSlug, runnerSlug}) {
+  async *render({game, gamesSlug, runnerSlug, levelSlugs}) {
     yield HTML`      <a ${this.gameLinkStyle} id="${game.slug}" href="/${game.slug}${runnerSlug ? `/@${runnerSlug}` : ''}">${game.nick}</a>\n`;
     yield "\n";
 
     const runsByLevel = await game.runsByCategoryLevelPairs();
 
     for (const [level, runs] of runsByLevel) {
+      // TODO -- level slug matching here!!!!
+      
+      
+      
       yield BestsReportRun.of({level, runs, runnerSlug, gamesSlug});
     }
     yield "\n";
