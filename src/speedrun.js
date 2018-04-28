@@ -68,6 +68,16 @@ export class Runner {
       });
     }
   }
+
+  static getGamesAndLevels(slug) {
+    const gameSlugs = new Set();
+    const levelSlugs = new Set();
+    
+    const data = await api(`users/${slug}/personal-bests`);
+    
+    
+    return {gameSlugs: [...gameSlugs], levelSlugs: [...levelSlugs]};
+  }
 }
 
 
@@ -159,13 +169,17 @@ export class CategoryLevelPair {
     return [this.categoryId, this.levelId].filter(Boolean).join('-');
   }
   
+  get nickSlug() {
+    return [this.categoryNick, this.levelNick].filter(Boolean).join('-').replace(/[^a-z0-9]+/ig, '-').toLowerCase();
+  }
+  
   matchesSlug(slug) {
     if (slug === this.slug) return true;
     if (slug === this.categoryId) return true;
     if (slug === this.levelId) return true;
-    if (this.levelNick && slug === this.levelNick.replace(/[^a-z0-9]+/i, '-').toLowerCase()) return true;
-    if (this.categoryNick && slug === this.categoryNick.replace(/[^a-z0-9]+/i, '-').toLowerCase()) return true;
-    if (this.levelNick && this.categoryNick && slug === `${this.levelNick}-${this.categoryNick}`.replace(/[^a-z0-9]+/i, '-').toLowerCase()) return true;
+    if (this.levelNick && slug === this.levelNick.replace(/[^a-z0-9]+/ig, '-').toLowerCase()) return true;
+    if (this.categoryNick && slug === this.categoryNick.replace(/[^a-z0-9]+/ig, '-').toLowerCase()) return true;
+    if (this.levelNick && this.categoryNick && slug === this.nickSlug) return true;
     return false;
   }
 }

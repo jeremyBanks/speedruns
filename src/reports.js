@@ -20,7 +20,7 @@ export class ReportPage extends RootComponent {
       let runnerGames = [];
       let runnerLevels = [];
       for (const runnerSlug of runnerSlugs) {
-        const forRunner = await speedrun.getRunnerGamesAndLevels(runnerSlug);
+        const forRunner = await speedrun.Runner.getGamesAndLevels(runnerSlug);
         runnerGames.push(...forRunner.gameSlugs);
         runnerLevels.push(...forRunner.levelSlugs);
       }
@@ -111,7 +111,7 @@ class BestsReportLevel extends Component {
   }
   
   async *render({game, level, runs, runnerSlugs}) {
-    yield HTML`          <a ${this.levelLinkStyle} href="/${game.slug}/${level.slug}">${level.nick}</a>\n`;
+    yield HTML`          <a ${this.levelLinkStyle} href="/${game.slug}/${level.nickSlug}">${level.nick}</a>\n`;
 
     const compareRuns = compareAll(
       (a, b) => compareDefault(a.date, b.date),
