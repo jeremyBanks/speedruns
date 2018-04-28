@@ -77,7 +77,11 @@ export class Runner {
     for (const {run} of data) {
       gameSlugs.add(run.game);
       if (run.level && run.category) {
-        levelSlugs.add('run.level);
+        levelSlugs.add(`${run.category}-${run.level}`);
+      } else if (run.level) {
+        levelSlugs.add(run.level);
+      } else if (run.category) {
+        levelSlugs.add(run.category);
       }
     }
     
