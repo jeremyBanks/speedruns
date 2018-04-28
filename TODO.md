@@ -1,16 +1,10 @@
 # to do
 
-- add cache expiry, now that we have persistent server-side caching.
-
-- refactor graph code, as it is currently very dense, hacky, and difficult to understand.
-
 - add support for category/level paths (also forcing change of user paths), maybe like this:
 
       /smwext/world_1+world_2/@banks+@zpr
       
   where level/category slugs either be their slugs or their ids
-
-- move link handling/client-side-reload into the "router" component.
 
 - user pages?
 
@@ -24,9 +18,15 @@
   This could be the preferred link for user runner links, while non-user runner 
   links may still link in-page as they currently do.
 
+# to maybe do
+
+- refactor graph code, as it is currently very dense, hacky, and difficult to understand.
+
+- move link handling/client-side-reload into the "router" component.
+
 - be preactive and copy the general API?
 
-# brain storming
+# to think about
 
 - reconsider top-level error handling -- since we now have a static render to fall back to (unless it has an error?)
 
