@@ -63,9 +63,19 @@ class BestsReportGame extends Component {
 
     for (const [level, runs] of runsByLevel) {
       if (levelSlugs && levelSlugs.length) {
-        console.log(level, levelSlugs);
+        let levelMatched = null;
+        for (const levelSlug of levelSlugs) {
+          if (level.matchesSlug(levelSlug)) {
+            levelMatched = level;
+            break;
+          }
+        }
+        if (!levelMatched) {
+          continue;
+        }
       }
-      yield BestsReportRun.of({level, runs, runnerSlugs, gamesSlug});
+
+      yield BestsReportLevel.of({level, runs, runnerSlugs, gamesSlug});
     }
     yield "\n";
     yield "\n";
@@ -73,7 +83,7 @@ class BestsReportGame extends Component {
 }
 
 
-class BestsReportRun extends Component {
+class BestsReportLevel extends Component {
   get noRunsTextStyle() {
     return style({opacity: 0.5});
   }
@@ -101,7 +111,7 @@ class BestsReportRun extends Component {
   }
   
   async *render({level, runs, runnerSlugs, gamesSlug}) {
-    yield HTML`          <a ${this.levelLinkStyle} id="level-${level.slug}" href="/${gamesSlug}${runnerSlugs ? `/@${runnerSlugs}` : ''}#level-${level.slug}">${level.nick}</a>\n`;
+    yield HTML`          <a ${this.levelLinkStyle} id="level-${level.slug}" href="/${gamesSlug}$#level-${level.slug}">${level.nick}</a>\n`;
 
     const compareRuns = compareAll(
       (a, b) => compareDefault(a.date, b.date),
@@ -121,15 +131,22 @@ class BestsReportRun extends Component {
 
     const personalRecords = [];
 
-    if (runnerSlugs) {
-      let pr = null;
+    if (runnerSlugs && runnerSlugs.length) {
+      let pr = {};
       for (const run of runs) {
-        for (const runnerSlug of runnerSlugs) 
-        if (run.runner.nick.toLowerCase() !== runnerSlugs.toLowerCase()) continue;
+        let matchedTargetRunner = null;
+        for (const runnerSlug of runnerSlugs) {
+          if (run.runner.nick.toLowerCase() === runnerSlug.toLowerCase()) {
+            matchedTargetRunner = runnerSlug;
+          }
+        }
+        if (!matchedTargetRunner) {
+          continue;
+        }
 
-        if (!pr || run.durationSeconds < pr.durationSeconds) {
+        if (!pr[matchedTargetRunner] || run.durationSeconds < pr[matchedTargetRunner].durationSeconds) {
           personalRecords.push(run);
-          pr = run;
+          pr[matchedTargetRunner] = run;
         }
       }
     }

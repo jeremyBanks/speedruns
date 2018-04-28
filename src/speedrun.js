@@ -94,14 +94,18 @@ export class Game {
       ...gameCategories.map(category => new CategoryLevelPair({
         gameId: this.gameId,
         levelId: null,
+        levelNick: null,
         categoryId: category.id,
+        categoryNick: category.name,
         nick: `${category.name}`,
         url: category.weblink,
       })),
       ...[].concat(...data.levels.data.map(level => levelCategories.map(category => new CategoryLevelPair({
         gameId: this.gameId,
         levelId: level.id,
+        levelNick: level.name,
         categoryId: category.id,
+        categoryNick: category.name,
         nick: `${level.name} (${category.name})`,
         url: level.weblink,
       }))))
@@ -142,7 +146,9 @@ export class CategoryLevelPair {
     this['ℹ️'] = this.constructor.name;
     this.gameId =
     this.categoryId =
+    this.categoryNick =
     this.levelId = 
+    this.levelNick = 
     this.nick = 
     this.url = void this;
     Object.seal(this);
@@ -151,6 +157,13 @@ export class CategoryLevelPair {
 
   get slug() {
     return [this.categoryId, this.levelId].filter(Boolean).join('-');
+  }
+  
+  matchesSlug(slug) {
+    if (slug === this.slug) return true;
+    if (slug === this.categoryId) return true;
+    if (slug === this.levelId) return true;
+    if (this.levelId.replace(/[^a-z0-9\-]+/, '-)
   }
 }
 
