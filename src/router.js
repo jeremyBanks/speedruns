@@ -5,7 +5,7 @@ import {RootComponent, Component} from '/assets/bester/component.js';
 import {Style, style} from '/assets/bester/style.js';
 
 import {Header, Footer} from '/assets/common.js';
-import {GamesReportPage, RunnerReportPage} from '/assets/reports.js';
+import {ReportPage} from '/assets/reports.js';
 import {HomeBody} from '/assets/home.js';
 
 
@@ -104,15 +104,10 @@ export class BestsRouter extends RootComponent {
 
     const {gameSlugs, levelSlugs, runnerSlugs} = BestsRouter.parsePath(url.pathname);
     
-    if (gameSlugs.length) {
-      yield GamesReportPage.of({
+    if (gameSlugs.length || runnerSlugs.length) {
+      yield ReportPage.of({
         gameSlugs,
         levelSlugs,
-        runnerSlugs,
-        makePath: BestsRouter.makePath,
-      });
-    } else if (runnerSlugs.length) {
-      yield RunnerReportPage.of({
         runnerSlugs,
         makePath: BestsRouter.makePath,
       });

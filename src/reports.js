@@ -14,14 +14,18 @@ export class ReportPage extends RootComponent {
       margin: '16px 0'
     });
   }
-}
-
-
-export class GamesReportPage extends ReportPage {
-  render({makePath, gameSlugs, runnerSlugs, levelSlugs}) {
-    const runnerSlug = runnerSlugs[0];
-    if (runnerSlugs.length > 1) {
-      throw new Error("invalid URL - multiple runners not supported");
+  
+  async render({makePath, gameSlugs, runnerSlugs, levelSlugs}) {
+    if (runnerSlugs.length && !gameSlugs.length && !levelSlugs.length) {
+      let runnerGames = [];
+      let runnerLevels = [];
+      for (const runnerSlug of runnerSlugs) {
+        const forRunner = await speedrun.getRunnerGamesAndLevels(runnerSlug);
+        runnerGames.push(...forRunner.gameSlugs);
+        runnerLevels.push(...forRunner.levelSlugs);
+      }
+      gameSlugs = [...new Set(runnerGames)];
+      levelSlugs = [...new Set(runnerLevels)];
     }
 
     return HTML`<pre ${this.preStyle}>${async function*() {  
@@ -33,16 +37,11 @@ export class GamesReportPage extends ReportPage {
       yield "\n";
 
       for (const game of games) {
-        yield BestsReportGame.of({game, gamesSlug, runnerSlug, levelSlugs});
+        yield BestsReportGame.of({game, gamesSlug, runnerSlugs, levelSlugs});
       }
     }}</pre>`;
   }
 };
-
-
-export class RunnerReportPage extends ReportPage {
-  
-}
 
 
 class BestsReportGame extends Component { 
@@ -56,18 +55,17 @@ class BestsReportGame extends Component {
     });
   }
 
-  async *render({game, gamesSlug, runnerSlug, levelSlugs}) {
-    yield HTML`      <a ${this.gameLinkStyle} id="${game.slug}" href="/${game.slug}${runnerSlug ? `/@${runnerSlug}` : ''}">${game.nick}</a>\n`;
+  async *render({game, gamesSlug, runnerSlugs, levelSlugs}) {
+    yield HTML`      <a ${this.gameLinkStyle} id="${game.slug}" href="/${game.slug}">${game.nick}</a>\n`;
     yield "\n";
 
     const runsByLevel = await game.runsByCategoryLevelPairs();
 
     for (const [level, runs] of runsByLevel) {
-      // TODO -- level slug matching here!!!!
-      
-      
-      
-      yield BestsReportRun.of({level, runs, runnerSlug, gamesSlug});
+      if (levelSlugs && levelSlugs.length) {
+        console.log(level, levelSlugs);
+      }
+      yield BestsReportRun.of({level, runs, runnerSlugs, gamesSlug});
     }
     yield "\n";
     yield "\n";
@@ -102,8 +100,8 @@ class BestsReportRun extends Component {
     });
   }
   
-  async *render({level, runs, runnerSlug, gamesSlug}) {
-    yield HTML`          <a ${this.levelLinkStyle} id="level-${level.slug}" href="/${gamesSlug}${runnerSlug ? `/@${runnerSlug}` : ''}#level-${level.slug}">${level.nick}</a>\n`;
+  async *render({level, runs, runnerSlugs, gamesSlug}) {
+    yield HTML`          <a ${this.levelLinkStyle} id="level-${level.slug}" href="/${gamesSlug}${runnerSlugs ? `/@${runnerSlugs}` : ''}#level-${level.slug}">${level.nick}</a>\n`;
 
     const compareRuns = compareAll(
       (a, b) => compareDefault(a.date, b.date),
@@ -123,10 +121,11 @@ class BestsReportRun extends Component {
 
     const personalRecords = [];
 
-    if (runnerSlug) {
+    if (runnerSlugs) {
       let pr = null;
       for (const run of runs) {
-        if (run.runner.nick.toLowerCase() !== runnerSlug.toLowerCase()) continue;
+        for (const runnerSlug of runnerSlugs) 
+        if (run.runner.nick.toLowerCase() !== runnerSlugs.toLowerCase()) continue;
 
         if (!pr || run.durationSeconds < pr.durationSeconds) {
           personalRecords.push(run);
