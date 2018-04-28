@@ -9,17 +9,17 @@ import {LazySymbolScope} from './src/bester/utils.js';
 
 const internal = new LazySymbolScope('internal ');
 const {
-  db,
-  table,
-  init,
+  DB,
+  TABLE,
+  INIT,
 } = internal;
 
+
 export class SqliteStringMap {
-  constructor(iterable, name) {
-    const input = new Map(iterable);
+  constructor(name) {
     name = String(name);
 
-    this[db] = new Sequelize(
+    this[DB] = new Sequelize(
       name,
       process.env.DB_USER,
       process.env.DB_PASS, {
@@ -36,13 +36,13 @@ export class SqliteStringMap {
       }
     );
     
-    this.table = this[init]();
+    this[TABLE] = this[INIT]();
   }
   
-  async init() {
-    await this[db].authenticate();
+  async [INIT]() {
+    await this[DB].authenticate();
     const tableName = this.constructor.name || 'kv';
-    t = this[db].define(tableName, {
+    return this[DB].define(tableName, {
       k: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -54,49 +54,33 @@ export class SqliteStringMap {
       }
     });
   }
-}
-
- 
-// Populate data store with default data (a single value containing )
-module.exports.resetdb = function() {
-  KVStore.sync({force: true}) // using 'force' it drops the table kvstore if it already exists, and creates a new one
-    .then(function(){});  
-}
- 
-// Gets all key-value pairs in the database and returns them in a list via callback.
-module.exports.getAll = function(callback) {
-  KVStore.findAll().then(function(kvpairs) { // find all entries in the kvstore table
-    var dbContents=[];
-    kvpairs.forEach(function(kvpair) {
-      dbContents.push([kvpair.k,kvpair.v]); // adds their info to the dbContents value
-    });
-    callback(dbContents);
-  });
-}
- 
-// Retrieves a single value given a key and returns it via callback.
-module.exports.get = function(key, callback) {
-  KVStore.findAll({
-    where: {
-      k: key
-    }
-  }).then(function(results){
-    var queryResult;
-    results.forEach(function(result){
-      if (result.dataValues.v) {
-        queryResult = result.dataValues.v;
+  
+  async clear() {
+    const table = await this[TABLE];
+    return await table.sync({force: true});
+  }
+  
+  async get(key) {
+    key = String(key);
+    const table = await this[TABLE];
+    const results = await table.findAll({
+      where: {
+        k: key
       }
-    });
-    if (queryResult) {
-      callback(queryResult);
-    } else {
-      // If no response was sent (this query failed) just send a 404 not found.
-      callback(false);
-    }
-  });
-}
- 
-// Returns a promise to either update or insert the key to a new value.
-module.exports.insert = function(key, value) {
-  return KVStore.upsert({ k: key, v: value});
+    })
+    
+    console.log(results);
+    return results[0].dataValues.v;
+  }
+
+  async set(key, value) {
+    return await this.upsert(key, value);
+  }
+
+  async upsert(key, value) {
+    key = String(key);
+    value = String(value);
+    const table = await this[TABLE];
+    return await table.upsert({k: key, v: value});
+  }
 }
