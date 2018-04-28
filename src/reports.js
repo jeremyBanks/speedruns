@@ -17,7 +17,7 @@ export class BestsReport extends RootComponent {
   }
 
   // levelSlugs!!!
-  render({gameSlugs, runnerSlugs, levelSlugs}) {
+  render({makePath, gameSlugs, runnerSlugs, levelSlugs}) {
     const runnerSlug = runnerSlugs[0];
     if (runnerSlugs.length > 1) {
       throw new Error("invalid URL - multiple runners not supported");

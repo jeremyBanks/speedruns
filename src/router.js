@@ -24,10 +24,14 @@ export class BestsRouter extends RootComponent {
     
     const pathStack = [...pathNames];
 
-    if (pathStack[0] !== '') {
+    if (pathStack[0] === '') {
       pathStack.shift();
     } else {
-      throw new Error("invalid URL");
+      throw new Error("invalid URL - " + JSON.stringify(pathNames));
+    }
+    
+    if (pathStack.length === 1 && pathStack[0] === '') {
+      pathStack.shift();
     }
     
     let gamesSlug = null;
@@ -53,7 +57,7 @@ export class BestsRouter extends RootComponent {
     }
 
     if (pathStack.length) {
-      throw new Error("invalid URL");
+      throw new Error("invalid URL - " + JSON.stringify(pathNames));
     }
     
     return {
@@ -70,19 +74,23 @@ export class BestsRouter extends RootComponent {
   }) {
     const pieces = [''];
     
-    gameSlugs = gameSlugs.filter(Boolean);
-    levelSlugs = levelSlugs.filter(Boolean);
-    runnerSlugs = runnerSlugs.filter(Boolean);
+    gameSlugs = (gameSlugs || []).filter(Boolean);
+    levelSlugs = (levelSlugs || []).filter(Boolean);
+    runnerSlugs = (runnerSlugs || []).filter(Boolean);
 
-    if (gameSlugs.length === 0) {
+    if (gameSlugs.length) {
       pieces.push(gameSlugs.join('+'));
+
+      if (levelSlugs.length) {
+        pieces.push(levelSlugs.join('+')); 
+      }
+    } else if (levelSlugs.length) { 
+      throw new Error("can't have levelSlugs without any gameSlugs");
     }
 
-    if (levelSlugs.length === 0) {
-      pieces.push(levelSlugs.join('+')); 
+    if (runnerSlugs.length) {
+      pieces.push('@', runnerSlugs.join('+@'));
     }
-
-    if (runnerSlugs.length === 0) runnerSlugs = null;
 
     return pieces.join('/');
   }
@@ -94,20 +102,21 @@ export class BestsRouter extends RootComponent {
         
     yield Header.of({currentProject: projectName, currentHost: hostName});
 
-    const {} = BestsReport.parsePath(url.pathname);
+    const {gameSlugs, levelSlugs, runnerSlugs} = BestsRouter.parsePath(url.pathname);
     
     if (gameSlugs.length) {
       yield BestsReport.of({
         gameSlugs,
         levelSlugs,
         runnerSlugs,
-        BestsRouter.parsePath,
-        BestsRouter.makePath,
+        makePath: BestsRouter.makePath,
       });
     } else if (runnerSlugs.length) {
       throw new Error("runner pages not implemented");
     } else {
-      yield HomeBody.of();
+      yield HomeBody.of({
+        makePath: BestsRouter.makePath,
+      });
     }
     
     yield Footer.of();
