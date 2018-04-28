@@ -120,7 +120,7 @@ export class Game {
   async runsByCategoryLevelPairs() {
     const runsData = await api(
       `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200&embed=players`);
-    
+
     const runs = await Promise.all(runsData.map(Run.fromApiData));
     
     return new Map(await Promise.all(this.categoryLevelPairs.map(async pair => [

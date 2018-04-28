@@ -94,7 +94,9 @@ export class SqliteStringMap {
     if (results.length === 0) {
       return undefined;
     } else {
-      return results[0].dataValues.v;
+      const value = results[0].dataValues.v;
+      this[CACHE].set(key, value);
+      return value;
     }
   }
 
@@ -108,12 +110,13 @@ export class SqliteStringMap {
       // if value is async, we want to resolve before committing to database
       const syncValue = await value;
       const table = await this[TABLE];
-      return await table.upsert({k: key, v: value});
+      return await table.upsert({k: key, v: syncValue});
     } catch (ex) {
       // if promise or commit fails, also remove from in-memory cache:
       if (this[CACHE].get(key) === value) {
         this[CACHE].delete(key);
       }
+      throw ex;
     }
   }
 }
