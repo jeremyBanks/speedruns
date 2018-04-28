@@ -21,11 +21,11 @@ export class HomeBody extends Component {
 
 <pre>
                      <u>Example URLs</u>
-<span ${this.labelStyle}>        runner view:</span> ${link({userSlugs: ['banks']})}
-<span ${this.labelStyle}>          game view:</span> <a href="/wc2">/sc1</a>
-<span ${this.labelStyle}>   + multiple games:</span> <a href="/wc2+wc2btdp">/wc2+wc2btdp</a>
-<span ${this.labelStyle}>   + personal bests:</span> <a href="/wc2+wc2btdp/@zpr">/wc2+wc2btdp/@zpr</a>
-<span ${this.labelStyle}>         level view:</span> <a href="/smwext/world-1/@banks+@lui">/smwext/world-1/@banks+@lui</a>
+<span ${this.labelStyle}>        runner view:</span> ${link({runnerSlugs: ['banks']})}
+<span ${this.labelStyle}>          game view:</span> ${link({gameSlugs: ['wc2']})}
+<span ${this.labelStyle}>   + multiple games:</span> ${link({gameSlugs: ['wc2', 'wc2btdp']})}
+<span ${this.labelStyle}>   + personal bests:</span> ${link({gameSlugs: ['wc2', 'wc2btdp'], runnerSlugs: ['ZPR']})}
+<span ${this.labelStyle}>         level view:</span> ${link({gameSlugs: ['smwext'], levelSlugs: ['world-1'], runnerSlugs: ['banks', 'lui']})}
 </pre>
 
     `;

@@ -72,7 +72,7 @@ export class BestsRouter extends RootComponent {
     levelSlugs,
     runnerSlugs,
   }) {
-    const pieces = [''];
+    const pieces = [];
     
     gameSlugs = (gameSlugs || []).filter(Boolean);
     levelSlugs = (levelSlugs || []).filter(Boolean);
@@ -89,10 +89,10 @@ export class BestsRouter extends RootComponent {
     }
 
     if (runnerSlugs.length) {
-      pieces.push('@', runnerSlugs.join('+@'));
+      pieces.push('@' + runnerSlugs.join('+@'));
     }
 
-    return pieces.join('/');
+    return '/' + pieces.join('/');
   }
   
   async *render({url}) {
