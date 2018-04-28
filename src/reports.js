@@ -16,7 +16,8 @@ export class BestsReport extends RootComponent {
     });
   }
 
-  render({gameSlugs, runnerSlugs}) {
+  // levelSlugs!!!
+  render({gameSlugs, runnerSlugs, levelSlugs}) {
     const runnerSlug = runnerSlugs[0];
     if (runnerSlugs.length > 1) {
       throw new Error("invalid URL - multiple runners not supported");
@@ -27,11 +28,7 @@ export class BestsReport extends RootComponent {
 
       const games = await Promise.all(gameSlugs.map(s => speedrun.Game.get(s)));
 
-      if (runnerSlug) {
-        yield HTML`World record and ${runnerSlug}'s personal best <span>[<a href="/${gamesSlug}">remove</a>] </span>progressions over time.\n`;
-      } else {
-        yield "World record progressions over time. Click a runner name to compare their bests.\n";
-      }
+      yield "World record progressions over time. Click a runner name to see their personal bests.\n";
 
       yield "\n";
       yield "A consistent linear scale is only used for duration differences between runs within a given category/level, not differences between between categories/levels.\n";

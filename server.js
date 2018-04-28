@@ -42,17 +42,6 @@ app.use('/assets', express.static(__dirname + '/src', {
   index: ['index.html', 'README.md']
 }));
 
-// Except for the Service Worker, because it needs to be at the top level. It looks like
-// speedrun.com also treats paths ending in .js as static, so this should be safe.
-app.get('/service-worker.js', (req, res) => {
-  res.sendFile(__dirname + '/service-worker.js');
-});
-app.get('/service-worker-toolbox.js', (req, res) => {
-  res.sendFile(__dirname + '/node_modules/sw-toolbox/sw-toolbox.js');
-});
-app.get('/sw-toolbox.js.map', (req, res) => {
-  res.sendFile(__dirname + '/node_modules/sw-toolbox/sw-toolbox.js.map');
-});
 
 app.get('/*.md', async (req, res, next) => {
   const input = await new Promise((resolve, reject) => fs.readFile(__dirname + req.url, 'utf8', (err, data) => { err ? reject(err) : resolve(data); }));
@@ -97,7 +86,7 @@ ${projectName && HTML`
 </html>`);
 });
 
-app.get('/favicon.ico', (req, res) => { res.status(404); res.end(); });
+app.get('/favicon.ico', (req, res) => { res.sendFile(__dirname + '/src/icon.png'); });
 
 // Crudely mirror and cache speedrun.com/api.
 // We never expire/evict values here; we assume the
