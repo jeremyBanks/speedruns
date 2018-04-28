@@ -95,21 +95,24 @@ import {SqliteStringMap} from './sqlite-string-map.js';
 // We never expire/evict values here; we assume the
 // process won't live long enough for it to matter.
 const apiCache = new SqliteStringMap('api-cache');
+apiCache.clear();
 app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
   const url = req.url.slice(1);
   const cached = await apiCache.get(url);
 
   if (cached) {
-    return res.json( cached);
+    console.log("CACHE hit", url);
+    return res.json(JSON.parse(cached));
   }
 
-  console.log("GETting", url);
-  const result = rp.get(url, {simple: false}).then(JSON.parse);
+  console.log("cache MISS", url);
+
+  const result = rp.get(url, {simple: false});
   
   // We don't await/block on the result of the set.
   apiCache.set(url, result);
 
-  return res.json(await result);
+  return res.json(JSON.parse(await result));
 });
 
 import {BestsRouter} from '/assets/router.js';
