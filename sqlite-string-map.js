@@ -17,6 +17,15 @@ const {
 
 
 
+const assertString = s => {
+  if (typeof s !== 'string') {
+    throw new TypeError(`expected string, got ${typeof s} ${s}`);
+  }
+  return s;
+};
+
+
+
 // okay god what does this need to be?
 // a two-tier cache, with promises committed in-memory, but never put in the database unless they resolve successfully.
 export class SqliteStringMap {
@@ -68,7 +77,7 @@ export class SqliteStringMap {
   }
   
   async get(key) {
-    key = String(key);
+    key = assertString(key);
 
     const cached = this[CACHE].get(key);
     if (cached !== undefined) {
@@ -90,18 +99,20 @@ export class SqliteStringMap {
   }
 
   async set(key, value) {
-    key = String(key);
+    key = assertString(key);
+    value = Promise.resolve(value).then(assertString);
+
     this[CACHE].set(key, value);
     
     try {
       // if value is async, we want to resolve before committing to database
-      const syncValue = String(await value);
+      const syncValue = await value;
       const table = await this[TABLE];
       return await table.upsert({k: key, v: value});
     } catch (ex) {
       // if promise or commit fails, also remove from in-memory cache:
       if (this[CACHE].get(key) === value) {
-        this[CACHE].remove(key);
+        this[CACHE].delete(key);
       }
     }
   }
