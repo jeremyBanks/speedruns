@@ -4,23 +4,23 @@ import {style} from '/assets/bester/style.js';
 
 
 export class HomeBody extends Component {
-  get urlStyle() {
+  get labelStyle() {
     return style({
-      text: {decoration: 'underline'}
+      opacity: 0.75
     });
   }
 
   render({}) {
     return HTML`
-      <p>This site lets you compare personal and world record progressions over time.</p>
+      <p>This site compares personal and world record speed run progress over time.</p>
 
 <pre>
                      <u>Example URLs</u>
-        Player View: <a ${this.urlStyle} href="/@banks">/@banks</a>
-          Game View: <a ${this.urlStyle} href="/wc2">/sc1</a>
-   + Multiple Games: <a ${this.urlStyle} href="/wc2+wc2btdp">/wc2+wc2btdp</a>
-   + Personal Bests: <a ${this.urlStyle} href="/wc2+wc2btdp/@zpr">/wc2+wc2btdp/@zpr</a>
-         Level View: <a ${this.urlStyle} href="/smwext/world-1/@banks+@lui">/smwext/world-1/@banks+@lui</a>
+<span ${this.labelStyle}>        runner view:</span> <a href="/@banks">/@banks</a>
+<span ${this.labelStyle}>          game view:</span> <a href="/wc2">/sc1</a>
+<span ${this.labelStyle}>   + multiple games:</span> <a href="/wc2+wc2btdp">/wc2+wc2btdp</a>
+<span ${this.labelStyle}>   + personal bests:</span> <a href="/wc2+wc2btdp/@zpr">/wc2+wc2btdp/@zpr</a>
+<span ${this.labelStyle}>         level view:</span> <a href="/smwext/world-1/@banks+@lui">/smwext/world-1/@banks+@lui</a>
 </pre>
 
     `;
@@ -29,7 +29,7 @@ export class HomeBody extends Component {
   get style() {
     return style({
       display: 'block',
-      margin: {top: '16px', bottom: '32px'},
+      margin: {top: '32px', bottom: '32px'},
       text: {align: 'left'},
     });
   }
