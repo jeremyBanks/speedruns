@@ -147,7 +147,7 @@ app.use(async (req, res) => {
         })(),
         (async () => {
           // time-out server side render at 1s, but all required fetches will continue in background.
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise(resolve => setTimeout(resolve, 125));
           const result = await HTML.string`<div>
             ${Header.of({currentHost: req.get('host'), currentProject: process.env.PROJECT_NAME})}
             <p>

@@ -54,10 +54,6 @@ export class BestsRouter extends RootComponent {
     if (pathStack.length) {
       throw new Error("404 - invalid URL");
     }
-
-    if (runnerSlugs.length > 1) {
-      throw new Error("404 - invalid URL - multiple runner names");
-    }
     
     if (gameSlugs.length) {
       if (levelSlugs.length) {
@@ -67,10 +63,7 @@ export class BestsRouter extends RootComponent {
       yield BestsReport.of({
         gameSlugs,
         levelSlugs,
-        runnerSlugs,
-
-        runnerSlug: runnerSlugs[0],
-        currentHost: hostName
+        runnerSlugs
       });
     } else if (runnerSlugs.length) {
       throw new Error("runner pages not implemented");
