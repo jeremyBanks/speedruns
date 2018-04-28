@@ -29,17 +29,37 @@ export class BestsRouter extends RootComponent {
 
     if (pathNames.length === 0) {
       yield HomeBody.of();
-    } else if (pathNames.length <= 2) {
-      let [gamesSlug, runnerSlug] = pathNames;
+    } else {
+      const pathStack = [...pathNames];
       
-      if (runnerSlug) runnerSlug = runnerSlug.replace(/^@+/, '');
+      let gamesSlug = null;
+      let gameSlugs = [];
+      let levelsSlug = null;
+      let levelSlugs = [];
+      let runnersSlug = null;
+      let runnerSlugs = [];
 
-      const gameSlugs = gamesSlug.split(/\+/g).filter(Boolean);
-      if (gameSlugs.length == 0) throw new Error("no game(s) in URL");
+      if (pathsStack[0] && /^[^@]./.test(pathsStack[0])) {
+        gamesSlug = pathsStack.unshift();
+        gameSlugs = gamesSlug.split(/\+/g);
+      }
+
+      if (pathsStack[0] && /^@/.test(pathsStack[0])) {
+        levelSlug = pathsStack.unshift();
+        levelSlugs = levelsSlug.split(/\+/g);
+      }
+
+      if (pathsStack[0] && /^@./.test(pathsStack[0])) {
+        runnersSlug = pathsStack.unshift();
+        runnerSlugs = runnersSlug.slice(1).split(/\+/g);
+      }
+      
+      if (pathsStack.length) {
+        throw new Error("404 - invalid URL");
+      }
+
 
       yield BestsReport.of({gameSlugs, runnerSlug, currentHost: hostName});
-    } else {
-      throw new Error("404/invalid URL");
     }
     
     yield Footer.of();
