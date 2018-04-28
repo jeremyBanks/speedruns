@@ -27,39 +27,52 @@ export class BestsRouter extends RootComponent {
         
     yield Header.of({currentProject: projectName, currentHost: hostName});
 
-    if (pathNames.length === 0) {
-      yield HomeBody.of();
+    const pathStack = [...pathNames];
+
+    let gamesSlug = null;
+    let gameSlugs = [];
+    let levelsSlug = null;
+    let levelSlugs = [];
+    let runnersSlug = null;
+    let runnerSlugs = [];
+
+    if (pathStack[0] && /^[^@]/.test(pathStack[0])) {
+      gamesSlug = pathStack.shift();
+      gameSlugs = gamesSlug.split(/\+/g);
+    }
+
+    if (pathStack[0] && /^[^@]/.test(pathStack[0])) {
+      levelsSlug = pathStack.shift();
+      levelSlugs = levelsSlug.split(/\+/g);
+    }
+
+    if (pathStack[0] && /^@./.test(pathStack[0])) {
+      runnersSlug = pathStack.shift();
+      runnerSlugs = runnersSlug.slice(1).split(/\+@/g);
+    }
+
+    if (pathStack.length) {
+      throw new Error("404 - invalid URL");
+    }
+
+    if (runnerSlugs.length > 1) {
+      throw new Error("404 - invalid URL - multiple runner names");
+    }
+    
+    if (gameSlugs.length) {
+      if (levelSlugs.length) throw new Error("level view not implemented");
+      yield BestsReport.of({
+        gameSlugs,
+        levelSlugs,
+        runnerSlugs,
+
+        runnerSlug: runnerSlugs[0],
+        currentHost: hostName
+      });
+    } else if (runnerSlugs.length) {
+      throw new Error("runner pages not implemented");
     } else {
-      const pathStack = [...pathNames];
-      
-      let gamesSlug = null;
-      let gameSlugs = [];
-      let levelsSlug = null;
-      let levelSlugs = [];
-      let runnersSlug = null;
-      let runnerSlugs = [];
-
-      if (pathsStack[0] && /^[^@]./.test(pathsStack[0])) {
-        gamesSlug = pathsStack.unshift();
-        gameSlugs = gamesSlug.split(/\+/g);
-      }
-
-      if (pathsStack[0] && /^@/.test(pathsStack[0])) {
-        levelSlug = pathsStack.unshift();
-        levelSlugs = levelsSlug.split(/\+/g);
-      }
-
-      if (pathsStack[0] && /^@./.test(pathsStack[0])) {
-        runnersSlug = pathsStack.unshift();
-        runnerSlugs = runnersSlug.slice(1).split(/\+/g);
-      }
-      
-      if (pathsStack.length) {
-        throw new Error("404 - invalid URL");
-      }
-
-
-      yield BestsReport.of({gameSlugs, runnerSlug, currentHost: hostName});
+      yield HomeBody.of();
     }
     
     yield Footer.of();
