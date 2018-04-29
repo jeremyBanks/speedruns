@@ -1,22 +1,6 @@
 # to do
 
-- add support for category/level paths (also forcing change of user paths), maybe like this:
-
-      /smwext/world_1+world_2/@banks+@zpr
-      
-  where level/category slugs either be their slugs or their ids
-
-- user pages?
-
-      /@Banks
-  
-  Showing their personal bests in every level/category they've run.
-  
-  The API gives us the list of levels and categories:
-  <https://www.speedrun.com/api/v1/users/Banks/personal-bests>
-  
-  This could be the preferred link for user runner links, while non-user runner 
-  links may still link in-page as they currently do.
+- ?
 
 # to maybe do
 
