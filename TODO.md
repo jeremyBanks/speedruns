@@ -20,6 +20,8 @@
 
 # to maybe do
 
+- limit API requests to exclude levels we don't need?
+
 - refactor graph code, as it is currently very dense, hacky, and difficult to understand.
 
 - move link handling/client-side-reload into the "router" component.
