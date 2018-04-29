@@ -26,7 +26,7 @@ const apiFetch = async (path, maxPages = Infinity, pastPages = 0, offset = 0) =>
   if (pastPages >= maxPages) {
       throw new Error(`got too many results for ${path} (more than ${maxPages} pages/${offset} items)`);
   }
-  const url = speedrunDotComApiRootUrl + path + (path.includes('?') ? '&' : '?') + `offset=${offset}`;
+  const url = speedrunDotComApiRootUrl + path + (offset ? `${path.includes('?') ? '&' : '?'}offset=${offset}` : '');
   const response = await fetch(url);
   const body = await response.json();
   if (body.status) {
@@ -142,9 +142,10 @@ export class Game {
 
   async runsByCategoryLevelPairs() {
     const runsData = await api(
-      `runs?game=${this.gameId}&status=verified&orderby=date&direction=asc&max=200&embed=players`);
+      `runs?game=${this.gameId}&orderby=date&direction=asc&max=200&embed=players`);
 
-    const runs = await Promise.all(runsData.map(Run.fromApiData));
+    // we request all runs, 
+    const runs = await Promise.all(runsData.filter(data => data.status !== 'rejected').map(Run.fromApiData));
     
     return new Map(await Promise.all(this.categoryLevelPairs.map(async pair => [
       pair,
