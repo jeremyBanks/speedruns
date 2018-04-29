@@ -168,11 +168,11 @@ app.use(async (req, res) => {
     }
   }
   if (state[0] === 'loaded') {
-    res.status(200); // full response
+    // res.status(200); // full response
   } else if (state[0] === 'errored') {
-    res.status(500); // maybe-persistent error
+    // res.status(500); // maybe-persistent error
   } else {
-    res.status(504); // still 'loading' - gateway timeout
+    // res.status(504); // still 'loading' - gateway timeout
   }
   res.set('Content-Type', 'text/html');
   return res.send(index
