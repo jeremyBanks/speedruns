@@ -2,7 +2,7 @@
   "private": true,
   "license": "0BSD",
   "engines": {
-    "node": "9.x"
+    "node": "10.x"
   },
   "dependencies": {
     "express": "^4.16.3",
