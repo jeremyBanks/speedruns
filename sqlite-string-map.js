@@ -51,7 +51,7 @@ export class SqliteStringMap {
         logging: false,
       }
     );
-    
+
     this[CACHE] = new Map();
     this[TABLE] = this[INIT]();
   }
