@@ -1,10 +1,26 @@
-# to do
-
-- ?
-
-# to maybe do
+# 👌 to do
 
 - limit API requests to exclude levels we don't need?
+
+  - hmm, it may only be possible to limit requests to a single level/category, 
+    not a list of them!
+  
+    maybe it's still worth requesting them individually, when we're not going
+    to be using all of them (when we have some level filter specified).
+    
+    make sure they're rendered incrementally.
+  
+- add embedded dom object support in HTML templating.
+
+  - maybe assert that provided dom elements aren't attached the dom already,
+    before moving them.
+
+- (requires embedded dom support) construct nested components as elements instead of strings when on
+  the client, so that their lifecycle methods can be fired appropraitely, and do so.
+
+# 🤔 to consider
+  
+- (required nested components lifecycle methods) add embedded video player.
 
 - refactor graph code, as it is currently very dense, hacky, and difficult to understand.
 
@@ -12,31 +28,10 @@
 
 - be preactive and copy the general API?
 
-# to think about
+  - add state and props, with appropriate methods, and maybe rename lifecycle callbacks.
 
-- reconsider top-level error handling -- since we now have a static render to fall back to (unless it has an error?)
+- make client and server-side error handling consistent, possibly using a new common component.
 
-- can we run our post-render hooks client-side, by walking up the DOM and associating tag names with classes? probably not, since we'd need to also pass in data to reconstruct the model props for the callback to use.
+# 🧠 brain train
 
-- embedded video player?
-
-- events? hard to do that without a dom...
-  - it probably wouldn't actually be that hard to allow DOM content to be
-    embedded, but it could ruin the immutability. Maybe if we grab the
-    outerHTML immediately for the purpose of text output, so you're only
-    affected if you're using DOM output? or get both, and check if they change?
-    probably awful. nb: immediately detach for more deteriminism.
-    parsing/rendering at component boundaries might be reasonable.
-    do we have a post-render bind-events step? seems abusable.
-    componentDidUpdate()?
-    
-okay did something:
-  - onElementCreated() will be called immediate for event binding on the root element.
-  - onRendered() will be called deferred for event binding on any child elements.
-
-maybe come up with a few actual uses before engineering in the abstract.
-that's part of the point here: feel out actual use patterns.
-
-- async iterators of props? probably really stupid idea.
-
-- Test assumption that current approach will release the model from memory post-render in common case.
+- async iterators of props? not unless you have a motivating use case.
