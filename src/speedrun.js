@@ -144,7 +144,7 @@ export class Game {
     const runsData = await api(
       `runs?game=${this.gameId}&orderby=date&direction=asc&max=200&embed=players`);
 
-    // we request all runs, 
+    // we request all runs, so we can include unverified runs (heh), so we filter out rejected later:
     const runs = await Promise.all(runsData.filter(data => data.status !== 'rejected').map(Run.fromApiData));
     
     return new Map(await Promise.all(this.categoryLevelPairs.map(async pair => [
@@ -216,14 +216,12 @@ export class Run {
     if (!match) throw new Error(`failed to normalize duration: ${durationText}`);    const [full, hours, minutes, seconds, miliseconds] = match;
     const pieces = [];
     if (hours != null) pieces.push(String(Number(hours)).padStart(2, pieces.length ? '0' : ' '), 'h');
-    if (minutes != null) pieces.push(String(Number(minutes)).padStart(2, pieces.length ? '0' : ' '), 'm');
-    if (seconds != null || miliseconds != null) {
-      pieces.push(String(Number(seconds || 0)).padStart(2, pieces.length ? '0' : ' '));
-      if (hours == null && miliseconds != null) {
-        pieces.push('.', String(Number(miliseconds)).padStart(3, '0'));
-      }
-      pieces.push('s');
+    if (hours != null || minutes != null) pieces.push(String(Number(minutes)).padStart(2, pieces.length ? '0' : ' '), 'm');
+    pieces.push(String(Number(seconds || 0)).padStart(2, pieces.length ? '0' : ' '));
+    if (hours == null && miliseconds != null) {
+      pieces.push('.', String(Number(miliseconds)).padStart(3, '0'));
     }
+    pieces.push('s');
     return pieces.join('');
   }
   
