@@ -9,7 +9,7 @@
   "install": {
     "include": [
       "^package\\.json$",
-      "^\\.env$"
+      "^\\.env$" 
     ]
   }
 }
