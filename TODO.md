@@ -9,6 +9,9 @@
     to be using all of them (when we have some level filter specified).
     
     make sure they're rendered incrementally.
+
+- some way to override real/in-game time settings
+  (such as for Overwatch IL, which are IGT per rules but RTT per API, with inconsistent data)
   
 - add embedded dom object support in HTML templating.
 

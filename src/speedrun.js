@@ -212,8 +212,8 @@ export class Run {
   }
   
   static normalizeDurationText(durationText) {
-    const match = /^[A-Z]{2}(?:([0-9]{1,})H)?(?:([0-9]{1,2})M)?(?:([0-9]{1,2})(?:\.([0-9]{1,3}))?S)?$/i.exec(durationText);
-    if (!match) throw new Error(`failed to normalize duration: ${durationText}`);    const [full, hours, minutes, seconds, miliseconds] = match;
+    const match = /^([A-Z]{2})(?:([0-9]{1,})H)?(?:([0-9]{1,2})M)?(?:([0-9]{1,2})(?:\.([0-9]{1,3}))?S)?$/i.exec(durationText);
+    if (!match) throw new Error(`failed to normalize duration: ${durationText}`);    const [prefix, full, hours, minutes, seconds, miliseconds] = match;
     const pieces = [];
     if (hours != null) pieces.push(String(Number(hours)).padStart(2, pieces.length ? '0' : ' '), 'h');
     if (hours != null || minutes != null) pieces.push(String(Number(minutes)).padStart(2, pieces.length ? '0' : ' '), 'm');
