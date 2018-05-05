@@ -145,7 +145,7 @@ export class Game {
       `runs?game=${this.gameId}&orderby=date&direction=asc&max=200&embed=players`);
 
     // we request all runs, so we can include unverified runs (heh), so we filter out rejected later:
-    const runs = await Promise.all(runsData.filter(data => data.status !== 'rejected').map(Run.fromApiData));
+    const runs = await Promise.all(runsData.filter(data => (data.status && data.status.status) !== 'rejected').map(Run.fromApiData));
     
     return new Map(await Promise.all(this.categoryLevelPairs.map(async pair => [
       pair,
