@@ -1,0 +1,13 @@
+[package]
+name = "flamerun"
+version = "0.0.0"
+authors = ["Jeremy Banks <_@jeremy.ca>"]
+edition = "2018"
+publish = false
+
+[dependencies]
+serde = "1.0.79"
+serde_derive = "1.0.79"
+serde_json = "1.0.32"
+reqwest = "0.9.2"
+derive_more = "0.12.0"
