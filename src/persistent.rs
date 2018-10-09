@@ -1,4 +1,4 @@
-// TODO: make this save atomically?
+// note that saves are non-atomic and can be corrutped if interrupted.
 
 use core::{
     clone::Clone,
