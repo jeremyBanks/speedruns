@@ -106,42 +106,42 @@ struct Data {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Game {
-    game_id: String,
-    name: String,
-    levels: Vec<Level>,
-    run_categories: Vec<FullRunCategory>,
-    level_run_categories: Vec<LevelRunCategory>,
+    pub game_id: String,
+    pub name: String,
+    pub levels: Vec<Level>,
+    pub run_categories: Vec<FullRunCategory>,
+    pub level_run_categories: Vec<LevelRunCategory>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Level {
-    level_id: String,
-    name: String,
+    pub level_id: String,
+    pub name: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct FullRunCategory {
-    category_id: String,
-    name: String,
+    pub category_id: String,
+    pub name: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct LevelRunCategory {
-    category_id: String,
-    name: String,
+    pub category_id: String,
+    pub name: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Run {
-    run_id: String,
-    game_id: String,
-    category_id: String,
-    level_id: Option<String>,
-    status: RunStatus,
-    player: Player,
-    performed: NaiveDate,
-    submitted: DateTime<Utc>,
-    duration: f64,
+    pub run_id: String,
+    pub game_id: String,
+    pub category_id: String,
+    pub level_id: Option<String>,
+    pub status: RunStatus,
+    pub player: Player,
+    pub performed: NaiveDate,
+    pub submitted: DateTime<Utc>,
+    pub duration: f64,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
