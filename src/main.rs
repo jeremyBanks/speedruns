@@ -15,7 +15,7 @@ extern crate serde_derive;
 #[macro_use]
 extern crate derive_more;
 
-use std::{collections::HashMap, convert::From, fs, error::Error};
+use std::{collections::HashMap, convert::From, error::Error, fs};
 
 mod data_source;
 mod persistent;
