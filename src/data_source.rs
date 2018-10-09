@@ -2,7 +2,13 @@ use super::persistent::Persistent;
 use chrono::{Date, DateTime, Duration, NaiveDate, Utc};
 use core::{convert::From, str::FromStr};
 use reqwest;
-use std::{collections::BTreeMap, error::Error, fmt::Debug, fs};
+use std::{
+    collections::BTreeMap,
+    error::Error,
+    fmt,
+    fmt::{Debug, Display},
+    fs,
+};
 
 pub struct SpeedRunComData {
     data: Persistent<Data>,
@@ -35,49 +41,25 @@ impl SpeedRunComData {
         self_
     }
 
+    pub fn games(&self) -> &BTreeMap<String, Game> {
+        &self.data.get().games
+    }
+
+    pub fn runs(&self) -> &BTreeMap<String, Run> {
+        &self.data.get().runs
+    }
+
     fn refresh(&mut self) -> Result<(), ()> {
         let last_refreshed = Utc::now();
-        let runs = &mut self.data.get_mut().runs;
 
-        let run_urls = vec![
-            "https://www.speedrun.com/api/v1/runs?game=o1yry26q&embed=players&max=200",
-            "https://www.speedrun.com/api/v1/runs?game=y65zy46e&embed=players&max=200",
-        ];
+        let war1 = "9d372g6l";
+        let war2 = "o1yry26q";
+        let war2x = "y65zy46e";
+        let game_ids = vec![war1, war2, war2x];
 
-        for url in run_urls {
-            let updated: Result<(), Box<dyn Error>> = try {
-                let mut response = reqwest::get(url)?;
-                if !response.status().is_success() {
-                    return Err(());
-                }
-                let json = response.text()?;
-                let response: speedruncom_api::runs::Response = serde_json::from_str(&json)?;
-                debug!("Refreshing data from {:?}.", url);
-
-                if let Some(url) = response.next_page_url() {
-                    error!("Response from {} has multiple pages, but that isn't supported yet. Data ignored.", url);
-                }
-
-                for run in response.data {
-                    runs.insert(
-                        run.id.clone(),
-                        Run {
-                            run_id: run.id,
-                            status: run.status.into(),
-                            player: run.players.into(),
-                            game_id: run.game,
-                            level_id: run.level,
-                            category_id: run.category,
-                            performed: NaiveDate::from_str(&run.date.unwrap())?,
-                            submitted: DateTime::<Utc>::from_str(&run.submitted.unwrap())?,
-                            duration: run.times.primary_t.into(),
-                        },
-                    );
-                }
-            };
-
-            if let Err(error) = updated {
-                warn!("Data update from {:?} failed: {:?}", url, error);
+        for game_id in game_ids {
+            if let Err(error) = self.refresh_game(game_id) {
+                warn!("Failed to refresh game {}: {:?}.", game_id, error);
             }
         }
 
@@ -88,16 +70,123 @@ impl SpeedRunComData {
         Ok(())
     }
 
-    pub fn games(&self) -> &BTreeMap<String, Game> {
-        &self.data.get().games
-    }
+    fn refresh_game(&mut self, game_id: &str) -> Result<(), Box<dyn Error>> {
+        let api = "https://www.speedrun.com/api/v1";
 
-    pub fn runs(&self) -> &BTreeMap<String, Run> {
-        &self.data.get().runs
+        let game_url = format!(
+            "{}/games/{}?embed=categories,levels,variables",
+            api, game_id
+        );
+        debug!("Refreshing game metadata from {:?}.", game_url);
+        let mut game_response = reqwest::get(&game_url)?;
+        if !game_response.status().is_success() {
+            return Err(NonSuccessResponseStatus {
+                status: game_response.status(),
+                url: game_url.to_string(),
+            }
+            .into());
+        }
+        let game_json = game_response.text()?;
+        let games_data: speedruncom_api::game::Response = serde_json::from_str(&game_json)?;
+        let game = games_data.data;
+
+        self.data.get_mut().games.insert(
+            game.id.clone(),
+            Game {
+                game_id: game.id,
+                name: game.names.international,
+                run_categories: game
+                    .categories
+                    .data
+                    .iter()
+                    .filter(|category_data| {
+                        category_data.type_ == speedruncom_api::game::CategoryType::PerGame
+                    })
+                    .map(|category_data| FullRunCategory {
+                        category_id: category_data.id.clone(),
+                        name: category_data.name.clone(),
+                    })
+                    .collect(),
+                levels: game
+                    .levels
+                    .data
+                    .iter()
+                    .map(|level_data| Level {
+                        level_id: level_data.id.clone(),
+                        name: level_data.name.clone(),
+                    })
+                    .collect(),
+                level_run_categories: game
+                    .categories
+                    .data
+                    .iter()
+                    .filter(|category_data| {
+                        category_data.type_ == speedruncom_api::game::CategoryType::PerLevel
+                    })
+                    .map(|category_data| LevelRunCategory {
+                        category_id: category_data.id.clone(),
+                        name: category_data.name.clone(),
+                    })
+                    .collect(),
+            },
+        );
+
+        let runs_url = format!("{}/runs?game={}&embed=players&max=200", api, game_id);
+        debug!("Refreshing runs from {:?}.", runs_url);
+        let mut runs_response = reqwest::get(&runs_url)?;
+        if !runs_response.status().is_success() {
+            return Err(NonSuccessResponseStatus {
+                status: runs_response.status(),
+                url: runs_url.to_string(),
+            }
+            .into());
+        }
+        let json = runs_response.text()?;
+        let runs_data: speedruncom_api::runs::Response = serde_json::from_str(&json)?;
+
+        if let Some(_) = runs_data.next_page_url() {
+            error!(
+                "Response from {} has multiple pages, but that isn't supported yet. Data ignored.",
+                runs_url
+            );
+        }
+
+        let runs = &mut self.data.get_mut().runs;
+        for run in runs_data.data {
+            runs.insert(
+                run.id.clone(),
+                Run {
+                    run_id: run.id,
+                    status: run.status.into(),
+                    player: run.players.into(),
+                    game_id: run.game,
+                    level_id: run.level,
+                    category_id: run.category,
+                    performed: NaiveDate::from_str(&run.date.expect("runs we use for now have dates"))?,
+                    submitted: DateTime::<Utc>::from_str(&run.submitted.expect("runs we use for now have submission times"))?,
+                    duration: run.times.primary_t.into(),
+                },
+            );
+        }
+
+        Ok(())
+    }
+}
+
+#[derive(Debug)]
+struct NonSuccessResponseStatus {
+    status: reqwest::StatusCode,
+    url: String,
+}
+impl Error for NonSuccessResponseStatus {}
+impl Display for NonSuccessResponseStatus {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        Debug::fmt(self, f)
     }
 }
 
 #[derive(Serialize, Deserialize, Clone, Default)]
+#[serde(deny_unknown_fields)]
 struct Data {
     last_refreshed: Option<DateTime<Utc>>,
     games: BTreeMap<String, Game>,
@@ -105,33 +194,38 @@ struct Data {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Game {
     pub game_id: String,
     pub name: String,
-    pub levels: Vec<Level>,
     pub run_categories: Vec<FullRunCategory>,
+    pub levels: Vec<Level>,
     pub level_run_categories: Vec<LevelRunCategory>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Level {
     pub level_id: String,
     pub name: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct FullRunCategory {
     pub category_id: String,
     pub name: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct LevelRunCategory {
     pub category_id: String,
     pub name: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Run {
     pub run_id: String,
     pub game_id: String,
@@ -145,6 +239,7 @@ pub struct Run {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(deny_unknown_fields)]
 pub enum Player {
     User { user_id: String, name: String },
     Guest { name: String },
@@ -152,13 +247,67 @@ pub enum Player {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(deny_unknown_fields)]
 pub enum RunStatus {
     Pending,
     Verified,
     Rejected,
 }
 
+/// Internal types for speedrun.com API responses.
 mod speedruncom_api {
+    pub mod game {
+        #[derive(Deserialize, Debug)]
+        pub struct Response {
+            pub data: Game,
+        }
+
+        #[derive(Deserialize, Debug)]
+        pub struct Game {
+            pub id: String,
+            pub names: Names,
+            pub abbreviation: String,
+            pub levels: Levels,
+            pub categories: Categories,
+        }
+
+        #[derive(Deserialize, Debug)]
+        pub struct Names {
+            pub international: String,
+        }
+
+        #[derive(Deserialize, Debug)]
+        pub struct Levels {
+            pub data: Vec<Level>,
+        }
+
+        #[derive(Deserialize, Debug)]
+        pub struct Level {
+            pub id: String,
+            pub name: String,
+        }
+
+        #[derive(Deserialize, Debug)]
+        pub struct Categories {
+            pub data: Vec<Category>,
+        }
+
+        #[derive(Deserialize, Debug)]
+        pub struct Category {
+            pub id: String,
+            pub name: String,
+            #[serde(rename = "type")]
+            pub type_: CategoryType,
+        }
+
+        #[derive(Deserialize, Debug, PartialEq)]
+        #[serde(rename_all = "kebab-case")]
+        pub enum CategoryType {
+            PerGame,
+            PerLevel,
+        }
+    }
+
     pub mod runs {
         #[derive(Deserialize, Debug)]
         pub struct Response {
@@ -186,11 +335,9 @@ mod speedruncom_api {
 
         #[derive(Deserialize, Debug)]
         #[serde(tag = "rel")]
-        #[serde(rename_all = "snake_case")]
+        #[serde(rename_all = "kebab-case")]
         pub enum PaginationLink {
-            Next {
-                uri: String,
-            }
+            Next { uri: String },
         }
 
         #[derive(Deserialize, Debug)]
@@ -208,7 +355,7 @@ mod speedruncom_api {
 
         #[derive(Deserialize, Debug)]
         #[serde(tag = "status")]
-        #[serde(rename_all = "snake_case")]
+        #[serde(rename_all = "kebab-case")]
         pub enum RunStatus {
             Verified,
             New,
@@ -250,7 +397,7 @@ mod speedruncom_api {
 
         #[derive(Deserialize, Debug)]
         #[serde(tag = "rel")]
-        #[serde(rename_all = "snake_case")]
+        #[serde(rename_all = "kebab-case")]
         pub enum Player {
             User { id: String, names: UserNames },
             Guest { name: String },
