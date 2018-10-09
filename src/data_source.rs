@@ -1,8 +1,8 @@
-use chrono::{NaiveDate, Date, DateTime, Duration, Utc};
-use core::convert::From;
-use std::{collections::HashMap, fs, fmt::Debug, error::Error};
 use super::persistent::Persistent;
+use chrono::{Date, DateTime, Duration, NaiveDate, Utc};
+use core::{convert::From, str::FromStr};
 use reqwest;
+use std::{collections::HashMap, error::Error, fmt::Debug, fs};
 
 pub struct SpeedRunComData {
     data: Persistent<Data>,
@@ -11,7 +11,7 @@ pub struct SpeedRunComData {
 impl SpeedRunComData {
     pub fn open(filename: &str) -> Self {
         let mut self_ = SpeedRunComData {
-            data: Persistent::open(filename)
+            data: Persistent::open(filename),
         };
 
         let needs_refresh = match self_.data.get().last_refreshed {
@@ -23,7 +23,10 @@ impl SpeedRunComData {
             let refreshed = self_.refresh();
 
             if let Err(error) = refreshed {
-                warn!("failed to refresh data {:?}, continuing with cached data", error);
+                warn!(
+                    "failed to refresh data {:?}, continuing with cached data",
+                    error
+                );
             }
         } else {
             debug!("Skipping refresh.");
@@ -38,7 +41,7 @@ impl SpeedRunComData {
 
         let run_urls = vec![
             "https://www.speedrun.com/api/v1/runs?game=o1yry26q&embed=players&max=200",
-            "https://www.speedrun.com/api/v1/runs?game=y8qowvdy&embed=players&max=200",
+            "https://www.speedrun.com/api/v1/runs?game=y65zy46e&embed=players&max=200",
         ];
 
         for url in run_urls {
@@ -52,14 +55,20 @@ impl SpeedRunComData {
                 debug!("Refreshing data from {:?}.", url);
 
                 for run in parsed.data {
-                    runs.insert(run.id.clone(), Run {
-                        run_id: run.id,
-                        status: run.status.into(),
-                        player: run.players.into(),
-                        performed: NaiveDate::from_ymd(1999, 9, 19),
-                        submitted: Utc::now(),
-                        duration: 0.0,
-                    });
+                    runs.insert(
+                        run.id.clone(),
+                        Run {
+                            run_id: run.id,
+                            status: run.status.into(),
+                            player: run.players.into(),
+                            game_id: run.game,
+                            level_id: run.level,
+                            category_id: run.category,
+                            performed: NaiveDate::from_str(&run.date.unwrap())?,
+                            submitted: DateTime::<Utc>::from_str(&run.submitted.unwrap())?,
+                            duration: run.times.primary_t.into(),
+                        },
+                    );
                 }
             };
 
@@ -121,6 +130,9 @@ pub struct LevelRunCategory {
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Run {
     run_id: String,
+    game_id: String,
+    category_id: String,
+    level_id: Option<String>,
     status: RunStatus,
     player: Player,
     performed: NaiveDate,
@@ -130,13 +142,8 @@ pub struct Run {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum Player {
-    User {
-        user_id: String,
-        name: String,
-    },
-    Guest {
-        name: String,
-    },
+    User { user_id: String, name: String },
+    Guest { name: String },
     MultiplePlayers,
 }
 
@@ -146,7 +153,6 @@ pub enum RunStatus {
     Verified,
     Rejected,
 }
-
 
 mod speedruncom_api {
     pub mod runs {
@@ -161,7 +167,7 @@ mod speedruncom_api {
             pub status: RunStatus,
             pub game: String,
             pub level: Option<String>,
-            pub category: Option<String>,
+            pub category: String,
             pub players: PlayersData,
             pub date: Option<String>,
             pub submitted: Option<String>,
@@ -198,13 +204,13 @@ mod speedruncom_api {
                     super::super::Player::MultiplePlayers
                 } else {
                     match self.data[0] {
-                        Player::User { ref id, ref names, } => super::super::Player::User {
+                        Player::User { ref id, ref names } => super::super::Player::User {
                             user_id: id.clone(),
                             name: names.international.clone(),
                         },
-                        Player::Guest { ref name } => super::super::Player::Guest {
-                            name: name.clone()
-                        },
+                        Player::Guest { ref name } => {
+                            super::super::Player::Guest { name: name.clone() }
+                        }
                     }
                 }
             }
@@ -214,10 +220,7 @@ mod speedruncom_api {
         #[serde(tag = "rel")]
         #[serde(rename_all = "snake_case")]
         pub enum Player {
-            User {
-                id: String,
-                names: UserNames,
-            },
+            User { id: String, names: UserNames },
             Guest { name: String },
         }
 

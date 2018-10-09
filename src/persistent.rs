@@ -1,3 +1,5 @@
+// TODO: make this save atomically?
+
 use core::{
     clone::Clone,
     fmt::{Debug, Display},
@@ -20,8 +22,8 @@ where
     Data: Serialize + DeserializeOwned + Clone + Default + Sized,
 {
     file: File,
-    dirty: bool,
     data: Data,
+    dirty: bool,
 }
 
 impl<Data> Persistent<Data>
@@ -47,7 +49,7 @@ where
                     .truncate(true)
                     .open(filename)
                     .unwrap();
-                file.try_lock_exclusive().unwrap();
+                file.try_lock_shared().unwrap();
                 data = Data::default();
             }
         }
@@ -62,9 +64,14 @@ where
     pub fn sync(&mut self) {
         if self.dirty {
             info!("Syncing changes to disk.");
+            self.file.try_lock_exclusive().unwrap();
             self.file.seek(SeekFrom::Start(0)).unwrap();
             self.file.set_len(0).unwrap();
-            serde_json::to_writer(&self.file, &self.data).unwrap();
+            let mut ser = serde_json::Serializer::with_formatter(
+                &self.file,
+                serde_json::ser::PrettyFormatter::with_indent(b""),
+            );
+            self.data.serialize(&mut ser).unwrap();
             self.file.sync_all().unwrap();
             self.dirty = false;
         }
