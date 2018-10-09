@@ -1,783 +1,22 @@
 {
-"last_refreshed": "2018-10-09T23:23:07.261643Z",
+"last_refreshed": "2018-10-09T23:41:36.684432Z",
 "games": {},
 "runs": {
-"yo45o87m": {
-"run_id": "yo45o87m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "68w2g538",
-"name": "YT_Veritas0923"
-}
-},
-"performed": "2018-03-13",
-"submitted": "2018-03-13T15:48:04Z",
-"duration": 189.0
-},
-"y234dj9m": {
-"run_id": "y234dj9m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "4956oj0d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-04-06",
-"submitted": "2018-04-06T06:16:44Z",
-"duration": 232.0
-},
-"yvg7314y": {
-"run_id": "yvg7314y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd4j760d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2015-08-29",
-"submitted": "2018-02-20T04:56:01Z",
-"duration": 580.0
-},
-"y67ekpjm": {
-"run_id": "y67ekpjm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-02-06",
-"submitted": "2018-02-06T07:35:48Z",
-"duration": 57.0
-},
-"z03ol48z": {
-"run_id": "z03ol48z",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ewpjm7lw",
-"status": "Pending",
-"player": {
-"Guest": {
-"name": "Szwagier"
-}
-},
-"performed": "2018-10-08",
-"submitted": "2018-10-09T05:06:54Z",
-"duration": 355.0
-},
-"y8qowvdy": {
-"run_id": "y8qowvdy",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "kwj5lyn9",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "zzzKOTzzz"
-}
-},
-"performed": "2006-01-06",
-"submitted": "2018-02-14T07:17:33Z",
-"duration": 117.0
-},
-"y89j96nm": {
-"run_id": "y89j96nm",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "o9xn5l0w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-03",
-"submitted": "2018-10-03T11:57:15Z",
-"duration": 817.0
-},
-"z134lprm": {
-"run_id": "z134lprm",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "kwj5lyn9",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "alexrazz"
-}
-},
-"performed": "2008-01-30",
-"submitted": "2018-04-11T02:35:58Z",
-"duration": 126.0
-},
-"z5o6o6jy": {
-"run_id": "z5o6o6jy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ewpjm7lw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-05",
-"submitted": "2018-03-05T15:48:08Z",
-"duration": 410.0
-},
-"m794580y": {
-"run_id": "m794580y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "n93750nd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-04-06",
-"submitted": "2018-04-06T02:53:51Z",
-"duration": 26.0
-},
-"y89jq3dm": {
-"run_id": "y89jq3dm",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "ldyy7pkd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-02",
-"submitted": "2018-10-02T11:36:20Z",
-"duration": 2140.0
-},
-"zn47458m": {
-"run_id": "zn47458m",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "4956o80d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-03",
-"submitted": "2018-10-03T15:19:38Z",
-"duration": 807.0
-},
-"y23r6v9m": {
-"run_id": "y23r6v9m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "29v3ey1w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-03-16",
-"submitted": "2018-03-17T04:56:17Z",
-"duration": 81.0
-},
-"zpqk5gvy": {
-"run_id": "zpqk5gvy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd17ejqd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-16",
-"submitted": "2018-02-16T12:53:09Z",
-"duration": 211.0
-},
-"ydql590m": {
-"run_id": "ydql590m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4ve1lj",
-"name": "Fralor"
-}
-},
-"performed": "2018-01-26",
-"submitted": "2018-01-27T00:32:28Z",
-"duration": 47.0
-},
-"z1378n9m": {
-"run_id": "z1378n9m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ewpjm7lw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "68w2g538",
-"name": "YT_Veritas0923"
-}
-},
-"performed": "2018-03-08",
-"submitted": "2018-03-08T18:33:40Z",
-"duration": 1202.0
-},
-"zgn1wqdy": {
-"run_id": "zgn1wqdy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd17ejqd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-22",
-"submitted": "2018-03-22T08:47:16Z",
-"duration": 209.0
-},
-"zq6n75xy": {
-"run_id": "zq6n75xy",
-"game_id": "o1yry26q",
-"category_id": "wk6wgq21",
-"level_id": null,
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-03-25",
-"submitted": "2018-03-26T02:48:32Z",
-"duration": 34875.0
-},
-"zq6pr75y": {
-"run_id": "zq6pr75y",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "owo01kow",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2017-11-09",
-"submitted": "2018-02-20T06:22:47Z",
-"duration": 528.0
-},
-"z0ekg79m": {
-"run_id": "z0ekg79m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "o9xn520w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-18",
-"submitted": "2018-03-18T13:38:48Z",
-"duration": 514.0
-},
-"mk4rxx5y": {
-"run_id": "mk4rxx5y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "29v3ey1w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-17",
-"submitted": "2018-03-17T16:33:17Z",
-"duration": 75.0
-},
-"z137k0gm": {
-"run_id": "z137k0gm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ewpjm7lw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "68w2g538",
-"name": "YT_Veritas0923"
-}
-},
-"performed": "2018-03-13",
-"submitted": "2018-03-13T16:00:56Z",
-"duration": 1085.0
-},
-"m79vkkwy": {
-"run_id": "m79vkkwy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd0gr00w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-03-18",
-"submitted": "2018-03-18T19:55:05Z",
-"duration": 771.0
-},
-"m3dwnogz": {
-"run_id": "m3dwnogz",
+"m3d045wz": {
+"run_id": "m3d045wz",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
 "level_id": "y9mjq5l9",
 "status": "Verified",
 "player": {
 "User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
+"user_id": "y8d7ywo8",
+"name": "bias60gaming"
 }
 },
-"performed": "2018-02-10",
-"submitted": "2018-02-10T10:45:39Z",
-"duration": 731.0
-},
-"zq62wv8y": {
-"run_id": "zq62wv8y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-09",
-"submitted": "2018-02-09T13:02:28Z",
-"duration": 44.0
-},
-"m7p77o5m": {
-"run_id": "m7p77o5m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5wkjzk5d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kj9rwroj",
-"name": "Edwardss44"
-}
-},
-"performed": "2018-09-22",
-"submitted": "2018-09-22T18:00:19Z",
-"duration": 26.0
-},
-"mekdo13m": {
-"run_id": "mekdo13m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ewpjm7lw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-22",
-"submitted": "2018-03-22T08:47:52Z",
-"duration": 358.0
-},
-"yvgk076y": {
-"run_id": "yvgk076y",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "4956o80d",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "AverageAvocado"
-}
-},
-"performed": "2015-05-10",
-"submitted": "2018-04-09T23:38:23Z",
-"duration": 1060.0
-},
-"mrqx9o2y": {
-"run_id": "mrqx9o2y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "n93750nd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4ve1lj",
-"name": "Fralor"
-}
-},
-"performed": "2018-01-27",
-"submitted": "2018-01-27T19:17:11Z",
-"duration": 28.0
-},
-"zgn62kjy": {
-"run_id": "zgn62kjy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "4956oj0d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-25",
-"submitted": "2018-02-25T14:54:21Z",
-"duration": 188.0
-},
-"yjk9623m": {
-"run_id": "yjk9623m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5wkjzk5d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4ve1lj",
-"name": "Fralor"
-}
-},
-"performed": "2018-01-27",
-"submitted": "2018-01-27T19:24:39Z",
-"duration": 44.0
-},
-"zpq5pv8y": {
-"run_id": "zpq5pv8y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "68w2g538",
-"name": "YT_Veritas0923"
-}
-},
-"performed": "2018-03-13",
-"submitted": "2018-03-13T15:52:41Z",
-"duration": 118.0
-},
-"zq6nqp5y": {
-"run_id": "zq6nqp5y",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "rdn0jpqw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-03-30",
-"submitted": "2018-03-30T02:46:15Z",
-"duration": 2532.0
-},
-"yvg766ey": {
-"run_id": "yvg766ey",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "zx729rq8",
-"name": "KarmikKoala"
-}
-},
-"performed": "2017-08-07",
-"submitted": "2018-02-20T19:09:45Z",
-"duration": 52.0
-},
-"mk4w2gvy": {
-"run_id": "mk4w2gvy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd0gr00w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2015-08-29",
-"submitted": "2018-02-20T05:05:37Z",
-"duration": 763.0
-},
-"y8qn1rny": {
-"run_id": "y8qn1rny",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ldyy7ekd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-06",
-"submitted": "2018-03-06T12:00:32Z",
-"duration": 397.0
-},
-"yo4q075m": {
-"run_id": "yo4q075m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd17ejqd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "texture3D"
-}
-},
-"performed": "2010-04-03",
-"submitted": "2018-02-14T07:50:44Z",
-"duration": 333.0
-},
-"mrqdk97y": {
-"run_id": "mrqdk97y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "n937507d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "zx729rq8",
-"name": "KarmikKoala"
-}
-},
-"performed": "2017-08-07",
-"submitted": "2018-02-20T19:15:50Z",
-"duration": 1456.0
-},
-"y45j6nkm": {
-"run_id": "y45j6nkm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "rdqj20k9",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "texture3D"
-}
-},
-"performed": "2011-10-22",
-"submitted": "2018-02-14T16:41:59Z",
-"duration": 1912.0
-},
-"zn8gr08z": {
-"run_id": "zn8gr08z",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "rdn0j5nw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2015-08-31",
-"submitted": "2018-02-20T05:15:17Z",
-"duration": 697.0
-},
-"y2381dwm": {
-"run_id": "y2381dwm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ewpjm7lw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2015-08-29",
-"submitted": "2018-02-20T04:16:52Z",
-"duration": 474.0
-},
-"zn8grq3z": {
-"run_id": "zn8grq3z",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "592zgoo9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2017-11-09",
-"submitted": "2018-02-20T06:35:04Z",
-"duration": 643.0
-},
-"zx4l818y": {
-"run_id": "zx4l818y",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "y9mjqp59",
-"status": "Pending",
-"player": {
-"Guest": {
-"name": "Szwagier"
-}
-},
-"performed": "2018-10-08",
-"submitted": "2018-10-09T05:44:29Z",
-"duration": 279.0
-},
-"mk4w385y": {
-"run_id": "mk4w385y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "rw64pvn9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "zx729rq8",
-"name": "KarmikKoala"
-}
-},
-"performed": "2017-08-07",
-"submitted": "2018-02-20T19:15:24Z",
-"duration": 991.0
-},
-"yl9jkv3y": {
-"run_id": "yl9jkv3y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ewpjm7lw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "zx729rq8",
-"name": "KarmikKoala"
-}
-},
-"performed": "2017-08-07",
-"submitted": "2018-02-20T19:11:17Z",
-"duration": 581.0
-},
-"ydqvogxm": {
-"run_id": "ydqvogxm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "29v3ey1w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-16",
-"submitted": "2018-02-16T12:53:41Z",
-"duration": 83.0
-},
-"zgno47ny": {
-"run_id": "zgno47ny",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-02-06",
-"submitted": "2018-02-06T07:01:56Z",
-"duration": 114.0
-},
-"yw1wropz": {
-"run_id": "yw1wropz",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd4j760d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-13",
-"submitted": "2018-02-13T15:15:40Z",
-"duration": 412.0
-},
-"zgn6wvny": {
-"run_id": "zgn6wvny",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "y9mjq5l9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "zx729rq8",
-"name": "KarmikKoala"
-}
-},
-"performed": "2017-08-07",
-"submitted": "2018-02-20T19:11:49Z",
-"duration": 906.0
+"performed": "2018-01-22",
+"submitted": "2018-01-22T23:46:28Z",
+"duration": 1820.0
 },
 "m3d2e1wz": {
 "run_id": "m3d2e1wz",
@@ -795,503 +34,11 @@
 "submitted": "2018-03-18T22:02:30Z",
 "duration": 781.0
 },
-"y67wrk0m": {
-"run_id": "y67wrk0m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd0gr00w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-23",
-"submitted": "2018-03-23T09:25:05Z",
-"duration": 710.0
-},
-"yvgln1oy": {
-"run_id": "yvgln1oy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "y8d7ywo8",
-"name": "bias60gaming"
-}
-},
-"performed": "2018-01-21",
-"submitted": "2018-01-21T00:37:36Z",
-"duration": 170.0
-},
-"zpqo488y": {
-"run_id": "zpqo488y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ldyy7ejd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2016-01-22",
-"submitted": "2018-02-20T05:22:39Z",
-"duration": 101.0
-},
-"mrqden2y": {
-"run_id": "mrqden2y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "z986vjgd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2016-01-22",
-"submitted": "2018-02-20T05:29:57Z",
-"duration": 279.0
-},
-"mr86rg7y": {
-"run_id": "mr86rg7y",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "xd17e0ed",
-"status": "Pending",
-"player": {
-"Guest": {
-"name": "Szwagier"
-}
-},
-"performed": "2018-10-08",
-"submitted": "2018-10-09T05:41:12Z",
-"duration": 567.0
-},
-"z137dwjm": {
-"run_id": "z137dwjm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-03-04",
-"submitted": "2018-03-05T03:59:14Z",
-"duration": 91.0
-},
-"mk4w17xy": {
-"run_id": "mk4w17xy",
+"m3d2gk4z": {
+"run_id": "m3d2gk4z",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
 "level_id": "xd17ejqd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "68w2g538",
-"name": "YT_Veritas0923"
-}
-},
-"performed": "2018-02-28",
-"submitted": "2018-02-28T01:59:02Z",
-"duration": 784.0
-},
-"z0e412jm": {
-"run_id": "z0e412jm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-04-05",
-"submitted": "2018-04-05T05:28:03Z",
-"duration": 94.0
-},
-"y8qowrdy": {
-"run_id": "y8qowrdy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "Intheblue"
-}
-},
-"performed": "2012-05-11",
-"submitted": "2018-02-14T06:40:04Z",
-"duration": 103.0
-},
-"m3d045wz": {
-"run_id": "m3d045wz",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "y9mjq5l9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "y8d7ywo8",
-"name": "bias60gaming"
-}
-},
-"performed": "2018-01-22",
-"submitted": "2018-01-22T23:46:28Z",
-"duration": 1820.0
-},
-"mek2x13m": {
-"run_id": "mek2x13m",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "xd4j732d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2017-11-09",
-"submitted": "2018-02-20T06:39:45Z",
-"duration": 373.0
-},
-"m7pw1k4m": {
-"run_id": "m7pw1k4m",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "rdn0jpqw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-02",
-"submitted": "2018-10-02T10:38:11Z",
-"duration": 818.0
-},
-"y6p9n5pm": {
-"run_id": "y6p9n5pm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "n93750nd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kj9rwroj",
-"name": "Edwardss44"
-}
-},
-"performed": "2018-09-23",
-"submitted": "2018-09-22T22:51:22Z",
-"duration": 23.0
-},
-"mek2o68m": {
-"run_id": "mek2o68m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5wkjzk5d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "zx729rq8",
-"name": "KarmikKoala"
-}
-},
-"performed": "2017-08-07",
-"submitted": "2018-02-20T19:12:46Z",
-"duration": 31.0
-},
-"zn82lk8z": {
-"run_id": "zn82lk8z",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd17ejqd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "y8d7ywo8",
-"name": "bias60gaming"
-}
-},
-"performed": "2018-01-22",
-"submitted": "2018-01-22T23:31:55Z",
-"duration": 459.0
-},
-"y67jld1m": {
-"run_id": "y67jld1m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "z986vj7d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2015-08-30",
-"submitted": "2018-02-20T05:13:25Z",
-"duration": 919.0
-},
-"y23n11wm": {
-"run_id": "y23n11wm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "n93750nd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-02-08",
-"submitted": "2018-02-08T22:15:39Z",
-"duration": 28.0
-},
-"y450gvdm": {
-"run_id": "y450gvdm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "gdre4j69",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-12",
-"submitted": "2018-03-12T13:16:21Z",
-"duration": 365.0
-},
-"y8qg185y": {
-"run_id": "y8qg185y",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "ewpjmqkw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2017-11-09",
-"submitted": "2018-02-20T06:27:42Z",
-"duration": 653.0
-},
-"zpq5neny": {
-"run_id": "zpq5neny",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-03-04",
-"submitted": "2018-03-05T03:04:58Z",
-"duration": 41.0
-},
-"y45n1qnm": {
-"run_id": "y45n1qnm",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "kwj5lyn9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2017-11-09",
-"submitted": "2018-02-20T06:20:26Z",
-"duration": 156.0
-},
-"zpqo428y": {
-"run_id": "zpqo428y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ldyy7ekd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2016-01-22",
-"submitted": "2018-02-20T05:40:43Z",
-"duration": 488.0
-},
-"yo4q5l5m": {
-"run_id": "yo4q5l5m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "z986vjgd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-16",
-"submitted": "2018-02-16T12:52:39Z",
-"duration": 229.0
-},
-"z13vggjm": {
-"run_id": "z13vggjm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "592zg0g9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-12",
-"submitted": "2018-02-12T14:23:00Z",
-"duration": 713.0
-},
-"m794xeey": {
-"run_id": "m794xeey",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "r9g2035d",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "AverageAvocado"
-}
-},
-"performed": "2015-04-28",
-"submitted": "2018-04-09T23:31:06Z",
-"duration": 1635.0
-},
-"yl9j01ry": {
-"run_id": "yl9j01ry",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "29v3ek3w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2017-11-09",
-"submitted": "2018-02-20T06:37:30Z",
-"duration": 1084.0
-},
-"y2365j9m": {
-"run_id": "y2365j9m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "592zg0g9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-22",
-"submitted": "2018-03-22T09:45:59Z",
-"duration": 593.0
-},
-"yo40gk7m": {
-"run_id": "yo40gk7m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ewpjm7lw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "y8d7ywo8",
-"name": "bias60gaming"
-}
-},
-"performed": "2018-01-22",
-"submitted": "2018-01-22T23:35:32Z",
-"duration": 1007.0
-},
-"m7pwxkwm": {
-"run_id": "m7pwxkwm",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "owo01kow",
-"status": "Pending",
-"player": {
-"Guest": {
-"name": "Szwagier"
-}
-},
-"performed": "2018-10-08",
-"submitted": "2018-10-09T05:36:39Z",
-"duration": 410.0
-},
-"m79o520y": {
-"run_id": "m79o520y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ldyy7ejd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4ve1lj",
-"name": "Fralor"
-}
-},
-"performed": "2018-01-27",
-"submitted": "2018-01-27T19:15:55Z",
-"duration": 117.0
-},
-"zn407k3m": {
-"run_id": "zn407k3m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kj9rwroj",
-"name": "Edwardss44"
-}
-},
-"performed": "2018-09-23",
-"submitted": "2018-09-22T22:54:21Z",
-"duration": 91.0
-},
-"yo453odm": {
-"run_id": "yo453odm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
 "status": "Verified",
 "player": {
 "User": {
@@ -1300,14 +47,29 @@
 }
 },
 "performed": "2018-03-07",
-"submitted": "2018-03-07T23:45:50Z",
-"duration": 199.0
+"submitted": "2018-03-07T23:58:56Z",
+"duration": 745.0
 },
-"yvge14xy": {
-"run_id": "yvge14xy",
+"m3d4xj4z": {
+"run_id": "m3d4xj4z",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "z986v8gd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "AverageAvocado"
+}
+},
+"performed": "2015-04-03",
+"submitted": "2018-04-09T23:07:05Z",
+"duration": 408.0
+},
+"m3d8negz": {
+"run_id": "m3d8negz",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
-"level_id": "n93750nd",
+"level_id": "ldyy7ejd",
 "status": "Verified",
 "player": {
 "User": {
@@ -1316,229 +78,8 @@
 }
 },
 "performed": "2018-03-23",
-"submitted": "2018-03-24T00:51:57Z",
-"duration": 23.0
-},
-"z0e4l0em": {
-"run_id": "z0e4l0em",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "o9xn5l0w",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "AverageAvocado"
-}
-},
-"performed": "2015-05-09",
-"submitted": "2018-04-09T23:36:10Z",
-"duration": 2292.0
-},
-"z5ow7rgy": {
-"run_id": "z5ow7rgy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "rw64pvn9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2015-08-29",
-"submitted": "2018-02-20T05:07:48Z",
-"duration": 614.0
-},
-"yvgedkey": {
-"run_id": "yvgedkey",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "kwj5lyn9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-04-01",
-"submitted": "2018-04-02T07:08:33Z",
-"duration": 120.0
-},
-"mrqp8e2y": {
-"run_id": "mrqp8e2y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ldyy7ejd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-04-04",
-"submitted": "2018-04-04T06:46:23Z",
+"submitted": "2018-03-24T00:24:29Z",
 "duration": 96.0
-},
-"y23wdj6m": {
-"run_id": "y23wdj6m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ldyy7ekd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4ve1lj",
-"name": "Fralor"
-}
-},
-"performed": "2018-01-27",
-"submitted": "2018-01-27T19:20:40Z",
-"duration": 742.0
-},
-"mrq59e4y": {
-"run_id": "mrq59e4y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "nwllx60w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-07",
-"submitted": "2018-03-07T17:21:44Z",
-"duration": 538.0
-},
-"mk4rnply": {
-"run_id": "mk4rnply",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd4j760d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-03-17",
-"submitted": "2018-03-18T01:48:05Z",
-"duration": 428.0
-},
-"yl9w1pry": {
-"run_id": "yl9w1pry",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "gdre4q69",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "AverageAvocado"
-}
-},
-"performed": "2015-04-11",
-"submitted": "2018-04-09T23:21:06Z",
-"duration": 1759.0
-},
-"y97e5nnm": {
-"run_id": "y97e5nnm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "592zg0g9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2015-08-29",
-"submitted": "2018-02-20T04:33:07Z",
-"duration": 695.0
-},
-"y89j9ewm": {
-"run_id": "y89j9ewm",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "5d7vk3gd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-03",
-"submitted": "2018-10-03T07:57:15Z",
-"duration": 237.0
-},
-"yjkoegdm": {
-"run_id": "yjkoegdm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "y8d7ywo8",
-"name": "bias60gaming"
-}
-},
-"performed": "2018-01-21",
-"submitted": "2018-01-21T00:41:22Z",
-"duration": 82.0
-},
-"z0e01p4m": {
-"run_id": "z0e01p4m",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "xd17e0ed",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2017-11-09",
-"submitted": "2018-02-20T06:25:24Z",
-"duration": 723.0
-},
-"mek5123m": {
-"run_id": "mek5123m",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "5d7vk3gd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "AverageAvocado"
-}
-},
-"performed": "2015-05-10",
-"submitted": "2018-04-09T23:42:04Z",
-"duration": 426.0
-},
-"y8qo6n5y": {
-"run_id": "y8qo6n5y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5wkjzk5d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-13",
-"submitted": "2018-02-13T15:14:43Z",
-"duration": 26.0
 },
 "m3dv1gqz": {
 "run_id": "m3dv1gqz",
@@ -1556,91 +97,11 @@
 "submitted": "2018-02-20T04:13:30Z",
 "duration": 266.0
 },
-"zn8gk57z": {
-"run_id": "zn8gk57z",
+"m3dw0gdz": {
+"run_id": "m3dw0gdz",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
-"level_id": "z986vjgd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-02-21",
-"submitted": "2018-02-21T01:04:23Z",
-"duration": 319.0
-},
-"zpq53xgy": {
-"run_id": "zpq53xgy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd17ejqd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "68w2g538",
-"name": "YT_Veritas0923"
-}
-},
-"performed": "2018-03-08",
-"submitted": "2018-03-08T18:30:00Z",
-"duration": 579.0
-},
-"y43781dz": {
-"run_id": "y43781dz",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kj9rwroj",
-"name": "Edwardss44"
-}
-},
-"performed": "2018-09-23",
-"submitted": "2018-09-22T22:48:47Z",
-"duration": 41.0
-},
-"mekd7kqm": {
-"run_id": "mekd7kqm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "z986vjgd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-03-23",
-"submitted": "2018-03-24T01:28:37Z",
-"duration": 227.0
-},
-"yl4rg2rm": {
-"run_id": "yl4rg2rm",
-"game_id": "o1yry26q",
-"category_id": "z273v15d",
-"level_id": null,
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "68w15lxg",
-"name": "bjw"
-}
-},
-"performed": "2018-07-17",
-"submitted": "2018-10-01T19:11:30Z",
-"duration": 15635.0
-},
-"yjkeo3dm": {
-"run_id": "yjkeo3dm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
+"level_id": "69z3orld",
 "status": "Verified",
 "player": {
 "Guest": {
@@ -1648,14 +109,30 @@
 }
 },
 "performed": "2006-02-15",
-"submitted": "2018-02-14T05:55:57Z",
-"duration": 45.0
+"submitted": "2018-02-14T06:32:46Z",
+"duration": 54.0
 },
-"yvgkr76y": {
-"run_id": "yvgkr76y",
+"m3dwnogz": {
+"run_id": "m3dwnogz",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
-"level_id": "ewpjm7lw",
+"level_id": "y9mjq5l9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-10",
+"submitted": "2018-02-10T10:45:39Z",
+"duration": 731.0
+},
+"m794580y": {
+"run_id": "m794580y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "n93750nd",
 "status": "Verified",
 "player": {
 "User": {
@@ -1663,24 +140,230 @@
 "name": "Banks"
 }
 },
-"performed": "2018-04-09",
-"submitted": "2018-04-09T08:23:44Z",
-"duration": 708.0
+"performed": "2018-04-06",
+"submitted": "2018-04-06T02:53:51Z",
+"duration": 26.0
 },
-"mk4ndo1y": {
-"run_id": "mk4ndo1y",
+"m794xeey": {
+"run_id": "m794xeey",
 "game_id": "y65zy46e",
 "category_id": "wkponpj2",
-"level_id": "69z3o4ld",
+"level_id": "r9g2035d",
 "status": "Verified",
 "player": {
 "Guest": {
 "name": "AverageAvocado"
 }
 },
-"performed": "2015-04-24",
-"submitted": "2018-04-09T23:27:28Z",
-"duration": 877.0
+"performed": "2015-04-28",
+"submitted": "2018-04-09T23:31:06Z",
+"duration": 1635.0
+},
+"m79eg8wy": {
+"run_id": "m79eg8wy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-09",
+"submitted": "2018-02-09T12:20:53Z",
+"duration": 104.0
+},
+"m79en79y": {
+"run_id": "m79en79y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5wkjzk5d",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "texture3D"
+}
+},
+"performed": "2010-04-07",
+"submitted": "2018-02-14T08:01:23Z",
+"duration": 40.0
+},
+"m79lq2ey": {
+"run_id": "m79lq2ey",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "z986v8gd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-02-20",
+"submitted": "2018-02-20T07:32:25Z",
+"duration": 193.0
+},
+"m79lq5wy": {
+"run_id": "m79lq5wy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2015-08-28",
+"submitted": "2018-02-20T04:04:07Z",
+"duration": 96.0
+},
+"m79lq60y": {
+"run_id": "m79lq60y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5d7vk7gd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2016-01-23",
+"submitted": "2018-02-20T06:09:38Z",
+"duration": 1068.0
+},
+"m79lqw0y": {
+"run_id": "m79lqw0y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ywe1k4yd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2016-01-22",
+"submitted": "2018-02-20T05:47:30Z",
+"duration": 449.0
+},
+"m79o520y": {
+"run_id": "m79o520y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ldyy7ejd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4ve1lj",
+"name": "Fralor"
+}
+},
+"performed": "2018-01-27",
+"submitted": "2018-01-27T19:15:55Z",
+"duration": 117.0
+},
+"m79vkkwy": {
+"run_id": "m79vkkwy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd0gr00w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-03-18",
+"submitted": "2018-03-18T19:55:05Z",
+"duration": 771.0
+},
+"m7p77o5m": {
+"run_id": "m7p77o5m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5wkjzk5d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kj9rwroj",
+"name": "Edwardss44"
+}
+},
+"performed": "2018-09-22",
+"submitted": "2018-09-22T18:00:19Z",
+"duration": 26.0
+},
+"m7pw1k4m": {
+"run_id": "m7pw1k4m",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "rdn0jpqw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-02",
+"submitted": "2018-10-02T10:38:11Z",
+"duration": 818.0
+},
+"m7pwxkwm": {
+"run_id": "m7pwxkwm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "owo01kow",
+"status": "Pending",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-08",
+"submitted": "2018-10-09T05:36:39Z",
+"duration": 410.0
+},
+"mek2o68m": {
+"run_id": "mek2o68m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5wkjzk5d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "zx729rq8",
+"name": "KarmikKoala"
+}
+},
+"performed": "2017-08-07",
+"submitted": "2018-02-20T19:12:46Z",
+"duration": 31.0
+},
+"mek2x13m": {
+"run_id": "mek2x13m",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "xd4j732d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2017-11-09",
+"submitted": "2018-02-20T06:39:45Z",
+"duration": 373.0
 },
 "mek2x39m": {
 "run_id": "mek2x39m",
@@ -1698,11 +381,386 @@
 "submitted": "2018-02-20T06:05:52Z",
 "duration": 342.0
 },
-"z136jxgm": {
-"run_id": "z136jxgm",
+"mek2x98m": {
+"run_id": "mek2x98m",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
-"level_id": "n93750nd",
+"level_id": "5wkjzk5d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2015-08-29",
+"submitted": "2018-02-20T04:28:17Z",
+"duration": 52.0
+},
+"mek5123m": {
+"run_id": "mek5123m",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "5d7vk3gd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "AverageAvocado"
+}
+},
+"performed": "2015-05-10",
+"submitted": "2018-04-09T23:42:04Z",
+"duration": 426.0
+},
+"mek51n3m": {
+"run_id": "mek51n3m",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "nwllx70w",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "AverageAvocado"
+}
+},
+"performed": "2015-04-17",
+"submitted": "2018-04-09T23:23:03Z",
+"duration": 1342.0
+},
+"mekd7kqm": {
+"run_id": "mekd7kqm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "z986vjgd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-03-23",
+"submitted": "2018-03-24T01:28:37Z",
+"duration": 227.0
+},
+"mekdo13m": {
+"run_id": "mekdo13m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ewpjm7lw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-22",
+"submitted": "2018-03-22T08:47:52Z",
+"duration": 358.0
+},
+"mekneg8m": {
+"run_id": "mekneg8m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5wkjzk5d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-02-12",
+"submitted": "2018-02-13T02:25:48Z",
+"duration": 26.0
+},
+"meknw72m": {
+"run_id": "meknw72m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "texture3D"
+}
+},
+"performed": "2010-04-02",
+"submitted": "2018-02-14T07:48:02Z",
+"duration": 68.0
+},
+"meknwo0m": {
+"run_id": "meknwo0m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ldyy7ekd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "zzzKOTzzz"
+}
+},
+"performed": "2006-03-04",
+"submitted": "2018-02-14T06:21:33Z",
+"duration": 457.0
+},
+"mekqv58m": {
+"run_id": "mekqv58m",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "69z3o4ld",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-04-19",
+"submitted": "2018-04-19T04:47:51Z",
+"duration": 224.0
+},
+"mk4ndo1y": {
+"run_id": "mk4ndo1y",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "69z3o4ld",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "AverageAvocado"
+}
+},
+"performed": "2015-04-24",
+"submitted": "2018-04-09T23:27:28Z",
+"duration": 877.0
+},
+"mk4op8xy": {
+"run_id": "mk4op8xy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd17ejqd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Intheblue"
+}
+},
+"performed": "2012-05-12",
+"submitted": "2018-02-14T06:58:17Z",
+"duration": 229.0
+},
+"mk4r8q1y": {
+"run_id": "mk4r8q1y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "68w2g538",
+"name": "YT_Veritas0923"
+}
+},
+"performed": "2018-03-07",
+"submitted": "2018-03-07T23:51:33Z",
+"duration": 128.0
+},
+"mk4rnply": {
+"run_id": "mk4rnply",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd4j760d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-03-17",
+"submitted": "2018-03-18T01:48:05Z",
+"duration": 428.0
+},
+"mk4rxx5y": {
+"run_id": "mk4rxx5y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "29v3ey1w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-17",
+"submitted": "2018-03-17T16:33:17Z",
+"duration": 75.0
+},
+"mk4w17xy": {
+"run_id": "mk4w17xy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd17ejqd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "68w2g538",
+"name": "YT_Veritas0923"
+}
+},
+"performed": "2018-02-28",
+"submitted": "2018-02-28T01:59:02Z",
+"duration": 784.0
+},
+"mk4w2gvy": {
+"run_id": "mk4w2gvy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd0gr00w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2015-08-29",
+"submitted": "2018-02-20T05:05:37Z",
+"duration": 763.0
+},
+"mk4w385y": {
+"run_id": "mk4w385y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "rw64pvn9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "zx729rq8",
+"name": "KarmikKoala"
+}
+},
+"performed": "2017-08-07",
+"submitted": "2018-02-20T19:15:24Z",
+"duration": 991.0
+},
+"mr86jggy": {
+"run_id": "mr86jggy",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "rw64pnr9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-02",
+"submitted": "2018-10-02T10:43:51Z",
+"duration": 699.0
+},
+"mr86qr7y": {
+"run_id": "mr86qr7y",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "69z3o4ld",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-02",
+"submitted": "2018-10-02T19:13:35Z",
+"duration": 115.0
+},
+"mr86rg7y": {
+"run_id": "mr86rg7y",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "xd17e0ed",
+"status": "Pending",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-08",
+"submitted": "2018-10-09T05:41:12Z",
+"duration": 567.0
+},
+"mrq0v4gy": {
+"run_id": "mrq0v4gy",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "z986v8gd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "zzzKOTzzz"
+}
+},
+"performed": "2006-01-13",
+"submitted": "2018-02-14T07:33:23Z",
+"duration": 164.0
+},
+"mrq0vd7y": {
+"run_id": "mrq0vd7y",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "5d7vk3gd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "texture3D"
+}
+},
+"performed": "2010-11-07",
+"submitted": "2018-02-14T16:39:49Z",
+"duration": 405.0
+},
+"mrq59e4y": {
+"run_id": "mrq59e4y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "nwllx60w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-07",
+"submitted": "2018-03-07T17:21:44Z",
+"duration": 538.0
+},
+"mrqde97y": {
+"run_id": "mrqde97y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2015-08-28",
+"submitted": "2018-02-20T04:09:02Z",
+"duration": 61.0
+},
+"mrqden2y": {
+"run_id": "mrqden2y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "z986vjgd",
 "status": "Verified",
 "player": {
 "User": {
@@ -1711,14 +769,78 @@
 }
 },
 "performed": "2016-01-22",
-"submitted": "2018-02-20T05:26:35Z",
-"duration": 31.0
+"submitted": "2018-02-20T05:29:57Z",
+"duration": 279.0
 },
-"yjk7kr7m": {
-"run_id": "yjk7kr7m",
+"mrqdk97y": {
+"run_id": "mrqdk97y",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
-"level_id": "rdn0j5qw",
+"level_id": "n937507d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "zx729rq8",
+"name": "KarmikKoala"
+}
+},
+"performed": "2017-08-07",
+"submitted": "2018-02-20T19:15:50Z",
+"duration": 1456.0
+},
+"mrqp8e2y": {
+"run_id": "mrqp8e2y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ldyy7ejd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-04-04",
+"submitted": "2018-04-04T06:46:23Z",
+"duration": 96.0
+},
+"mrqx9o2y": {
+"run_id": "mrqx9o2y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "n93750nd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4ve1lj",
+"name": "Fralor"
+}
+},
+"performed": "2018-01-27",
+"submitted": "2018-01-27T19:17:11Z",
+"duration": 28.0
+},
+"y234dj9m": {
+"run_id": "y234dj9m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "4956oj0d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-04-06",
+"submitted": "2018-04-06T06:16:44Z",
+"duration": 232.0
+},
+"y2363e5m": {
+"run_id": "y2363e5m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5d7vk7gd",
 "status": "Verified",
 "player": {
 "User": {
@@ -1726,15 +848,141 @@
 "name": "ZPR"
 }
 },
-"performed": "2018-03-05",
-"submitted": "2018-03-05T17:07:26Z",
-"duration": 391.0
+"performed": "2018-03-20",
+"submitted": "2018-03-20T10:23:51Z",
+"duration": 739.0
 },
-"y678wrpm": {
-"run_id": "y678wrpm",
+"y2365j9m": {
+"run_id": "y2365j9m",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
 "level_id": "592zg0g9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-22",
+"submitted": "2018-03-22T09:45:59Z",
+"duration": 593.0
+},
+"y236oowm": {
+"run_id": "y236oowm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-04-02",
+"submitted": "2018-04-02T08:05:59Z",
+"duration": 44.0
+},
+"y2381dwm": {
+"run_id": "y2381dwm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ewpjm7lw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2015-08-29",
+"submitted": "2018-02-20T04:16:52Z",
+"duration": 474.0
+},
+"y2381x6m": {
+"run_id": "y2381x6m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "n937507d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2015-08-20",
+"submitted": "2018-02-20T05:10:33Z",
+"duration": 825.0
+},
+"y23n11wm": {
+"run_id": "y23n11wm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "n93750nd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-02-08",
+"submitted": "2018-02-08T22:15:39Z",
+"duration": 28.0
+},
+"y23n277m": {
+"run_id": "y23n277m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd4j760d",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "texture3D"
+}
+},
+"performed": "2010-04-10",
+"submitted": "2018-02-14T08:20:11Z",
+"duration": 577.0
+},
+"y23n2x5m": {
+"run_id": "y23n2x5m",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "ywe1k8yd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "zzzKOTzzz"
+}
+},
+"performed": "2006-06-12",
+"submitted": "2018-02-14T07:37:19Z",
+"duration": 159.0
+},
+"y23nqx6m": {
+"run_id": "y23nqx6m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ldyy7ejd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-02-08",
+"submitted": "2018-02-08T07:54:34Z",
+"duration": 112.0
+},
+"y23r6v9m": {
+"run_id": "y23r6v9m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "29v3ey1w",
 "status": "Verified",
 "player": {
 "User": {
@@ -1743,24 +991,72 @@
 }
 },
 "performed": "2018-03-16",
-"submitted": "2018-03-17T04:16:05Z",
-"duration": 674.0
+"submitted": "2018-03-17T04:56:17Z",
+"duration": 81.0
 },
-"z51v1ddm": {
-"run_id": "z51v1ddm",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "nwllx70w",
+"y23ro75m": {
+"run_id": "y23ro75m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "y9mjq5l9",
 "status": "Verified",
 "player": {
 "User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
+"user_id": "7j4vgmmj",
+"name": "ZPR"
 }
 },
-"performed": "2018-10-03",
-"submitted": "2018-10-03T07:24:07Z",
-"duration": 915.0
+"performed": "2018-03-18",
+"submitted": "2018-03-18T13:38:06Z",
+"duration": 522.0
+},
+"y23wdj6m": {
+"run_id": "y23wdj6m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ldyy7ekd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4ve1lj",
+"name": "Fralor"
+}
+},
+"performed": "2018-01-27",
+"submitted": "2018-01-27T19:20:40Z",
+"duration": 742.0
+},
+"y43781dz": {
+"run_id": "y43781dz",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kj9rwroj",
+"name": "Edwardss44"
+}
+},
+"performed": "2018-09-23",
+"submitted": "2018-09-22T22:48:47Z",
+"duration": 41.0
+},
+"y450gvdm": {
+"run_id": "y450gvdm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "gdre4j69",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-12",
+"submitted": "2018-03-12T13:16:21Z",
+"duration": 365.0
 },
 "y454g93m": {
 "run_id": "y454g93m",
@@ -1778,6 +1074,450 @@
 "submitted": "2018-04-10T02:58:09Z",
 "duration": 2510.0
 },
+"y454qndm": {
+"run_id": "y454qndm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "ywe1k8yd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-04-09",
+"submitted": "2018-04-09T09:16:57Z",
+"duration": 276.0
+},
+"y45j6nkm": {
+"run_id": "y45j6nkm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "rdqj20k9",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "texture3D"
+}
+},
+"performed": "2011-10-22",
+"submitted": "2018-02-14T16:41:59Z",
+"duration": 1912.0
+},
+"y45n17nm": {
+"run_id": "y45n17nm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "rdn0j5qw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2016-01-22",
+"submitted": "2018-02-20T05:32:28Z",
+"duration": 399.0
+},
+"y45n1qnm": {
+"run_id": "y45n1qnm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "kwj5lyn9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2017-11-09",
+"submitted": "2018-02-20T06:20:26Z",
+"duration": 156.0
+},
+"y45v8onm": {
+"run_id": "y45v8onm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "z986vjgd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-25",
+"submitted": "2018-03-25T14:01:22Z",
+"duration": 216.0
+},
+"y678vj1m": {
+"run_id": "y678vj1m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "y9mjq5l9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-03-13",
+"submitted": "2018-03-14T01:58:20Z",
+"duration": 538.0
+},
+"y678wrpm": {
+"run_id": "y678wrpm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "592zg0g9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-03-16",
+"submitted": "2018-03-17T04:16:05Z",
+"duration": 674.0
+},
+"y67ekpjm": {
+"run_id": "y67ekpjm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-02-06",
+"submitted": "2018-02-06T07:35:48Z",
+"duration": 57.0
+},
+"y67ero1m": {
+"run_id": "y67ero1m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd17ejqd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4ve1lj",
+"name": "Fralor"
+}
+},
+"performed": "2018-01-27",
+"submitted": "2018-01-27T19:21:29Z",
+"duration": 298.0
+},
+"y67jld1m": {
+"run_id": "y67jld1m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "z986vj7d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2015-08-30",
+"submitted": "2018-02-20T05:13:25Z",
+"duration": 919.0
+},
+"y67wrk0m": {
+"run_id": "y67wrk0m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd0gr00w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-23",
+"submitted": "2018-03-23T09:25:05Z",
+"duration": 710.0
+},
+"y6p9n5pm": {
+"run_id": "y6p9n5pm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "n93750nd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kj9rwroj",
+"name": "Edwardss44"
+}
+},
+"performed": "2018-09-23",
+"submitted": "2018-09-22T22:51:22Z",
+"duration": 23.0
+},
+"y89j96nm": {
+"run_id": "y89j96nm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "o9xn5l0w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-03",
+"submitted": "2018-10-03T11:57:15Z",
+"duration": 817.0
+},
+"y89j9ewm": {
+"run_id": "y89j9ewm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "5d7vk3gd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-03",
+"submitted": "2018-10-03T07:57:15Z",
+"duration": 237.0
+},
+"y89jq3dm": {
+"run_id": "y89jq3dm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "ldyy7pkd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-02",
+"submitted": "2018-10-02T11:36:20Z",
+"duration": 2140.0
+},
+"y8q43j1y": {
+"run_id": "y8q43j1y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-04-03",
+"submitted": "2018-04-03T02:50:48Z",
+"duration": 101.0
+},
+"y8q43r1y": {
+"run_id": "y8q43r1y",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "kwj5lyn9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-04-03",
+"submitted": "2018-04-03T00:33:19Z",
+"duration": 104.0
+},
+"y8qg185y": {
+"run_id": "y8qg185y",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "ewpjmqkw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2017-11-09",
+"submitted": "2018-02-20T06:27:42Z",
+"duration": 653.0
+},
+"y8qg1x1y": {
+"run_id": "y8qg1x1y",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "5wkjzr2d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2017-11-09",
+"submitted": "2018-02-20T06:32:07Z",
+"duration": 692.0
+},
+"y8qn1rny": {
+"run_id": "y8qn1rny",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ldyy7ekd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-06",
+"submitted": "2018-03-06T12:00:32Z",
+"duration": 397.0
+},
+"y8qo6n5y": {
+"run_id": "y8qo6n5y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5wkjzk5d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-13",
+"submitted": "2018-02-13T15:14:43Z",
+"duration": 26.0
+},
+"y8qowrdy": {
+"run_id": "y8qowrdy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Intheblue"
+}
+},
+"performed": "2012-05-11",
+"submitted": "2018-02-14T06:40:04Z",
+"duration": 103.0
+},
+"y8qowvdy": {
+"run_id": "y8qowvdy",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "kwj5lyn9",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "zzzKOTzzz"
+}
+},
+"performed": "2006-01-06",
+"submitted": "2018-02-14T07:17:33Z",
+"duration": 117.0
+},
+"y8qp1o1y": {
+"run_id": "y8qp1o1y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4ve1lj",
+"name": "Fralor"
+}
+},
+"performed": "2018-01-26",
+"submitted": "2018-01-26T18:03:33Z",
+"duration": 115.0
+},
+"y8qpr05y": {
+"run_id": "y8qpr05y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ewpjm7lw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4ve1lj",
+"name": "Fralor"
+}
+},
+"performed": "2018-01-27",
+"submitted": "2018-01-27T19:22:16Z",
+"duration": 599.0
+},
+"y97e5nnm": {
+"run_id": "y97e5nnm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "592zg0g9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2015-08-29",
+"submitted": "2018-02-20T04:33:07Z",
+"duration": 695.0
+},
+"y97pw6rm": {
+"run_id": "y97pw6rm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "69z3orld",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-16",
+"submitted": "2018-02-16T12:54:13Z",
+"duration": 47.0
+},
+"y97qxpkm": {
+"run_id": "y97qxpkm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "ywe1k8yd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "AverageAvocado"
+}
+},
+"performed": "2015-04-18",
+"submitted": "2018-04-09T23:25:17Z",
+"duration": 277.0
+},
 "ydq4500m": {
 "run_id": "ydq4500m",
 "game_id": "o1yry26q",
@@ -1794,20 +1534,21 @@
 "submitted": "2018-02-20T19:14:30Z",
 "duration": 692.0
 },
-"yw1wgqnz": {
-"run_id": "yw1wgqnz",
+"ydq461jm": {
+"run_id": "ydq461jm",
 "game_id": "y65zy46e",
 "category_id": "wkponpj2",
-"level_id": "69z3o4ld",
+"level_id": "xd0gr7xw",
 "status": "Verified",
 "player": {
-"Guest": {
-"name": "zzzKOTzzz"
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
 }
 },
-"performed": "2006-06-11",
-"submitted": "2018-02-14T07:41:14Z",
-"duration": 154.0
+"performed": "2017-11-09",
+"submitted": "2018-02-20T06:42:19Z",
+"duration": 622.0
 },
 "ydq46wwm": {
 "run_id": "ydq46wwm",
@@ -1825,11 +1566,249 @@
 "submitted": "2018-02-20T05:42:16Z",
 "duration": 378.0
 },
-"z0e01lem": {
-"run_id": "z0e01lem",
+"ydql3gjm": {
+"run_id": "ydql3gjm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5wkjzk5d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "y8d7ywo8",
+"name": "bias60gaming"
+}
+},
+"performed": "2018-01-24",
+"submitted": "2018-01-25T23:36:33Z",
+"duration": 52.0
+},
+"ydql590m": {
+"run_id": "ydql590m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4ve1lj",
+"name": "Fralor"
+}
+},
+"performed": "2018-01-26",
+"submitted": "2018-01-27T00:32:28Z",
+"duration": 47.0
+},
+"ydqo9dwm": {
+"run_id": "ydqo9dwm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "r9g20z5d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-08",
+"submitted": "2018-03-08T13:59:27Z",
+"duration": 527.0
+},
+"ydqp2dqm": {
+"run_id": "ydqp2dqm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "rw64pvn9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-28",
+"submitted": "2018-03-28T12:36:18Z",
+"duration": 601.0
+},
+"ydqv11qm": {
+"run_id": "ydqv11qm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5wkjzk5d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-12",
+"submitted": "2018-02-12T14:22:22Z",
+"duration": 28.0
+},
+"ydqvogxm": {
+"run_id": "ydqvogxm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "29v3ey1w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-16",
+"submitted": "2018-02-16T12:53:41Z",
+"duration": 83.0
+},
+"yj4x48ny": {
+"run_id": "yj4x48ny",
 "game_id": "y65zy46e",
 "category_id": "wkponpj2",
-"level_id": "y9mjqp59",
+"level_id": "r9g2035d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-03",
+"submitted": "2018-10-03T11:23:01Z",
+"duration": 1204.0
+},
+"yjk7kr7m": {
+"run_id": "yjk7kr7m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "rdn0j5qw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-05",
+"submitted": "2018-03-05T17:07:26Z",
+"duration": 391.0
+},
+"yjk9623m": {
+"run_id": "yjk9623m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5wkjzk5d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4ve1lj",
+"name": "Fralor"
+}
+},
+"performed": "2018-01-27",
+"submitted": "2018-01-27T19:24:39Z",
+"duration": 44.0
+},
+"yjkeo3dm": {
+"run_id": "yjkeo3dm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "zzzKOTzzz"
+}
+},
+"performed": "2006-02-15",
+"submitted": "2018-02-14T05:55:57Z",
+"duration": 45.0
+},
+"yjkeogom": {
+"run_id": "yjkeogom",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "texture3D"
+}
+},
+"performed": "2010-04-02",
+"submitted": "2018-02-14T07:45:51Z",
+"duration": 156.0
+},
+"yjkoegdm": {
+"run_id": "yjkoegdm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "y8d7ywo8",
+"name": "bias60gaming"
+}
+},
+"performed": "2018-01-21",
+"submitted": "2018-01-21T00:41:22Z",
+"duration": 82.0
+},
+"yjkqllnm": {
+"run_id": "yjkqllnm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd17ejqd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "zx729rq8",
+"name": "KarmikKoala"
+}
+},
+"performed": "2017-08-07",
+"submitted": "2018-02-20T19:10:50Z",
+"duration": 253.0
+},
+"yjkv52gm": {
+"run_id": "yjkv52gm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ewpjm7lw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-04-07",
+"submitted": "2018-04-08T03:24:50Z",
+"duration": 358.0
+},
+"yl4rg2rm": {
+"run_id": "yl4rg2rm",
+"game_id": "o1yry26q",
+"category_id": "z273v15d",
+"level_id": null,
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "68w15lxg",
+"name": "bjw"
+}
+},
+"performed": "2018-07-17",
+"submitted": "2018-10-01T19:11:30Z",
+"duration": 15635.0
+},
+"yl9j01ry": {
+"run_id": "yl9j01ry",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "29v3ek3w",
 "status": "Verified",
 "player": {
 "User": {
@@ -1838,8 +1817,245 @@
 }
 },
 "performed": "2017-11-09",
-"submitted": "2018-02-20T06:29:52Z",
-"duration": 315.0
+"submitted": "2018-02-20T06:37:30Z",
+"duration": 1084.0
+},
+"yl9j07ky": {
+"run_id": "yl9j07ky",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "o9xn520w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2016-01-22",
+"submitted": "2018-02-20T06:03:22Z",
+"duration": 538.0
+},
+"yl9j0o3y": {
+"run_id": "yl9j0o3y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "y9mjq5l9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2015-08-29",
+"submitted": "2018-02-20T04:25:31Z",
+"duration": 627.0
+},
+"yl9jkv3y": {
+"run_id": "yl9jkv3y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ewpjm7lw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "zx729rq8",
+"name": "KarmikKoala"
+}
+},
+"performed": "2017-08-07",
+"submitted": "2018-02-20T19:11:17Z",
+"duration": 581.0
+},
+"yl9p4qky": {
+"run_id": "yl9p4qky",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd17ejqd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-02-08",
+"submitted": "2018-02-08T07:10:27Z",
+"duration": 289.0
+},
+"yl9p62ky": {
+"run_id": "yl9p62ky",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ldyy7ejd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-13",
+"submitted": "2018-02-13T15:16:11Z",
+"duration": 96.0
+},
+"yl9pk7ky": {
+"run_id": "yl9pk7ky",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd17ejqd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-09",
+"submitted": "2018-02-09T14:37:23Z",
+"duration": 235.0
+},
+"yl9pklry": {
+"run_id": "yl9pklry",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ewpjm7lw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-09",
+"submitted": "2018-02-09T17:04:39Z",
+"duration": 431.0
+},
+"yl9w1jry": {
+"run_id": "yl9w1jry",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "rdqj21k9",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "AverageAvocado"
+}
+},
+"performed": "2015-05-10",
+"submitted": "2018-04-09T23:40:27Z",
+"duration": 1529.0
+},
+"yl9w1pry": {
+"run_id": "yl9w1pry",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "gdre4q69",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "AverageAvocado"
+}
+},
+"performed": "2015-04-11",
+"submitted": "2018-04-09T23:21:06Z",
+"duration": 1759.0
+},
+"yo40gk7m": {
+"run_id": "yo40gk7m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ewpjm7lw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "y8d7ywo8",
+"name": "bias60gaming"
+}
+},
+"performed": "2018-01-22",
+"submitted": "2018-01-22T23:35:32Z",
+"duration": 1007.0
+},
+"yo453odm": {
+"run_id": "yo453odm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "68w2g538",
+"name": "YT_Veritas0923"
+}
+},
+"performed": "2018-03-07",
+"submitted": "2018-03-07T23:45:50Z",
+"duration": 199.0
+},
+"yo45o87m": {
+"run_id": "yo45o87m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "68w2g538",
+"name": "YT_Veritas0923"
+}
+},
+"performed": "2018-03-13",
+"submitted": "2018-03-13T15:48:04Z",
+"duration": 189.0
+},
+"yo48we1m": {
+"run_id": "yo48we1m",
+"game_id": "o1yry26q",
+"category_id": "z273v15d",
+"level_id": null,
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-03-25",
+"submitted": "2018-04-02T04:47:39Z",
+"duration": 18877.0
+},
+"yo4ek3jm": {
+"run_id": "yo4ek3jm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "592zg0g9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "zx729rq8",
+"name": "KarmikKoala"
+}
+},
+"performed": "2017-08-07",
+"submitted": "2018-02-20T19:13:20Z",
+"duration": 842.0
+},
+"yo4gnpjm": {
+"run_id": "yo4gnpjm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "z986v8gd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "alexrazz"
+}
+},
+"performed": "2008-01-30",
+"submitted": "2018-04-11T02:32:00Z",
+"duration": 193.0
 },
 "yo4q030m": {
 "run_id": "yo4q030m",
@@ -1856,43 +2072,26 @@
 "submitted": "2018-02-14T06:54:30Z",
 "duration": 50.0
 },
-"mek2x98m": {
-"run_id": "mek2x98m",
+"yo4q075m": {
+"run_id": "yo4q075m",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
-"level_id": "5wkjzk5d",
+"level_id": "xd17ejqd",
 "status": "Verified",
 "player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
+"Guest": {
+"name": "texture3D"
 }
 },
-"performed": "2015-08-29",
-"submitted": "2018-02-20T04:28:17Z",
-"duration": 52.0
+"performed": "2010-04-03",
+"submitted": "2018-02-14T07:50:44Z",
+"duration": 333.0
 },
-"zpq5398y": {
-"run_id": "zpq5398y",
+"yo4q5l5m": {
+"run_id": "yo4q5l5m",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
-"level_id": "ywe1k4yd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-08",
-"submitted": "2018-03-08T13:58:57Z",
-"duration": 415.0
-},
-"yvgnpe4y": {
-"run_id": "yvgnpe4y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
+"level_id": "z986vjgd",
 "status": "Verified",
 "player": {
 "User": {
@@ -1900,8 +2099,24 @@
 "name": "ZPR"
 }
 },
-"performed": "2018-02-13",
-"submitted": "2018-02-13T15:15:08Z",
+"performed": "2018-02-16",
+"submitted": "2018-02-16T12:52:39Z",
+"duration": 229.0
+},
+"yo4qdnjm": {
+"run_id": "yo4qdnjm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "29v3ey1w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-12",
+"submitted": "2018-02-12T15:42:23Z",
 "duration": 91.0
 },
 "yo4xd57m": {
@@ -1920,22 +2135,6 @@
 "submitted": "2018-01-31T01:24:20Z",
 "duration": 570.0
 },
-"y8qpr05y": {
-"run_id": "y8qpr05y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ewpjm7lw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4ve1lj",
-"name": "Fralor"
-}
-},
-"performed": "2018-01-27",
-"submitted": "2018-01-27T19:22:16Z",
-"duration": 599.0
-},
 "yvg51d8y": {
 "run_id": "yvg51d8y",
 "game_id": "o1yry26q",
@@ -1951,303 +2150,6 @@
 "performed": "2018-03-09",
 "submitted": "2018-03-09T14:25:25Z",
 "duration": 373.0
-},
-"yl9w1jry": {
-"run_id": "yl9w1jry",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "rdqj21k9",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "AverageAvocado"
-}
-},
-"performed": "2015-05-10",
-"submitted": "2018-04-09T23:40:27Z",
-"duration": 1529.0
-},
-"yj4x48ny": {
-"run_id": "yj4x48ny",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "r9g2035d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-03",
-"submitted": "2018-10-03T11:23:01Z",
-"duration": 1204.0
-},
-"yl9pk7ky": {
-"run_id": "yl9pk7ky",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd17ejqd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-09",
-"submitted": "2018-02-09T14:37:23Z",
-"duration": 235.0
-},
-"m3d4xj4z": {
-"run_id": "m3d4xj4z",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "z986v8gd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "AverageAvocado"
-}
-},
-"performed": "2015-04-03",
-"submitted": "2018-04-09T23:07:05Z",
-"duration": 408.0
-},
-"y23n2x5m": {
-"run_id": "y23n2x5m",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "ywe1k8yd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "zzzKOTzzz"
-}
-},
-"performed": "2006-06-12",
-"submitted": "2018-02-14T07:37:19Z",
-"duration": 159.0
-},
-"zq30r3ry": {
-"run_id": "zq30r3ry",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "rdqj21k9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-03",
-"submitted": "2018-10-03T19:13:03Z",
-"duration": 778.0
-},
-"yo48we1m": {
-"run_id": "yo48we1m",
-"game_id": "o1yry26q",
-"category_id": "z273v15d",
-"level_id": null,
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-03-25",
-"submitted": "2018-04-02T04:47:39Z",
-"duration": 18877.0
-},
-"y454qndm": {
-"run_id": "y454qndm",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "ywe1k8yd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-04-09",
-"submitted": "2018-04-09T09:16:57Z",
-"duration": 276.0
-},
-"zg7dq5nz": {
-"run_id": "zg7dq5nz",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "rdn0j5nw",
-"status": "Pending",
-"player": {
-"Guest": {
-"name": "Szwagier"
-}
-},
-"performed": "2018-10-08",
-"submitted": "2018-10-09T05:21:56Z",
-"duration": 642.0
-},
-"ywpj679z": {
-"run_id": "ywpj679z",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd4j760d",
-"status": "Pending",
-"player": {
-"Guest": {
-"name": "Szwagier"
-}
-},
-"performed": "2018-10-08",
-"submitted": "2018-10-09T05:19:15Z",
-"duration": 392.0
-},
-"mk4op8xy": {
-"run_id": "mk4op8xy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd17ejqd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "Intheblue"
-}
-},
-"performed": "2012-05-12",
-"submitted": "2018-02-14T06:58:17Z",
-"duration": 229.0
-},
-"z0e2g0jm": {
-"run_id": "z0e2g0jm",
-"game_id": "o1yry26q",
-"category_id": "zdnry872",
-"level_id": null,
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-04-02",
-"submitted": "2018-04-02T04:37:32Z",
-"duration": 15933.0
-},
-"mekneg8m": {
-"run_id": "mekneg8m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5wkjzk5d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-02-12",
-"submitted": "2018-02-13T02:25:48Z",
-"duration": 26.0
-},
-"m3d8negz": {
-"run_id": "m3d8negz",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ldyy7ejd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-03-23",
-"submitted": "2018-03-24T00:24:29Z",
-"duration": 96.0
-},
-"mr86qr7y": {
-"run_id": "mr86qr7y",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "69z3o4ld",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-02",
-"submitted": "2018-10-02T19:13:35Z",
-"duration": 115.0
-},
-"ydq461jm": {
-"run_id": "ydq461jm",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "xd0gr7xw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2017-11-09",
-"submitted": "2018-02-20T06:42:19Z",
-"duration": 622.0
-},
-"y23nqx6m": {
-"run_id": "y23nqx6m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ldyy7ejd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-02-08",
-"submitted": "2018-02-08T07:54:34Z",
-"duration": 112.0
-},
-"yvjqg0ey": {
-"run_id": "yvjqg0ey",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "ywe1k8yd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-02",
-"submitted": "2018-10-02T19:29:20Z",
-"duration": 152.0
-},
-"z13v96rm": {
-"run_id": "z13v96rm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "29v3ey1w",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "texture3D"
-}
-},
-"performed": "2011-12-10",
-"submitted": "2018-02-14T16:35:22Z",
-"duration": 131.0
 },
 "yvg5ew4y": {
 "run_id": "yvg5ew4y",
@@ -2265,199 +2167,27 @@
 "submitted": "2018-03-17T17:49:45Z",
 "duration": 363.0
 },
-"z0e0558m": {
-"run_id": "z0e0558m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "zx729rq8",
-"name": "KarmikKoala"
-}
-},
-"performed": "2017-08-07",
-"submitted": "2018-02-20T19:08:05Z",
-"duration": 112.0
-},
-"y23n277m": {
-"run_id": "y23n277m",
+"yvg7314y": {
+"run_id": "yvg7314y",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
 "level_id": "xd4j760d",
 "status": "Verified",
 "player": {
-"Guest": {
-"name": "texture3D"
-}
-},
-"performed": "2010-04-10",
-"submitted": "2018-02-14T08:20:11Z",
-"duration": 577.0
-},
-"yw1wg83z": {
-"run_id": "yw1wg83z",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "n93750nd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "zzzKOTzzz"
-}
-},
-"performed": "2006-02-15",
-"submitted": "2018-02-14T06:17:19Z",
-"duration": 23.0
-},
-"yo4gnpjm": {
-"run_id": "yo4gnpjm",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "z986v8gd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "alexrazz"
-}
-},
-"performed": "2008-01-30",
-"submitted": "2018-04-11T02:32:00Z",
-"duration": 193.0
-},
-"zxvjqkey": {
-"run_id": "zxvjqkey",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5wkjzk5d",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "zzzKOTzzz"
-}
-},
-"performed": "2006-01-06",
-"submitted": "2018-02-14T06:05:29Z",
-"duration": 28.0
-},
-"yo4qdnjm": {
-"run_id": "yo4qdnjm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "29v3ey1w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-12",
-"submitted": "2018-02-12T15:42:23Z",
-"duration": 91.0
-},
-"y67ero1m": {
-"run_id": "y67ero1m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd17ejqd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4ve1lj",
-"name": "Fralor"
-}
-},
-"performed": "2018-01-27",
-"submitted": "2018-01-27T19:21:29Z",
-"duration": 298.0
-},
-"zn851nvz": {
-"run_id": "zn851nvz",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "y9mjq5l9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-09",
-"submitted": "2018-03-09T14:26:09Z",
-"duration": 545.0
-},
-"mrqde97y": {
-"run_id": "mrqde97y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
-"status": "Verified",
-"player": {
 "User": {
 "user_id": "kjp6yp58",
 "name": "Stu"
 }
 },
-"performed": "2015-08-28",
-"submitted": "2018-02-20T04:09:02Z",
-"duration": 61.0
+"performed": "2015-08-29",
+"submitted": "2018-02-20T04:56:01Z",
+"duration": 580.0
 },
-"yw12x03z": {
-"run_id": "yw12x03z",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "68w2g538",
-"name": "YT_Veritas0923"
-}
-},
-"performed": "2018-02-28",
-"submitted": "2018-02-28T01:49:39Z",
-"duration": 262.0
-},
-"z5owx3jy": {
-"run_id": "z5owx3jy",
+"yvg766ey": {
+"run_id": "yvg766ey",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
 "level_id": "owo017vw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-02-25",
-"submitted": "2018-02-25T00:57:55Z",
-"duration": 47.0
-},
-"y45v8onm": {
-"run_id": "y45v8onm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "z986vjgd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-25",
-"submitted": "2018-03-25T14:01:22Z",
-"duration": 216.0
-},
-"yjkqllnm": {
-"run_id": "yjkqllnm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd17ejqd",
 "status": "Verified",
 "player": {
 "User": {
@@ -2466,580 +2196,27 @@
 }
 },
 "performed": "2017-08-07",
-"submitted": "2018-02-20T19:10:50Z",
-"duration": 253.0
-},
-"m79eg8wy": {
-"run_id": "m79eg8wy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-09",
-"submitted": "2018-02-09T12:20:53Z",
-"duration": 104.0
-},
-"zn8x3v8z": {
-"run_id": "zn8x3v8z",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "y9mjq5l9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4ve1lj",
-"name": "Fralor"
-}
-},
-"performed": "2018-01-27",
-"submitted": "2018-01-27T19:23:18Z",
-"duration": 915.0
-},
-"ydql3gjm": {
-"run_id": "ydql3gjm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5wkjzk5d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "y8d7ywo8",
-"name": "bias60gaming"
-}
-},
-"performed": "2018-01-24",
-"submitted": "2018-01-25T23:36:33Z",
+"submitted": "2018-02-20T19:09:45Z",
 "duration": 52.0
 },
-"zn892glz": {
-"run_id": "zn892glz",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5d7vk7gd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "texture3D"
-}
-},
-"performed": "2011-10-27",
-"submitted": "2018-02-14T16:46:58Z",
-"duration": 1562.0
-},
-"zn8grp8z": {
-"run_id": "zn8grp8z",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "r9g20z5d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2016-01-22",
-"submitted": "2018-02-20T05:59:40Z",
-"duration": 548.0
-},
-"z136j2gm": {
-"run_id": "z136j2gm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "nwllx60w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2016-01-22",
-"submitted": "2018-02-20T05:45:15Z",
-"duration": 540.0
-},
-"z13v97rm": {
-"run_id": "z13v97rm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ywe1k4yd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "texture3D"
-}
-},
-"performed": "2018-02-14",
-"submitted": "2018-02-14T16:56:35Z",
-"duration": 783.0
-},
-"mr86jggy": {
-"run_id": "mr86jggy",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "rw64pnr9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-02",
-"submitted": "2018-10-02T10:43:51Z",
-"duration": 699.0
-},
-"zq65k21y": {
-"run_id": "zq65k21y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5wkjzk5d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-03-05",
-"submitted": "2018-03-05T01:21:37Z",
-"duration": 26.0
-},
-"y2363e5m": {
-"run_id": "y2363e5m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5d7vk7gd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-20",
-"submitted": "2018-03-20T10:23:51Z",
-"duration": 739.0
-},
-"meknw72m": {
-"run_id": "meknw72m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "texture3D"
-}
-},
-"performed": "2010-04-02",
-"submitted": "2018-02-14T07:48:02Z",
-"duration": 68.0
-},
-"m79lq2ey": {
-"run_id": "m79lq2ey",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "z986v8gd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-02-20",
-"submitted": "2018-02-20T07:32:25Z",
-"duration": 193.0
-},
-"y45n17nm": {
-"run_id": "y45n17nm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "rdn0j5qw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2016-01-22",
-"submitted": "2018-02-20T05:32:28Z",
-"duration": 399.0
-},
-"mek51n3m": {
-"run_id": "mek51n3m",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "nwllx70w",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "AverageAvocado"
-}
-},
-"performed": "2015-04-17",
-"submitted": "2018-04-09T23:23:03Z",
-"duration": 1342.0
-},
-"m79lqw0y": {
-"run_id": "m79lqw0y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ywe1k4yd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2016-01-22",
-"submitted": "2018-02-20T05:47:30Z",
-"duration": 449.0
-},
-"zpqo498y": {
-"run_id": "zpqo498y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "rdqj20k9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2016-01-23",
-"submitted": "2018-02-20T06:07:50Z",
-"duration": 1115.0
-},
-"mrq0vd7y": {
-"run_id": "mrq0vd7y",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "5d7vk3gd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "texture3D"
-}
-},
-"performed": "2010-11-07",
-"submitted": "2018-02-14T16:39:49Z",
-"duration": 405.0
-},
-"zn8o93lz": {
-"run_id": "zn8o93lz",
-"game_id": "o1yry26q",
-"category_id": "zdnry872",
-"level_id": null,
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "zx729rq8",
-"name": "KarmikKoala"
-}
-},
-"performed": "2017-08-07",
-"submitted": "2017-08-07T22:58:56Z",
-"duration": 10527.0
-},
-"z1123qrz": {
-"run_id": "z1123qrz",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "z986v8gd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-02",
-"submitted": "2018-10-02T19:54:24Z",
-"duration": 136.0
-},
-"z0e01o4m": {
-"run_id": "z0e01o4m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "69z3orld",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2016-01-22",
-"submitted": "2018-02-20T05:54:56Z",
-"duration": 105.0
-},
-"zxv0k68y": {
-"run_id": "zxv0k68y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "29v3ey1w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2015-08-29",
-"submitted": "2018-02-20T04:38:45Z",
-"duration": 418.0
-},
-"zq3vv58y": {
-"run_id": "zq3vv58y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ldyy7ejd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kj9rwroj",
-"name": "Edwardss44"
-}
-},
-"performed": "2018-09-22",
-"submitted": "2018-09-22T19:06:43Z",
-"duration": 96.0
-},
-"y678vj1m": {
-"run_id": "y678vj1m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "y9mjq5l9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-03-13",
-"submitted": "2018-03-14T01:58:20Z",
-"duration": 538.0
-},
-"z5og3egy": {
-"run_id": "z5og3egy",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "z986vjgd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4ve1lj",
-"name": "Fralor"
-}
-},
-"performed": "2018-01-27",
-"submitted": "2018-01-27T19:18:51Z",
-"duration": 287.0
-},
-"z0e4l8em": {
-"run_id": "z0e4l8em",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "rdn0jpqw",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "AverageAvocado"
-}
-},
-"performed": "2015-04-03",
-"submitted": "2018-04-09T23:14:49Z",
-"duration": 1453.0
-},
-"zpqv4qry": {
-"run_id": "zpqv4qry",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "rdn0j5nw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-21",
-"submitted": "2018-03-21T12:06:01Z",
-"duration": 687.0
-},
-"ydqp2dqm": {
-"run_id": "ydqp2dqm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "rw64pvn9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-28",
-"submitted": "2018-03-28T12:36:18Z",
-"duration": 601.0
-},
-"zn478vlm": {
-"run_id": "zn478vlm",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "gdre4q69",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-02",
-"submitted": "2018-10-02T20:41:47Z",
-"duration": 1105.0
-},
-"ydqo9dwm": {
-"run_id": "ydqo9dwm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "r9g20z5d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-08",
-"submitted": "2018-03-08T13:59:27Z",
-"duration": 527.0
-},
-"y8q43j1y": {
-"run_id": "y8q43j1y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-04-03",
-"submitted": "2018-04-03T02:50:48Z",
-"duration": 101.0
-},
-"yl9p62ky": {
-"run_id": "yl9p62ky",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ldyy7ejd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-13",
-"submitted": "2018-02-13T15:16:11Z",
-"duration": 96.0
-},
-"zgnje1vy": {
-"run_id": "zgnje1vy",
+"yvge14xy": {
+"run_id": "yvge14xy",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
 "level_id": "n93750nd",
 "status": "Verified",
 "player": {
 "User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-13",
-"submitted": "2018-02-13T15:16:32Z",
-"duration": 23.0
-},
-"m79en79y": {
-"run_id": "m79en79y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5wkjzk5d",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "texture3D"
-}
-},
-"performed": "2010-04-07",
-"submitted": "2018-02-14T08:01:23Z",
-"duration": 40.0
-},
-"z112je9z": {
-"run_id": "z112je9z",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "n9375gnd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2018-10-04",
-"submitted": "2018-10-04T07:11:44Z",
-"duration": 1235.0
-},
-"yl9j0o3y": {
-"run_id": "yl9j0o3y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "y9mjq5l9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2015-08-29",
-"submitted": "2018-02-20T04:25:31Z",
-"duration": 627.0
-},
-"zn8l8l9z": {
-"run_id": "zn8l8l9z",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd17ejqd",
-"status": "Verified",
-"player": {
-"User": {
 "user_id": "e8e96q7j",
 "name": "GreenMixTape"
 }
 },
-"performed": "2018-04-03",
-"submitted": "2018-04-04T03:03:25Z",
-"duration": 209.0
+"performed": "2018-03-23",
+"submitted": "2018-03-24T00:51:57Z",
+"duration": 23.0
 },
-"y8q43r1y": {
-"run_id": "y8q43r1y",
+"yvgedkey": {
+"run_id": "yvgedkey",
 "game_id": "y65zy46e",
 "category_id": "wkponpj2",
 "level_id": "kwj5lyn9",
@@ -3050,432 +2227,72 @@
 "name": "Banks"
 }
 },
-"performed": "2018-04-03",
-"submitted": "2018-04-03T00:33:19Z",
-"duration": 104.0
+"performed": "2018-04-01",
+"submitted": "2018-04-02T07:08:33Z",
+"duration": 120.0
 },
-"yl9j07ky": {
-"run_id": "yl9j07ky",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "o9xn520w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2016-01-22",
-"submitted": "2018-02-20T06:03:22Z",
-"duration": 538.0
-},
-"m79lq60y": {
-"run_id": "m79lq60y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5d7vk7gd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2016-01-23",
-"submitted": "2018-02-20T06:09:38Z",
-"duration": 1068.0
-},
-"yjkeogom": {
-"run_id": "yjkeogom",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "texture3D"
-}
-},
-"performed": "2010-04-02",
-"submitted": "2018-02-14T07:45:51Z",
-"duration": 156.0
-},
-"m3d2gk4z": {
-"run_id": "m3d2gk4z",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd17ejqd",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "68w2g538",
-"name": "YT_Veritas0923"
-}
-},
-"performed": "2018-03-07",
-"submitted": "2018-03-07T23:58:56Z",
-"duration": 745.0
-},
-"zq628v1y": {
-"run_id": "zq628v1y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "29v3ey1w",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "texture3D"
-}
-},
-"performed": "2010-04-09",
-"submitted": "2018-02-14T08:17:05Z",
-"duration": 140.0
-},
-"y23ro75m": {
-"run_id": "y23ro75m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "y9mjq5l9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-03-18",
-"submitted": "2018-03-18T13:38:06Z",
-"duration": 522.0
-},
-"meknwo0m": {
-"run_id": "meknwo0m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ldyy7ekd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "zzzKOTzzz"
-}
-},
-"performed": "2006-03-04",
-"submitted": "2018-02-14T06:21:33Z",
-"duration": 457.0
-},
-"zq6284ry": {
-"run_id": "zq6284ry",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "4956oj0d",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "zzzKOTzzz"
-}
-},
-"performed": "2006-04-04",
-"submitted": "2018-02-14T06:34:35Z",
-"duration": 243.0
-},
-"y8qp1o1y": {
-"run_id": "y8qp1o1y",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "kwj5l7r9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4ve1lj",
-"name": "Fralor"
-}
-},
-"performed": "2018-01-26",
-"submitted": "2018-01-26T18:03:33Z",
-"duration": 115.0
-},
-"m3dw0gdz": {
-"run_id": "m3dw0gdz",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "69z3orld",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "zzzKOTzzz"
-}
-},
-"performed": "2006-02-15",
-"submitted": "2018-02-14T06:32:46Z",
-"duration": 54.0
-},
-"zn8lq93z": {
-"run_id": "zn8lq93z",
+"yvgk076y": {
+"run_id": "yvgk076y",
 "game_id": "y65zy46e",
 "category_id": "wkponpj2",
-"level_id": "ldyy7pkd",
+"level_id": "4956o80d",
 "status": "Verified",
 "player": {
 "Guest": {
 "name": "AverageAvocado"
 }
 },
-"performed": "2015-04-10",
-"submitted": "2018-04-09T23:18:30Z",
-"duration": 2311.0
+"performed": "2015-05-10",
+"submitted": "2018-04-09T23:38:23Z",
+"duration": 1060.0
 },
-"yw1wgknz": {
-"run_id": "yw1wgknz",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "n9375gnd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "texture3D"
-}
-},
-"performed": "2012-01-06",
-"submitted": "2018-02-14T08:27:24Z",
-"duration": 1520.0
-},
-"y97qxpkm": {
-"run_id": "y97qxpkm",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "ywe1k8yd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "AverageAvocado"
-}
-},
-"performed": "2015-04-18",
-"submitted": "2018-04-09T23:25:17Z",
-"duration": 277.0
-},
-"y2381x6m": {
-"run_id": "y2381x6m",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "n937507d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
-}
-},
-"performed": "2015-08-20",
-"submitted": "2018-02-20T05:10:33Z",
-"duration": 825.0
-},
-"yl9pklry": {
-"run_id": "yl9pklry",
+"yvgkr76y": {
+"run_id": "yvgkr76y",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
 "level_id": "ewpjm7lw",
 "status": "Verified",
 "player": {
 "User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-09",
-"submitted": "2018-02-09T17:04:39Z",
-"duration": 431.0
-},
-"mrq0v4gy": {
-"run_id": "mrq0v4gy",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "z986v8gd",
-"status": "Verified",
-"player": {
-"Guest": {
-"name": "zzzKOTzzz"
-}
-},
-"performed": "2006-01-13",
-"submitted": "2018-02-14T07:33:23Z",
-"duration": 164.0
-},
-"z1365orm": {
-"run_id": "z1365orm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "xd0gr00w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "zx729rq8",
-"name": "KarmikKoala"
-}
-},
-"performed": "2017-08-07",
-"submitted": "2018-02-20T19:15:03Z",
-"duration": 1188.0
-},
-"mekqv58m": {
-"run_id": "mekqv58m",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "69z3o4ld",
-"status": "Verified",
-"player": {
-"User": {
 "user_id": "18qyezox",
 "name": "Banks"
 }
 },
-"performed": "2018-04-19",
-"submitted": "2018-04-19T04:47:51Z",
-"duration": 224.0
+"performed": "2018-04-09",
+"submitted": "2018-04-09T08:23:44Z",
+"duration": 708.0
 },
-"y97pw6rm": {
-"run_id": "y97pw6rm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "69z3orld",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-16",
-"submitted": "2018-02-16T12:54:13Z",
-"duration": 47.0
-},
-"yjkv52gm": {
-"run_id": "yjkv52gm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "ewpjm7lw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "e8e96q7j",
-"name": "GreenMixTape"
-}
-},
-"performed": "2018-04-07",
-"submitted": "2018-04-08T03:24:50Z",
-"duration": 358.0
-},
-"zgn6oxey": {
-"run_id": "zgn6oxey",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "68w2g538",
-"name": "YT_Veritas0923"
-}
-},
-"performed": "2018-02-28",
-"submitted": "2018-02-28T01:53:01Z",
-"duration": 195.0
-},
-"ydqv11qm": {
-"run_id": "ydqv11qm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "5wkjzk5d",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "7j4vgmmj",
-"name": "ZPR"
-}
-},
-"performed": "2018-02-12",
-"submitted": "2018-02-12T14:22:22Z",
-"duration": 28.0
-},
-"y236oowm": {
-"run_id": "y236oowm",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "owo017vw",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-04-02",
-"submitted": "2018-04-02T08:05:59Z",
-"duration": 44.0
-},
-"zpqorlry": {
-"run_id": "zpqorlry",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "29v3ey1w",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "zx729rq8",
-"name": "KarmikKoala"
-}
-},
-"performed": "2017-08-07",
-"submitted": "2018-02-20T19:13:58Z",
-"duration": 281.0
-},
-"zgn5weey": {
-"run_id": "zgn5weey",
-"game_id": "o1yry26q",
-"category_id": "wdmw5ee2",
-"level_id": "y9mjq5l9",
-"status": "Verified",
-"player": {
-"User": {
-"user_id": "18qyezox",
-"name": "Banks"
-}
-},
-"performed": "2018-04-22",
-"submitted": "2018-04-22T01:28:26Z",
-"duration": 925.0
-},
-"m79lq5wy": {
-"run_id": "m79lq5wy",
+"yvgln1oy": {
+"run_id": "yvgln1oy",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
 "level_id": "kwj5l7r9",
 "status": "Verified",
 "player": {
 "User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
+"user_id": "y8d7ywo8",
+"name": "bias60gaming"
 }
 },
-"performed": "2015-08-28",
-"submitted": "2018-02-20T04:04:07Z",
-"duration": 96.0
+"performed": "2018-01-21",
+"submitted": "2018-01-21T00:37:36Z",
+"duration": 170.0
 },
-"y8qg1x1y": {
-"run_id": "y8qg1x1y",
-"game_id": "y65zy46e",
-"category_id": "wkponpj2",
-"level_id": "5wkjzr2d",
+"yvgnpe4y": {
+"run_id": "yvgnpe4y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
 "status": "Verified",
 "player": {
 "User": {
-"user_id": "kjp6yp58",
-"name": "Stu"
+"user_id": "7j4vgmmj",
+"name": "ZPR"
 }
 },
-"performed": "2017-11-09",
-"submitted": "2018-02-20T06:32:07Z",
-"duration": 692.0
+"performed": "2018-02-13",
+"submitted": "2018-02-13T15:15:08Z",
+"duration": 91.0
 },
 "yvjq3e4y": {
 "run_id": "yvjq3e4y",
@@ -3493,6 +2310,114 @@
 "submitted": "2018-10-04T05:04:15Z",
 "duration": 1262.0
 },
+"yvjqg0ey": {
+"run_id": "yvjqg0ey",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "ywe1k8yd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-02",
+"submitted": "2018-10-02T19:29:20Z",
+"duration": 152.0
+},
+"yw12x03z": {
+"run_id": "yw12x03z",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "68w2g538",
+"name": "YT_Veritas0923"
+}
+},
+"performed": "2018-02-28",
+"submitted": "2018-02-28T01:49:39Z",
+"duration": 262.0
+},
+"yw1wg83z": {
+"run_id": "yw1wg83z",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "n93750nd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "zzzKOTzzz"
+}
+},
+"performed": "2006-02-15",
+"submitted": "2018-02-14T06:17:19Z",
+"duration": 23.0
+},
+"yw1wgknz": {
+"run_id": "yw1wgknz",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "n9375gnd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "texture3D"
+}
+},
+"performed": "2012-01-06",
+"submitted": "2018-02-14T08:27:24Z",
+"duration": 1520.0
+},
+"yw1wgqnz": {
+"run_id": "yw1wgqnz",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "69z3o4ld",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "zzzKOTzzz"
+}
+},
+"performed": "2006-06-11",
+"submitted": "2018-02-14T07:41:14Z",
+"duration": 154.0
+},
+"yw1wropz": {
+"run_id": "yw1wropz",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd4j760d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-13",
+"submitted": "2018-02-13T15:15:40Z",
+"duration": 412.0
+},
+"ywpj679z": {
+"run_id": "ywpj679z",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd4j760d",
+"status": "Pending",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-08",
+"submitted": "2018-10-09T05:19:15Z",
+"duration": 392.0
+},
 "z03o559z": {
 "run_id": "z03o559z",
 "game_id": "y65zy46e",
@@ -3509,43 +2434,74 @@
 "submitted": "2018-10-04T13:45:58Z",
 "duration": 73.0
 },
-"yl9p4qky": {
-"run_id": "yl9p4qky",
+"z03ol48z": {
+"run_id": "z03ol48z",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
-"level_id": "xd17ejqd",
+"level_id": "ewpjm7lw",
+"status": "Pending",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-08",
+"submitted": "2018-10-09T05:06:54Z",
+"duration": 355.0
+},
+"z0e01lem": {
+"run_id": "z0e01lem",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "y9mjqp59",
 "status": "Verified",
 "player": {
 "User": {
-"user_id": "18qyezox",
-"name": "Banks"
+"user_id": "kjp6yp58",
+"name": "Stu"
 }
 },
-"performed": "2018-02-08",
-"submitted": "2018-02-08T07:10:27Z",
-"duration": 289.0
+"performed": "2017-11-09",
+"submitted": "2018-02-20T06:29:52Z",
+"duration": 315.0
 },
-"mk4r8q1y": {
-"run_id": "mk4r8q1y",
+"z0e01o4m": {
+"run_id": "z0e01o4m",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
-"level_id": "owo017vw",
+"level_id": "69z3orld",
 "status": "Verified",
 "player": {
 "User": {
-"user_id": "68w2g538",
-"name": "YT_Veritas0923"
+"user_id": "kjp6yp58",
+"name": "Stu"
 }
 },
-"performed": "2018-03-07",
-"submitted": "2018-03-07T23:51:33Z",
-"duration": 128.0
+"performed": "2016-01-22",
+"submitted": "2018-02-20T05:54:56Z",
+"duration": 105.0
 },
-"yo4ek3jm": {
-"run_id": "yo4ek3jm",
+"z0e01p4m": {
+"run_id": "z0e01p4m",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "xd17e0ed",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2017-11-09",
+"submitted": "2018-02-20T06:25:24Z",
+"duration": 723.0
+},
+"z0e0558m": {
+"run_id": "z0e0558m",
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
-"level_id": "592zg0g9",
+"level_id": "kwj5l7r9",
 "status": "Verified",
 "player": {
 "User": {
@@ -3554,8 +2510,259 @@
 }
 },
 "performed": "2017-08-07",
-"submitted": "2018-02-20T19:13:20Z",
-"duration": 842.0
+"submitted": "2018-02-20T19:08:05Z",
+"duration": 112.0
+},
+"z0e2g0jm": {
+"run_id": "z0e2g0jm",
+"game_id": "o1yry26q",
+"category_id": "zdnry872",
+"level_id": null,
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-04-02",
+"submitted": "2018-04-02T04:37:32Z",
+"duration": 15933.0
+},
+"z0e412jm": {
+"run_id": "z0e412jm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-04-05",
+"submitted": "2018-04-05T05:28:03Z",
+"duration": 94.0
+},
+"z0e4l0em": {
+"run_id": "z0e4l0em",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "o9xn5l0w",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "AverageAvocado"
+}
+},
+"performed": "2015-05-09",
+"submitted": "2018-04-09T23:36:10Z",
+"duration": 2292.0
+},
+"z0e4l8em": {
+"run_id": "z0e4l8em",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "rdn0jpqw",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "AverageAvocado"
+}
+},
+"performed": "2015-04-03",
+"submitted": "2018-04-09T23:14:49Z",
+"duration": 1453.0
+},
+"z0ekg79m": {
+"run_id": "z0ekg79m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "o9xn520w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-18",
+"submitted": "2018-03-18T13:38:48Z",
+"duration": 514.0
+},
+"z1123qrz": {
+"run_id": "z1123qrz",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "z986v8gd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-02",
+"submitted": "2018-10-02T19:54:24Z",
+"duration": 136.0
+},
+"z112je9z": {
+"run_id": "z112je9z",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "n9375gnd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-04",
+"submitted": "2018-10-04T07:11:44Z",
+"duration": 1235.0
+},
+"z134lprm": {
+"run_id": "z134lprm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "kwj5lyn9",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "alexrazz"
+}
+},
+"performed": "2008-01-30",
+"submitted": "2018-04-11T02:35:58Z",
+"duration": 126.0
+},
+"z1365orm": {
+"run_id": "z1365orm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd0gr00w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "zx729rq8",
+"name": "KarmikKoala"
+}
+},
+"performed": "2017-08-07",
+"submitted": "2018-02-20T19:15:03Z",
+"duration": 1188.0
+},
+"z136j2gm": {
+"run_id": "z136j2gm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "nwllx60w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2016-01-22",
+"submitted": "2018-02-20T05:45:15Z",
+"duration": 540.0
+},
+"z136jxgm": {
+"run_id": "z136jxgm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "n93750nd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2016-01-22",
+"submitted": "2018-02-20T05:26:35Z",
+"duration": 31.0
+},
+"z1378n9m": {
+"run_id": "z1378n9m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ewpjm7lw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "68w2g538",
+"name": "YT_Veritas0923"
+}
+},
+"performed": "2018-03-08",
+"submitted": "2018-03-08T18:33:40Z",
+"duration": 1202.0
+},
+"z137dwjm": {
+"run_id": "z137dwjm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-03-04",
+"submitted": "2018-03-05T03:59:14Z",
+"duration": 91.0
+},
+"z137k0gm": {
+"run_id": "z137k0gm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ewpjm7lw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "68w2g538",
+"name": "YT_Veritas0923"
+}
+},
+"performed": "2018-03-13",
+"submitted": "2018-03-13T16:00:56Z",
+"duration": 1085.0
+},
+"z13v96rm": {
+"run_id": "z13v96rm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "29v3ey1w",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "texture3D"
+}
+},
+"performed": "2011-12-10",
+"submitted": "2018-02-14T16:35:22Z",
+"duration": 131.0
+},
+"z13v97rm": {
+"run_id": "z13v97rm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ywe1k4yd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "texture3D"
+}
+},
+"performed": "2018-02-14",
+"submitted": "2018-02-14T16:56:35Z",
+"duration": 783.0
 },
 "z13v9rwm": {
 "run_id": "z13v9rwm",
@@ -3572,6 +2779,784 @@
 "submitted": "2018-02-14T07:56:02Z",
 "duration": 539.0
 },
+"z13vggjm": {
+"run_id": "z13vggjm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "592zg0g9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-12",
+"submitted": "2018-02-12T14:23:00Z",
+"duration": 713.0
+},
+"z51v1ddm": {
+"run_id": "z51v1ddm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "nwllx70w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-03",
+"submitted": "2018-10-03T07:24:07Z",
+"duration": 915.0
+},
+"z5o6o6jy": {
+"run_id": "z5o6o6jy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ewpjm7lw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-05",
+"submitted": "2018-03-05T15:48:08Z",
+"duration": 410.0
+},
+"z5og3egy": {
+"run_id": "z5og3egy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "z986vjgd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4ve1lj",
+"name": "Fralor"
+}
+},
+"performed": "2018-01-27",
+"submitted": "2018-01-27T19:18:51Z",
+"duration": 287.0
+},
+"z5ow7rgy": {
+"run_id": "z5ow7rgy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "rw64pvn9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2015-08-29",
+"submitted": "2018-02-20T05:07:48Z",
+"duration": 614.0
+},
+"z5owx3jy": {
+"run_id": "z5owx3jy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-02-25",
+"submitted": "2018-02-25T00:57:55Z",
+"duration": 47.0
+},
+"zg7dq5nz": {
+"run_id": "zg7dq5nz",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "rdn0j5nw",
+"status": "Pending",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-08",
+"submitted": "2018-10-09T05:21:56Z",
+"duration": 642.0
+},
+"zgn1wqdy": {
+"run_id": "zgn1wqdy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd17ejqd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-22",
+"submitted": "2018-03-22T08:47:16Z",
+"duration": 209.0
+},
+"zgn5weey": {
+"run_id": "zgn5weey",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "y9mjq5l9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-04-22",
+"submitted": "2018-04-22T01:28:26Z",
+"duration": 925.0
+},
+"zgn62kjy": {
+"run_id": "zgn62kjy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "4956oj0d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-25",
+"submitted": "2018-02-25T14:54:21Z",
+"duration": 188.0
+},
+"zgn6oxey": {
+"run_id": "zgn6oxey",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "68w2g538",
+"name": "YT_Veritas0923"
+}
+},
+"performed": "2018-02-28",
+"submitted": "2018-02-28T01:53:01Z",
+"duration": 195.0
+},
+"zgn6wvny": {
+"run_id": "zgn6wvny",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "y9mjq5l9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "zx729rq8",
+"name": "KarmikKoala"
+}
+},
+"performed": "2017-08-07",
+"submitted": "2018-02-20T19:11:49Z",
+"duration": 906.0
+},
+"zgnje1vy": {
+"run_id": "zgnje1vy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "n93750nd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-13",
+"submitted": "2018-02-13T15:16:32Z",
+"duration": 23.0
+},
+"zgno47ny": {
+"run_id": "zgno47ny",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-02-06",
+"submitted": "2018-02-06T07:01:56Z",
+"duration": 114.0
+},
+"zn407k3m": {
+"run_id": "zn407k3m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "kwj5l7r9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kj9rwroj",
+"name": "Edwardss44"
+}
+},
+"performed": "2018-09-23",
+"submitted": "2018-09-22T22:54:21Z",
+"duration": 91.0
+},
+"zn47458m": {
+"run_id": "zn47458m",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "4956o80d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-03",
+"submitted": "2018-10-03T15:19:38Z",
+"duration": 807.0
+},
+"zn478vlm": {
+"run_id": "zn478vlm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "gdre4q69",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-02",
+"submitted": "2018-10-02T20:41:47Z",
+"duration": 1105.0
+},
+"zn82lk8z": {
+"run_id": "zn82lk8z",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd17ejqd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "y8d7ywo8",
+"name": "bias60gaming"
+}
+},
+"performed": "2018-01-22",
+"submitted": "2018-01-22T23:31:55Z",
+"duration": 459.0
+},
+"zn851nvz": {
+"run_id": "zn851nvz",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "y9mjq5l9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-09",
+"submitted": "2018-03-09T14:26:09Z",
+"duration": 545.0
+},
+"zn892glz": {
+"run_id": "zn892glz",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5d7vk7gd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "texture3D"
+}
+},
+"performed": "2011-10-27",
+"submitted": "2018-02-14T16:46:58Z",
+"duration": 1562.0
+},
+"zn8gk57z": {
+"run_id": "zn8gk57z",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "z986vjgd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks"
+}
+},
+"performed": "2018-02-21",
+"submitted": "2018-02-21T01:04:23Z",
+"duration": 319.0
+},
+"zn8gr08z": {
+"run_id": "zn8gr08z",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "rdn0j5nw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2015-08-31",
+"submitted": "2018-02-20T05:15:17Z",
+"duration": 697.0
+},
+"zn8grp8z": {
+"run_id": "zn8grp8z",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "r9g20z5d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2016-01-22",
+"submitted": "2018-02-20T05:59:40Z",
+"duration": 548.0
+},
+"zn8grq3z": {
+"run_id": "zn8grq3z",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "592zgoo9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2017-11-09",
+"submitted": "2018-02-20T06:35:04Z",
+"duration": 643.0
+},
+"zn8l8l9z": {
+"run_id": "zn8l8l9z",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd17ejqd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-04-03",
+"submitted": "2018-04-04T03:03:25Z",
+"duration": 209.0
+},
+"zn8lq93z": {
+"run_id": "zn8lq93z",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "ldyy7pkd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "AverageAvocado"
+}
+},
+"performed": "2015-04-10",
+"submitted": "2018-04-09T23:18:30Z",
+"duration": 2311.0
+},
+"zn8o93lz": {
+"run_id": "zn8o93lz",
+"game_id": "o1yry26q",
+"category_id": "zdnry872",
+"level_id": null,
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "zx729rq8",
+"name": "KarmikKoala"
+}
+},
+"performed": "2017-08-07",
+"submitted": "2017-08-07T22:58:56Z",
+"duration": 10527.0
+},
+"zn8x3v8z": {
+"run_id": "zn8x3v8z",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "y9mjq5l9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4ve1lj",
+"name": "Fralor"
+}
+},
+"performed": "2018-01-27",
+"submitted": "2018-01-27T19:23:18Z",
+"duration": 915.0
+},
+"zpq5398y": {
+"run_id": "zpq5398y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ywe1k4yd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-08",
+"submitted": "2018-03-08T13:58:57Z",
+"duration": 415.0
+},
+"zpq53xgy": {
+"run_id": "zpq53xgy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd17ejqd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "68w2g538",
+"name": "YT_Veritas0923"
+}
+},
+"performed": "2018-03-08",
+"submitted": "2018-03-08T18:30:00Z",
+"duration": 579.0
+},
+"zpq5neny": {
+"run_id": "zpq5neny",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-03-04",
+"submitted": "2018-03-05T03:04:58Z",
+"duration": 41.0
+},
+"zpq5pv8y": {
+"run_id": "zpq5pv8y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "68w2g538",
+"name": "YT_Veritas0923"
+}
+},
+"performed": "2018-03-13",
+"submitted": "2018-03-13T15:52:41Z",
+"duration": 118.0
+},
+"zpqk5gvy": {
+"run_id": "zpqk5gvy",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "xd17ejqd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-16",
+"submitted": "2018-02-16T12:53:09Z",
+"duration": 211.0
+},
+"zpqo428y": {
+"run_id": "zpqo428y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ldyy7ekd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2016-01-22",
+"submitted": "2018-02-20T05:40:43Z",
+"duration": 488.0
+},
+"zpqo488y": {
+"run_id": "zpqo488y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ldyy7ejd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2016-01-22",
+"submitted": "2018-02-20T05:22:39Z",
+"duration": 101.0
+},
+"zpqo498y": {
+"run_id": "zpqo498y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "rdqj20k9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2016-01-23",
+"submitted": "2018-02-20T06:07:50Z",
+"duration": 1115.0
+},
+"zpqorlry": {
+"run_id": "zpqorlry",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "29v3ey1w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "zx729rq8",
+"name": "KarmikKoala"
+}
+},
+"performed": "2017-08-07",
+"submitted": "2018-02-20T19:13:58Z",
+"duration": 281.0
+},
+"zpqv4qry": {
+"run_id": "zpqv4qry",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "rdn0j5nw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-03-21",
+"submitted": "2018-03-21T12:06:01Z",
+"duration": 687.0
+},
+"zq30r3ry": {
+"run_id": "zq30r3ry",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "rdqj21k9",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2018-10-03",
+"submitted": "2018-10-03T19:13:03Z",
+"duration": 778.0
+},
+"zq3vv58y": {
+"run_id": "zq3vv58y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "ldyy7ejd",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kj9rwroj",
+"name": "Edwardss44"
+}
+},
+"performed": "2018-09-22",
+"submitted": "2018-09-22T19:06:43Z",
+"duration": 96.0
+},
+"zq6284ry": {
+"run_id": "zq6284ry",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "4956oj0d",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "zzzKOTzzz"
+}
+},
+"performed": "2006-04-04",
+"submitted": "2018-02-14T06:34:35Z",
+"duration": 243.0
+},
+"zq628v1y": {
+"run_id": "zq628v1y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "29v3ey1w",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "texture3D"
+}
+},
+"performed": "2010-04-09",
+"submitted": "2018-02-14T08:17:05Z",
+"duration": 140.0
+},
+"zq62wv8y": {
+"run_id": "zq62wv8y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "owo017vw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "7j4vgmmj",
+"name": "ZPR"
+}
+},
+"performed": "2018-02-09",
+"submitted": "2018-02-09T13:02:28Z",
+"duration": 44.0
+},
+"zq65k21y": {
+"run_id": "zq65k21y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5wkjzk5d",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-03-05",
+"submitted": "2018-03-05T01:21:37Z",
+"duration": 26.0
+},
+"zq6n75xy": {
+"run_id": "zq6n75xy",
+"game_id": "o1yry26q",
+"category_id": "wk6wgq21",
+"level_id": null,
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-03-25",
+"submitted": "2018-03-26T02:48:32Z",
+"duration": 34875.0
+},
+"zq6nqp5y": {
+"run_id": "zq6nqp5y",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "rdn0jpqw",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "e8e96q7j",
+"name": "GreenMixTape"
+}
+},
+"performed": "2018-03-30",
+"submitted": "2018-03-30T02:46:15Z",
+"duration": 2532.0
+},
+"zq6pr75y": {
+"run_id": "zq6pr75y",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "owo01kow",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2017-11-09",
+"submitted": "2018-02-20T06:22:47Z",
+"duration": 528.0
+},
+"zx4l818y": {
+"run_id": "zx4l818y",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "y9mjqp59",
+"status": "Pending",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-08",
+"submitted": "2018-10-09T05:44:29Z",
+"duration": 279.0
+},
+"zxv0k68y": {
+"run_id": "zxv0k68y",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "29v3ey1w",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "kjp6yp58",
+"name": "Stu"
+}
+},
+"performed": "2015-08-29",
+"submitted": "2018-02-20T04:38:45Z",
+"duration": 418.0
+},
 "zxv5v5ky": {
 "run_id": "zxv5v5ky",
 "game_id": "o1yry26q",
@@ -3587,6 +3572,21 @@
 "performed": "2018-03-05",
 "submitted": "2018-03-05T15:47:43Z",
 "duration": 41.0
+},
+"zxvjqkey": {
+"run_id": "zxvjqkey",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "5wkjzk5d",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "zzzKOTzzz"
+}
+},
+"performed": "2006-01-06",
+"submitted": "2018-02-14T06:05:29Z",
+"duration": 28.0
 }
 }
 }

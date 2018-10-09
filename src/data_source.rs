@@ -2,7 +2,7 @@ use super::persistent::Persistent;
 use chrono::{Date, DateTime, Duration, NaiveDate, Utc};
 use core::{convert::From, str::FromStr};
 use reqwest;
-use std::{collections::HashMap, error::Error, fmt::Debug, fs};
+use std::{collections::BTreeMap, error::Error, fmt::Debug, fs};
 
 pub struct SpeedRunComData {
     data: Persistent<Data>,
@@ -51,10 +51,14 @@ impl SpeedRunComData {
                     return Err(());
                 }
                 let json = response.text()?;
-                let parsed: speedruncom_api::runs::Response = serde_json::from_str(&json)?;
+                let response: speedruncom_api::runs::Response = serde_json::from_str(&json)?;
                 debug!("Refreshing data from {:?}.", url);
 
-                for run in parsed.data {
+                if let Some(url) = response.next_page_url() {
+                    error!("Response from {} has multiple pages, but that isn't supported yet. Data ignored.", url);
+                }
+
+                for run in response.data {
                     runs.insert(
                         run.id.clone(),
                         Run {
@@ -84,11 +88,11 @@ impl SpeedRunComData {
         Ok(())
     }
 
-    pub fn games(&self) -> &HashMap<String, Game> {
+    pub fn games(&self) -> &BTreeMap<String, Game> {
         &self.data.get().games
     }
 
-    pub fn runs(&self) -> &HashMap<String, Run> {
+    pub fn runs(&self) -> &BTreeMap<String, Run> {
         &self.data.get().runs
     }
 }
@@ -96,8 +100,8 @@ impl SpeedRunComData {
 #[derive(Serialize, Deserialize, Clone, Default)]
 struct Data {
     last_refreshed: Option<DateTime<Utc>>,
-    games: HashMap<String, Game>,
-    runs: HashMap<String, Run>,
+    games: BTreeMap<String, Game>,
+    runs: BTreeMap<String, Run>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -159,6 +163,34 @@ mod speedruncom_api {
         #[derive(Deserialize, Debug)]
         pub struct Response {
             pub data: Vec<Run>,
+            pub pagination: Pagination,
+        }
+
+        impl Response {
+            pub fn next_page_url(&self) -> Option<String> {
+                for link in self.pagination.links.iter() {
+                    match link {
+                        PaginationLink::Next { uri } => {
+                            return Some(uri.clone());
+                        }
+                    }
+                }
+                return None;
+            }
+        }
+
+        #[derive(Deserialize, Debug)]
+        pub struct Pagination {
+            pub links: Vec<PaginationLink>,
+        }
+
+        #[derive(Deserialize, Debug)]
+        #[serde(tag = "rel")]
+        #[serde(rename_all = "snake_case")]
+        pub enum PaginationLink {
+            Next {
+                uri: String,
+            }
         }
 
         #[derive(Deserialize, Debug)]
