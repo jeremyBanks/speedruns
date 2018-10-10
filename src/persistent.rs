@@ -34,11 +34,16 @@ where
         let file;
         let data;
 
-        match OpenOptions::new().read(true).write(true).open(filename) {
-            Ok(existing_file) => {
-                file = existing_file;
-                file.try_lock_exclusive().unwrap();
-                data = serde_json::from_reader(&file).unwrap();
+        let existing = OpenOptions::new().read(true).write(true).open(filename).and_then(|existing_file| {
+            existing_file.try_lock_exclusive()?;
+            let existing_data = serde_json::from_reader(&existing_file)?;
+            Ok((existing_file, existing_data))
+        });
+
+        match existing {
+            Ok(existing) => {
+                file = existing.0;
+                data = existing.1;
             }
             Err(error) => {
                 info!("Failed to read an existing {:?}: {:?}", filename, error);
@@ -119,7 +124,7 @@ mod speedruncom_api {
 
         #[derive(Deserialize)]
         #[serde(tag = "rel")]
-        #[serde(rename_all = "snake_case")]
+        #[serde(rename_all = "kebab-case")]
         pub enum Player {
             User { id: String },
             Guest { name: String },

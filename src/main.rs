@@ -42,9 +42,13 @@ pub fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
     let data = data_source::SpeedRunComData::open("data.json");
 
-    let war2runs: Vec<_> = data.runs().values().filter(|run| run.game_id == "o1yry26q" || run.game_id == "y65zy46e").collect();
+    let war2runs: Vec<_> = data
+        .runs()
+        .values()
+        .filter(|run| run.game_id == "o1yry26q" || run.game_id == "y65zy46e")
+        .collect();
 
-    println!("{:#?}", &war2runs[0..2]);
+    println!("{:#?}", &war2runs[0..=2]);
 
     Ok(())
 }
