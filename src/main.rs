@@ -1,8 +1,6 @@
 #![feature(custom_attribute)]
 #![feature(try_blocks)]
-#![allow(unused_imports)]
-#![allow(dead_code)]
-#![allow(unused_attributes)]
+#![feature(try_from)]
 
 #[macro_use]
 extern crate log;
@@ -16,51 +14,92 @@ extern crate serde_derive;
 extern crate derive_more;
 use itertools::Itertools;
 
-use std::{collections::BTreeMap, convert::From, error::Error, fs};
+use std::{
+    collections::BTreeMap,
+    convert::{From, TryFrom},
+    error::Error,
+    fs,
+};
 
-mod data_source;
 mod persistent;
+mod speedrun_data;
 
-use self::persistent::Persistent;
-
-const THINKING: &str = r#"
-    what do I want to do with my data?
-
-    find all levels
-    for each level
-    sort runs by date, then by submision datetime
-    find record-setting runs, strip out the rest
-    record how much each run improves the existing record
-
-    take the first run in each category for our initial total time
-
-    sort all record-setting runs by date together
-    then go through the, using the recorded deltas to update the sum-of-best-segment after each.
-
-"#;
+use self::{
+    persistent::Persistent,
+    speedrun_data::{Game, Run, SpeedRunComData},
+};
 
 pub fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
-    let data = data_source::SpeedRunComData::open("data.json");
+
+    let data = SpeedRunComData::open("data.json");
 
     let war2 = &data.games()["o1yry26q"];
-    let level = &war2.levels[0];
     let runs_by_level = data
         .runs()
         .values()
         .map(|run| (run.level_id.clone(), run))
         .into_group_map();
-    let mut runs = runs_by_level[&Some(level.level_id.clone())].clone();
-    runs.sort_by(|a, b| {
-        a.duration
-            .partial_cmp(&b.duration)
-            .expect("no NaN here")
-            .then(a.performed.cmp(&b.performed))
-            .then(a.submitted.cmp(&b.submitted))
-    });
 
-    println!("First level: {:#?}", level);
-    println!("World record: {:#?}", &runs[0..4]);
+    for level in war2.levels.iter() {
+        let runs = &runs_by_level[&Some(level.level_id.clone())];
+
+        let mut runs_chronological = runs.clone();
+        runs_chronological.sort_by(|a, b| {
+            a.performed
+                .cmp(&b.performed)
+                .then(a.submitted.cmp(&b.submitted))
+        });
+
+        let mut records = Vec::<Record>::new();
+        for run in runs_chronological {
+            let new_record = match records.last() {
+                None => Some(Record {
+                    run,
+                    improvement: 0.0,
+                }),
+                Some(record) => {
+                    let improvement = record.run.duration - run.duration;
+                    if improvement > 0.0 {
+                        Some(Record { run, improvement })
+                    } else {
+                        None
+                    }
+                }
+            };
+            if let Some(record) = new_record {
+                records.push(record);
+            }
+        }
+
+        println!("{}", level.name);
+        for record in records {
+            if record.improvement == 0.0 {
+                println!(
+                    "  first {:5}s by {}",
+                    record.run.duration, record.run.player
+                );
+            } else {
+                println!(
+                    "  -{:<4} {:5}s by {}",
+                    format!("{}s", record.improvement),
+                    record.run.duration,
+                    record.run.player
+                );
+            }
+        }
+        println!("\n");
+    }
+
+    // TODO:
+    // put all of the records in a chronological list.
+    // calculate sum of best and worst sum of records.
 
     Ok(())
+}
+
+#[derive(Debug)]
+struct Record<'a> {
+    pub run: &'a Run,
+    pub improvement: f64,
 }

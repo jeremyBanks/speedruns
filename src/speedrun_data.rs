@@ -1,6 +1,9 @@
 use super::persistent::Persistent;
 use chrono::{Date, DateTime, Duration, NaiveDate, Utc};
-use core::{convert::From, str::FromStr};
+use core::{
+    convert::{From, TryFrom},
+    str::FromStr,
+};
 use reqwest;
 use std::{
     collections::BTreeMap,
@@ -246,9 +249,48 @@ pub struct Run {
 #[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(deny_unknown_fields)]
 pub enum Player {
-    User { user_id: String, name: String },
-    Guest { name: String },
+    User {
+        user_id: String,
+        name: String,
+        country_code: Option<String>,
+    },
+    Guest {
+        name: String,
+    },
     MultiplePlayers,
+}
+
+fn country_flag(country_code: &str) -> String {
+    country_code
+        .chars()
+        .filter(|c| c.is_ascii_alphabetic())
+        .take(2)
+        .map(|letter| {
+            let letter_scalar: u32 = letter.to_ascii_uppercase().into();
+            let flag_sclar = 0x1F1A5 + letter_scalar;
+            char::try_from(flag_sclar).expect("this must be a valid code point")
+        })
+        .collect()
+}
+
+impl Display for Player {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Player::User {
+                user_id,
+                name,
+                country_code,
+            } => {
+                if let Some(country_code) = country_code {
+                    write!(f, "{}  {}", country_flag(country_code), name)
+                } else {
+                    write!(f, "🏳️  {}", name)
+                }
+            }
+            Player::Guest { name } => write!(f, "🏴  {}", name),
+            Player::MultiplePlayers => write!(f, "multiple players"),
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -388,9 +430,17 @@ mod speedruncom_api {
                     super::super::Player::MultiplePlayers
                 } else {
                     match self.data[0] {
-                        Player::User { ref id, ref names } => super::super::Player::User {
+                        Player::User {
+                            ref id,
+                            ref names,
+                            ref location,
+                        } => super::super::Player::User {
                             user_id: id.clone(),
                             name: names.international.clone(),
+                            country_code: match location {
+                                None => None,
+                                Some(location) => Some(location.country.code.clone()),
+                            },
                         },
                         Player::Guest { ref name } => {
                             super::super::Player::Guest { name: name.clone() }
@@ -401,11 +451,22 @@ mod speedruncom_api {
         }
 
         #[derive(Deserialize, Debug)]
+        pub struct Times {
+            pub primary_t: u32,
+        }
+
+        #[derive(Deserialize, Debug)]
         #[serde(tag = "rel")]
         #[serde(rename_all = "kebab-case")]
         pub enum Player {
-            User { id: String, names: UserNames },
-            Guest { name: String },
+            User {
+                id: String,
+                names: UserNames,
+                location: Option<Location>,
+            },
+            Guest {
+                name: String,
+            },
         }
 
         #[derive(Deserialize, Debug)]
@@ -414,8 +475,13 @@ mod speedruncom_api {
         }
 
         #[derive(Deserialize, Debug)]
-        pub struct Times {
-            pub primary_t: u32,
+        pub struct Location {
+            pub country: Country,
+        }
+
+        #[derive(Deserialize, Debug)]
+        pub struct Country {
+            pub code: String,
         }
     }
 }
