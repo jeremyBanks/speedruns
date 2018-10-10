@@ -31,7 +31,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
     let games = data.games().values();
     let mut records_by_level_id = BTreeMap::new();
     for game in games {
-        println!("\n{}\n", game.name);
+        println!("\n\n           {}\n", game.name);
 
         let mut all_level_records = Vec::<Record>::new();
         for level in game.levels.iter() {
@@ -101,7 +101,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
 
             sum = sum - record.improvement;
 
-            if record.run.performed.year() < 2017 {
+            if record.run.performed.year() < 2018 {
                 continue;
             }
 
@@ -112,12 +112,13 @@ pub fn main() -> Result<(), Box<dyn Error>> {
             };
 
             println!(
-                "  {:>8} {:<18} {:>8} {:>8} {}",
+                "  {:>8} {:<16} {} {:>8} {:>8} in {:>6}",
                 improvement,
                 record.run.player.to_string(),
+                record.run.performed,
                 fmt_duration(sum),
+                level.name.to_string().split(":").next().unwrap(),
                 fmt_duration(record.run.duration),
-                level.name
             );
         }
     }
