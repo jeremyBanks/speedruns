@@ -162,8 +162,13 @@ impl SpeedRunComData {
                     game_id: run.game,
                     level_id: run.level,
                     category_id: run.category,
-                    performed: NaiveDate::from_str(&run.date.expect("runs we use for now have dates"))?,
-                    submitted: DateTime::<Utc>::from_str(&run.submitted.expect("runs we use for now have submission times"))?,
+                    performed: NaiveDate::from_str(
+                        &run.date.expect("runs we use for now have dates"),
+                    )?,
+                    submitted: DateTime::<Utc>::from_str(
+                        &run.submitted
+                            .expect("runs we use for now have submission times"),
+                    )?,
                     duration: run.times.primary_t.into(),
                 },
             );

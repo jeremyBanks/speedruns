@@ -34,11 +34,15 @@ where
         let file;
         let data;
 
-        let existing = OpenOptions::new().read(true).write(true).open(filename).and_then(|existing_file| {
-            existing_file.try_lock_exclusive()?;
-            let existing_data = serde_json::from_reader(&existing_file)?;
-            Ok((existing_file, existing_data))
-        });
+        let existing = OpenOptions::new()
+            .read(true)
+            .write(true)
+            .open(filename)
+            .and_then(|existing_file| {
+                existing_file.try_lock_exclusive()?;
+                let existing_data = serde_json::from_reader(&existing_file)?;
+                Ok((existing_file, existing_data))
+            });
 
         match existing {
             Ok(existing) => {

@@ -42,13 +42,34 @@ pub fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
     let data = data_source::SpeedRunComData::open("data.json");
 
-    let war2runs: Vec<_> = data
+    let war2 = data
+        .games()
+        .get("o1yry26q")
+        .expect("war2 should be in our data");
+    let war2x = data
+        .games()
+        .get("y65zy46e")
+        .expect("war2x should be in our data");
+
+    let level = &war2.levels[0];
+    let some_level_id = Some(level.level_id.to_string());
+
+    let mut level_runs: Vec<_> = data
         .runs()
         .values()
-        .filter(|run| run.game_id == "o1yry26q" || run.game_id == "y65zy46e")
+        .filter(|run| run.level_id == some_level_id)
         .collect();
 
-    println!("{:#?}", &war2runs[0..=2]);
+    level_runs.sort_by(|a, b| {
+        a.duration
+            .partial_cmp(&b.duration)
+            .expect("no NaN here")
+            .then(a.performed.cmp(&b.performed))
+            .then(a.submitted.cmp(&b.submitted))
+    });
+
+    println!("First level: {:#?}", level);
+    println!("World record: {:#?}", level_runs[0]);
 
     Ok(())
 }
