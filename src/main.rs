@@ -5,30 +5,17 @@
 #[macro_use]
 extern crate log;
 use env_logger;
-use reqwest;
-use serde;
-use serde_json;
 #[macro_use]
 extern crate serde_derive;
-#[macro_use]
-extern crate derive_more;
 use itertools::Itertools;
 
 use chrono::{Datelike, Duration};
-use std::{
-    collections::BTreeMap,
-    convert::{From, TryFrom},
-    error::Error,
-    fs,
-};
+use std::{collections::BTreeMap, error::Error};
 
 mod persistent;
 mod speedrun_data;
 
-use self::{
-    persistent::Persistent,
-    speedrun_data::{Game, Run, SpeedRunComData},
-};
+use self::speedrun_data::{Run, SpeedRunComData};
 
 pub fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
@@ -103,8 +90,6 @@ pub fn main() -> Result<(), Box<dyn Error>> {
                 .then(a.run.submitted.cmp(&b.run.submitted))
         });
 
-        println!("  delta  sum  level ");
-        println!("  ----- ----- -----");
         let mut sum = worst_sum;
         for record in all_level_records {
             let level = game
@@ -139,15 +124,13 @@ pub fn main() -> Result<(), Box<dyn Error>> {
 
     println!("\n");
 
-    // calculate sum of best and worst sum of records.
-
     Ok(())
 }
 
 fn fmt_duration(duration: Duration) -> String {
     let signed_ms = duration.num_milliseconds();
     let ms = signed_ms.abs();
-    let ms_part_ = ms % 1000;
+    let _ms_part = ms % 1000;
     let s = ms / 1000;
     let s_part = s % 60;
     let m = s / 60;

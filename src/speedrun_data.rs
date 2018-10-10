@@ -1,16 +1,12 @@
 use super::persistent::Persistent;
-use chrono::{Date, DateTime, Duration, NaiveDate, Utc};
-use core::{
-    convert::{From, TryFrom},
-    str::FromStr,
-};
+use chrono::{DateTime, Duration, NaiveDate, Utc};
+use core::{convert::TryFrom, str::FromStr};
 use reqwest;
 use std::{
     collections::BTreeMap,
     error::Error,
     fmt,
     fmt::{Debug, Display},
-    fs,
 };
 
 pub struct SpeedRunComData {
