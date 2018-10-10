@@ -1,5 +1,5 @@
 {
-"last_refreshed": "2018-10-10T07:52:40.048273Z",
+"last_refreshed": "2018-10-10T17:58:59.974751Z",
 "games": {
 "9d372g6l": {
 "game_id": "9d372g6l",
@@ -298,7 +298,7 @@
 },
 "performed": "2015-06-14",
 "submitted": "2015-12-04T01:17:59Z",
-"duration": 4632.0
+"duration": 4632000
 },
 "8m7d16wm": {
 "run_id": "8m7d16wm",
@@ -315,7 +315,7 @@
 },
 "performed": "2015-09-21",
 "submitted": "2015-09-22T07:07:31Z",
-"duration": 14295.0
+"duration": 14295000
 },
 "m3d045wz": {
 "run_id": "m3d045wz",
@@ -332,7 +332,7 @@
 },
 "performed": "2018-01-22",
 "submitted": "2018-01-22T23:46:28Z",
-"duration": 1820.0
+"duration": 1820000
 },
 "m3d2e1wz": {
 "run_id": "m3d2e1wz",
@@ -349,7 +349,7 @@
 },
 "performed": "2018-03-18",
 "submitted": "2018-03-18T22:02:30Z",
-"duration": 781.0
+"duration": 781000
 },
 "m3d2gk4z": {
 "run_id": "m3d2gk4z",
@@ -366,7 +366,7 @@
 },
 "performed": "2018-03-07",
 "submitted": "2018-03-07T23:58:56Z",
-"duration": 745.0
+"duration": 745000
 },
 "m3d4xj4z": {
 "run_id": "m3d4xj4z",
@@ -381,7 +381,7 @@
 },
 "performed": "2015-04-03",
 "submitted": "2018-04-09T23:07:05Z",
-"duration": 408.0
+"duration": 408000
 },
 "m3d8negz": {
 "run_id": "m3d8negz",
@@ -398,7 +398,7 @@
 },
 "performed": "2018-03-23",
 "submitted": "2018-03-24T00:24:29Z",
-"duration": 96.0
+"duration": 96000
 },
 "m3dv1gqz": {
 "run_id": "m3dv1gqz",
@@ -415,7 +415,7 @@
 },
 "performed": "2015-08-28",
 "submitted": "2018-02-20T04:13:30Z",
-"duration": 266.0
+"duration": 266000
 },
 "m3dw0gdz": {
 "run_id": "m3dw0gdz",
@@ -430,7 +430,7 @@
 },
 "performed": "2006-02-15",
 "submitted": "2018-02-14T06:32:46Z",
-"duration": 54.0
+"duration": 54000
 },
 "m3dwnogz": {
 "run_id": "m3dwnogz",
@@ -447,7 +447,7 @@
 },
 "performed": "2018-02-10",
 "submitted": "2018-02-10T10:45:39Z",
-"duration": 731.0
+"duration": 731000
 },
 "m794580y": {
 "run_id": "m794580y",
@@ -464,7 +464,7 @@
 },
 "performed": "2018-04-06",
 "submitted": "2018-04-06T02:53:51Z",
-"duration": 26.0
+"duration": 26000
 },
 "m794xeey": {
 "run_id": "m794xeey",
@@ -479,7 +479,7 @@
 },
 "performed": "2015-04-28",
 "submitted": "2018-04-09T23:31:06Z",
-"duration": 1635.0
+"duration": 1635000
 },
 "m79eg8wy": {
 "run_id": "m79eg8wy",
@@ -496,7 +496,7 @@
 },
 "performed": "2018-02-09",
 "submitted": "2018-02-09T12:20:53Z",
-"duration": 104.0
+"duration": 104000
 },
 "m79en79y": {
 "run_id": "m79en79y",
@@ -511,7 +511,7 @@
 },
 "performed": "2010-04-07",
 "submitted": "2018-02-14T08:01:23Z",
-"duration": 40.0
+"duration": 40000
 },
 "m79lq2ey": {
 "run_id": "m79lq2ey",
@@ -528,7 +528,7 @@
 },
 "performed": "2018-02-20",
 "submitted": "2018-02-20T07:32:25Z",
-"duration": 193.0
+"duration": 193000
 },
 "m79lq5wy": {
 "run_id": "m79lq5wy",
@@ -545,7 +545,7 @@
 },
 "performed": "2015-08-28",
 "submitted": "2018-02-20T04:04:07Z",
-"duration": 96.0
+"duration": 96000
 },
 "m79lq60y": {
 "run_id": "m79lq60y",
@@ -562,7 +562,7 @@
 },
 "performed": "2016-01-23",
 "submitted": "2018-02-20T06:09:38Z",
-"duration": 1068.0
+"duration": 1068000
 },
 "m79lqw0y": {
 "run_id": "m79lqw0y",
@@ -579,7 +579,7 @@
 },
 "performed": "2016-01-22",
 "submitted": "2018-02-20T05:47:30Z",
-"duration": 449.0
+"duration": 449000
 },
 "m79o520y": {
 "run_id": "m79o520y",
@@ -596,7 +596,7 @@
 },
 "performed": "2018-01-27",
 "submitted": "2018-01-27T19:15:55Z",
-"duration": 117.0
+"duration": 117000
 },
 "m79vkkwy": {
 "run_id": "m79vkkwy",
@@ -613,7 +613,7 @@
 },
 "performed": "2018-03-18",
 "submitted": "2018-03-18T19:55:05Z",
-"duration": 771.0
+"duration": 771000
 },
 "m7p77o5m": {
 "run_id": "m7p77o5m",
@@ -630,7 +630,7 @@
 },
 "performed": "2018-09-22",
 "submitted": "2018-09-22T18:00:19Z",
-"duration": 26.0
+"duration": 26000
 },
 "m7pw1k4m": {
 "run_id": "m7pw1k4m",
@@ -647,7 +647,7 @@
 },
 "performed": "2018-10-02",
 "submitted": "2018-10-02T10:38:11Z",
-"duration": 818.0
+"duration": 818000
 },
 "m7pwxkwm": {
 "run_id": "m7pwxkwm",
@@ -662,7 +662,7 @@
 },
 "performed": "2018-10-08",
 "submitted": "2018-10-09T05:36:39Z",
-"duration": 410.0
+"duration": 410000
 },
 "me8jl10m": {
 "run_id": "me8jl10m",
@@ -677,7 +677,7 @@
 },
 "performed": "2018-10-09",
 "submitted": "2018-10-10T05:16:22Z",
-"duration": 558.0
+"duration": 558000
 },
 "mek2o68m": {
 "run_id": "mek2o68m",
@@ -694,7 +694,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2018-02-20T19:12:46Z",
-"duration": 31.0
+"duration": 31000
 },
 "mek2x13m": {
 "run_id": "mek2x13m",
@@ -711,7 +711,7 @@
 },
 "performed": "2017-11-09",
 "submitted": "2018-02-20T06:39:45Z",
-"duration": 373.0
+"duration": 373000
 },
 "mek2x39m": {
 "run_id": "mek2x39m",
@@ -728,7 +728,7 @@
 },
 "performed": "2016-01-22",
 "submitted": "2018-02-20T06:05:52Z",
-"duration": 342.0
+"duration": 342000
 },
 "mek2x98m": {
 "run_id": "mek2x98m",
@@ -745,7 +745,7 @@
 },
 "performed": "2015-08-29",
 "submitted": "2018-02-20T04:28:17Z",
-"duration": 52.0
+"duration": 52000
 },
 "mek5123m": {
 "run_id": "mek5123m",
@@ -760,7 +760,7 @@
 },
 "performed": "2015-05-10",
 "submitted": "2018-04-09T23:42:04Z",
-"duration": 426.0
+"duration": 426000
 },
 "mek51n3m": {
 "run_id": "mek51n3m",
@@ -775,7 +775,7 @@
 },
 "performed": "2015-04-17",
 "submitted": "2018-04-09T23:23:03Z",
-"duration": 1342.0
+"duration": 1342000
 },
 "mekd7kqm": {
 "run_id": "mekd7kqm",
@@ -792,7 +792,7 @@
 },
 "performed": "2018-03-23",
 "submitted": "2018-03-24T01:28:37Z",
-"duration": 227.0
+"duration": 227000
 },
 "mekdo13m": {
 "run_id": "mekdo13m",
@@ -809,7 +809,7 @@
 },
 "performed": "2018-03-22",
 "submitted": "2018-03-22T08:47:52Z",
-"duration": 358.0
+"duration": 358000
 },
 "mekneg8m": {
 "run_id": "mekneg8m",
@@ -826,7 +826,7 @@
 },
 "performed": "2018-02-12",
 "submitted": "2018-02-13T02:25:48Z",
-"duration": 26.0
+"duration": 26000
 },
 "meknw72m": {
 "run_id": "meknw72m",
@@ -841,7 +841,7 @@
 },
 "performed": "2010-04-02",
 "submitted": "2018-02-14T07:48:02Z",
-"duration": 68.0
+"duration": 68000
 },
 "meknwo0m": {
 "run_id": "meknwo0m",
@@ -856,7 +856,7 @@
 },
 "performed": "2006-03-04",
 "submitted": "2018-02-14T06:21:33Z",
-"duration": 457.0
+"duration": 457000
 },
 "mekqv58m": {
 "run_id": "mekqv58m",
@@ -873,7 +873,7 @@
 },
 "performed": "2018-04-19",
 "submitted": "2018-04-19T04:47:51Z",
-"duration": 224.0
+"duration": 224000
 },
 "mk4ndo1y": {
 "run_id": "mk4ndo1y",
@@ -888,7 +888,7 @@
 },
 "performed": "2015-04-24",
 "submitted": "2018-04-09T23:27:28Z",
-"duration": 877.0
+"duration": 877000
 },
 "mk4op8xy": {
 "run_id": "mk4op8xy",
@@ -903,7 +903,7 @@
 },
 "performed": "2012-05-12",
 "submitted": "2018-02-14T06:58:17Z",
-"duration": 229.0
+"duration": 229000
 },
 "mk4r8q1y": {
 "run_id": "mk4r8q1y",
@@ -920,7 +920,7 @@
 },
 "performed": "2018-03-07",
 "submitted": "2018-03-07T23:51:33Z",
-"duration": 128.0
+"duration": 128000
 },
 "mk4rnply": {
 "run_id": "mk4rnply",
@@ -937,7 +937,7 @@
 },
 "performed": "2018-03-17",
 "submitted": "2018-03-18T01:48:05Z",
-"duration": 428.0
+"duration": 428000
 },
 "mk4rxx5y": {
 "run_id": "mk4rxx5y",
@@ -954,7 +954,7 @@
 },
 "performed": "2018-03-17",
 "submitted": "2018-03-17T16:33:17Z",
-"duration": 75.0
+"duration": 75000
 },
 "mk4w17xy": {
 "run_id": "mk4w17xy",
@@ -971,7 +971,7 @@
 },
 "performed": "2018-02-28",
 "submitted": "2018-02-28T01:59:02Z",
-"duration": 784.0
+"duration": 784000
 },
 "mk4w2gvy": {
 "run_id": "mk4w2gvy",
@@ -988,7 +988,7 @@
 },
 "performed": "2015-08-29",
 "submitted": "2018-02-20T05:05:37Z",
-"duration": 763.0
+"duration": 763000
 },
 "mk4w385y": {
 "run_id": "mk4w385y",
@@ -1005,7 +1005,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2018-02-20T19:15:24Z",
-"duration": 991.0
+"duration": 991000
 },
 "mr86jggy": {
 "run_id": "mr86jggy",
@@ -1022,7 +1022,7 @@
 },
 "performed": "2018-10-02",
 "submitted": "2018-10-02T10:43:51Z",
-"duration": 699.0
+"duration": 699000
 },
 "mr86qr7y": {
 "run_id": "mr86qr7y",
@@ -1039,7 +1039,7 @@
 },
 "performed": "2018-10-02",
 "submitted": "2018-10-02T19:13:35Z",
-"duration": 115.0
+"duration": 115000
 },
 "mr86rg7y": {
 "run_id": "mr86rg7y",
@@ -1054,7 +1054,7 @@
 },
 "performed": "2018-10-08",
 "submitted": "2018-10-09T05:41:12Z",
-"duration": 567.0
+"duration": 567000
 },
 "mrq0v4gy": {
 "run_id": "mrq0v4gy",
@@ -1069,7 +1069,7 @@
 },
 "performed": "2006-01-13",
 "submitted": "2018-02-14T07:33:23Z",
-"duration": 164.0
+"duration": 164000
 },
 "mrq0vd7y": {
 "run_id": "mrq0vd7y",
@@ -1084,7 +1084,7 @@
 },
 "performed": "2010-11-07",
 "submitted": "2018-02-14T16:39:49Z",
-"duration": 405.0
+"duration": 405000
 },
 "mrq59e4y": {
 "run_id": "mrq59e4y",
@@ -1101,7 +1101,7 @@
 },
 "performed": "2018-03-07",
 "submitted": "2018-03-07T17:21:44Z",
-"duration": 538.0
+"duration": 538000
 },
 "mrqde97y": {
 "run_id": "mrqde97y",
@@ -1118,7 +1118,7 @@
 },
 "performed": "2015-08-28",
 "submitted": "2018-02-20T04:09:02Z",
-"duration": 61.0
+"duration": 61000
 },
 "mrqden2y": {
 "run_id": "mrqden2y",
@@ -1135,7 +1135,7 @@
 },
 "performed": "2016-01-22",
 "submitted": "2018-02-20T05:29:57Z",
-"duration": 279.0
+"duration": 279000
 },
 "mrqdk97y": {
 "run_id": "mrqdk97y",
@@ -1152,7 +1152,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2018-02-20T19:15:50Z",
-"duration": 1456.0
+"duration": 1456000
 },
 "mrqp8e2y": {
 "run_id": "mrqp8e2y",
@@ -1169,7 +1169,7 @@
 },
 "performed": "2018-04-04",
 "submitted": "2018-04-04T06:46:23Z",
-"duration": 96.0
+"duration": 96000
 },
 "mrqx9o2y": {
 "run_id": "mrqx9o2y",
@@ -1186,7 +1186,7 @@
 },
 "performed": "2018-01-27",
 "submitted": "2018-01-27T19:17:11Z",
-"duration": 28.0
+"duration": 28000
 },
 "pzgx4x0m": {
 "run_id": "pzgx4x0m",
@@ -1203,7 +1203,7 @@
 },
 "performed": "2015-09-20",
 "submitted": "2015-09-20T11:42:39Z",
-"duration": 17172.0
+"duration": 17172000
 },
 "y234dj9m": {
 "run_id": "y234dj9m",
@@ -1220,7 +1220,7 @@
 },
 "performed": "2018-04-06",
 "submitted": "2018-04-06T06:16:44Z",
-"duration": 232.0
+"duration": 232000
 },
 "y2363e5m": {
 "run_id": "y2363e5m",
@@ -1237,7 +1237,7 @@
 },
 "performed": "2018-03-20",
 "submitted": "2018-03-20T10:23:51Z",
-"duration": 739.0
+"duration": 739000
 },
 "y2365j9m": {
 "run_id": "y2365j9m",
@@ -1254,7 +1254,7 @@
 },
 "performed": "2018-03-22",
 "submitted": "2018-03-22T09:45:59Z",
-"duration": 593.0
+"duration": 593000
 },
 "y236oowm": {
 "run_id": "y236oowm",
@@ -1271,7 +1271,7 @@
 },
 "performed": "2018-04-02",
 "submitted": "2018-04-02T08:05:59Z",
-"duration": 44.0
+"duration": 44000
 },
 "y2381dwm": {
 "run_id": "y2381dwm",
@@ -1288,7 +1288,7 @@
 },
 "performed": "2015-08-29",
 "submitted": "2018-02-20T04:16:52Z",
-"duration": 474.0
+"duration": 474000
 },
 "y2381x6m": {
 "run_id": "y2381x6m",
@@ -1305,7 +1305,7 @@
 },
 "performed": "2015-08-20",
 "submitted": "2018-02-20T05:10:33Z",
-"duration": 825.0
+"duration": 825000
 },
 "y23g4v6m": {
 "run_id": "y23g4v6m",
@@ -1322,7 +1322,7 @@
 },
 "performed": "2017-12-26",
 "submitted": "2017-12-26T01:57:25Z",
-"duration": 5992.0
+"duration": 5992000
 },
 "y23n11wm": {
 "run_id": "y23n11wm",
@@ -1339,7 +1339,7 @@
 },
 "performed": "2018-02-08",
 "submitted": "2018-02-08T22:15:39Z",
-"duration": 28.0
+"duration": 28000
 },
 "y23n277m": {
 "run_id": "y23n277m",
@@ -1354,7 +1354,7 @@
 },
 "performed": "2010-04-10",
 "submitted": "2018-02-14T08:20:11Z",
-"duration": 577.0
+"duration": 577000
 },
 "y23n2x5m": {
 "run_id": "y23n2x5m",
@@ -1369,7 +1369,7 @@
 },
 "performed": "2006-06-12",
 "submitted": "2018-02-14T07:37:19Z",
-"duration": 159.0
+"duration": 159000
 },
 "y23nqx6m": {
 "run_id": "y23nqx6m",
@@ -1386,7 +1386,7 @@
 },
 "performed": "2018-02-08",
 "submitted": "2018-02-08T07:54:34Z",
-"duration": 112.0
+"duration": 112000
 },
 "y23r6v9m": {
 "run_id": "y23r6v9m",
@@ -1403,7 +1403,7 @@
 },
 "performed": "2018-03-16",
 "submitted": "2018-03-17T04:56:17Z",
-"duration": 81.0
+"duration": 81000
 },
 "y23ro75m": {
 "run_id": "y23ro75m",
@@ -1420,7 +1420,7 @@
 },
 "performed": "2018-03-18",
 "submitted": "2018-03-18T13:38:06Z",
-"duration": 522.0
+"duration": 522000
 },
 "y23wdj6m": {
 "run_id": "y23wdj6m",
@@ -1437,7 +1437,7 @@
 },
 "performed": "2018-01-27",
 "submitted": "2018-01-27T19:20:40Z",
-"duration": 742.0
+"duration": 742000
 },
 "y43781dz": {
 "run_id": "y43781dz",
@@ -1454,7 +1454,7 @@
 },
 "performed": "2018-09-23",
 "submitted": "2018-09-22T22:48:47Z",
-"duration": 41.0
+"duration": 41000
 },
 "y450gvdm": {
 "run_id": "y450gvdm",
@@ -1471,7 +1471,7 @@
 },
 "performed": "2018-03-12",
 "submitted": "2018-03-12T13:16:21Z",
-"duration": 365.0
+"duration": 365000
 },
 "y454g93m": {
 "run_id": "y454g93m",
@@ -1488,7 +1488,7 @@
 },
 "performed": "2018-04-10",
 "submitted": "2018-04-10T02:58:09Z",
-"duration": 2510.0
+"duration": 2510000
 },
 "y454qndm": {
 "run_id": "y454qndm",
@@ -1505,7 +1505,7 @@
 },
 "performed": "2018-04-09",
 "submitted": "2018-04-09T09:16:57Z",
-"duration": 276.0
+"duration": 276000
 },
 "y45j6nkm": {
 "run_id": "y45j6nkm",
@@ -1520,7 +1520,7 @@
 },
 "performed": "2011-10-22",
 "submitted": "2018-02-14T16:41:59Z",
-"duration": 1912.0
+"duration": 1912000
 },
 "y45n17nm": {
 "run_id": "y45n17nm",
@@ -1537,7 +1537,7 @@
 },
 "performed": "2016-01-22",
 "submitted": "2018-02-20T05:32:28Z",
-"duration": 399.0
+"duration": 399000
 },
 "y45n1qnm": {
 "run_id": "y45n1qnm",
@@ -1554,7 +1554,7 @@
 },
 "performed": "2017-11-09",
 "submitted": "2018-02-20T06:20:26Z",
-"duration": 156.0
+"duration": 156000
 },
 "y45v8onm": {
 "run_id": "y45v8onm",
@@ -1571,7 +1571,7 @@
 },
 "performed": "2018-03-25",
 "submitted": "2018-03-25T14:01:22Z",
-"duration": 216.0
+"duration": 216000
 },
 "y678vj1m": {
 "run_id": "y678vj1m",
@@ -1588,7 +1588,7 @@
 },
 "performed": "2018-03-13",
 "submitted": "2018-03-14T01:58:20Z",
-"duration": 538.0
+"duration": 538000
 },
 "y678wrpm": {
 "run_id": "y678wrpm",
@@ -1605,7 +1605,7 @@
 },
 "performed": "2018-03-16",
 "submitted": "2018-03-17T04:16:05Z",
-"duration": 674.0
+"duration": 674000
 },
 "y67ekpjm": {
 "run_id": "y67ekpjm",
@@ -1622,7 +1622,7 @@
 },
 "performed": "2018-02-06",
 "submitted": "2018-02-06T07:35:48Z",
-"duration": 57.0
+"duration": 57000
 },
 "y67ero1m": {
 "run_id": "y67ero1m",
@@ -1639,7 +1639,7 @@
 },
 "performed": "2018-01-27",
 "submitted": "2018-01-27T19:21:29Z",
-"duration": 298.0
+"duration": 298000
 },
 "y67jld1m": {
 "run_id": "y67jld1m",
@@ -1656,7 +1656,7 @@
 },
 "performed": "2015-08-30",
 "submitted": "2018-02-20T05:13:25Z",
-"duration": 919.0
+"duration": 919000
 },
 "y67wrk0m": {
 "run_id": "y67wrk0m",
@@ -1673,7 +1673,7 @@
 },
 "performed": "2018-03-23",
 "submitted": "2018-03-23T09:25:05Z",
-"duration": 710.0
+"duration": 710000
 },
 "y6p9n5pm": {
 "run_id": "y6p9n5pm",
@@ -1690,7 +1690,7 @@
 },
 "performed": "2018-09-23",
 "submitted": "2018-09-22T22:51:22Z",
-"duration": 23.0
+"duration": 23000
 },
 "y89j96nm": {
 "run_id": "y89j96nm",
@@ -1707,7 +1707,7 @@
 },
 "performed": "2018-10-03",
 "submitted": "2018-10-03T11:57:15Z",
-"duration": 817.0
+"duration": 817000
 },
 "y89j9ewm": {
 "run_id": "y89j9ewm",
@@ -1724,7 +1724,7 @@
 },
 "performed": "2018-10-03",
 "submitted": "2018-10-03T07:57:15Z",
-"duration": 237.0
+"duration": 237000
 },
 "y89jq3dm": {
 "run_id": "y89jq3dm",
@@ -1741,7 +1741,7 @@
 },
 "performed": "2018-10-02",
 "submitted": "2018-10-02T11:36:20Z",
-"duration": 2140.0
+"duration": 2140000
 },
 "y8q43j1y": {
 "run_id": "y8q43j1y",
@@ -1758,7 +1758,7 @@
 },
 "performed": "2018-04-03",
 "submitted": "2018-04-03T02:50:48Z",
-"duration": 101.0
+"duration": 101000
 },
 "y8q43r1y": {
 "run_id": "y8q43r1y",
@@ -1775,7 +1775,7 @@
 },
 "performed": "2018-04-03",
 "submitted": "2018-04-03T00:33:19Z",
-"duration": 104.0
+"duration": 104000
 },
 "y8qg185y": {
 "run_id": "y8qg185y",
@@ -1792,7 +1792,7 @@
 },
 "performed": "2017-11-09",
 "submitted": "2018-02-20T06:27:42Z",
-"duration": 653.0
+"duration": 653000
 },
 "y8qg1x1y": {
 "run_id": "y8qg1x1y",
@@ -1809,7 +1809,7 @@
 },
 "performed": "2017-11-09",
 "submitted": "2018-02-20T06:32:07Z",
-"duration": 692.0
+"duration": 692000
 },
 "y8qn1rny": {
 "run_id": "y8qn1rny",
@@ -1826,7 +1826,7 @@
 },
 "performed": "2018-03-06",
 "submitted": "2018-03-06T12:00:32Z",
-"duration": 397.0
+"duration": 397000
 },
 "y8qo6n5y": {
 "run_id": "y8qo6n5y",
@@ -1843,7 +1843,7 @@
 },
 "performed": "2018-02-13",
 "submitted": "2018-02-13T15:14:43Z",
-"duration": 26.0
+"duration": 26000
 },
 "y8qowrdy": {
 "run_id": "y8qowrdy",
@@ -1858,7 +1858,7 @@
 },
 "performed": "2012-05-11",
 "submitted": "2018-02-14T06:40:04Z",
-"duration": 103.0
+"duration": 103000
 },
 "y8qowvdy": {
 "run_id": "y8qowvdy",
@@ -1873,7 +1873,7 @@
 },
 "performed": "2006-01-06",
 "submitted": "2018-02-14T07:17:33Z",
-"duration": 117.0
+"duration": 117000
 },
 "y8qp1o1y": {
 "run_id": "y8qp1o1y",
@@ -1890,7 +1890,7 @@
 },
 "performed": "2018-01-26",
 "submitted": "2018-01-26T18:03:33Z",
-"duration": 115.0
+"duration": 115000
 },
 "y8qpr05y": {
 "run_id": "y8qpr05y",
@@ -1907,7 +1907,7 @@
 },
 "performed": "2018-01-27",
 "submitted": "2018-01-27T19:22:16Z",
-"duration": 599.0
+"duration": 599000
 },
 "y97e5nnm": {
 "run_id": "y97e5nnm",
@@ -1924,7 +1924,7 @@
 },
 "performed": "2015-08-29",
 "submitted": "2018-02-20T04:33:07Z",
-"duration": 695.0
+"duration": 695000
 },
 "y97pw6rm": {
 "run_id": "y97pw6rm",
@@ -1941,7 +1941,7 @@
 },
 "performed": "2018-02-16",
 "submitted": "2018-02-16T12:54:13Z",
-"duration": 47.0
+"duration": 47000
 },
 "y97qxpkm": {
 "run_id": "y97qxpkm",
@@ -1956,7 +1956,7 @@
 },
 "performed": "2015-04-18",
 "submitted": "2018-04-09T23:25:17Z",
-"duration": 277.0
+"duration": 277000
 },
 "yd36w1jz": {
 "run_id": "yd36w1jz",
@@ -1973,7 +1973,7 @@
 },
 "performed": "2018-07-13",
 "submitted": "2018-07-13T14:08:27Z",
-"duration": 5383.0
+"duration": 5383000
 },
 "ydq4500m": {
 "run_id": "ydq4500m",
@@ -1990,7 +1990,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2018-02-20T19:14:30Z",
-"duration": 692.0
+"duration": 692000
 },
 "ydq461jm": {
 "run_id": "ydq461jm",
@@ -2007,7 +2007,7 @@
 },
 "performed": "2017-11-09",
 "submitted": "2018-02-20T06:42:19Z",
-"duration": 622.0
+"duration": 622000
 },
 "ydq46wwm": {
 "run_id": "ydq46wwm",
@@ -2024,7 +2024,7 @@
 },
 "performed": "2016-01-22",
 "submitted": "2018-02-20T05:42:16Z",
-"duration": 378.0
+"duration": 378000
 },
 "ydql3gjm": {
 "run_id": "ydql3gjm",
@@ -2041,7 +2041,7 @@
 },
 "performed": "2018-01-24",
 "submitted": "2018-01-25T23:36:33Z",
-"duration": 52.0
+"duration": 52000
 },
 "ydql590m": {
 "run_id": "ydql590m",
@@ -2058,7 +2058,7 @@
 },
 "performed": "2018-01-26",
 "submitted": "2018-01-27T00:32:28Z",
-"duration": 47.0
+"duration": 47000
 },
 "ydqo9dwm": {
 "run_id": "ydqo9dwm",
@@ -2075,7 +2075,7 @@
 },
 "performed": "2018-03-08",
 "submitted": "2018-03-08T13:59:27Z",
-"duration": 527.0
+"duration": 527000
 },
 "ydqp2dqm": {
 "run_id": "ydqp2dqm",
@@ -2092,7 +2092,7 @@
 },
 "performed": "2018-03-28",
 "submitted": "2018-03-28T12:36:18Z",
-"duration": 601.0
+"duration": 601000
 },
 "ydqv11qm": {
 "run_id": "ydqv11qm",
@@ -2109,7 +2109,7 @@
 },
 "performed": "2018-02-12",
 "submitted": "2018-02-12T14:22:22Z",
-"duration": 28.0
+"duration": 28000
 },
 "ydqvogxm": {
 "run_id": "ydqvogxm",
@@ -2126,7 +2126,7 @@
 },
 "performed": "2018-02-16",
 "submitted": "2018-02-16T12:53:41Z",
-"duration": 83.0
+"duration": 83000
 },
 "yj4x48ny": {
 "run_id": "yj4x48ny",
@@ -2143,7 +2143,7 @@
 },
 "performed": "2018-10-03",
 "submitted": "2018-10-03T11:23:01Z",
-"duration": 1204.0
+"duration": 1204000
 },
 "yjk7kr7m": {
 "run_id": "yjk7kr7m",
@@ -2160,7 +2160,7 @@
 },
 "performed": "2018-03-05",
 "submitted": "2018-03-05T17:07:26Z",
-"duration": 391.0
+"duration": 391000
 },
 "yjk9623m": {
 "run_id": "yjk9623m",
@@ -2177,7 +2177,7 @@
 },
 "performed": "2018-01-27",
 "submitted": "2018-01-27T19:24:39Z",
-"duration": 44.0
+"duration": 44000
 },
 "yjkeo3dm": {
 "run_id": "yjkeo3dm",
@@ -2192,7 +2192,7 @@
 },
 "performed": "2006-02-15",
 "submitted": "2018-02-14T05:55:57Z",
-"duration": 45.0
+"duration": 45000
 },
 "yjkeogom": {
 "run_id": "yjkeogom",
@@ -2207,7 +2207,7 @@
 },
 "performed": "2010-04-02",
 "submitted": "2018-02-14T07:45:51Z",
-"duration": 156.0
+"duration": 156000
 },
 "yjkoegdm": {
 "run_id": "yjkoegdm",
@@ -2224,7 +2224,7 @@
 },
 "performed": "2018-01-21",
 "submitted": "2018-01-21T00:41:22Z",
-"duration": 82.0
+"duration": 82000
 },
 "yjkqllnm": {
 "run_id": "yjkqllnm",
@@ -2241,7 +2241,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2018-02-20T19:10:50Z",
-"duration": 253.0
+"duration": 253000
 },
 "yjkv52gm": {
 "run_id": "yjkv52gm",
@@ -2258,7 +2258,7 @@
 },
 "performed": "2018-04-07",
 "submitted": "2018-04-08T03:24:50Z",
-"duration": 358.0
+"duration": 358000
 },
 "yl4e61nm": {
 "run_id": "yl4e61nm",
@@ -2273,7 +2273,7 @@
 },
 "performed": "2018-10-09",
 "submitted": "2018-10-10T05:13:28Z",
-"duration": 365.0
+"duration": 365000
 },
 "yl4rg2rm": {
 "run_id": "yl4rg2rm",
@@ -2290,7 +2290,7 @@
 },
 "performed": "2018-07-17",
 "submitted": "2018-10-01T19:11:30Z",
-"duration": 15635.0
+"duration": 15635000
 },
 "yl9j01ry": {
 "run_id": "yl9j01ry",
@@ -2307,7 +2307,7 @@
 },
 "performed": "2017-11-09",
 "submitted": "2018-02-20T06:37:30Z",
-"duration": 1084.0
+"duration": 1084000
 },
 "yl9j07ky": {
 "run_id": "yl9j07ky",
@@ -2324,7 +2324,7 @@
 },
 "performed": "2016-01-22",
 "submitted": "2018-02-20T06:03:22Z",
-"duration": 538.0
+"duration": 538000
 },
 "yl9j0o3y": {
 "run_id": "yl9j0o3y",
@@ -2341,7 +2341,7 @@
 },
 "performed": "2015-08-29",
 "submitted": "2018-02-20T04:25:31Z",
-"duration": 627.0
+"duration": 627000
 },
 "yl9jkv3y": {
 "run_id": "yl9jkv3y",
@@ -2358,7 +2358,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2018-02-20T19:11:17Z",
-"duration": 581.0
+"duration": 581000
 },
 "yl9p4qky": {
 "run_id": "yl9p4qky",
@@ -2375,7 +2375,7 @@
 },
 "performed": "2018-02-08",
 "submitted": "2018-02-08T07:10:27Z",
-"duration": 289.0
+"duration": 289000
 },
 "yl9p62ky": {
 "run_id": "yl9p62ky",
@@ -2392,7 +2392,7 @@
 },
 "performed": "2018-02-13",
 "submitted": "2018-02-13T15:16:11Z",
-"duration": 96.0
+"duration": 96000
 },
 "yl9pk7ky": {
 "run_id": "yl9pk7ky",
@@ -2409,7 +2409,7 @@
 },
 "performed": "2018-02-09",
 "submitted": "2018-02-09T14:37:23Z",
-"duration": 235.0
+"duration": 235000
 },
 "yl9pklry": {
 "run_id": "yl9pklry",
@@ -2426,7 +2426,7 @@
 },
 "performed": "2018-02-09",
 "submitted": "2018-02-09T17:04:39Z",
-"duration": 431.0
+"duration": 431000
 },
 "yl9w1jry": {
 "run_id": "yl9w1jry",
@@ -2441,7 +2441,7 @@
 },
 "performed": "2015-05-10",
 "submitted": "2018-04-09T23:40:27Z",
-"duration": 1529.0
+"duration": 1529000
 },
 "yl9w1pry": {
 "run_id": "yl9w1pry",
@@ -2456,7 +2456,7 @@
 },
 "performed": "2015-04-11",
 "submitted": "2018-04-09T23:21:06Z",
-"duration": 1759.0
+"duration": 1759000
 },
 "yo24pndz": {
 "run_id": "yo24pndz",
@@ -2473,7 +2473,7 @@
 },
 "performed": "2018-06-14",
 "submitted": "2018-06-14T18:59:03Z",
-"duration": 5411.0
+"duration": 5411000
 },
 "yo40gk7m": {
 "run_id": "yo40gk7m",
@@ -2490,7 +2490,7 @@
 },
 "performed": "2018-01-22",
 "submitted": "2018-01-22T23:35:32Z",
-"duration": 1007.0
+"duration": 1007000
 },
 "yo453odm": {
 "run_id": "yo453odm",
@@ -2507,7 +2507,7 @@
 },
 "performed": "2018-03-07",
 "submitted": "2018-03-07T23:45:50Z",
-"duration": 199.0
+"duration": 199000
 },
 "yo45o87m": {
 "run_id": "yo45o87m",
@@ -2524,7 +2524,7 @@
 },
 "performed": "2018-03-13",
 "submitted": "2018-03-13T15:48:04Z",
-"duration": 189.0
+"duration": 189000
 },
 "yo48we1m": {
 "run_id": "yo48we1m",
@@ -2541,7 +2541,7 @@
 },
 "performed": "2018-03-25",
 "submitted": "2018-04-02T04:47:39Z",
-"duration": 18877.0
+"duration": 18877000
 },
 "yo4ek3jm": {
 "run_id": "yo4ek3jm",
@@ -2558,7 +2558,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2018-02-20T19:13:20Z",
-"duration": 842.0
+"duration": 842000
 },
 "yo4gnpjm": {
 "run_id": "yo4gnpjm",
@@ -2573,7 +2573,7 @@
 },
 "performed": "2008-01-30",
 "submitted": "2018-04-11T02:32:00Z",
-"duration": 193.0
+"duration": 193000
 },
 "yo4q030m": {
 "run_id": "yo4q030m",
@@ -2588,7 +2588,7 @@
 },
 "performed": "2012-05-01",
 "submitted": "2018-02-14T06:54:30Z",
-"duration": 50.0
+"duration": 50000
 },
 "yo4q075m": {
 "run_id": "yo4q075m",
@@ -2603,7 +2603,7 @@
 },
 "performed": "2010-04-03",
 "submitted": "2018-02-14T07:50:44Z",
-"duration": 333.0
+"duration": 333000
 },
 "yo4q5l5m": {
 "run_id": "yo4q5l5m",
@@ -2620,7 +2620,7 @@
 },
 "performed": "2018-02-16",
 "submitted": "2018-02-16T12:52:39Z",
-"duration": 229.0
+"duration": 229000
 },
 "yo4qdnjm": {
 "run_id": "yo4qdnjm",
@@ -2637,7 +2637,7 @@
 },
 "performed": "2018-02-12",
 "submitted": "2018-02-12T15:42:23Z",
-"duration": 91.0
+"duration": 91000
 },
 "yo4xd57m": {
 "run_id": "yo4xd57m",
@@ -2654,7 +2654,7 @@
 },
 "performed": "2018-01-27",
 "submitted": "2018-01-31T01:24:20Z",
-"duration": 570.0
+"duration": 570000
 },
 "yvg51d8y": {
 "run_id": "yvg51d8y",
@@ -2671,7 +2671,7 @@
 },
 "performed": "2018-03-09",
 "submitted": "2018-03-09T14:25:25Z",
-"duration": 373.0
+"duration": 373000
 },
 "yvg5ew4y": {
 "run_id": "yvg5ew4y",
@@ -2688,7 +2688,7 @@
 },
 "performed": "2018-03-17",
 "submitted": "2018-03-17T17:49:45Z",
-"duration": 363.0
+"duration": 363000
 },
 "yvg7314y": {
 "run_id": "yvg7314y",
@@ -2705,7 +2705,7 @@
 },
 "performed": "2015-08-29",
 "submitted": "2018-02-20T04:56:01Z",
-"duration": 580.0
+"duration": 580000
 },
 "yvg766ey": {
 "run_id": "yvg766ey",
@@ -2722,7 +2722,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2018-02-20T19:09:45Z",
-"duration": 52.0
+"duration": 52000
 },
 "yvge14xy": {
 "run_id": "yvge14xy",
@@ -2739,7 +2739,7 @@
 },
 "performed": "2018-03-23",
 "submitted": "2018-03-24T00:51:57Z",
-"duration": 23.0
+"duration": 23000
 },
 "yvgedkey": {
 "run_id": "yvgedkey",
@@ -2756,7 +2756,7 @@
 },
 "performed": "2018-04-01",
 "submitted": "2018-04-02T07:08:33Z",
-"duration": 120.0
+"duration": 120000
 },
 "yvgk076y": {
 "run_id": "yvgk076y",
@@ -2771,7 +2771,7 @@
 },
 "performed": "2015-05-10",
 "submitted": "2018-04-09T23:38:23Z",
-"duration": 1060.0
+"duration": 1060000
 },
 "yvgkr76y": {
 "run_id": "yvgkr76y",
@@ -2788,7 +2788,7 @@
 },
 "performed": "2018-04-09",
 "submitted": "2018-04-09T08:23:44Z",
-"duration": 708.0
+"duration": 708000
 },
 "yvgln1oy": {
 "run_id": "yvgln1oy",
@@ -2805,7 +2805,7 @@
 },
 "performed": "2018-01-21",
 "submitted": "2018-01-21T00:37:36Z",
-"duration": 170.0
+"duration": 170000
 },
 "yvgnpe4y": {
 "run_id": "yvgnpe4y",
@@ -2822,7 +2822,7 @@
 },
 "performed": "2018-02-13",
 "submitted": "2018-02-13T15:15:08Z",
-"duration": 91.0
+"duration": 91000
 },
 "yvjq3e4y": {
 "run_id": "yvjq3e4y",
@@ -2839,7 +2839,7 @@
 },
 "performed": "2018-10-04",
 "submitted": "2018-10-04T05:04:15Z",
-"duration": 1262.0
+"duration": 1262000
 },
 "yvjqg0ey": {
 "run_id": "yvjqg0ey",
@@ -2856,7 +2856,7 @@
 },
 "performed": "2018-10-02",
 "submitted": "2018-10-02T19:29:20Z",
-"duration": 152.0
+"duration": 152000
 },
 "yw12x03z": {
 "run_id": "yw12x03z",
@@ -2873,7 +2873,7 @@
 },
 "performed": "2018-02-28",
 "submitted": "2018-02-28T01:49:39Z",
-"duration": 262.0
+"duration": 262000
 },
 "yw1wg83z": {
 "run_id": "yw1wg83z",
@@ -2888,7 +2888,7 @@
 },
 "performed": "2006-02-15",
 "submitted": "2018-02-14T06:17:19Z",
-"duration": 23.0
+"duration": 23000
 },
 "yw1wgknz": {
 "run_id": "yw1wgknz",
@@ -2903,7 +2903,7 @@
 },
 "performed": "2012-01-06",
 "submitted": "2018-02-14T08:27:24Z",
-"duration": 1520.0
+"duration": 1520000
 },
 "yw1wgqnz": {
 "run_id": "yw1wgqnz",
@@ -2918,7 +2918,7 @@
 },
 "performed": "2006-06-11",
 "submitted": "2018-02-14T07:41:14Z",
-"duration": 154.0
+"duration": 154000
 },
 "yw1wropz": {
 "run_id": "yw1wropz",
@@ -2935,7 +2935,7 @@
 },
 "performed": "2018-02-13",
 "submitted": "2018-02-13T15:15:40Z",
-"duration": 412.0
+"duration": 412000
 },
 "ywpj679z": {
 "run_id": "ywpj679z",
@@ -2950,7 +2950,7 @@
 },
 "performed": "2018-10-08",
 "submitted": "2018-10-09T05:19:15Z",
-"duration": 392.0
+"duration": 392000
 },
 "z03o559z": {
 "run_id": "z03o559z",
@@ -2967,7 +2967,7 @@
 },
 "performed": "2018-10-04",
 "submitted": "2018-10-04T13:45:58Z",
-"duration": 73.0
+"duration": 73000
 },
 "z03ol48z": {
 "run_id": "z03ol48z",
@@ -2982,7 +2982,7 @@
 },
 "performed": "2018-10-08",
 "submitted": "2018-10-09T05:06:54Z",
-"duration": 355.0
+"duration": 355000
 },
 "z0e01lem": {
 "run_id": "z0e01lem",
@@ -2999,7 +2999,7 @@
 },
 "performed": "2017-11-09",
 "submitted": "2018-02-20T06:29:52Z",
-"duration": 315.0
+"duration": 315000
 },
 "z0e01o4m": {
 "run_id": "z0e01o4m",
@@ -3016,7 +3016,7 @@
 },
 "performed": "2016-01-22",
 "submitted": "2018-02-20T05:54:56Z",
-"duration": 105.0
+"duration": 105000
 },
 "z0e01p4m": {
 "run_id": "z0e01p4m",
@@ -3033,7 +3033,7 @@
 },
 "performed": "2017-11-09",
 "submitted": "2018-02-20T06:25:24Z",
-"duration": 723.0
+"duration": 723000
 },
 "z0e0558m": {
 "run_id": "z0e0558m",
@@ -3050,7 +3050,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2018-02-20T19:08:05Z",
-"duration": 112.0
+"duration": 112000
 },
 "z0e2g0jm": {
 "run_id": "z0e2g0jm",
@@ -3067,7 +3067,7 @@
 },
 "performed": "2018-04-02",
 "submitted": "2018-04-02T04:37:32Z",
-"duration": 15933.0
+"duration": 15933000
 },
 "z0e412jm": {
 "run_id": "z0e412jm",
@@ -3084,7 +3084,7 @@
 },
 "performed": "2018-04-05",
 "submitted": "2018-04-05T05:28:03Z",
-"duration": 94.0
+"duration": 94000
 },
 "z0e4l0em": {
 "run_id": "z0e4l0em",
@@ -3099,7 +3099,7 @@
 },
 "performed": "2015-05-09",
 "submitted": "2018-04-09T23:36:10Z",
-"duration": 2292.0
+"duration": 2292000
 },
 "z0e4l8em": {
 "run_id": "z0e4l8em",
@@ -3114,7 +3114,7 @@
 },
 "performed": "2015-04-03",
 "submitted": "2018-04-09T23:14:49Z",
-"duration": 1453.0
+"duration": 1453000
 },
 "z0ekg79m": {
 "run_id": "z0ekg79m",
@@ -3131,7 +3131,7 @@
 },
 "performed": "2018-03-18",
 "submitted": "2018-03-18T13:38:48Z",
-"duration": 514.0
+"duration": 514000
 },
 "z1123qrz": {
 "run_id": "z1123qrz",
@@ -3148,7 +3148,7 @@
 },
 "performed": "2018-10-02",
 "submitted": "2018-10-02T19:54:24Z",
-"duration": 136.0
+"duration": 136000
 },
 "z112je9z": {
 "run_id": "z112je9z",
@@ -3165,7 +3165,7 @@
 },
 "performed": "2018-10-04",
 "submitted": "2018-10-04T07:11:44Z",
-"duration": 1235.0
+"duration": 1235000
 },
 "z134lprm": {
 "run_id": "z134lprm",
@@ -3180,7 +3180,7 @@
 },
 "performed": "2008-01-30",
 "submitted": "2018-04-11T02:35:58Z",
-"duration": 126.0
+"duration": 126000
 },
 "z1365orm": {
 "run_id": "z1365orm",
@@ -3197,7 +3197,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2018-02-20T19:15:03Z",
-"duration": 1188.0
+"duration": 1188000
 },
 "z136j2gm": {
 "run_id": "z136j2gm",
@@ -3214,7 +3214,7 @@
 },
 "performed": "2016-01-22",
 "submitted": "2018-02-20T05:45:15Z",
-"duration": 540.0
+"duration": 540000
 },
 "z136jxgm": {
 "run_id": "z136jxgm",
@@ -3231,7 +3231,7 @@
 },
 "performed": "2016-01-22",
 "submitted": "2018-02-20T05:26:35Z",
-"duration": 31.0
+"duration": 31000
 },
 "z1378n9m": {
 "run_id": "z1378n9m",
@@ -3248,7 +3248,7 @@
 },
 "performed": "2018-03-08",
 "submitted": "2018-03-08T18:33:40Z",
-"duration": 1202.0
+"duration": 1202000
 },
 "z137dwjm": {
 "run_id": "z137dwjm",
@@ -3265,7 +3265,7 @@
 },
 "performed": "2018-03-04",
 "submitted": "2018-03-05T03:59:14Z",
-"duration": 91.0
+"duration": 91000
 },
 "z137k0gm": {
 "run_id": "z137k0gm",
@@ -3282,7 +3282,7 @@
 },
 "performed": "2018-03-13",
 "submitted": "2018-03-13T16:00:56Z",
-"duration": 1085.0
+"duration": 1085000
 },
 "z13v96rm": {
 "run_id": "z13v96rm",
@@ -3297,7 +3297,7 @@
 },
 "performed": "2011-12-10",
 "submitted": "2018-02-14T16:35:22Z",
-"duration": 131.0
+"duration": 131000
 },
 "z13v97rm": {
 "run_id": "z13v97rm",
@@ -3312,7 +3312,7 @@
 },
 "performed": "2018-02-14",
 "submitted": "2018-02-14T16:56:35Z",
-"duration": 783.0
+"duration": 783000
 },
 "z13v9rwm": {
 "run_id": "z13v9rwm",
@@ -3327,7 +3327,7 @@
 },
 "performed": "2010-04-06",
 "submitted": "2018-02-14T07:56:02Z",
-"duration": 539.0
+"duration": 539000
 },
 "z13vggjm": {
 "run_id": "z13vggjm",
@@ -3344,7 +3344,7 @@
 },
 "performed": "2018-02-12",
 "submitted": "2018-02-12T14:23:00Z",
-"duration": 713.0
+"duration": 713000
 },
 "z51v1ddm": {
 "run_id": "z51v1ddm",
@@ -3361,7 +3361,7 @@
 },
 "performed": "2018-10-03",
 "submitted": "2018-10-03T07:24:07Z",
-"duration": 915.0
+"duration": 915000
 },
 "z5o6o6jy": {
 "run_id": "z5o6o6jy",
@@ -3378,7 +3378,7 @@
 },
 "performed": "2018-03-05",
 "submitted": "2018-03-05T15:48:08Z",
-"duration": 410.0
+"duration": 410000
 },
 "z5og3egy": {
 "run_id": "z5og3egy",
@@ -3395,7 +3395,7 @@
 },
 "performed": "2018-01-27",
 "submitted": "2018-01-27T19:18:51Z",
-"duration": 287.0
+"duration": 287000
 },
 "z5ow7rgy": {
 "run_id": "z5ow7rgy",
@@ -3412,7 +3412,7 @@
 },
 "performed": "2015-08-29",
 "submitted": "2018-02-20T05:07:48Z",
-"duration": 614.0
+"duration": 614000
 },
 "z5owx3jy": {
 "run_id": "z5owx3jy",
@@ -3429,7 +3429,7 @@
 },
 "performed": "2018-02-25",
 "submitted": "2018-02-25T00:57:55Z",
-"duration": 47.0
+"duration": 47000
 },
 "zg7dq5nz": {
 "run_id": "zg7dq5nz",
@@ -3444,7 +3444,7 @@
 },
 "performed": "2018-10-08",
 "submitted": "2018-10-09T05:21:56Z",
-"duration": 642.0
+"duration": 642000
 },
 "zgn1wqdy": {
 "run_id": "zgn1wqdy",
@@ -3461,7 +3461,7 @@
 },
 "performed": "2018-03-22",
 "submitted": "2018-03-22T08:47:16Z",
-"duration": 209.0
+"duration": 209000
 },
 "zgn5weey": {
 "run_id": "zgn5weey",
@@ -3478,7 +3478,7 @@
 },
 "performed": "2018-04-22",
 "submitted": "2018-04-22T01:28:26Z",
-"duration": 925.0
+"duration": 925000
 },
 "zgn62kjy": {
 "run_id": "zgn62kjy",
@@ -3495,7 +3495,7 @@
 },
 "performed": "2018-02-25",
 "submitted": "2018-02-25T14:54:21Z",
-"duration": 188.0
+"duration": 188000
 },
 "zgn6oxey": {
 "run_id": "zgn6oxey",
@@ -3512,7 +3512,7 @@
 },
 "performed": "2018-02-28",
 "submitted": "2018-02-28T01:53:01Z",
-"duration": 195.0
+"duration": 195000
 },
 "zgn6wvny": {
 "run_id": "zgn6wvny",
@@ -3529,7 +3529,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2018-02-20T19:11:49Z",
-"duration": 906.0
+"duration": 906000
 },
 "zgnje1vy": {
 "run_id": "zgnje1vy",
@@ -3546,7 +3546,7 @@
 },
 "performed": "2018-02-13",
 "submitted": "2018-02-13T15:16:32Z",
-"duration": 23.0
+"duration": 23000
 },
 "zgno47ny": {
 "run_id": "zgno47ny",
@@ -3563,7 +3563,7 @@
 },
 "performed": "2018-02-06",
 "submitted": "2018-02-06T07:01:56Z",
-"duration": 114.0
+"duration": 114000
 },
 "zn407k3m": {
 "run_id": "zn407k3m",
@@ -3580,7 +3580,7 @@
 },
 "performed": "2018-09-23",
 "submitted": "2018-09-22T22:54:21Z",
-"duration": 91.0
+"duration": 91000
 },
 "zn47458m": {
 "run_id": "zn47458m",
@@ -3597,7 +3597,7 @@
 },
 "performed": "2018-10-03",
 "submitted": "2018-10-03T15:19:38Z",
-"duration": 807.0
+"duration": 807000
 },
 "zn478vlm": {
 "run_id": "zn478vlm",
@@ -3614,7 +3614,7 @@
 },
 "performed": "2018-10-02",
 "submitted": "2018-10-02T20:41:47Z",
-"duration": 1105.0
+"duration": 1105000
 },
 "zn82lk8z": {
 "run_id": "zn82lk8z",
@@ -3631,7 +3631,7 @@
 },
 "performed": "2018-01-22",
 "submitted": "2018-01-22T23:31:55Z",
-"duration": 459.0
+"duration": 459000
 },
 "zn851nvz": {
 "run_id": "zn851nvz",
@@ -3648,7 +3648,7 @@
 },
 "performed": "2018-03-09",
 "submitted": "2018-03-09T14:26:09Z",
-"duration": 545.0
+"duration": 545000
 },
 "zn892glz": {
 "run_id": "zn892glz",
@@ -3663,7 +3663,7 @@
 },
 "performed": "2011-10-27",
 "submitted": "2018-02-14T16:46:58Z",
-"duration": 1562.0
+"duration": 1562000
 },
 "zn8gk57z": {
 "run_id": "zn8gk57z",
@@ -3680,7 +3680,7 @@
 },
 "performed": "2018-02-21",
 "submitted": "2018-02-21T01:04:23Z",
-"duration": 319.0
+"duration": 319000
 },
 "zn8gr08z": {
 "run_id": "zn8gr08z",
@@ -3697,7 +3697,7 @@
 },
 "performed": "2015-08-31",
 "submitted": "2018-02-20T05:15:17Z",
-"duration": 697.0
+"duration": 697000
 },
 "zn8grp8z": {
 "run_id": "zn8grp8z",
@@ -3714,7 +3714,7 @@
 },
 "performed": "2016-01-22",
 "submitted": "2018-02-20T05:59:40Z",
-"duration": 548.0
+"duration": 548000
 },
 "zn8grq3z": {
 "run_id": "zn8grq3z",
@@ -3731,7 +3731,7 @@
 },
 "performed": "2017-11-09",
 "submitted": "2018-02-20T06:35:04Z",
-"duration": 643.0
+"duration": 643000
 },
 "zn8l8l9z": {
 "run_id": "zn8l8l9z",
@@ -3748,7 +3748,7 @@
 },
 "performed": "2018-04-03",
 "submitted": "2018-04-04T03:03:25Z",
-"duration": 209.0
+"duration": 209000
 },
 "zn8lq93z": {
 "run_id": "zn8lq93z",
@@ -3763,7 +3763,7 @@
 },
 "performed": "2015-04-10",
 "submitted": "2018-04-09T23:18:30Z",
-"duration": 2311.0
+"duration": 2311000
 },
 "zn8o93lz": {
 "run_id": "zn8o93lz",
@@ -3780,7 +3780,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2017-08-07T22:58:56Z",
-"duration": 10527.0
+"duration": 10527000
 },
 "zn8vl18z": {
 "run_id": "zn8vl18z",
@@ -3797,7 +3797,7 @@
 },
 "performed": "2017-12-24",
 "submitted": "2017-12-26T02:03:25Z",
-"duration": 6005.0
+"duration": 6005000
 },
 "zn8x3v8z": {
 "run_id": "zn8x3v8z",
@@ -3814,7 +3814,7 @@
 },
 "performed": "2018-01-27",
 "submitted": "2018-01-27T19:23:18Z",
-"duration": 915.0
+"duration": 915000
 },
 "zpq5398y": {
 "run_id": "zpq5398y",
@@ -3831,7 +3831,7 @@
 },
 "performed": "2018-03-08",
 "submitted": "2018-03-08T13:58:57Z",
-"duration": 415.0
+"duration": 415000
 },
 "zpq53xgy": {
 "run_id": "zpq53xgy",
@@ -3848,7 +3848,7 @@
 },
 "performed": "2018-03-08",
 "submitted": "2018-03-08T18:30:00Z",
-"duration": 579.0
+"duration": 579000
 },
 "zpq5neny": {
 "run_id": "zpq5neny",
@@ -3865,7 +3865,7 @@
 },
 "performed": "2018-03-04",
 "submitted": "2018-03-05T03:04:58Z",
-"duration": 41.0
+"duration": 41000
 },
 "zpq5pv8y": {
 "run_id": "zpq5pv8y",
@@ -3882,7 +3882,7 @@
 },
 "performed": "2018-03-13",
 "submitted": "2018-03-13T15:52:41Z",
-"duration": 118.0
+"duration": 118000
 },
 "zpqk5gvy": {
 "run_id": "zpqk5gvy",
@@ -3899,7 +3899,7 @@
 },
 "performed": "2018-02-16",
 "submitted": "2018-02-16T12:53:09Z",
-"duration": 211.0
+"duration": 211000
 },
 "zpqo428y": {
 "run_id": "zpqo428y",
@@ -3916,7 +3916,7 @@
 },
 "performed": "2016-01-22",
 "submitted": "2018-02-20T05:40:43Z",
-"duration": 488.0
+"duration": 488000
 },
 "zpqo488y": {
 "run_id": "zpqo488y",
@@ -3933,7 +3933,7 @@
 },
 "performed": "2016-01-22",
 "submitted": "2018-02-20T05:22:39Z",
-"duration": 101.0
+"duration": 101000
 },
 "zpqo498y": {
 "run_id": "zpqo498y",
@@ -3950,7 +3950,7 @@
 },
 "performed": "2016-01-23",
 "submitted": "2018-02-20T06:07:50Z",
-"duration": 1115.0
+"duration": 1115000
 },
 "zpqorlry": {
 "run_id": "zpqorlry",
@@ -3967,7 +3967,7 @@
 },
 "performed": "2017-08-07",
 "submitted": "2018-02-20T19:13:58Z",
-"duration": 281.0
+"duration": 281000
 },
 "zpqv4qry": {
 "run_id": "zpqv4qry",
@@ -3984,7 +3984,7 @@
 },
 "performed": "2018-03-21",
 "submitted": "2018-03-21T12:06:01Z",
-"duration": 687.0
+"duration": 687000
 },
 "zq30r3ry": {
 "run_id": "zq30r3ry",
@@ -4001,7 +4001,7 @@
 },
 "performed": "2018-10-03",
 "submitted": "2018-10-03T19:13:03Z",
-"duration": 778.0
+"duration": 778000
 },
 "zq3vv58y": {
 "run_id": "zq3vv58y",
@@ -4018,7 +4018,7 @@
 },
 "performed": "2018-09-22",
 "submitted": "2018-09-22T19:06:43Z",
-"duration": 96.0
+"duration": 96000
 },
 "zq6284ry": {
 "run_id": "zq6284ry",
@@ -4033,7 +4033,7 @@
 },
 "performed": "2006-04-04",
 "submitted": "2018-02-14T06:34:35Z",
-"duration": 243.0
+"duration": 243000
 },
 "zq628v1y": {
 "run_id": "zq628v1y",
@@ -4048,7 +4048,7 @@
 },
 "performed": "2010-04-09",
 "submitted": "2018-02-14T08:17:05Z",
-"duration": 140.0
+"duration": 140000
 },
 "zq62wv8y": {
 "run_id": "zq62wv8y",
@@ -4065,7 +4065,7 @@
 },
 "performed": "2018-02-09",
 "submitted": "2018-02-09T13:02:28Z",
-"duration": 44.0
+"duration": 44000
 },
 "zq65k21y": {
 "run_id": "zq65k21y",
@@ -4082,7 +4082,7 @@
 },
 "performed": "2018-03-05",
 "submitted": "2018-03-05T01:21:37Z",
-"duration": 26.0
+"duration": 26000
 },
 "zq6n75xy": {
 "run_id": "zq6n75xy",
@@ -4099,7 +4099,7 @@
 },
 "performed": "2018-03-25",
 "submitted": "2018-03-26T02:48:32Z",
-"duration": 34875.0
+"duration": 34875000
 },
 "zq6nqp5y": {
 "run_id": "zq6nqp5y",
@@ -4116,7 +4116,7 @@
 },
 "performed": "2018-03-30",
 "submitted": "2018-03-30T02:46:15Z",
-"duration": 2532.0
+"duration": 2532000
 },
 "zq6pr75y": {
 "run_id": "zq6pr75y",
@@ -4133,7 +4133,7 @@
 },
 "performed": "2017-11-09",
 "submitted": "2018-02-20T06:22:47Z",
-"duration": 528.0
+"duration": 528000
 },
 "zx4l818y": {
 "run_id": "zx4l818y",
@@ -4148,7 +4148,7 @@
 },
 "performed": "2018-10-08",
 "submitted": "2018-10-09T05:44:29Z",
-"duration": 279.0
+"duration": 279000
 },
 "zxv0k68y": {
 "run_id": "zxv0k68y",
@@ -4165,7 +4165,7 @@
 },
 "performed": "2015-08-29",
 "submitted": "2018-02-20T04:38:45Z",
-"duration": 418.0
+"duration": 418000
 },
 "zxv3r6qy": {
 "run_id": "zxv3r6qy",
@@ -4182,7 +4182,7 @@
 },
 "performed": "2017-12-26",
 "submitted": "2017-12-26T01:48:52Z",
-"duration": 12000.0
+"duration": 12000000
 },
 "zxv5v5ky": {
 "run_id": "zxv5v5ky",
@@ -4199,7 +4199,7 @@
 },
 "performed": "2018-03-05",
 "submitted": "2018-03-05T15:47:43Z",
-"duration": 41.0
+"duration": 41000
 },
 "zxvjqkey": {
 "run_id": "zxvjqkey",
@@ -4214,7 +4214,7 @@
 },
 "performed": "2006-01-06",
 "submitted": "2018-02-14T06:05:29Z",
-"duration": 28.0
+"duration": 28000
 }
 }
 }

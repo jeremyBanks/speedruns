@@ -172,7 +172,7 @@ impl SpeedRunComData {
                         &run.submitted
                             .expect("runs we use for now have submission times"),
                     )?,
-                    duration: run.times.primary_t.into(),
+                    duration: Duration::seconds(run.times.primary_t.into()),
                 },
             );
         }
@@ -243,7 +243,24 @@ pub struct Run {
     pub player: Player,
     pub performed: NaiveDate,
     pub submitted: DateTime<Utc>,
-    pub duration: f64,
+    #[serde(serialize_with = "serialize_duration")]
+    #[serde(deserialize_with = "deserialize_duration")]
+    pub duration: Duration,
+}
+
+fn serialize_duration<S>(x: &Duration, s: S) -> Result<S::Ok, S::Error>
+where
+    S: serde::Serializer,
+{
+    s.serialize_i64(x.num_milliseconds())
+}
+
+fn deserialize_duration<'de, D>(deserializer: D) -> Result<Duration, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let ms: i64 = serde::Deserialize::deserialize(deserializer)?;
+    Ok(Duration::milliseconds(ms))
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -284,10 +301,10 @@ impl Display for Player {
                 if let Some(country_code) = country_code {
                     write!(f, "{}  {}", country_flag(country_code), name)
                 } else {
-                    write!(f, "🏳️  {}", name)
+                    write!(f, "🇦🇶  {}", name)
                 }
             }
-            Player::Guest { name } => write!(f, "🏴  {}", name),
+            Player::Guest { name } => write!(f, "🇦🇶  {}", name),
             Player::MultiplePlayers => write!(f, "multiple players"),
         }
     }
