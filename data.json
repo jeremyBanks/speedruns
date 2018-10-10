@@ -1,5 +1,5 @@
 {
-"last_refreshed": "2018-10-10T05:05:41.396648Z",
+"last_refreshed": "2018-10-10T05:20:08.120957Z",
 "games": {
 "9d372g6l": {
 "game_id": "9d372g6l",
@@ -636,7 +636,7 @@
 "game_id": "y65zy46e",
 "category_id": "wkponpj2",
 "level_id": "owo01kow",
-"status": "Pending",
+"status": "Verified",
 "player": {
 "Guest": {
 "name": "Szwagier"
@@ -645,6 +645,21 @@
 "performed": "2018-10-08",
 "submitted": "2018-10-09T05:36:39Z",
 "duration": 410.0
+},
+"me8jl10m": {
+"run_id": "me8jl10m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "rw64pvn9",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-09",
+"submitted": "2018-10-10T05:16:22Z",
+"duration": 558.0
 },
 "mek2o68m": {
 "run_id": "mek2o68m",
@@ -997,7 +1012,7 @@
 "game_id": "y65zy46e",
 "category_id": "wkponpj2",
 "level_id": "xd17e0ed",
-"status": "Pending",
+"status": "Verified",
 "player": {
 "Guest": {
 "name": "Szwagier"
@@ -2149,6 +2164,21 @@
 "submitted": "2018-04-08T03:24:50Z",
 "duration": 358.0
 },
+"yl4e61nm": {
+"run_id": "yl4e61nm",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "rdn0j5qw",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-09",
+"submitted": "2018-10-10T05:13:28Z",
+"duration": 365.0
+},
 "yl4rg2rm": {
 "run_id": "yl4rg2rm",
 "game_id": "o1yry26q",
@@ -2785,7 +2815,7 @@
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
 "level_id": "xd4j760d",
-"status": "Pending",
+"status": "Verified",
 "player": {
 "Guest": {
 "name": "Szwagier"
@@ -2816,7 +2846,7 @@
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
 "level_id": "ewpjm7lw",
-"status": "Pending",
+"status": "Verified",
 "player": {
 "Guest": {
 "name": "Szwagier"
@@ -3257,7 +3287,7 @@
 "game_id": "o1yry26q",
 "category_id": "wdmw5ee2",
 "level_id": "rdn0j5nw",
-"status": "Pending",
+"status": "Verified",
 "player": {
 "Guest": {
 "name": "Szwagier"
@@ -3924,7 +3954,7 @@
 "game_id": "y65zy46e",
 "category_id": "wkponpj2",
 "level_id": "y9mjqp59",
-"status": "Pending",
+"status": "Verified",
 "player": {
 "Guest": {
 "name": "Szwagier"
