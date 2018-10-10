@@ -1,16 +1,8 @@
 // note that saves are non-atomic and can be corrutped if interrupted.
 
-use core::{
-    clone::Clone,
-    fmt::{Debug, Display},
-    ops::Drop,
-};
+use core::{clone::Clone, ops::Drop};
 use fs2::FileExt;
-use log;
-use serde::{
-    de::{Deserialize, DeserializeOwned},
-    ser::Serialize,
-};
+use serde::{de::DeserializeOwned, ser::Serialize};
 use serde_json;
 use std::{
     fs::{File, OpenOptions},
