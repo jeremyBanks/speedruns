@@ -1,0 +1,7 @@
+#!/bin/bash
+set -euo pipefail;
+clear && printf '\e[3J';
+export RUST_BACKTRACE='1';
+export RUST_LOG='flamerun=debug,reqwest=debug';
+cargo +nightly fmt;
+cargo +nightly run;
