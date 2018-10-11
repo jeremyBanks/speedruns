@@ -1,6 +1,6 @@
-use super::persistent::Persistent;
+use super::{persistent::Persistent, texty};
 use chrono::{DateTime, Duration, NaiveDate, Utc};
-use core::{convert::TryFrom, str::FromStr};
+use core::str::FromStr;
 use reqwest;
 
 use std::{
@@ -54,8 +54,10 @@ impl SpeedRunComData {
 
         let war2 = "o1yry26q";
         let war2x = "y65zy46e";
-        let overwatch = "kdkpol1m";
-        let game_ids = vec![war2, war2x, overwatch];
+        let _war3 = "76r9oe68";
+        let _war3x = "4d7p3gd7";
+        let _overwatch = "kdkpol1m";
+        let game_ids = vec![war2, war2x];
 
         for game_id in game_ids {
             if let Err(error) = self.refresh_game(game_id) {
@@ -131,50 +133,50 @@ impl SpeedRunComData {
             },
         );
 
-        let runs_url = format!(
-            "{}/runs?game={}&embed=players&max=200&orderby=date&direction=desc",
+        let mut next_runs_url = Some(format!(
+            "{}/runs?game={}&embed=players&max=200",
             api, game_id
-        );
-        debug!("Refreshing runs from {:?}.", runs_url);
-        let mut runs_response = reqwest::get(&runs_url)?;
-        if !runs_response.status().is_success() {
-            return Err(NonSuccessResponseStatus {
-                status: runs_response.status(),
-                url: runs_url.to_string(),
+        ));
+
+        while next_runs_url != None {
+            let runs_url = next_runs_url.unwrap();
+
+            debug!("Refreshing runs from {:?}.", runs_url);
+            let mut runs_response = reqwest::get(&runs_url)?;
+            if !runs_response.status().is_success() {
+                return Err(NonSuccessResponseStatus {
+                    status: runs_response.status(),
+                    url: runs_url.to_string(),
+                }
+                .into());
             }
-            .into());
-        }
-        let json = runs_response.text()?;
-        let runs_data: speedruncom_api::runs::Response = serde_json::from_str(&json)?;
+            let json = runs_response.text()?;
+            let runs_data: speedruncom_api::runs::Response = serde_json::from_str(&json)?;
 
-        if let Some(_) = runs_data.next_page_url() {
-            error!(
-                "Response from {} has multiple pages, but that isn't supported yet. Data ignored.",
-                runs_url
-            );
-        }
+            next_runs_url = runs_data.next_page_url().clone();
 
-        let runs = &mut self.data.get_mut().runs;
-        for run in runs_data.data {
-            runs.insert(
-                run.id.clone(),
-                Run {
-                    run_id: run.id,
-                    status: run.status.into(),
-                    player: run.players.into(),
-                    game_id: run.game,
-                    level_id: run.level,
-                    category_id: run.category,
-                    performed: NaiveDate::from_str(
-                        &run.date.expect("runs we use for now have dates"),
-                    )?,
-                    submitted: DateTime::<Utc>::from_str(
-                        &run.submitted
-                            .expect("runs we use for now have submission times"),
-                    )?,
-                    duration: Duration::milliseconds((run.times.primary_t * 1000.0) as i64),
-                },
-            );
+            let runs = &mut self.data.get_mut().runs;
+            for run in runs_data.data {
+                runs.insert(
+                    run.id.clone(),
+                    Run {
+                        run_id: run.id,
+                        status: run.status.into(),
+                        player: run.players.into(),
+                        game_id: run.game,
+                        level_id: run.level,
+                        category_id: run.category,
+                        performed: NaiveDate::from_str(
+                            &run.date.expect("runs we use for now have dates"),
+                        )?,
+                        submitted: DateTime::<Utc>::from_str(
+                            &run.submitted
+                                .expect("runs we use for now have submission times"),
+                        )?,
+                        duration: Duration::milliseconds((run.times.primary_t * 1000.0) as i64),
+                    },
+                );
+            }
         }
 
         Ok(())
@@ -277,31 +279,18 @@ pub enum Player {
     MultiplePlayers,
 }
 
-fn country_flag(country_code: &str) -> String {
-    country_code
-        .chars()
-        .filter(|c| c.is_ascii_alphabetic())
-        .take(2)
-        .map(|letter| {
-            let letter_scalar: u32 = letter.to_ascii_uppercase().into();
-            let flag_sclar = 0x1F1A5 + letter_scalar;
-            char::try_from(flag_sclar).expect("this must be a valid code point")
-        })
-        .collect()
-}
-
 impl Display for Player {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let guest_flag = "🇦🇶";
 
         match self {
             Player::User {
-                user_id,
+                user_id: _,
                 name,
                 country_code,
             } => {
                 let flag = if let Some(country_code) = country_code {
-                    country_flag(country_code)
+                    texty::country_flag(country_code)
                 } else {
                     guest_flag.to_string()
                 };
@@ -386,10 +375,8 @@ mod speedruncom_api {
         impl Response {
             pub fn next_page_url(&self) -> Option<String> {
                 for link in self.pagination.links.iter() {
-                    match link {
-                        PaginationLink::Next { uri } => {
-                            return Some(uri.clone());
-                        }
+                    if let PaginationLink::Next { uri } = link {
+                        return Some(uri.clone());
                     }
                 }
                 return None;
@@ -406,6 +393,7 @@ mod speedruncom_api {
         #[serde(rename_all = "kebab-case")]
         pub enum PaginationLink {
             Next { uri: String },
+            Prev,
         }
 
         #[derive(Deserialize, Debug)]
