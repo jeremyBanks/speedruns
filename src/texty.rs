@@ -3,9 +3,9 @@ use std::{convert::TryFrom, slice::SliceConcatExt};
 
 type Hash = sha2::Sha512Trunc256;
 
-const term_bg_black: &str = "\x1b[40m";
-const term_reset: &str = "\x1b[0m";
-const term_fg_colors: &[&str] = &[
+const TERM_BG_BLACK: &str = "\x1b[40m";
+const TERM_RESET: &str = "\x1b[0m";
+const TERM_FG_COLORS: &[&str] = &[
     "\x1b[91m", "\x1b[92m", "\x1b[93m", "\x1b[94m", "\x1b[95m", "\x1b[96m", "\x1b[31m", "\x1b[32m",
     "\x1b[33m", "\x1b[34m", "\x1b[35m", "\x1b[36m",
 ];
@@ -14,10 +14,10 @@ pub fn color_with_hash(string: &str) -> String {
     let digest = Hash::digest(string.as_bytes());
     let u = (usize::from(digest[0]) << 0) + (usize::from(digest[1]) << 1);
 
-    let bg = term_bg_black;
-    let fg = term_fg_colors[u % term_fg_colors.len()];
+    let bg = TERM_BG_BLACK;
+    let fg = TERM_FG_COLORS[u % TERM_FG_COLORS.len()];
 
-    [term_reset, bg, fg, string, term_reset].join("")
+    [TERM_RESET, bg, fg, string, TERM_RESET].join("")
 }
 
 pub fn country_flag(country_code: &str) -> String {

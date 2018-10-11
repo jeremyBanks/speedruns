@@ -10,7 +10,7 @@ use env_logger;
 extern crate serde_derive;
 use chrono::{Duration, Utc};
 use itertools::Itertools;
-use std::{collections::BTreeMap, error::Error, slice::SliceConcatExt};
+use std::{collections::BTreeMap, error::Error};
 
 mod persistent;
 mod speedrun_data;
@@ -89,7 +89,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
             .map(|records| records.first().unwrap().run.duration)
             .fold(Duration::zero(), |a, b| a + b);
 
-        let best_sum: Duration = game
+        let _best_sum: Duration = game
             .levels
             .iter()
             .map(|l| &records_by_level_id[&l.level_id])
@@ -115,7 +115,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
 
             sum = sum - record.improvement;
 
-            if Utc::today().naive_utc() - record.run.performed > Duration::days(360) {
+            if Utc::today().naive_utc() - record.run.performed > Duration::days(180) {
                 continue;
             }
 
@@ -147,21 +147,20 @@ pub fn main() -> Result<(), Box<dyn Error>> {
             };
 
             println!(
-                "  {}  {}{}  {}{}  {}  {} {}in {}{:>6}{}",
+                "  {}  {}{}  {}{}  {} {}in {}{:>5}{}/{}",
                 improvement,
-                color_with_hash(&format!("{:<16}", record.run.player.to_string())),
+                color_with_hash(&format!("{:<22}", record.run.player.to_string())[..22]),
                 term_style_reset,
                 color_with_hash(&record.run.performed.to_string()),
                 term_style_reset,
-                fmt_duration(sum),
-                color_with_hash(&format!(
-                    "{:>16}",
-                    level.name.to_string().split(":").next().unwrap()
-                )),
+                color_with_hash(
+                    &format!("{:>16}", level.name.to_string().split(":").next().unwrap())[..16]
+                ),
                 fg_grey,
                 record_style,
                 fmt_duration(record.run.duration),
                 term_style_reset,
+                fmt_duration(sum),
             );
         }
     }
@@ -174,7 +173,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
 fn fmt_duration(duration: Duration) -> String {
     let signed_ms = duration.num_milliseconds();
     let ms = signed_ms.abs();
-    let _ms_part = ms % 1000;
+    let ms_part = ms % 1000;
     let s = ms / 1000;
     let s_part = s % 60;
     let m = s / 60;
@@ -183,11 +182,11 @@ fn fmt_duration(duration: Duration) -> String {
 
     let sign = if signed_ms < 0 { "-" } else { "" };
     if h > 0 {
-        format!("{}{}h{:02}m{:02}s", sign, h, m_part, s_part)
-    } else if m_part > 0 {
-        format!("{}{}m{:02}s", sign, m_part, s_part)
-    } else if s_part > 0 {
-        format!("{}{}s", sign, s_part)
+        format!("{}{}:{:02}:{:02}", sign, h, m_part, s_part)
+    } else if m_part > 0 || s_part > 0 {
+        format!("{}{}:{:02}", sign, m_part, s_part)
+    } else if ms_part > 0 {
+        format!("{}0.{:03}", sign, ms_part)
     } else {
         format!("0")
     }
