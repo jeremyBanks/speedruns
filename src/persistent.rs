@@ -128,7 +128,7 @@ mod speedruncom_api {
 
         #[derive(Deserialize)]
         pub struct Times {
-            pub primary_t: u32,
+            pub primary_t: f64,
         }
     }
 }

@@ -2,6 +2,7 @@ use super::persistent::Persistent;
 use chrono::{DateTime, Duration, NaiveDate, Utc};
 use core::{convert::TryFrom, str::FromStr};
 use reqwest;
+
 use std::{
     collections::BTreeMap,
     error::Error,
@@ -51,10 +52,10 @@ impl SpeedRunComData {
     fn refresh(&mut self) -> Result<(), ()> {
         let last_refreshed = Utc::now();
 
-        let war1 = "9d372g6l";
         let war2 = "o1yry26q";
         let war2x = "y65zy46e";
-        let game_ids = vec![war1, war2, war2x];
+        let overwatch = "kdkpol1m";
+        let game_ids = vec![war2, war2x, overwatch];
 
         for game_id in game_ids {
             if let Err(error) = self.refresh_game(game_id) {
@@ -130,7 +131,10 @@ impl SpeedRunComData {
             },
         );
 
-        let runs_url = format!("{}/runs?game={}&embed=players&max=200", api, game_id);
+        let runs_url = format!(
+            "{}/runs?game={}&embed=players&max=200&orderby=date&direction=desc",
+            api, game_id
+        );
         debug!("Refreshing runs from {:?}.", runs_url);
         let mut runs_response = reqwest::get(&runs_url)?;
         if !runs_response.status().is_success() {
@@ -168,7 +172,7 @@ impl SpeedRunComData {
                         &run.submitted
                             .expect("runs we use for now have submission times"),
                     )?,
-                    duration: Duration::seconds(run.times.primary_t.into()),
+                    duration: Duration::milliseconds((run.times.primary_t * 1000.0) as i64),
                 },
             );
         }
@@ -288,19 +292,23 @@ fn country_flag(country_code: &str) -> String {
 
 impl Display for Player {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let guest_flag = "🇦🇶";
+
         match self {
             Player::User {
                 user_id,
                 name,
                 country_code,
             } => {
-                if let Some(country_code) = country_code {
-                    write!(f, "{}  {}", country_flag(country_code), name)
+                let flag = if let Some(country_code) = country_code {
+                    country_flag(country_code)
                 } else {
-                    write!(f, "🇦🇶  {}", name)
-                }
+                    guest_flag.to_string()
+                };
+
+                write!(f, "{}  {}", flag, name)
             }
-            Player::Guest { name } => write!(f, "🇦🇶  {}", name),
+            Player::Guest { name } => write!(f, "{}  {}", guest_flag, name,),
             Player::MultiplePlayers => write!(f, "multiple players"),
         }
     }
@@ -465,7 +473,7 @@ mod speedruncom_api {
 
         #[derive(Deserialize, Debug)]
         pub struct Times {
-            pub primary_t: u32,
+            pub primary_t: f64,
         }
 
         #[derive(Deserialize, Debug)]
