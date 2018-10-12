@@ -29,6 +29,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
     let runs_by_level = data
         .runs()
         .values()
+        .filter(|run| run.status != speedrun_data::RunStatus::Rejected)
         .map(|run| (run.level_id.clone(), run))
         .into_group_map();
 
@@ -43,7 +44,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
             let runs = match runs_option {
                 Some(runs) => runs,
                 None => {
-                    info!("  no runs for {:?}", level);
+                    debug!("  no runs for {:?}", level);
                     records_by_level_id.insert(level.level_id.clone(), Vec::new());
                     continue;
                 }
@@ -104,6 +105,8 @@ pub fn main() -> Result<(), Box<dyn Error>> {
                 .then(a.run.submitted.cmp(&b.run.submitted))
         });
 
+        println!("  date         runner        level               time  sum      delta");
+
         let mut sum = worst_sum;
         for record in all_level_records {
             let level = game
@@ -115,7 +118,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
 
             sum = sum - record.improvement;
 
-            if Utc::today().naive_utc() - record.run.performed > Duration::days(180) {
+            if Utc::today().naive_utc() - record.run.performed > Duration::days(90 * 4) {
                 continue;
             }
 
@@ -129,9 +132,9 @@ pub fn main() -> Result<(), Box<dyn Error>> {
             if record.improvement == Duration::zero() {
                 improvement_text = "".to_string();
             } else {
-                improvement_text = fmt_duration(-record.improvement);
+                improvement_text = fmt_duration(record.improvement);
             };
-            let improvement = &format!("{:>8}", improvement_text);
+            let improvement = &format!("{:>5}", improvement_text);
 
             if records_by_level_id[&level.level_id]
                 .last()
@@ -141,26 +144,46 @@ pub fn main() -> Result<(), Box<dyn Error>> {
                 == record.run.run_id
             {
                 // This is the current record.
-                record_style = term_style_reset.to_string() + term_bg_black + fg_yellow;
+                record_style = fg_yellow;
             } else {
-                record_style = term_style_reset.to_string() + term_bg_black + fg_white;
+                record_style = fg_white;
             };
 
             println!(
-                "  {}  {}{}  {}{}  {} {}in {}{:>5}{}/{}",
-                improvement,
-                color_with_hash(&format!("{:<22}", record.run.player.to_string())[..22]),
-                term_style_reset,
-                color_with_hash(&record.run.performed.to_string()),
-                term_style_reset,
-                color_with_hash(
-                    &format!("{:>16}", level.name.to_string().split(":").next().unwrap())[..16]
-                ),
-                fg_grey,
-                record_style,
-                fmt_duration(record.run.duration),
-                term_style_reset,
-                fmt_duration(sum),
+                "{}",
+                [
+                    " ",
+                    term_bg_black,
+                    " ",
+                    // date
+                    &color_with_hash(&record.run.performed.to_string()),
+                    " ",
+                    // flag
+                    fg_white,
+                    &record.run.player.flag().unwrap_or(" ".to_string()),
+                    " ",
+                    // runner
+                    &color_with_hash(&format!("{:<12}", record.run.player.to_string())[..12]),
+                    "  ",
+                    // level
+                    &color_with_hash(&format!("{:<16}", level.name.to_string())[..16]),
+                    fg_grey,
+                    " in ",
+                    // record/sum
+                    &record_style,
+                    &format!("{:>5}", fmt_duration(record.run.duration)),
+                    fg_grey,
+                    "/",
+                    &fmt_duration(sum),
+                    "  ",
+                    // delta
+                    fg_white,
+                    improvement,
+                    // reset before EOL
+                    " ",
+                    term_style_reset,
+                ]
+                    .join("")
             );
         }
     }

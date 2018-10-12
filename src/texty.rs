@@ -3,21 +3,46 @@ use std::{convert::TryFrom, slice::SliceConcatExt};
 
 type Hash = sha2::Sha512Trunc256;
 
-const TERM_BG_BLACK: &str = "\x1b[40m";
-const TERM_RESET: &str = "\x1b[0m";
 const TERM_FG_COLORS: &[&str] = &[
-    "\x1b[91m", "\x1b[92m", "\x1b[93m", "\x1b[94m", "\x1b[95m", "\x1b[96m", "\x1b[31m", "\x1b[32m",
-    "\x1b[33m", "\x1b[34m", "\x1b[35m", "\x1b[36m",
+    // 4-bit colors
+    "\x1b[91m",
+    "\x1b[92m",
+    "\x1b[93m",
+    "\x1b[95m",
+    "\x1b[96m",
+    "\x1b[31m",
+    "\x1b[32m",
+    "\x1b[33m",
+    "\x1b[35m",
+    "\x1b[36m",
+    // 8-bit colors
+    "\x1b[38;5;46m",
+    "\x1b[38;5;46m",
+    "\x1b[38;5;46m",
+    "\x1b[38;5;202m",
+    "\x1b[38;5;191m",
+    "\x1b[38;5;85m",
+    "\x1b[38;5;196m",
+    "\x1b[38;5;95m",
+    "\x1b[38;5;75m",
+    "\x1b[38;5;57m",
 ];
 
 pub fn color_with_hash(string: &str) -> String {
-    let digest = Hash::digest(string.as_bytes());
-    let u = (usize::from(digest[0]) << 0) + (usize::from(digest[1]) << 1);
+    let digest = Hash::digest(string.trim().as_bytes());
+    let n = (u64::from(digest[0]) << 0)
+        + (u64::from(digest[1]) << 1)
+        + (u64::from(digest[2]) << 2)
+        + (u64::from(digest[3]) << 3)
+        + (u64::from(digest[4]) << 4)
+        + (u64::from(digest[5]) << 5)
+        + (u64::from(digest[6]) << 6)
+        + (u64::from(digest[7]) << 7);
 
-    let bg = TERM_BG_BLACK;
+    let u = n as usize;
     let fg = TERM_FG_COLORS[u % TERM_FG_COLORS.len()];
 
-    [TERM_RESET, bg, fg, string, TERM_RESET].join("")
+    [fg, string].join("")
 }
 
 pub fn country_flag(country_code: &str) -> String {
