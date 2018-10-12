@@ -15,7 +15,7 @@ pub struct SpeedRunComData {
 }
 
 impl SpeedRunComData {
-    pub fn open(filename: &str) -> Self {
+    pub fn open(filename: &str, refresh: Option<bool>) -> Self {
         let mut self_ = SpeedRunComData {
             data: Persistent::open(filename),
         };
@@ -25,7 +25,7 @@ impl SpeedRunComData {
             Some(timestamp) => (Utc::now() - timestamp).num_hours() >= 4,
         };
 
-        if needs_refresh {
+        if refresh.unwrap_or(needs_refresh) {
             let refreshed = self_.refresh();
 
             if let Err(error) = refreshed {
@@ -54,10 +54,7 @@ impl SpeedRunComData {
 
         let war2 = "o1yry26q";
         let war2x = "y65zy46e";
-        let war3 = "76r9oe68";
-        let war3x = "4d7p3gd7";
-        let _overwatch = "kdkpol1m";
-        let game_ids = vec![war2, war2x, war3, war3x];
+        let game_ids = vec![war2, war2x];
 
         for game_id in game_ids {
             if let Err(error) = self.refresh_game(game_id) {
@@ -284,7 +281,7 @@ impl Player {
         match self {
             Player::User {
                 user_id: _,
-                name,
+                name: _,
                 country_code,
             } => {
                 if let Some(country_code) = country_code {
@@ -307,7 +304,7 @@ impl Display for Player {
                 Player::User {
                     user_id: _,
                     name,
-                    country_code,
+                    country_code: _,
                 } => name,
                 Player::Guest { name } => name,
                 Player::MultiplePlayers => "multiple players",
