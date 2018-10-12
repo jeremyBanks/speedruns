@@ -54,10 +54,10 @@ impl SpeedRunComData {
 
         let war2 = "o1yry26q";
         let war2x = "y65zy46e";
-        let _war3 = "76r9oe68";
-        let _war3x = "4d7p3gd7";
+        let war3 = "76r9oe68";
+        let war3x = "4d7p3gd7";
         let _overwatch = "kdkpol1m";
-        let game_ids = vec![war2, war2x];
+        let game_ids = vec![war2, war2x, war3, war3x];
 
         for game_id in game_ids {
             if let Err(error) = self.refresh_game(game_id) {
@@ -203,7 +203,7 @@ struct Data {
     runs: BTreeMap<String, Run>,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Game {
     pub game_id: String,
@@ -213,28 +213,28 @@ pub struct Game {
     pub level_run_categories: Vec<LevelRunCategory>,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Level {
     pub level_id: String,
     pub name: String,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct FullRunCategory {
     pub category_id: String,
     pub name: String,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct LevelRunCategory {
     pub category_id: String,
     pub name: String,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Run {
     pub run_id: String,
@@ -265,7 +265,7 @@ where
     Ok(Duration::milliseconds(ms))
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub enum Player {
     User {
@@ -279,31 +279,44 @@ pub enum Player {
     MultiplePlayers,
 }
 
-impl Display for Player {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let guest_flag = "🇦🇶";
-
+impl Player {
+    pub fn flag(&self) -> Option<String> {
         match self {
             Player::User {
                 user_id: _,
                 name,
                 country_code,
             } => {
-                let flag = if let Some(country_code) = country_code {
-                    texty::country_flag(country_code)
+                if let Some(country_code) = country_code {
+                    Some(texty::country_flag(country_code))
                 } else {
-                    guest_flag.to_string()
-                };
-
-                write!(f, "{}  {}", flag, name)
+                    None
+                }
             }
-            Player::Guest { name } => write!(f, "{}  {}", guest_flag, name,),
-            Player::MultiplePlayers => write!(f, "multiple players"),
+            _ => None,
         }
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+impl Display for Player {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                Player::User {
+                    user_id: _,
+                    name,
+                    country_code,
+                } => name,
+                Player::Guest { name } => name,
+                Player::MultiplePlayers => "multiple players",
+            }
+        )
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub enum RunStatus {
     Pending,

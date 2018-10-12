@@ -2,6 +2,8 @@
 set -euo pipefail;
 export RUST_BACKTRACE='1';
 export RUST_LOG='flamerun=debug,reqwest=info';
-cargo +nightly fmt;
 clear && printf '\e[3J';
-cargo +nightly run;
+cargo +nightly fmt;
+cargo +nightly build;
+clear;
+target/debug/flamerun;
