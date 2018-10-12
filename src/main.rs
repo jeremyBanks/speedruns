@@ -15,6 +15,7 @@ use std::{collections::BTreeMap, error::Error};
 mod persistent;
 mod speedrun_data;
 mod texty;
+use clap;
 
 use self::{
     speedrun_data::{Run, SpeedRunComData},
@@ -24,7 +25,45 @@ use self::{
 pub fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
 
-    let data = SpeedRunComData::open("data.json");
+    let args = clap::App::new("flamerun")
+        .about("Displays record progressions from speedrun.com.")
+        .arg(
+            clap::Arg::with_name("yes_refresh")
+                .short("r")
+                .long("refresh")
+                .help("Forces all data to be refreshed, even if it's fresh."),
+        )
+        .arg(
+            clap::Arg::with_name("no_refresh")
+                .short("l")
+                .long("offline")
+                .help("Prevents data from being refreshed, even if it's stale."),
+        )
+        .arg(
+            clap::Arg::with_name("max_age_days")
+                .long("max-age-days")
+                .value_name("DAYS")
+                .default_value("360")
+                .require_equals(true)
+                .help("The maximum age in days of records to display."),
+        )
+        .get_matches();
+
+    let refresh: Option<bool> = if args.is_present("no_refresh") {
+        Some(false)
+    } else if args.is_present("yes_refresh") {
+        Some(true)
+    } else {
+        None
+    };
+
+    let max_age_days: i64 = args
+        .value_of("max_age_days")
+        .unwrap()
+        .parse()
+        .expect("days must be a number");
+
+    let data = SpeedRunComData::open("data.json", refresh);
 
     let runs_by_level = data
         .runs()
@@ -118,7 +157,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
 
             sum = sum - record.improvement;
 
-            if Utc::today().naive_utc() - record.run.performed > Duration::days(90 * 4) {
+            if Utc::today().naive_utc() - record.run.performed > Duration::days(max_age_days) {
                 continue;
             }
 
