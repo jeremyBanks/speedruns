@@ -22,6 +22,10 @@ use self::{
     texty::color_with_hash,
 };
 
+/// TODOs:
+/// - refactor this stuff out of main
+/// - add support for categories (like separate games), and full-game runs.
+
 pub fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
 
@@ -43,7 +47,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
             clap::Arg::with_name("max_age_days")
                 .long("max-age-days")
                 .value_name("DAYS")
-                .default_value("360")
+                .default_value("720")
                 .require_equals(true)
                 .help("The maximum age in days of records to display."),
         )
