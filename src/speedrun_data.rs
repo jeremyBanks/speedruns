@@ -52,9 +52,7 @@ impl SpeedRunComData {
     fn refresh(&mut self) -> Result<(), ()> {
         let last_refreshed = Utc::now();
 
-        let war2 = "o1yry26q";
-        let war2x = "y65zy46e";
-        let game_ids = vec![war2, war2x];
+        let game_ids = vec!["wc2", "wc2btdp", "sc1", "scbw"];
 
         for game_id in game_ids {
             if let Err(error) = self.refresh_game(game_id) {
@@ -69,12 +67,12 @@ impl SpeedRunComData {
         Ok(())
     }
 
-    fn refresh_game(&mut self, game_id: &str) -> Result<(), Box<dyn Error>> {
+    fn refresh_game(&mut self, game_id_or_slug: &str) -> Result<(), Box<dyn Error>> {
         let api = "https://www.speedrun.com/api/v1";
 
         let game_url = format!(
             "{}/games/{}?embed=categories,levels,variables",
-            api, game_id
+            api, game_id_or_slug
         );
         debug!("Refreshing game metadata from {:?}.", game_url);
         let mut game_response = reqwest::get(&game_url)?;
@@ -88,6 +86,7 @@ impl SpeedRunComData {
         let game_json = game_response.text()?;
         let games_data: speedruncom_api::game::Response = serde_json::from_str(&game_json)?;
         let game = games_data.data;
+        let game_id = game.id.clone();
 
         self.data.get_mut().games.insert(
             game.id.clone(),
@@ -164,11 +163,10 @@ impl SpeedRunComData {
                         level_id: run.level,
                         category_id: run.category,
                         performed: NaiveDate::from_str(
-                            &run.date.expect("runs we use for now have dates"),
+                            &run.date.unwrap_or("1970-01-01".to_string()),
                         )?,
                         submitted: DateTime::<Utc>::from_str(
-                            &run.submitted
-                                .expect("runs we use for now have submission times"),
+                            &run.submitted.unwrap_or("1970-01-01T00:00:00Z".to_string()),
                         )?,
                         duration: Duration::milliseconds((run.times.primary_t * 1000.0) as i64),
                     },
