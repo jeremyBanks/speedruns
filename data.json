@@ -1,5 +1,5 @@
 {
-"last_refreshed": "2018-10-14T06:52:15.017831Z",
+"last_refreshed": "2018-11-12T03:59:51.854182Z",
 "games": {
 "76rgve18": {
 "game_id": "76rgve18",
@@ -1756,6 +1756,21 @@
 "submitted": "2018-10-14T01:58:04Z",
 "duration": 6075000
 },
+"m3oxln4m": {
+"run_id": "m3oxln4m",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "gdre4q69",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T16:36:40Z",
+"duration": 870000
+},
 "m794580y": {
 "run_id": "m794580y",
 "game_id": "o1yry26q",
@@ -3313,6 +3328,36 @@
 "submitted": "2018-06-08T00:02:49Z",
 "duration": 709000
 },
+"mk9dddlz": {
+"run_id": "mk9dddlz",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "xd0gr7xw",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-14",
+"submitted": "2018-11-11T03:54:51Z",
+"duration": 588000
+},
+"mk9dvgxz": {
+"run_id": "mk9dvgxz",
+"game_id": "y65zy46e",
+"category_id": "q2581mw2",
+"level_id": null,
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-27",
+"submitted": "2018-11-11T16:59:16Z",
+"duration": 6133000
+},
 "mr865n2y": {
 "run_id": "mr865n2y",
 "game_id": "o1yry26q",
@@ -4717,6 +4762,21 @@
 "submitted": "2018-10-11T16:05:40Z",
 "duration": 504000
 },
+"y43xxx2z": {
+"run_id": "y43xxx2z",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "z986vjgd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T03:58:36Z",
+"duration": 214000
+},
 "y450gvdm": {
 "run_id": "y450gvdm",
 "game_id": "o1yry26q",
@@ -5697,6 +5757,21 @@
 "submitted": "2018-10-12T02:58:26Z",
 "duration": 381000
 },
+"y6pxxx0m": {
+"run_id": "y6pxxx0m",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "kwj5lyn9",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T04:03:32Z",
+"duration": 65000
+},
 "y89j96nm": {
 "run_id": "y89j96nm",
 "game_id": "y65zy46e",
@@ -5764,6 +5839,21 @@
 "performed": "2018-10-02",
 "submitted": "2018-10-02T11:36:20Z",
 "duration": 2140000
+},
+"y89x0v1m": {
+"run_id": "y89x0v1m",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "o9xn5l0w",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T16:25:18Z",
+"duration": 609000
 },
 "y8q1eoxy": {
 "run_id": "y8q1eoxy",
@@ -6373,6 +6463,23 @@
 "submitted": "2018-06-08T00:02:45Z",
 "duration": 304000
 },
+"y92lrrez": {
+"run_id": "y92lrrez",
+"game_id": "76rgve18",
+"category_id": "7kjrz3n2",
+"level_id": "69zrmzld",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks",
+"country_code": "ca"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-10-16T17:43:18Z",
+"duration": 1011000
+},
 "y92lw1nz": {
 "run_id": "y92lw1nz",
 "game_id": "y65zy46e",
@@ -6402,6 +6509,51 @@
 "performed": "2018-10-13",
 "submitted": "2018-10-14T06:24:36Z",
 "duration": 535000
+},
+"y92x61kz": {
+"run_id": "y92x61kz",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "r9g2035d",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T16:15:51Z",
+"duration": 789000
+},
+"y92x66rz": {
+"run_id": "y92x66rz",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "ywe1k8yd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-27",
+"submitted": "2018-11-11T19:55:44Z",
+"duration": 146000
+},
+"y92x69ez": {
+"run_id": "y92x69ez",
+"game_id": "y65zy46e",
+"category_id": "jdr1nl02",
+"level_id": null,
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-27",
+"submitted": "2018-11-11T16:58:04Z",
+"duration": 7373000
 },
 "y9722d2m": {
 "run_id": "y9722d2m",
@@ -6825,6 +6977,21 @@
 "performed": "2015-04-18",
 "submitted": "2018-04-09T23:25:17Z",
 "duration": 277000
+},
+"yd31g9jz": {
+"run_id": "yd31g9jz",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "nwllx70w",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T16:31:34Z",
+"duration": 591000
 },
 "yd387qjz": {
 "run_id": "yd387qjz",
@@ -7414,7 +7581,7 @@
 "User": {
 "user_id": "18vmo728",
 "name": "Tei",
-"country_code": null
+"country_code": "vn"
 }
 },
 "performed": "2018-09-23",
@@ -8022,6 +8189,36 @@
 "performed": "2018-04-07",
 "submitted": "2018-04-08T03:24:50Z",
 "duration": 358000
+},
+"yl4117xm": {
+"run_id": "yl4117xm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "xd4j732d",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-14",
+"submitted": "2018-11-11T03:41:17Z",
+"duration": 363000
+},
+"yl41nqnm": {
+"run_id": "yl41nqnm",
+"game_id": "y65zy46e",
+"category_id": "n2yv6z2o",
+"level_id": null,
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-27",
+"submitted": "2018-11-11T16:54:32Z",
+"duration": 13507000
 },
 "yl4e5o3m": {
 "run_id": "yl4e5o3m",
@@ -8660,6 +8857,21 @@
 "performed": "2018-06-06",
 "submitted": "2018-06-08T00:02:35Z",
 "duration": 74000
+},
+"yo2dl3dz": {
+"run_id": "yo2dl3dz",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "rdn0jpqw",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T16:13:09Z",
+"duration": 590000
 },
 "yo2r055z": {
 "run_id": "yo2r055z",
@@ -9784,6 +9996,21 @@
 "submitted": "2018-02-13T15:15:08Z",
 "duration": 91000
 },
+"yvj081oy": {
+"run_id": "yvj081oy",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "n9375gnd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T16:47:27Z",
+"duration": 1131000
+},
 "yvjq3e4y": {
 "run_id": "yvjq3e4y",
 "game_id": "y65zy46e",
@@ -9816,7 +10043,7 @@
 },
 "performed": "2018-10-02",
 "submitted": "2018-10-02T19:29:20Z",
-"duration": 152000
+"duration": 151000
 },
 "yw10e0nz": {
 "run_id": "yw10e0nz",
@@ -10286,6 +10513,36 @@
 "submitted": "2018-02-13T15:15:40Z",
 "duration": 412000
 },
+"ywp6v80z": {
+"run_id": "ywp6v80z",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "5d7vk3gd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-15",
+"submitted": "2018-11-11T15:41:34Z",
+"duration": 233000
+},
+"ywp6vd0z": {
+"run_id": "ywp6vd0z",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "rdqj21k9",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T16:09:20Z",
+"duration": 439000
+},
 "ywpedq0z": {
 "run_id": "ywpedq0z",
 "game_id": "o6gxyod2",
@@ -10317,6 +10574,51 @@
 "performed": "2018-10-08",
 "submitted": "2018-10-09T05:19:15Z",
 "duration": 392000
+},
+"z03ln9ez": {
+"run_id": "z03ln9ez",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "4956o80d",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T16:05:32Z",
+"duration": 588000
+},
+"z03lnr9z": {
+"run_id": "z03lnr9z",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "rw64pnr9",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T16:43:21Z",
+"duration": 666000
+},
+"z03lnrez": {
+"run_id": "z03lnrez",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "69z3o4ld",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-15",
+"submitted": "2018-11-11T16:39:51Z",
+"duration": 107000
 },
 "z03o559z": {
 "run_id": "z03o559z",
@@ -10394,6 +10696,23 @@
 "performed": "2018-10-08",
 "submitted": "2018-10-09T05:06:54Z",
 "duration": 355000
+},
+"z03pr69z": {
+"run_id": "z03pr69z",
+"game_id": "y65zy46e",
+"category_id": "q2581mw2",
+"level_id": null,
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "48gvz0y8",
+"name": "lednab",
+"country_code": "pl"
+}
+},
+"performed": "2018-10-22",
+"submitted": "2018-10-22T10:46:23Z",
+"duration": 16631000
 },
 "z0e01lem": {
 "run_id": "z0e01lem",
@@ -11047,12 +11366,27 @@
 "User": {
 "user_id": "18vmo728",
 "name": "Tei",
-"country_code": null
+"country_code": "vn"
 }
 },
 "performed": "2018-07-29",
 "submitted": "2018-08-25T12:45:20Z",
 "duration": 51000
+},
+"z11ggpwz": {
+"run_id": "z11ggpwz",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "n937507d",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-15",
+"submitted": "2018-11-11T03:50:58Z",
+"duration": 726000
 },
 "z1313r7m": {
 "run_id": "z1313r7m",
@@ -11590,6 +11924,38 @@
 "submitted": "2018-10-03T07:24:07Z",
 "duration": 915000
 },
+"z51v48nm": {
+"run_id": "z51v48nm",
+"game_id": "76rgve18",
+"category_id": "7kjrz3n2",
+"level_id": "69zrmzld",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks",
+"country_code": "ca"
+}
+},
+"performed": "2018-10-15",
+"submitted": "2018-10-15T20:44:35Z",
+"duration": 1656000
+},
+"z51xe3nm": {
+"run_id": "z51xe3nm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "ywe1k8yd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T16:21:58Z",
+"duration": 151000
+},
 "z5o120gy": {
 "run_id": "z5o120gy",
 "game_id": "o6gxyod2",
@@ -11963,6 +12329,23 @@
 "performed": "2018-06-05",
 "submitted": "2018-06-05T19:49:11Z",
 "duration": 7637000
+},
+"zg7d15jz": {
+"run_id": "zg7d15jz",
+"game_id": "76rgve18",
+"category_id": "7kjrz3n2",
+"level_id": "69zrmzld",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks",
+"country_code": "ca"
+}
+},
+"performed": "2018-10-14",
+"submitted": "2018-10-15T04:14:14Z",
+"duration": 3167000
 },
 "zg7d65jz": {
 "run_id": "zg7d65jz",
@@ -12668,6 +13051,36 @@
 "submitted": "2018-10-02T20:41:47Z",
 "duration": 1105000
 },
+"zn4qj17m": {
+"run_id": "zn4qj17m",
+"game_id": "o1yry26q",
+"category_id": "wdmw5ee2",
+"level_id": "69z3orld",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-30",
+"submitted": "2018-11-11T16:49:43Z",
+"duration": 45000
+},
+"zn4qqpvm": {
+"run_id": "zn4qqpvm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "5wkjzr2d",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-14",
+"submitted": "2018-11-11T03:38:55Z",
+"duration": 635000
+},
 "zn81kxlz": {
 "run_id": "zn81kxlz",
 "game_id": "o6gxyod2",
@@ -13169,6 +13582,38 @@
 "performed": "2018-10-13",
 "submitted": "2018-10-14T04:45:37Z",
 "duration": 425000
+},
+"zp0277xm": {
+"run_id": "zp0277xm",
+"game_id": "y65zy46e",
+"category_id": "jdr1nl02",
+"level_id": null,
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "48gvz0y8",
+"name": "lednab",
+"country_code": "pl"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-10-17T11:47:36Z",
+"duration": 18765000
+},
+"zp0dgrgm": {
+"run_id": "zp0dgrgm",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "ldyy7pkd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-16",
+"submitted": "2018-11-11T15:49:12Z",
+"duration": 906000
 },
 "zp0qngvm": {
 "run_id": "zp0qngvm",
@@ -13724,12 +14169,27 @@
 "User": {
 "user_id": "18vmo728",
 "name": "Tei",
-"country_code": null
+"country_code": "vn"
 }
 },
 "performed": "2018-09-04",
 "submitted": "2018-09-04T05:40:56Z",
 "duration": 183000
+},
+"zq39e65y": {
+"run_id": "zq39e65y",
+"game_id": "y65zy46e",
+"category_id": "wkponpj2",
+"level_id": "z986v8gd",
+"status": "Verified",
+"player": {
+"Guest": {
+"name": "Szwagier"
+}
+},
+"performed": "2018-10-15",
+"submitted": "2018-11-11T14:51:10Z",
+"duration": 130000
 },
 "zq3vv58y": {
 "run_id": "zq3vv58y",
@@ -14283,6 +14743,23 @@
 "performed": "2018-10-11",
 "submitted": "2018-10-12T03:30:23Z",
 "duration": 355000
+},
+"zx4lrrey": {
+"run_id": "zx4lrrey",
+"game_id": "76rgve18",
+"category_id": "7kjrz3n2",
+"level_id": "69zrmzld",
+"status": "Verified",
+"player": {
+"User": {
+"user_id": "18qyezox",
+"name": "Banks",
+"country_code": "ca"
+}
+},
+"performed": "2018-10-15",
+"submitted": "2018-10-15T22:56:22Z",
+"duration": 1099000
 },
 "zxv0k68y": {
 "run_id": "zxv0k68y",

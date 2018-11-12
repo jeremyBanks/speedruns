@@ -51,6 +51,12 @@ pub fn main() -> Result<(), Box<dyn Error>> {
                 .require_equals(true)
                 .help("The maximum age in days of records to display."),
         )
+        .arg(
+            clap::Arg::with_name("games")
+                .long("games")
+                .value_name("GAMES")
+                .help("Comma-separated list of game slugs or IDs. Defaults to all known games."),
+        )
         .get_matches();
 
     let refresh: Option<bool> = if args.is_present("no_refresh") {
@@ -226,7 +232,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
                     " ",
                     term_style_reset,
                 ]
-                    .join("")
+                .join("")
             );
         }
     }
