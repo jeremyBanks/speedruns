@@ -7,7 +7,7 @@ import {fetch} from '/assets/bester/deps.js';
 
 export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
 
-export const api = async (path, maxPages = 16) => {
+export const api = async (path, maxPages = 32) => {
   if (!apiCache.has(path)) {
     const result = apiFetch(path, maxPages).then(null, error => {
       apiCache.delete(path);
