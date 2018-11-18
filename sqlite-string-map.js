@@ -91,7 +91,7 @@ export class SqliteStringMap {
     const results = await table.findAll({
       where: {
         k: key,
-        updatedAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 6 /* 6 hours ago */) }
+        updatedAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 18 /* 18 hours ago */) }
       }
     })
     
