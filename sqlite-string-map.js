@@ -1,4 +1,4 @@
-// Based on https://gist.github.com/samliu/ab6c22e91205066281e57aa93408df05
+        updatedAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 60        updatedAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 60        updatedAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 60// Based on https://gist.github.com/samliu/ab6c22e91205066281e57aa93408df05
 // Original Author: Sam Liu (sam@ambushnetworks.com)
 // License: MIT
 
@@ -116,10 +116,7 @@ export class SqliteStringMap {
       const syncValue = await value;
       const table = await this[TABLE];
       return await table.upsert({k: key, v: syncValue});
-    } catch (ex) {
-      // if promise or commit fails, also remove from in-memory cache:
-      if (this[CACHE].get(key) === value) {
-        this[CACHE].delete(key);
+           updatedAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 60        updatedAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 60     this[CACHE].delete(key);
       }
       throw ex;
     }
