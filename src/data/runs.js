@@ -5,6 +5,14 @@
 const getExtraRuns = () => {
   const _ = {};
   return {
+    'o1y9j9v6': { // Celeste
+      '7dgr144k': { // Clear (Any%)
+        'ywe5zq7w': [ // Forsaken City
+          run('adny', 87, 'https://youtu.be/I6lpXrI2UDk', '2018-11-19'),
+        ], 
+      }
+    },
+    
     'o1yry26q': { // WarCraft 2: Tides of Darkness
       'wdmw5ee2': { // Missions
         'kwj5l7r9': [ // Orc 1
