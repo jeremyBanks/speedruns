@@ -9,6 +9,7 @@ const getExtraRuns = () => {
       '7dgr144k': { // Clear (Any%)
         'ywe5zq7w': [ // Forsaken City
           run('adny', 87, 'https://youtu.be/I6lpXrI2UDk', '2018-11-19'),
+          run('adny', 86, 'data:text/plain,no video', '2018-11-22'),
         ], 
       }
     },
