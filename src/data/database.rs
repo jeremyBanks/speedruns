@@ -446,11 +446,17 @@ impl<ModelType: Model> Linked<ModelType> {
     pub fn new(database: Arc<Database>, item: &'static ModelType) -> Self {
         Self { database, item }
     }
+
+    /// Returns the underlying static model instance reference.
+    pub fn as_static(&self) -> &'static ModelType {
+        self.item
+    }
 }
 
 impl<ModelType: Model> Deref for Linked<ModelType> {
     type Target = ModelType;
 
+    /// Deref to enable method delegation, but this loses the 'static lifetime.
     fn deref(&self) -> &ModelType {
         &self.item
     }

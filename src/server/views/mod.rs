@@ -3,6 +3,8 @@ use hyper::{header::HeaderValue, Body};
 use maud::{html, Markup};
 use serde::Serialize;
 
+use crate::data::{leaderboard::RankedRun, types::*};
+
 pub trait View: Serialize + std::fmt::Debug {
     fn render(&self) -> Markup;
 
@@ -74,27 +76,23 @@ impl<'db, T: std::fmt::Debug + Serialize> View for Debug<T> {
     }
 }
 
-// #[derive(Debug, Serialize)]
-// pub struct LeaderboardPage {
-//     pub game:     &'static Game,
-//     pub category: &'static Category,
-//     pub level:    Option<&'static Level>,
-//     pub ranks:    Vec<RankedRun>,
-// }
+#[derive(Debug, Serialize)]
+pub struct LeaderboardPage {
+    pub game:     &'static Game,
+    pub category: &'static Category,
+    pub level:    Option<&'static Level>,
+    pub ranks:    Vec<RankedRun>,
+}
 
-// impl<'db> View for LeaderboardPage {
-//     fn render(&self) -> Markup {
-//         page(html!{
-//             h1 {
-//                 "unofficial speedrun.com data mirror"
-//             }
-
-//             @for run in &self.ranks {
-//                 p {
-//                     "#" (run.rank()) ". "
-//                     (run.time_ms()) " ms"
-//                 }
-//             }
-//         })
-//     }
-// }
+impl<'db> View for LeaderboardPage {
+    fn render(&self) -> Markup {
+        page(html! {
+            @for run in &self.ranks {
+                p {
+                    "#" (run.rank()) ". "
+                    (run.time_ms()) " ms"
+                }
+            }
+        })
+    }
+}
