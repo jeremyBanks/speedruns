@@ -3,8 +3,8 @@
 #![warn(missing_debug_implementations, missing_docs)]
 #![allow(unused_imports, missing_debug_implementations, missing_docs)]
 use std::{
-    collections::BTreeMap, fs::File, io::BufReader, num::NonZeroU64 as p64,
-    ops::Deref, rc::Rc,
+    collections::BTreeMap, fs::File, io::BufReader, num::NonZeroU64 as p64, ops::Deref,
+    rc::Rc,
 };
 
 use chrono::{DateTime, NaiveDate, Utc};
@@ -25,8 +25,7 @@ pub type DynError = Box<dyn std::error::Error>;
 
 fn main() -> Result<(), DynError> {
     env_logger::try_init_from_env(
-        env_logger::Env::new()
-            .default_filter_or(format!("{}=trace", module_path!())),
+        env_logger::Env::new().default_filter_or(format!("{}=trace", module_path!())),
     )?;
 
     let mut database = Database::new();
@@ -115,9 +114,12 @@ impl Database {
 
     pub fn load_api_user(&mut self, user: &api_types::User) {
         let id = Self::id_from_str(&user.id());
-        // self.users.insert(id, User {
-        //     id,
-        // });
+        let name = (user.names().international().clone())
+            .or_else(|| user.names().twitch().clone())
+            .or_else(|| user.names().japanese().clone())
+            .expect("to have some name");
+        let name = "".to_string();
+        self.users.insert(id, User { id, name });
     }
 
     pub fn load_api_run(&mut self, run: &api_types::Run) {
@@ -130,19 +132,32 @@ impl Database {
 
 impl Validate for Database {
     fn validate(&self) -> Result<(), ValidationErrors> {
-        let mut errors = ValidationErrors::new();
-
-        if errors.is_empty() {
-            Ok(())
-        } else {
-            Err(errors)
+        let mut result = Ok(());
+        for game in self.games().values() {
+            result = ValidationErrors::merge(result, "games", game.validate());
+            // TODO: validate foreign keys
         }
+        for user in self.users().values() {
+            result = ValidationErrors::merge(result, "users", user.validate());
+            // TODO: validate foreign keys
+        }
+        for run in self.runs().values() {
+            result = ValidationErrors::merge(result, "runs", run.validate());
+            // TODO: validate foreign keys
+        }
+        for level in self.levels().values() {
+            result = ValidationErrors::merge(result, "levels", level.validate());
+            // TODO: validate foreign keys
+        }
+        for category in self.categories().values() {
+            result = ValidationErrors::merge(result, "categories", category.validate());
+            // TODO: validate foreign keys
+        }
+        result
     }
 }
 
-#[derive(
-    Debug, Serialize, Deserialize, PartialEq, Hash, Clone, Getters, Validate,
-)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Hash, Clone, Getters, Validate)]
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Run {
@@ -229,26 +244,27 @@ pub enum RunPlayer {
     GuestName(String),
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Validate)]
 #[serde(deny_unknown_fields)]
 pub struct User {
     pub id: p64,
+    #[validate(length(min = 1))]
     pub name: String,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Validate)]
 #[serde(deny_unknown_fields)]
 pub struct Category {
     pub id: p64,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Validate)]
 #[serde(deny_unknown_fields)]
 pub struct Level {
     pub id: p64,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Validate)]
 #[serde(deny_unknown_fields)]
 pub struct Game {
     pub id: p64,
