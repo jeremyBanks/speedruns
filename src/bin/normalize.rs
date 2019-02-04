@@ -2,7 +2,6 @@
 #![warn(missing_debug_implementations, missing_docs)]
 #![allow(clippy::useless_attribute)]
 use std::{
-    any::TypeId,
     collections::HashSet,
     fs::File,
     io::{prelude::*, BufReader, BufWriter},
@@ -19,7 +18,7 @@ use xz2::write::XzEncoder;
 use speedruns::{
     api::{self, normalize::Normalize},
     data::{
-        base::{Database, IntegrityError, IntegrityErrors, Tables},
+        base::{Database, IntegrityError, Tables},
         types::Id64,
     },
 };
@@ -94,6 +93,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                     unreachable!("invalid source_type in validation error"),
                             }
                             .insert(source_id);
+                        }
+                        IntegrityError::IndexingError => {
+                            // there should be a ForeignKeyMissing to cover this case
                         }
                         IntegrityError::CheckFailed { .. } => {
                             panic!("in-row validation error? shouldn't happen! normalization bug!");
