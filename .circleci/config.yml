@@ -4,16 +4,16 @@
     "version": 2,
     "workflow": {
       "jobs": [
-        "build",
-        { "test": { "requires": ["build"] } },
-        { "formatting": { "requires": ["build"] } },
-        { "warnings": { "requires": ["build"] } },
-        { "updates": { "requires": ["build"] } },
+        "build --lib",
+        { "test --lib": { "requires": ["build --lib"] } },
+        { "build --lib --deny warnings": { "requires": ["build --lib"] } },
+        { "cargo fmt": { "requires": ["build --lib"] } },
+        { "cargo update": { "requires": ["build --lib"] } },
       ]
     }
   },
   "jobs": {
-    "build": {
+    "build --lib": {
       "docker": [
         {"image": "circleci/rust:latest"}
       ],
@@ -26,7 +26,6 @@
             "v1-cargo-cache-"
           ]
         }},
-        {"run": "rustup component add rustfmt"},
         {"run": "cargo build --lib"},
         {"save_cache": {
           "paths": [
@@ -38,69 +37,54 @@
       ]
     },
 
-    "test": {
+    "test --lib": {
       "docker": [
         {"image": "circleci/rust:latest"}
       ],
       "steps": [
         "checkout",
         {"restore_cache": {
-          "keys": [
-            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}",
-            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}",
-            "v1-cargo-cache-"
-          ]
+          "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}"
         }},
         {"run": "cargo test --lib"},
       ]
     },
 
-    "formatting": {
+    "cargo fmt": {
       "docker": [
         {"image": "circleci/rust:latest"}
       ],
       "steps": [
         "checkout",
         {"restore_cache": {
-          "keys": [
-            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}",
-            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}",
-            "v1-cargo-cache-"
-          ]
+          "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}"
         }},
+        {"run": "rustup component add rustfmt"},
         {"run": "cargo fmt --all -- --check"},
       ]
     },
 
-    "warnings": {
+    "build --lib --deny warnings": {
       "docker": [
         {"image": "circleci/rust:latest"}
       ],
       "steps": [
         "checkout",
         {"restore_cache": {
-          "keys": [
-            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}",
-            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}",
-            "v1-cargo-cache-"
-          ]
+          "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}"
         }},
-        {"run": "RUSTFLAGS=\"-D warnings\" cargo build --lib"},
+        {"run": "RUSTFLAGS=\"--deny warnings\" cargo build --lib"},
       ]
     },
 
-    "updates": {
+    "cargo update": {
       "docker": [
         {"image": "circleci/rust:latest"}
       ],
       "steps": [
         "checkout",
         {"restore_cache": {
-          "keys": [
-            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}",
-            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}",
-            "v1-cargo-cache-"
-          ]
+          "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}"
         }},
         {"run": "cargo update --locked"},
       ]
