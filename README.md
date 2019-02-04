@@ -15,7 +15,7 @@ Run `cargo run --release --bin scrape` to download any new data. This doesn't in
 
 Run `cargo run --release --bin normalize` to normalize the data, including only essential fields and records (no rejected or pending runs), and discarding anything that fails validation or integrity checking.
 
-Run `cargo build --release --run serve` to build and run the server binary, which bundling in a compressed copy of the normalized data generated we generated with `normalize`. The server runs at http://127.0.0.1:59330 and doesn't do anything.
+Run `cargo build --release --run serve` to build and run the server binary, which bundling in a compressed copy of the normalized data generated we generated with `normalize`. The server doesn't really do anything.
 
 ## Data
 
@@ -74,10 +74,8 @@ This project is not associated with or endorsed by speedrun.com.
 
 ### Code License
 
-Copyright Jeremy Banks released under the MIT License.
+Originally Copyright Jeremy Banks, released under the MIT License. Any contributions from other authors must be released under both the MIT License and the Blue Oak Model License 1.0.0.
 
 ### Content License
 
-See <https://www.speedrun.com/legal> for details. All data is from speedrun.com
-contributors, and is used and distributed under the Creative Commons
-Attribution-NonCommercial 4.0 International license.
+See <https://www.speedrun.com/legal> for details. All data is from speedrun.com contributors, and is used and distributed under the Creative Commons Attribution-NonCommercial 4.0 International license.
