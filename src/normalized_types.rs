@@ -5,8 +5,14 @@
 #![warn(missing_debug_implementations, missing_docs)]
 #![allow(unused_imports, missing_debug_implementations, missing_docs)]
 use std::{
-    collections::BTreeMap, convert::TryFrom, fmt::Debug, fs::File, io::BufReader,
-    num::NonZeroU64 as p64, ops::Deref, rc::Rc,
+    collections::BTreeMap,
+    convert::{From, TryFrom},
+    fmt::Debug,
+    fs::File,
+    io::BufReader,
+    num::NonZeroU64 as p64,
+    ops::Deref,
+    rc::Rc,
 };
 
 use chrono::{DateTime, NaiveDate, Utc};
@@ -21,6 +27,24 @@ use validator::{Validate, ValidationError, ValidationErrors};
 use validator_derive::Validate;
 
 use crate::validators::*;
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
+#[serde(deny_unknown_fields)]
+#[get = "pub"]
+pub struct Category {
+    pub game_id: p64,
+    pub id: p64,
+    #[validate(length(min = 1))]
+    pub name: String,
+    pub per: CategoryType,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash)]
+#[serde(deny_unknown_fields)]
+pub enum CategoryType {
+    PerGame,
+    PerLevel,
+}
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
 #[serde(deny_unknown_fields)]
@@ -45,15 +69,11 @@ pub struct Game {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
-pub struct Category {
-    pub id: p64,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
-#[serde(deny_unknown_fields)]
-#[get = "pub"]
 pub struct Level {
+    pub game_id: p64,
     pub id: p64,
+    pub name: String,
+    pub rules: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Hash, Clone, Getters, Validate)]
@@ -63,10 +83,9 @@ pub struct Run {
     pub id: p64,
     pub created: Option<DateTime<Utc>>,
     pub game_id: p64,
-    /* level_id: Option<p64>,
-    pub primary_time_ms: u64,
-     * category_id: p64,
-     * players: Vec<RunPlayer>,
+    pub level_id: Option<p64>,
+    pub category_id: p64,
+    /* players: Vec<RunPlayer>,
      * date: Option<NaiveDate>,
      * comment: String,
      * #[validate(custom = "urls")]
@@ -94,3 +113,5 @@ impl Validate for RunPlayer {
         Ok(())
     }
 }
+
+pub struct Region {}
