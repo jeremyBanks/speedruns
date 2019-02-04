@@ -2,7 +2,7 @@
   "version": "2.1",
   "jobs": {
     "build": {
-      "docker": [
+      "all": [
         {"image": "circleci/rust:latest"}
       ],
       "steps": [
@@ -11,6 +11,8 @@
           "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}"
         }},
         {"run": "cargo build --lib"},
+        {"run": "cargo test --lib"},
+        {"run": "cargo doc --lib"},
         {"save_cache": {
           "paths": [
             "/usr/local/cargo/registry",

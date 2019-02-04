@@ -31,9 +31,9 @@ use speedruncom_data_tools::{
     normalized_types::*, p64_from_base36, validators::*,
 };
 
-pub type DynError = Box<dyn std::error::Error>;
+pub type BoxErr = Box<dyn std::error::Error>;
 
-fn main() -> Result<(), DynError> {
+pub fn main() -> Result<(), BoxErr> {
     env_logger::try_init_from_env(env_logger::Env::new().default_filter_or(format!(
         "{}=trace,speedruncom_data_tools=trace",
         module_path!()
@@ -69,7 +69,7 @@ fn load_api_type<T: DeserializeOwned>(
     path: &str,
     database: &mut Database,
     loader: impl Fn(&mut Database, &T),
-) -> Result<(), DynError> {
+) -> Result<(), BoxErr> {
     let file = File::open(path)?;
     let buffer = BufReader::new(&file);
     let decompressor = GzDecoder::new(buffer);
@@ -112,7 +112,7 @@ fn load_api_run(database: &mut Database, api_run: &api::Run) {
 fn dump_table<T: Serialize + Ord>(
     path: &str,
     table: &BTreeMap<p64, T>,
-) -> Result<(), DynError> {
+) -> Result<(), BoxErr> {
     let mut file = NamedTempFile::new_in("data")?;
     {
         let mut buffer = BufWriter::new(&mut file);

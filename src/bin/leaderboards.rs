@@ -1,7 +1,7 @@
 #![warn(missing_debug_implementations, missing_docs)]
 #![allow(unused_imports, missing_debug_implementations, missing_docs)]
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, HashMap},
     convert::TryFrom,
     error::Error,
     fmt::Debug,
@@ -12,46 +12,74 @@ use std::{
     rc::Rc,
 };
 
+use futures::future;
+use hyper::{
+    rt::{self, Future, Stream},
+    service::{service_fn, service_fn_ok},
+    Body, Method, Request, Response, Server, StatusCode,
+};
+use lazy_static::lazy_static;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use validator::Validate;
 use xz2::read::XzDecoder;
 
-use speedruncom_data_tools::{database::Database, normalized_types::*, DynError};
+use speedruncom_data_tools::{database::Database, normalized_types::*, BoxErr};
 
-fn main() -> Result<(), DynError> {
+pub type BoxFut = Box<Future<Item = Response<Body>, Error = hyper::Error> + Send>;
+
+lazy_static! {
+    pub static ref DATABASE: Database = unpack_bundled_database();
+    pub static ref GAMES_BY_SLUG: HashMap<&'static str, &'static Game> = DATABASE.games_by_slug();
+    pub static ref RUNS_BY_GAME_ID: HashMap<p64, Vec<&'static Run>> = DATABASE.runs_by_game_id();
+}
+
+pub fn main() -> Result<(), BoxErr> {
     env_logger::try_init_from_env(env_logger::Env::new().default_filter_or(format!(
         "{}=trace,speedruncom_data_tools=trace",
         module_path!()
     )))?;
 
-    let database = load_included_data()?;
-    database.validate()?;
+    let server = Server::bind(&([127, 0, 0, 1], 0).into()).serve(|| service_fn(respond));
+    let addr = server.local_addr();
 
-    let game = database
-        .games()
-        .values()
-        .filter(|game| game.name() == "Celeste")
-        .next()
-        .expect("Celeste to be in database");
+    let url = format!("http://{}", addr);
+    info!("Listening at {}", &url);
+    webbrowser::open(&url)?;
 
-    let category = database
-        .categories()
-        .values()
-        .filter(|category| category.game_id == game.id && category.name() == "Any%")
-        .next()
-        .expect("Celeste Any% to be in database");
-
-    dbg!((game, category));
+    rt::run(server.map_err(|e| error!("server error: {}", e)));
 
     Ok(())
+}
+
+fn respond(req: Request<Body>) -> BoxFut {
+    let mut response = Response::new(Body::empty());
+
+    match (req.method(), req.uri().path()) {
+        (&Method::GET, "/") => {
+            let celeste = GAMES_BY_SLUG["Celeste"];
+            let runs = &RUNS_BY_GAME_ID[celeste.id()];
+            let mut body: Vec<u8> = Vec::new();
+
+            for run in runs {
+                writeln!(&mut body, "{:?}", &run);
+            }
+
+            *response.body_mut() = Body::from(body);
+        }
+
+        _ => {
+            *response.status_mut() = StatusCode::NOT_FOUND;
+        }
+    }
+    Box::new(future::ok(response))
 }
 
 fn load_data<T: DeserializeOwned>(
     reader: &mut &[u8],
     database: &mut Database,
     loader: impl Fn(&mut Database, T),
-) -> Result<(), DynError> {
+) -> Result<(), BoxErr> {
     let mut decompressor = XzDecoder::new(reader);
     loop {
         // We have left no way to detect the last item except for EOF.
@@ -67,34 +95,38 @@ fn load_data<T: DeserializeOwned>(
     Ok(())
 }
 
-fn load_included_data() -> Result<Database, DynError> {
+fn unpack_bundled_database() -> Database {
     let mut database = Database::new();
+
+    trace!("Unpacking bundled database...");
 
     load_data(
         &mut include_bytes!("../../data/normalized/categories.bin.xz").as_ref(),
         &mut database,
         Database::insert_category,
-    )?;
+    ).expect("category data corrupt");
     load_data(
         &mut include_bytes!("../../data/normalized/games.bin.xz").as_ref(),
         &mut database,
         Database::insert_game,
-    )?;
+    ).expect("game data corrupt");
     load_data(
         &mut include_bytes!("../../data/normalized/levels.bin.xz").as_ref(),
         &mut database,
         Database::insert_level,
-    )?;
+    ).expect("level data corrupt");
     load_data(
         &mut include_bytes!("../../data/normalized/runs.bin.xz").as_ref(),
         &mut database,
         Database::insert_run,
-    )?;
+    ).expect("run data corrupt");
     load_data(
         &mut include_bytes!("../../data/normalized/users.bin.xz").as_ref(),
         &mut database,
         Database::insert_user,
-    )?;
+    ).expect("user data corrupt");
 
-    Ok(database)
+    database.validate().expect("database state invalid");
+
+    database
 }

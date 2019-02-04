@@ -8,7 +8,7 @@ pub mod normalized_types;
 pub mod validators;
 pub use utils::*;
 
-pub type DynError = Box<dyn std::error::Error>;
+pub type BoxErr = Box<dyn std::error::Error>;
 
 pub mod utils {
     use std::num::NonZeroU64 as p64;
