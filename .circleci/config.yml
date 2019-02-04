@@ -1,5 +1,16 @@
 {
   "version": "2.1",
+  "workflows": {
+    "version": 2,
+    "workflow": {
+      "jobs": [
+        "build",
+        { "test": { "requires": ["build"] } },
+        { "lint": { "requires": ["build"] } },
+        { "warnings": { "requires": ["build"] } },
+      ]
+    }
+  },
   "jobs": {
     "build": {
       "docker": [
@@ -31,6 +42,19 @@
           "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}"
         }},
         {"run": "cargo test --lib"},
+      ]
+    },
+
+    "lint": {
+      "docker": [
+        {"image": "circleci/rust:latest"}
+      ],
+      "steps": [
+        "checkout",
+        {"restore_cache": {
+          "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}"
+        }},
+        {"run": "cargo fmt"},
       ]
     },
 
