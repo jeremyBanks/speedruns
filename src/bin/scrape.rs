@@ -64,7 +64,7 @@ impl Spider {
             for resource in RESOURCES.iter() {
                 info!("Loading {}...", resource.id);
                 let file =
-                    File::open(&format!("data/{}.jsonl.gz", resource.id))?;
+                    File::open(&format!("data/api/{}.jsonl.gz", resource.id))?;
                 let buffer = BufReader::new(&file);
                 let decompressor = GzDecoder::new(buffer);
                 let deserializer = JsonDeserializer::from_reader(decompressor);
@@ -108,7 +108,7 @@ impl Spider {
                 }
                 compressor.finish()?;
             }
-            file.persist(format!("data/{}.jsonl.gz", resource.id))?;
+            file.persist(format!("data/api/{}.jsonl.gz", resource.id))?;
         }
         info!("Saved.");
 
@@ -117,9 +117,18 @@ impl Spider {
 
     pub fn run(&mut self) -> Result<!, DynError> {
         let mut headers = reqwest::header::HeaderMap::new();
+
+        let user_agent = format!(
+            "{}/{}",
+            option_env!("CARGO_PKG_NAME").unwrap_or("unknown"),
+            option_env!("CARGO_PKG_VERSION").unwrap_or("unknown")
+        );
+
+        println!("{}", user_agent);
+
         headers.insert(
             reqwest::header::USER_AGENT,
-            reqwest::header::HeaderValue::from_static("srcd"),
+            reqwest::header::HeaderValue::from_str(&user_agent)?,
         );
 
         let client = reqwest::Client::builder()
