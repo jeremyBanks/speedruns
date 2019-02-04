@@ -1,3 +1,4 @@
+#![feature(proc_macro_hygiene)]
 #![warn(missing_debug_implementations, missing_docs)]
 #![allow(unused_imports, missing_debug_implementations, missing_docs)]
 use std::{
@@ -21,10 +22,10 @@ use hyper::{
 };
 use lazy_static::lazy_static;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
+use maud::html;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use validator::Validate;
 use xz2::read::XzDecoder;
-use maud;
 
 use speedruncom_data_tools::{
     database::Database, escape_html::Escape, normalized_types::*, BoxErr,
@@ -82,20 +83,33 @@ fn respond(req: Request<Body>) -> BoxFut {
             response
                 .headers_mut()
                 .insert("Content-Type", HeaderValue::from_static("text/html"));
+
             let mut body: Vec<u8> = Vec::new();
 
-            writeln!(&mut body, "<!doctype html><title>speedruns</title><body>").unwrap();
-            writeln!(
-                &mut body,
-                "{}",
-                "<style>pre { white-space: pre-wrap; }</style>"
-            )
-            .unwrap();
+            let html = {
+                html! {
+                    (maud::DOCTYPE)
+                    head {
+                        title {
+                            "speedruns"
+                        }
+                        style { r"
+                        pre { white-space: pre-wrap; }
+                    " }
+                    }
 
-            for run in any_percent_leaderboard {
-                writeln!(&mut body, "<pre>{}</pre>", Escape(&format!("{:#?}", &run)))
-                    .unwrap();
-            }
+                    body {
+                        @for run in any_percent_leaderboard {
+                            p {
+                                "#" (run.rank()) ". "
+                                (run.time_ms()) " ms"
+                            }
+                        }
+                    }
+                }
+            };
+
+            writeln!(&mut body, "{}", html.into_string()).unwrap();
 
             *response.body_mut() = Body::from(body);
         }

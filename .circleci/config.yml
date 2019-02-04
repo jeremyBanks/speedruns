@@ -2,7 +2,7 @@
   "version": "2.1",
   "jobs": {
     "build": {
-      "all": [
+      "docker": [
         {"image": "circleci/rust:latest"}
       ],
       "steps": [
