@@ -56,26 +56,38 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
 fn unpack_bundled_tables() -> Tables {
     trace!("Unpacking bundled database...");
 
-    let runs =
-        unpack_table(&mut include_bytes!("../../data/normalized/runs.bin.xz").as_ref())
-            .expect("run data corrupt");
+    let runs = unpack_table(
+        &mut include_bytes!(concat!(env!("OUT_DIR"), "/data/normalized/runs.bin.xz"))
+            .as_ref(),
+    )
+    .expect("run data corrupt");
 
-    let users =
-        unpack_table(&mut include_bytes!("../../data/normalized/users.bin.xz").as_ref())
-            .expect("user data corrupt");
+    let users = unpack_table(
+        &mut include_bytes!(concat!(env!("OUT_DIR"), "/data/normalized/users.bin.xz"))
+            .as_ref(),
+    )
+    .expect("user data corrupt");
 
-    let games =
-        unpack_table(&mut include_bytes!("../../data/normalized/games.bin.xz").as_ref())
-            .expect("game data corrupt");
+    let games = unpack_table(
+        &mut include_bytes!(concat!(env!("OUT_DIR"), "/data/normalized/games.bin.xz"))
+            .as_ref(),
+    )
+    .expect("game data corrupt");
 
     let categories = unpack_table(
-        &mut include_bytes!("../../data/normalized/categories.bin.xz").as_ref(),
+        &mut include_bytes!(concat!(
+            env!("OUT_DIR"),
+            "/data/normalized/categories.bin.xz"
+        ))
+        .as_ref(),
     )
     .expect("category data corrupt");
 
-    let levels =
-        unpack_table(&mut include_bytes!("../../data/normalized/levels.bin.xz").as_ref())
-            .expect("level data corrupt");
+    let levels = unpack_table(
+        &mut include_bytes!(concat!(env!("OUT_DIR"), "/data/normalized/levels.bin.xz"))
+            .as_ref(),
+    )
+    .expect("level data corrupt");
 
     Tables::new(runs, users, games, categories, levels)
 }

@@ -27,16 +27,11 @@ unidecode = "*"
 url_serde = "0.2.0"
 validator = "0.8.0"
 validator_derive = "0.8.0"
-webbrowser = "0.5.1"
 xz2 = "0.1.6"
 
 [dependencies.chrono]
 features = ["serde"]
 version = "0.4.6"
-
-[dependencies.rusqlite]
-features = ["functions", "chrono", "serde_json", "bundled"]
-version = "0.18.0"
 
 [dependencies.serde]
 features = ["derive"]
