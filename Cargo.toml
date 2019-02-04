@@ -1,8 +1,8 @@
 [package]
 edition = "2018"
 name = "speedruns"
-publish = false
-version = "2.4.8"
+license = "MIT"
+version = "0.0.1"
 [dependencies]
 anymap = "0.12.1"
 bincode = "1.1.3"
