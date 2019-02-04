@@ -94,23 +94,10 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
         }
 
         (&Method::GET, "/celeste/anypercent") => {
-            let game_slug = "celeste";
-            let category_slug = "anypercent";
-
-            let user = database
-                .clone()
-                .user_by_slugify("TGH")
-                .expect("TGH in database");
-
             let celeste = database
                 .clone()
                 .game_by_slugify("celeste")
                 .expect("Celeste in database");
-            let any_percent = celeste
-                .category_by_slugify("Any%")
-                .expect("Any% in Celeste");
-            let runs = any_percent.full_runs();
-
             let clear = celeste
                 .category_by_slugify("Clear")
                 .expect("Any% in Celeste");

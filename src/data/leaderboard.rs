@@ -24,7 +24,7 @@ pub struct RankedRun {
 /// Ranks a set of runs (all for the same game/category/level) using the
 /// timing specified for the game rules, then by run date, then by
 /// submission datetime, discarding lower-ranked runs by the same runner.
-pub fn rank_runs(database: Arc<Database>, runs: &[Linked<Run>]) -> Vec<RankedRun> {
+pub fn rank_runs(_database: Arc<Database>, runs: &[Linked<Run>]) -> Vec<RankedRun> {
     let mut runs: Vec<Linked<Run>> = runs.to_vec();
 
     if runs.is_empty() {

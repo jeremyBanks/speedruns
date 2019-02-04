@@ -1,14 +1,13 @@
 //! The world's worst in-memory database of normalized speedrun data.
 use std::{
-    collections::{BTreeMap, HashMap, HashSet},
+    collections::{BTreeMap, HashMap},
     fmt::{Debug, Display},
     num::NonZeroU64 as Id64,
     ops::Deref,
     sync::Arc,
 };
 
-use chrono::{DateTime, Utc};
-use derive_more::{From, TryInto};
+use derive_more::{From};
 use err_derive::Error;
 use getset::Getters;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
