@@ -3,7 +3,7 @@ use validator::{Validate, ValidationError, ValidationErrors};
 pub fn urls(value: &[String]) -> Result<(), ValidationError> {
     for item in value {
         if !validator::validate_url(item) {
-            return Err(ValidationError::new("invalid URL"));
+            return Err(ValidationError::new("invalid URL"))
         }
     }
     Ok(())

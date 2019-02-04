@@ -16,8 +16,8 @@ use std::{
 use chrono::{DateTime, NaiveDate, Utc};
 use flate2::{read::GzDecoder, write::GzEncoder};
 use getset::Getters;
-#[allow(unused)]
-use log::{debug, error, info, trace, warn};
+use itertools::Itertools;
+#[allow(unused)] use log::{debug, error, info, trace, warn};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use tempfile::NamedTempFile;
@@ -48,11 +48,11 @@ fn main() -> Result<(), DynError> {
 #[derive(Debug, Default, Serialize, Deserialize, Clone, Getters)]
 #[get = "pub"]
 pub struct Database {
-    runs: BTreeMap<p64, Run>,
-    users: BTreeMap<p64, User>,
-    games: BTreeMap<p64, Game>,
+    runs:       BTreeMap<p64, Run>,
+    users:      BTreeMap<p64, User>,
+    games:      BTreeMap<p64, Game>,
     categories: BTreeMap<p64, Category>,
-    levels: BTreeMap<p64, Level>,
+    levels:     BTreeMap<p64, Level>,
 }
 
 impl Database {
@@ -76,7 +76,7 @@ impl Database {
                 .map(T::deserialize)
                 .map(Result::unwrap);
 
-            // let items = items.take(1024);
+            let items = items.take(2048);
 
             for item in items {
                 loader(database, &item);
@@ -97,7 +97,7 @@ impl Database {
     }
 
     pub fn dump(&mut self) -> Result<(), DynError> {
-        fn dump_table<T: Serialize>(
+        fn dump_table<T: Serialize + Ord>(
             path: &str,
             table: &BTreeMap<p64, T>,
         ) -> Result<(), DynError> {
@@ -105,7 +105,7 @@ impl Database {
             {
                 let mut buffer = BufWriter::new(&mut file);
                 // let mut compressor = GzEncoder::new(buffer, flate2::Compression::best());
-                for data in table.values() {
+                for data in table.values().sorted() {
                     serde_json::to_writer(&mut buffer, &data)?;
                     buffer.write(b"\n")?;
                 }
@@ -192,7 +192,7 @@ impl Validate for Database {
 #[get = "pub"]
 pub struct DbRun {
     database: Rc<Database>,
-    run: Run,
+    run:      Run,
 }
 
 impl DbRun {
@@ -244,6 +244,7 @@ impl DbRun {
 
 impl Deref for DbRun {
     type Target = Run;
+
     fn deref(&self) -> &Run {
         &self.run
     }

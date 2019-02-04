@@ -54,11 +54,6 @@ Serve a web view of the leaderboards.
 
 This project has no official relationship with speedrun.com.
 
-### Code License
-
-This code is released under the Blue Oak Model License 1.0.0, available at
-<https://blueoakcouncil.org/license/1.0.0>.
-
 ### Content License
 
 See <https://www.speedrun.com/legal> for details. All data is from speedrun.com
