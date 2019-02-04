@@ -95,7 +95,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             .insert(source_id);
                         }
                         IntegrityError::IndexingError => {
-                            // there should be a ForeignKeyMissing to cover this case
+                            error!("indexing failed");
                         }
                         IntegrityError::CheckFailed { .. } => {
                             panic!("in-row validation error? shouldn't happen! normalization bug!");
