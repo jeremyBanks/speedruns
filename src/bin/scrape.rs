@@ -90,7 +90,7 @@ impl Spider {
             {
                 let buffer = BufWriter::new(&mut file);
                 let mut compressor = GzEncoder::new(buffer, Default::default());
-                for game_data in self.games_by_id.values() {
+                for game_data in self.games_by_id.values().take(1024) {
                     serde_json::to_writer(&mut compressor, &game_data)?;
                     compressor.write(b"\n")?;
                 }
@@ -107,7 +107,7 @@ impl Spider {
             {
                 let buffer = BufWriter::new(&mut file);
                 let mut compressor = GzEncoder::new(buffer, Default::default());
-                for user_data in self.users_by_id.values() {
+                for user_data in self.users_by_id.values().take(1024) {
                     serde_json::to_writer(&mut compressor, &user_data)?;
                     compressor.write(b"\n")?;
                 }
@@ -124,7 +124,7 @@ impl Spider {
             {
                 let buffer = BufWriter::new(&mut file);
                 let mut compressor = GzEncoder::new(buffer, Default::default());
-                for run_data in self.runs_by_id.values() {
+                for run_data in self.runs_by_id.values().take(1024) {
                     serde_json::to_writer(&mut compressor, &run_data)?;
                     compressor.write(b"\n")?;
                 }
@@ -164,7 +164,7 @@ impl Spider {
                 previous = self.games_by_id.len();
             }
 
-            if i % 64 == 0 {
+            if i % 256 == 0 {
                 self.save()?;
             }
 
@@ -201,7 +201,7 @@ impl Spider {
                 previous = self.users_by_id.len();
             }
 
-            if i % 64 == 0 {
+            if i % 256 == 0 {
                 self.save()?;
             }
 
@@ -255,7 +255,7 @@ impl Spider {
 
                 previous = self.runs_by_id.len();
 
-                if i % 64 == 0 {
+                if i % 256 == 0 {
                     self.save()?;
                 }
 

@@ -11,7 +11,6 @@ pub struct Game {
     id: String,
     names: Names,
     abbreviation: String,
-    weblink: String,
     release_date: NaiveDate,
     released: u32,
     romhack: bool,
@@ -27,9 +26,110 @@ pub struct Game {
     gametypes: Data<Vec<GameType>>,
     variables: Data<Vec<Variable>>,
     moderators: HashMap<String, ModeratorType>,
-    regions: Data<Vec<Region>>,
+    regions: Data<Vec<GameRegion>>,
     genres: Data<Vec<Genre>>,
+    weblink: String,
     links: Vec<Link>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[get = "pub"]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+pub struct User {
+    id: String,
+    names: Names,
+    twitch: Option<Uri<String>>,
+    twitter: Option<Uri<String>>,
+    youtube: Option<Uri<String>>,
+    hitbox: Option<Uri<String>>,
+    weblink: Option<String>,
+    speedrunslive: Option<Uri<String>>,
+    signup: Option<DateTime<Utc>>,
+    location: Option<Location>,
+    role: UserRole,
+    name_style: NameStyle,
+    links: Vec<Link>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[get = "pub"]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+pub struct Run {
+    id: String,
+    date: NaiveDate,
+    category: String,
+    comment: String,
+    level: Option<String>,
+    split: Option<String>,
+    links: Vec<Link>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[get = "pub"]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+pub struct Location {
+    country: Country,
+    region: Option<UserRegion>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[get = "pub"]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+pub struct Country {
+    code: Option<String>,
+    names: Names,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[get = "pub"]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+pub struct UserRegion {
+    code: Option<String>,
+    names: Names,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+#[serde(tag = "style")]
+pub enum NameStyle {
+    Solid {
+        color: ColorThemes,
+    },
+    Gradient {
+        #[serde(rename = "color-from")]
+        color_from: ColorThemes,
+        #[serde(rename = "color-to")]
+        color_to: ColorThemes,
+    },
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[get = "pub"]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+pub struct ColorThemes {
+    light: String,
+    dark: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+pub enum UserRole {
+    Banned,
+    User,
+    Trusted,
+    Moderator,
+    Admin,
+    Programmer,
+    #[serde(rename = "contentmoderator")]
+    ContentModerator,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
@@ -188,7 +288,7 @@ pub struct VariableValueFlags {
 #[get = "pub"]
 #[serde(rename_all = "kebab-case")]
 #[serde(deny_unknown_fields)]
-pub struct Region {
+pub struct GameRegion {
     id: String,
     name: String,
     links: Vec<Link>,
@@ -255,6 +355,7 @@ pub struct Ruleset {
 pub enum Link {
     #[serde(rename = "self")]
     Self_(String),
+    PersonalBests(String),
     Leaderboard(String),
     Games(String),
     Game(String),
@@ -276,7 +377,7 @@ pub enum Link {
 #[serde(rename_all = "kebab-case")]
 #[serde(deny_unknown_fields)]
 pub struct Names {
-    international: String,
+    international: Option<String>,
     japanese: Option<String>,
     twitch: Option<String>,
 }
@@ -304,5 +405,21 @@ impl<T> std::ops::Deref for Data<T> {
 
     fn deref(&self) -> &T {
         &self.data
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[get = "pub"]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+pub struct Uri<T> {
+    uri: T,
+}
+
+impl<T> std::ops::Deref for Uri<T> {
+    type Target = T;
+
+    fn deref(&self) -> &T {
+        &self.uri
     }
 }
