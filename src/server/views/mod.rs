@@ -46,10 +46,27 @@ fn page(body: Markup) -> Markup {
         head {
             link charset="utf-8";
             link rel="stylesheet" href="/style.css";
-            link rel="icon" href="/srca.gif";
-            title { "speedruns" }
+            link rel="icon" href="/icon.gif";
+            title { "SpeedRun.Com Archive" }
         }
-        body { (body) }
+        body {
+            header {
+                h1 {
+                    a href="/" { "SpeedRun.Com Archive" }
+                }
+            }
+            main {
+                (body)
+            }
+            footer {
+                p {
+                    "This site is not affiliated with or endorsed by speedrun.com. "
+                    "All data is from speedrun.com contributors, and is used and "
+                    "distributed under the Creative Commons "
+                    "Attribution-NonCommercial 4.0 International license."
+                }
+            }
+        }
     }
 }
 
@@ -59,8 +76,11 @@ pub struct Homepage;
 impl<'db> View for Homepage {
     fn render(&self) -> Markup {
         page(html! {
-            "try "
-            a href="/celeste/anypercent" { "Celeste Any%" }
+            p {
+                "Check out "
+                a href="/celeste/anypercent" { "Celeste Any%" }
+                "."
+            }
         })
     }
 }
