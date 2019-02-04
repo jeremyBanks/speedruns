@@ -18,8 +18,7 @@ use std::{
 use chrono::{DateTime, NaiveDate, Utc};
 use flate2::read::GzDecoder;
 use getset::Getters;
-#[allow(unused)]
-use log::{debug, error, info, trace, warn};
+#[allow(unused)] use log::{debug, error, info, trace, warn};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use url::Url;
@@ -28,7 +27,19 @@ use validator_derive::Validate;
 
 use crate::validators::*;
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
+#[derive(
+    Debug,
+    Serialize,
+    Deserialize,
+    Clone,
+    PartialEq,
+    Hash,
+    PartialOrd,
+    Ord,
+    Eq,
+    Getters,
+    Validate,
+)]
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Category {
@@ -39,62 +50,106 @@ pub struct Category {
     pub per: CategoryType,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, PartialOrd, Ord, Eq)]
 #[serde(deny_unknown_fields)]
 pub enum CategoryType {
     PerGame,
     PerLevel,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
+#[derive(
+    Debug,
+    Serialize,
+    Deserialize,
+    Clone,
+    PartialEq,
+    Hash,
+    PartialOrd,
+    Ord,
+    Eq,
+    Getters,
+    Validate,
+)]
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct User {
     pub id: p64,
+    pub created: Option<DateTime<Utc>>,
     #[validate(length(min = 1))]
     pub name: String,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
+#[derive(
+    Debug,
+    Serialize,
+    Deserialize,
+    Clone,
+    PartialEq,
+    Hash,
+    PartialOrd,
+    Ord,
+    Eq,
+    Getters,
+    Validate,
+)]
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Game {
     pub id: p64,
-    #[validate(length(min = 1))]
-    pub name: String,
+    pub created: Option<DateTime<Utc>>,
     #[validate(length(min = 1))]
     pub slug: String,
+    #[validate(length(min = 1))]
+    pub name: String,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
+#[derive(
+    Debug,
+    Serialize,
+    Deserialize,
+    Clone,
+    PartialEq,
+    Hash,
+    PartialOrd,
+    Ord,
+    Eq,
+    Getters,
+    Validate,
+)]
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Level {
     pub game_id: p64,
-    pub id: p64,
-    pub name: String,
-    pub rules: String,
+    pub id:      p64,
+    pub name:    String,
+    pub rules:   String,
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq, Hash, Clone, Getters, Validate)]
+#[derive(
+    Debug,
+    Serialize,
+    Deserialize,
+    PartialEq,
+    Hash,
+    Clone,
+    PartialOrd,
+    Ord,
+    Eq,
+    Getters,
+    Validate,
+)]
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Run {
-    pub id: p64,
-    pub created: Option<DateTime<Utc>>,
-    pub game_id: p64,
-    pub level_id: Option<p64>,
+    pub game_id:     p64,
     pub category_id: p64,
-    /* players: Vec<RunPlayer>,
-     * date: Option<NaiveDate>,
-     * comment: String,
-     * #[validate(custom = "urls")]
-     * video_urls: Vec<String>,
-     * #[validate(custom = "urls")]
-     * split_urls: Vec<String>, */
+    pub level_id:    Option<p64>,
+    pub id:          p64,
+    pub created:     Option<DateTime<Utc>>,
+    pub date:        Option<NaiveDate>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, PartialOrd, Ord, Eq)]
 #[serde(deny_unknown_fields)]
 pub enum RunPlayer {
     UserId(p64),
@@ -107,7 +162,7 @@ impl Validate for RunPlayer {
             if name.len() < 1 {
                 let mut errors = ValidationErrors::new();
                 errors.add("GuestName.0", ValidationError::new("name is empty"));
-                return Err(errors);
+                return Err(errors)
             }
         }
         Ok(())

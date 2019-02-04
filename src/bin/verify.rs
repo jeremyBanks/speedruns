@@ -2,8 +2,7 @@
 //! structure of our API types.
 use env_logger;
 use flate2::read::GzDecoder;
-#[allow(unused)]
-use log::{debug, error, info, trace, warn};
+#[allow(unused)] use log::{debug, error, info, trace, warn};
 use serde::de::DeserializeOwned;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use std::{fs::File, io::BufReader};
