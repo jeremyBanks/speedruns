@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use futures::future;
 use hyper::{
     header::HeaderValue,
@@ -17,11 +19,11 @@ pub type BoxFut = Box<Future<Item = Response<Body>, Error = hyper::Error> + Send
 
 /// A web server displaying a static snapshot of https://speedrun.com leaderboards.
 pub struct Server {
-    database: &'static Database,
+    database: Arc<Database>,
 }
 
 impl Server {
-    pub fn new(database: &'static Database) -> Self {
+    pub fn new(database: Arc<Database>) -> Self {
         Server { database }
     }
 
@@ -48,10 +50,11 @@ impl Server {
             }
         }
 
-        let database = self.database;
-        let server = binding
-            .expect("failed to bind any port")
-            .serve(move || service_fn(move |req| respond(req, database)));
+        let database = self.database.clone();
+        let server = binding.expect("failed to bind any port").serve(move || {
+            let database = database.clone();
+            service_fn(move |req| respond(req, database.clone()))
+        });
         let addr = server.local_addr();
 
         let url = format!("http://{}", addr);
@@ -61,7 +64,7 @@ impl Server {
     }
 }
 
-fn respond(req: Request<Body>, database: &Database) -> BoxFut {
+fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
     let mut response = Response::new(Body::empty());
 
     match (req.method(), req.uri().path()) {

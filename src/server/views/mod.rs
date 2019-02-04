@@ -9,7 +9,7 @@ use std::{
     io::{prelude::*, BufReader, BufWriter, Read},
     num::NonZeroU64 as Id64,
     ops::Deref,
-    rc::Rc,
+    sync::Arc,
 };
 
 use futures::future;
