@@ -30,22 +30,21 @@ fn main() -> Result<(), DynError> {
 
     let database = load_included_data()?;
 
-    let game_name = "Celeste";
-    let category_name = "Any%";
-
     let game = database
         .games()
         .values()
-        .filter(|game| game.name() == game_name)
+        .filter(|game| game.name() == "Celeste")
         .next()
-        .unwrap();
+        .expect("Celeste to be in database");
 
     let category = database
         .categories()
         .values()
-        .filter(|category| category.game_id == game.id && category.name() == category_name)
+        .filter(|category| category.game_id == game.id && category.name() == "Any%")
         .next()
-        .unwrap();
+        .expect("Celeste Any% to be in database");
+
+    dbg!((game, category));
 
     Ok(())
 }
