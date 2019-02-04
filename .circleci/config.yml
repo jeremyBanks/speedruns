@@ -26,6 +26,7 @@
             "v1-cargo-cache-"
           ]
         }},
+        {"run": "rustup component add rustfmt"},
         {"run": "cargo build --lib"},
         {"save_cache": {
           "paths": [
