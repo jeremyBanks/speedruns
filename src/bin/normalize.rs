@@ -13,7 +13,7 @@ use std::{
     fmt::Debug,
     fs::File,
     io::{prelude::*, BufReader, BufWriter},
-    num::NonZeroU64 as id64,
+    num::NonZeroU64 as Id64,
     ops::Deref,
     rc::Rc,
 };
@@ -32,13 +32,13 @@ use validator_derive::Validate;
 use xz2::write::XzEncoder;
 
 use speedruns::{
-    api_types as api, database::Database, id64_from_base36, normalize_api_types::Normalize,
-    normalized_types::*, validators::*,
+    api::{self, normalize::Normalize},
+    data::{types::*, validators::*},
+    utils::id64_from_base36,
+    Database,
 };
 
-pub type BoxErr = Box<dyn std::error::Error>;
-
-pub fn main() -> Result<(), BoxErr> {
+pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::try_init_from_env(
         env_logger::Env::new()
             .default_filter_or(format!("{}=trace,speedruns=trace", module_path!())),
@@ -74,7 +74,7 @@ fn load_api_type<T: DeserializeOwned>(
     path: &str,
     database: &mut Database,
     loader: impl Fn(&mut Database, &T),
-) -> Result<(), BoxErr> {
+) -> Result<(), Box<dyn std::error::Error>> {
     let file = File::open(path)?;
     let buffer = BufReader::new(&file);
     let decompressor = GzDecoder::new(buffer);
@@ -116,8 +116,8 @@ fn load_api_run(database: &mut Database, api_run: &api::Run) {
 
 fn dump_table<T: Serialize + Ord>(
     path: &str,
-    table: &BTreeMap<id64, T>,
-) -> Result<(), BoxErr> {
+    table: &BTreeMap<Id64, T>,
+) -> Result<(), Box<dyn std::error::Error>> {
     let mut file = NamedTempFile::new_in("data")?;
     {
         let mut buffer = BufWriter::new(&mut file);
@@ -131,7 +131,7 @@ fn dump_table<T: Serialize + Ord>(
     let mut file = NamedTempFile::new_in("data")?;
     {
         let buffer = BufWriter::new(&mut file);
-        let mut compressor = XzEncoder::new(buffer, 9);
+        let mut compressor = XzEncoder::new(buffer, 6);
         for data in table.values().sorted() {
             bincode::serialize_into(&mut compressor, &data)?;
         }

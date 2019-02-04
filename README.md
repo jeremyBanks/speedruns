@@ -17,6 +17,7 @@ speedruns
         .validators
         .base
     .server
+        /views
 ```
 
 ## Data

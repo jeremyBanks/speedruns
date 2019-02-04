@@ -4,31 +4,34 @@
 use std::{
     collections::{BTreeMap, HashMap},
     fmt::Debug,
-    num::NonZeroU64 as id64,
-    ops::Deref,
-    rc::Rc,
+    num::NonZeroU64 as Id64,
 };
 
 use getset::Getters;
+use lazy_init::Lazy;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationErrors};
 
-use crate::normalized_types::*;
+use crate::data::{linked::Linked, types::*};
 
 #[derive(Debug, Default, Serialize, Deserialize, Clone, Getters)]
 #[get = "pub"]
 pub struct Database {
-    runs:       BTreeMap<id64, Run>,
-    users:      BTreeMap<id64, User>,
-    games:      BTreeMap<id64, Game>,
-    categories: BTreeMap<id64, Category>,
-    levels:     BTreeMap<id64, Level>,
+    runs:       BTreeMap<Id64, Run>,
+    users:      BTreeMap<Id64, User>,
+    games:      BTreeMap<Id64, Game>,
+    categories: BTreeMap<Id64, Category>,
+    levels:     BTreeMap<Id64, Level>,
 }
 
 impl Database {
     pub fn new() -> Self {
         Self::default()
+    }
+
+    pub fn indices(&self) -> Indices {
+        Indices::new(self)
     }
 
     pub fn insert_game(&mut self, game: Game) {
@@ -52,7 +55,7 @@ impl Database {
     }
 
     /// Generates an index mapping Games to sorted lists of Runs.
-    pub fn runs_by_game_id(&self) -> HashMap<id64, Vec<&Run>> {
+    pub fn runs_by_game_id(&self) -> HashMap<Id64, Vec<&Run>> {
         info!("Indexing runs by game id...");
         let mut index = HashMap::new();
 
@@ -113,7 +116,7 @@ impl Database {
             assert_eq!(run.category_id(), first.category_id());
 
             let time_ms = run.times_ms().get(game.primary_timing()).unwrap();
-            let rank = id64::new((i + 1) as u64).unwrap();
+            let rank = Id64::new((i + 1) as u64).unwrap();
             let mut tied_rank = rank;
             let mut is_tied = false;
 
@@ -140,20 +143,45 @@ impl Database {
     }
 }
 
+pub struct Indices<'db> {
+    database: &'db Database,
+    runs_by_game_id: Lazy<BTreeMap<Id64, Vec<Linked<'db, Run>>>>,
+}
+
+impl<'db> Indices<'db> {
+    pub fn new(database: &'db Database) -> Self {
+        Self {
+            database,
+            runs_by_game_id: Lazy::new(),
+        }
+    }
+
+    pub fn game(&self, id: Id64) -> Linked<'db, Game> {
+        Linked::new(&self, self.database.games.get(&id).expect("foreign key to be valid"))
+    }
+
+    pub fn runs_by_game_id(&self) -> &BTreeMap<Id64, Vec<Linked<'db, Run>>> {
+        self.runs_by_game_id.get_or_create(|| {
+            self.database.runs().len();
+            BTreeMap::new()
+        })
+    }
+}
+
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
 pub struct RankedRun<'db> {
-    rank:      id64,
+    rank:      Id64,
     time_ms:   u64,
     is_tied:   bool,
-    tied_rank: id64,
+    tied_rank: Id64,
     run:       &'db Run,
 }
 
 impl Validate for Database {
     fn validate(&self) -> Result<(), ValidationErrors> {
         fn validate_table<T: Validate + Debug>(
-            table: &BTreeMap<id64, T>,
+            table: &BTreeMap<Id64, T>,
         ) -> Result<(), ValidationErrors> {
             for item in table.values() {
                 let result = item.validate();
@@ -186,71 +214,4 @@ impl Validate for Database {
 
         Ok(())
     }
-}
-
-#[derive(Debug, Clone, Getters)]
-#[get = "pub"]
-pub struct DbRun {
-    database: Rc<Database>,
-    run:      Run,
-}
-
-impl DbRun {
-    pub fn game(&self) -> Game {
-        self.database
-            .games()
-            .get(self.game_id())
-            .expect("foreign key should be valid")
-            .clone()
-    }
-}
-
-impl Deref for DbRun {
-    type Target = Run;
-
-    fn deref(&self) -> &Run {
-        &self.run
-    }
-}
-
-mod tmp {
-    #![allow(unused)]
-
-    #[derive(Debug, serde::Serialize)]
-    struct Run {
-        id:   u64,
-        time: u64,
-    }
-
-    trait Model: std::fmt::Debug + serde::Serialize {
-        fn get_by_id(database: &Database, id: u64) -> Option<&Self>;
-    }
-
-    impl Model for Run {
-        fn get_by_id(_database: &Database, _id: u64) -> Option<&Run> {
-            None
-        }
-    }
-
-    struct Database;
-
-    impl Database {
-        fn get_by_id<T: Model>(&self, id: u64) -> Option<&T> {
-            T::get_by_id(self, id)
-        }
-    }
-
-    struct Linked<'db, ModelType: Model> {
-        db:    &'db Database,
-        model: ModelType,
-    }
-
-    impl<T: Model> Linked<'_, T> {
-        fn get_by_id() -> () {}
-    }
-
-    impl Linked<'_, Run> {
-        fn best_time() -> () {}
-    }
-
 }

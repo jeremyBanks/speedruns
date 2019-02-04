@@ -4,7 +4,6 @@
 //! corrupt records and rejected or pending runs.
 #![warn(missing_debug_implementations, missing_docs)]
 #![allow(unused_imports, missing_debug_implementations, missing_docs)]
-pub use std::num::NonZeroU64 as id64;
 use std::{
     collections::BTreeMap,
     convert::{From, TryFrom},
@@ -25,7 +24,14 @@ use url::Url;
 use validator::{Validate, ValidationError, ValidationErrors};
 use validator_derive::Validate;
 
-use crate::validators::*;
+use super::validators::*;
+
+/// We currently represent all ids as NonZeroU64s for efficiency.
+/// You can use [crate::utils] to convert to and from speedrun.com's
+/// API IDs. (This isn't the same conversion as speedrun.com uses,
+/// so the ordering of these IDs doesn't align with insertion time
+/// or anything like that.)
+pub type Id64 = std::num::NonZeroU64;
 
 #[derive(
     Debug,
@@ -43,8 +49,8 @@ use crate::validators::*;
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Category {
-    pub game_id: id64,
-    pub id: id64,
+    pub game_id: Id64,
+    pub id: Id64,
     #[validate(length(min = 1))]
     pub name: String,
     pub per: CategoryType,
@@ -74,7 +80,7 @@ pub enum CategoryType {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct User {
-    pub id: id64,
+    pub id: Id64,
     pub created: Option<DateTime<Utc>>,
     #[validate(length(min = 1))]
     pub name: String,
@@ -96,7 +102,7 @@ pub struct User {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Game {
-    pub id: id64,
+    pub id: Id64,
     pub created: Option<DateTime<Utc>>,
     #[validate(length(min = 1))]
     pub slug: String,
@@ -130,8 +136,8 @@ pub enum TimingMethod {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Level {
-    pub game_id: id64,
-    pub id:      id64,
+    pub game_id: Id64,
+    pub id:      Id64,
     pub name:    String,
     pub rules:   String,
 }
@@ -152,10 +158,10 @@ pub struct Level {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Run {
-    pub game_id: id64,
-    pub category_id: id64,
-    pub level_id: Option<id64>,
-    pub id: id64,
+    pub game_id: Id64,
+    pub category_id: Id64,
+    pub level_id: Option<Id64>,
+    pub id: Id64,
     pub created: Option<DateTime<Utc>>,
     pub date: Option<NaiveDate>,
     #[validate]
@@ -197,14 +203,14 @@ impl Validate for RunTimesMs {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, PartialOrd, Ord, Eq)]
 #[serde(deny_unknown_fields)]
 pub enum RunPlayer {
-    UserId(id64),
+    UserId(Id64),
     GuestName(String),
 }
 
 impl Validate for RunPlayer {
     fn validate(&self) -> Result<(), ValidationErrors> {
         if let RunPlayer::GuestName(name) = self {
-            if name.len() < 1 {
+            if name.is_empty() {
                 let mut errors = ValidationErrors::new();
                 errors.add("GuestName.0", ValidationError::new("name is empty"));
                 return Err(errors)

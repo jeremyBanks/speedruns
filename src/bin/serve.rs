@@ -13,7 +13,7 @@ use std::{
     fmt::Debug,
     fs::File,
     io::{prelude::*, BufReader, BufWriter, Read},
-    num::NonZeroU64 as id64,
+    num::NonZeroU64 as Id64,
     ops::Deref,
     rc::Rc,
 };
@@ -32,105 +32,29 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use validator::Validate;
 use xz2::read::XzDecoder;
 
-use speedruns::{database::Database, normalized_types::*, BoxErr};
-
-mod views;
-use views::*;
+use speedruns::{types::*, Database};
 
 pub type BoxFut = Box<Future<Item = Response<Body>, Error = hyper::Error> + Send>;
 
-lazy_static! {
-    pub static ref DATABASE: Database = unpack_bundled_database();
-    pub static ref GAMES_BY_SLUG: HashMap<&'static str, &'static Game> =
-        DATABASE.games_by_slug();
-    pub static ref RUNS_BY_GAME_ID: HashMap<id64, Vec<&'static Run>> =
-        DATABASE.runs_by_game_id();
-}
-
-pub fn main() -> Result<(), BoxErr> {
+pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::try_init_from_env(env_logger::Env::new().default_filter_or(format!(
         "{}=trace,speedruns=trace,hyper=debug",
         module_path!()
     )))?;
 
-    let addresses = vec![
-        ([0, 0, 0, 0], 80),
-        ([127, 0, 0, 1], 59330),
-        ([127, 0, 0, 1], 0),
-    ];
+    let static_database = Box::leak(Box::new(unpack_bundled_database()));
 
-    let mut binding = None;
-    for address in addresses {
-        let address = address.into();
-        match Server::try_bind(&address) {
-            Ok(binding_) => {
-                binding = Some(binding_);
-                break
-            }
-            Err(error) => {
-                warn!("Failed to bind {:?}: {:?}", &address, &error);
-            }
-        }
-    }
-    let server = binding
-        .expect("failed to bind any port")
-        .serve(|| service_fn(respond));
-    let addr = server.local_addr();
-
-    let url = format!("http://{}", addr);
-    info!("Listening at {}", &url);
-
-    rt::run(server.map_err(|e| error!("server error: {}", e)));
+    let mut server = speedruns::server::Server::new(static_database);
+    server.run();
 
     Ok(())
-}
-
-fn respond(req: Request<Body>) -> BoxFut {
-    let mut response = Response::new(Body::empty());
-
-    match (req.method(), req.uri().path()) {
-        (&Method::GET, "/") => {
-            let game = GAMES_BY_SLUG["Celeste"];
-            let runs = &RUNS_BY_GAME_ID[game.id()];
-            let category = DATABASE
-                .categories()
-                .values()
-                .find(|c| c.game_id() == game.id() && c.name() == "Any%")
-                .unwrap();
-            let runs = runs
-                .iter()
-                .filter(|r| r.category_id() == category.id())
-                .cloned()
-                .collect::<Vec<_>>();
-            let ranks = DATABASE.rank_runs(&runs);
-
-            let view = LeaderboardPage {
-                game,
-                category,
-                level: None,
-                ranks,
-            };
-
-            response
-                .headers_mut()
-                .insert("Content-Type", HeaderValue::from_static("text/html"));
-
-            let render = view.render().into_string();
-            *response.body_mut() = Body::from(render);
-        }
-
-        _ => {
-            *response.status_mut() = StatusCode::NOT_FOUND;
-        }
-    }
-    Box::new(future::ok(response))
 }
 
 fn load_data<T: DeserializeOwned>(
     reader: &mut &[u8],
     database: &mut Database,
     loader: impl Fn(&mut Database, T),
-) -> Result<(), BoxErr> {
+) -> Result<(), Box<dyn std::error::Error>> {
     let mut decompressor = XzDecoder::new(reader);
     loop {
         // We have left no way to detect the last item except for EOF.

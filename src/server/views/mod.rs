@@ -7,7 +7,7 @@ use std::{
     fmt::Debug,
     fs::File,
     io::{prelude::*, BufReader, BufWriter, Read},
-    num::NonZeroU64 as id64,
+    num::NonZeroU64 as Id64,
     ops::Deref,
     rc::Rc,
 };
@@ -26,10 +26,9 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use validator::Validate;
 use xz2::read::XzDecoder;
 
-use speedruns::{
-    database::{Database, RankedRun},
-    normalized_types::*,
-    BoxErr,
+use crate::data::{
+    base::{Database, RankedRun},
+    types::*,
 };
 
 pub trait View: Serialize + Debug {
