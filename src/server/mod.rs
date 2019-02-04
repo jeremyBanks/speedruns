@@ -9,7 +9,10 @@ use hyper::{
 };
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 
-use crate::{types::*, Database};
+use crate::{
+    data::{leaderboard::rank_runs, types::*},
+    Database,
+};
 
 mod views;
 
@@ -72,48 +75,81 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
             response
                 .headers_mut()
                 .insert("Content-Type", HeaderValue::from_static("image/gif"));
-
             *response.body_mut() = Body::from(include_bytes!("static/srca.gif").as_ref());
         }
 
-        (&Method::GET, "/") => {
+        (&Method::GET, "/style.css") => {
             response
                 .headers_mut()
-                .insert("Content-Type", HeaderValue::from_static("text/html"));
-            *response.body_mut() = Body::from(Homepage.render().into_string());
+                .insert("Content-Type", HeaderValue::from_static("text/css"));
+            *response.body_mut() = Body::from(include_bytes!("static/style.css").as_ref());
         }
 
-        // (&Method::GET, "/celeste/any") => {
-        //     let game_slug = "/celeste/anypercent";
+        (&Method::GET, "/") => {
+            Homepage.html_to(&mut response);
+        }
 
-        //     let game = database.games_by_slug()[game_slug];;
-        //     let runs = &database.runs_by_game_id()[game.id()];
-        //     let category = database
-        //         .categories()
-        //         .values()
-        //         .find(|c| c.game_id() == game.id() && c.name() == "Any%")
-        //         .unwrap();
-        //     let runs = runs
-        //         .iter()
-        //         .filter(|r| r.category_id() == category.id())
-        //         .cloned()
-        //         .collect::<Vec<_>>();
-        //     let ranks = database.rank_runs(&runs);
+        (&Method::GET, "/celeste/anypercent") => {
+            let game_slug = "celeste";
+            let category_slug = "anypercent";
 
-        //     let view = LeaderboardPage {
-        //         game,
-        //         category,
-        //         level: None,
-        //         ranks,
-        //     };
+            let user = database
+                .clone()
+                .user_by_slugify("TGH")
+                .expect("TGH in database");
 
-        //     response
-        //         .headers_mut()
-        //         .insert("Content-Type", HeaderValue::from_static("text/html"));
+            let celeste = database
+                .clone()
+                .game_by_slugify("celeste")
+                .expect("Celeste in database");
+            let any_percent = celeste
+                .category_by_slugify("Any%")
+                .expect("Any% in Celeste");
+            let runs = any_percent.full_runs();
 
-        //     let render = view.render().into_string();
-        //     *response.body_mut() = Body::from(render);
-        // }
+            let clear = celeste
+                .category_by_slugify("Clear")
+                .expect("Any% in Celeste");
+            let forsaken_city = celeste
+                .level_by_slugify("Forsaken City")
+                .expect("Forsaken City in Celeste");
+            let runs = clear.level_runs(&forsaken_city);
+
+            let leaderboards = rank_runs(database.clone(), &runs);
+
+            Debug(&leaderboards).html_to(&mut response);
+
+            // let games = game
+
+            // let game = database.games_by_slug()[game_slug];;
+            // let runs = &database.runs_by_game_id()[game.id()];
+            // let category = database
+            //     .categories()
+            //     .values()
+            //     .find(|c| c.game_id() == game.id() && c.name() == "Any%")
+            //     .unwrap();
+            // let runs = runs
+            //     .iter()
+            //     .filter(|r| r.category_id() == category.id())
+            //     .cloned()
+            //     .collect::<Vec<_>>();
+            // let ranks = database.rank_runs(&runs);
+
+            // let view = LeaderboardPage {
+            //     game,
+            //     category,
+            //     level: None,
+            //     ranks,
+            // };
+
+            // response
+            //     .headers_mut()
+            //     .insert("Content-Type", HeaderValue::from_static("text/html"));
+
+            // let render = view.render().into_string();
+            // *response.body_mut() = Body::from(render);
+        }
+
         _ => {
             *response.status_mut() = StatusCode::NOT_FOUND;
         }

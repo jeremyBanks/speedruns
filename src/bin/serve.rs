@@ -48,24 +48,6 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     let tables: &'static Tables = Box::leak(Box::new(unpack_bundled_tables()));
     let database: Arc<Database> = Database::new(tables).expect("database should be valid");
 
-    let user = database
-        .clone()
-        .user_by_name("TGH")
-        .expect("TGH in database");
-
-    let celeste = database
-        .clone()
-        .game_by_slug("celeste")
-        .expect("Celeste in database");
-    let any_percent = celeste.category_by_name("Any%").expect("Any% in Celeste");
-    let runs = any_percent.full_runs();
-
-    let clear = celeste.category_by_name("Clear").expect("Any% in Celeste");
-    let forsaken_city = celeste
-        .level_by_name("Forsaken City")
-        .expect("Forsaken City in Celeste");
-    let runs = clear.level_runs(&forsaken_city);
-
     let mut server = speedruns::server::Server::new(database);
     server.run();
 
