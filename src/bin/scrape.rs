@@ -1,7 +1,7 @@
 #![feature(never_type, try_blocks)]
 use flate2::{read::GzDecoder, write::GzEncoder};
+#[allow(unused)]
 use log::{debug, error, info, trace, warn};
-use serde::{Deserialize, Serialize};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use std::{
     collections::BTreeMap,
@@ -62,8 +62,7 @@ impl Spider {
 
         let loaded: Result<(), Box<dyn std::error::Error>> = try {
             for resource in RESOURCES.iter() {
-                trace!("Loading {}...", resource.id);
-
+                info!("Loading {}...", resource.id);
                 let file =
                     File::open(&format!("data/{}.jsonl.gz", resource.id))?;
                 let buffer = BufReader::new(&file);
@@ -76,45 +75,57 @@ impl Spider {
                         item.get("id").unwrap().as_str().unwrap().to_string();
                     spider.resource_by_id(resource).insert(id, item);
                 }
+                info!(
+                    "Loaded {} {}.",
+                    spider.resource_by_id(resource).len(),
+                    resource.id
+                );
             }
         };
+
         if let Err(error) = loaded {
-            info!("{:?}", error);
+            info!("Error: {:?}", error);
         }
 
         spider
     }
 
-    fn save_all(&mut self) -> Result<(), DynError> {
-        for resource in RESOURCES.iter() {
-            self.save(resource)
-        }
-
-        Ok(())
-    }
-
     fn save(&mut self, resource: &Resource) -> Result<(), DynError> {
-        trace!("Saving {}...", resource.id);
+        info!(
+            "Saving {} {}...",
+            self.resource_by_id(resource).len(),
+            resource.id
+        );
         {
             let mut file = NamedTempFile::new_in("data")?;
             {
                 let buffer = BufWriter::new(&mut file);
-                let mut compressor = GzEncoder::new(buffer, Default::default());
+                let mut compressor =
+                    GzEncoder::new(buffer, flate2::Compression::best());
                 for data in self.resource_by_id(resource).values() {
                     serde_json::to_writer(&mut compressor, &data)?;
                     compressor.write(b"\n")?;
                 }
                 compressor.finish()?;
             }
-            trace!("Compressed, flushing to disk...");
             file.persist(format!("data/{}.jsonl.gz", resource.id))?;
         }
-        trace!("Saved.");
+        info!("Saved.");
 
         Ok(())
     }
 
     pub fn run(&mut self) -> Result<!, DynError> {
+        let mut headers = reqwest::header::HeaderMap::new();
+        headers.insert(
+            reqwest::header::USER_AGENT,
+            reqwest::header::HeaderValue::from_static("srcd"),
+        );
+
+        let client = reqwest::Client::builder()
+            .default_headers(headers)
+            .build()?;
+
         for resource in RESOURCES.iter() {
             // the logic:
             // try to grab from offset of len
@@ -141,13 +152,17 @@ impl Spider {
 
                     let offset = if from_start { i * 200 } else { len };
 
-                    info!("Got {} {}, fetching more...", len, resource.id);
+                    let what = if from_start { "new" } else { "old" };
+                    info!(
+                        "We have {} {}, looking for more {} {}...",
+                        len, resource.id, what, resource.id
+                    );
 
                     let url = format!("https://www.speedrun.com/api/v1/{}?direction=desc&max=200&orderby={}&embed={}&offset={}", resource.id, resource. order, resource.embed, offset);
 
                     let response: JsonValue;
                     loop {
-                        match reqwest::get(&url) {
+                        match client.get(&url).send() {
                             Ok(mut ok) => {
                                 response = ok.json().unwrap();
                                 break;
@@ -176,7 +191,7 @@ impl Spider {
                     }
 
                     let more = self.resource_by_id(resource).len() - previous;
-                    trace!("Got {} more.", more);
+                    info!("Got {} more {}.", more, resource.id);
 
                     if from_start {
                         if self.resource_by_id(resource).len() == previous {
@@ -209,10 +224,12 @@ impl Spider {
 }
 
 fn main() -> Result<!, DynError> {
-    env_logger::init_from_env(
-        env_logger::Env::default()
-            .filter_or("RUST_LOG", "reqwest=debug,scrape=trace"),
-    );
+    env_logger::try_init_from_env(
+        env_logger::Env::new().default_filter_or(format!(
+            "reqwest=debug,{}=trace",
+            module_path!()
+        )),
+    )?;
 
     Spider::load_or_create().run()
 }

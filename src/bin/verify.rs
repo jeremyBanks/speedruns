@@ -9,7 +9,6 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use speedruncom_data_tools::api_types;
 use std::{fs::File, io::BufReader};
-use validator::Validate;
 
 pub type DynError = Box<dyn std::error::Error>;
 

@@ -164,6 +164,75 @@ pub struct GameType {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
+pub struct Level {
+    id: String,
+    links: Vec<Link>,
+    name: String,
+    rules: Option<String>,
+    weblink: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(
+    deny_unknown_fields,
+    rename_all = "kebab-case",
+    tag = "rel",
+    content = "uri"
+)]
+pub enum Link {
+    BaseGame(String),
+    Categories(String),
+    Category(String),
+    DerivedGames(String),
+    Examiner(String),
+    Game(String),
+    Games(String),
+    Leaderboard(String),
+    Level(String),
+    Levels(String),
+    PersonalBests(String),
+    Platform(String),
+    Records(String),
+    Region(String),
+    Romhacks(String),
+    Runs(String),
+    #[serde(rename = "self")]
+    Self_(String),
+    Series(String),
+    Variables(String),
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct Names {
+    international: Option<String>,
+    japanese: Option<String>,
+    twitch: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct Platform {
+    id: String,
+    links: Vec<Link>,
+    name: String,
+    released: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct Region {
+    id: String,
+    links: Vec<Link>,
+    name: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
 pub struct Run {
     category: String,
     comment: Option<String>,
@@ -183,12 +252,49 @@ pub struct Run {
     weblink: Option<String>,
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "rel")]
+pub enum RunPlayer {
+    Guest { name: String, uri: String },
+    User { id: String, uri: String },
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "rel")]
+pub enum RunSplits {
+    #[serde(rename = "splits.io")]
+    RunSplitsIo { uri: String },
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case", untagged)]
+pub enum RunSplitsOrBuggyValue {
+    RunSplits(RunSplits),
+    BuggyValue(String),
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "status")]
+pub enum RunStatus {
+    New,
+    Rejected {
+        examiner: Option<String>,
+        reason: Option<String>,
+    },
+    Verified {
+        examiner: Option<String>,
+        #[serde(rename = "verify-date")]
+        verify_date: Option<DateTime<Utc>>,
+    },
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
-pub struct RunVideos {
-    links: Option<Vec<Uri>>,
-    text: Option<String>,
+pub struct RunSystem {
+    emulated: bool,
+    platform: Option<String>,
+    region: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
@@ -205,40 +311,19 @@ pub struct RunTimes {
     realtime: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case", untagged)]
-pub enum RunSplitsOrBuggyValue {
-    RunSplits(RunSplits),
-    BuggyValue(String),
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct RunVideos {
+    links: Option<Vec<Uri>>,
+    text: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "rel")]
-pub enum RunSplits {
-    #[serde(rename = "splits.io")]
-    RunSplitsIo { uri: String },
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "rel")]
-pub enum RunPlayer {
-    Guest { name: String, uri: String },
-    User { id: String, uri: String },
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "status")]
-pub enum RunStatus {
-    New,
-    Rejected {
-        examiner: Option<String>,
-        reason: Option<String>,
-    },
-    Verified {
-        examiner: Option<String>,
-        #[serde(rename = "verify-date")]
-        verify_date: Option<DateTime<Utc>>,
-    },
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters, Deref)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct Uri {
+    uri: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
@@ -322,17 +407,6 @@ pub enum UserRole {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
-pub struct Level {
-    id: String,
-    links: Vec<Link>,
-    name: String,
-    rules: Option<String>,
-    weblink: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
 pub struct Variable {
     category: Option<String>,
     id: String,
@@ -380,78 +454,4 @@ pub struct VariableValue {
 #[get = "pub"]
 pub struct VariableValueFlags {
     miscellaneous: Option<bool>,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct Region {
-    id: String,
-    links: Vec<Link>,
-    name: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct Platform {
-    id: String,
-    links: Vec<Link>,
-    name: String,
-    released: u32,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct RunSystem {
-    emulated: bool,
-    platform: Option<String>,
-    region: Option<String>,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-#[serde(
-    deny_unknown_fields,
-    rename_all = "kebab-case",
-    tag = "rel",
-    content = "uri"
-)]
-pub enum Link {
-    BaseGame(String),
-    Categories(String),
-    Category(String),
-    DerivedGames(String),
-    Examiner(String),
-    Game(String),
-    Games(String),
-    Leaderboard(String),
-    Level(String),
-    Levels(String),
-    PersonalBests(String),
-    Platform(String),
-    Records(String),
-    Region(String),
-    Romhacks(String),
-    Runs(String),
-    #[serde(rename = "self")]
-    Self_(String),
-    Series(String),
-    Variables(String),
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct Names {
-    international: Option<String>,
-    japanese: Option<String>,
-    twitch: Option<String>,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters, Deref)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct Uri {
-    uri: String,
 }
