@@ -1,7 +1,3 @@
-TODO NOW
-
-
-
 ## About
 
 A few Rust tools for mirroring speedrun.com data.
