@@ -132,41 +132,24 @@ impl Database {
     }
 
     pub fn load_api_game(&mut self, api_game: &api::Game) {
-        match api_game.normalize() {
-            Ok((game, categories, levels)) => {
-                self.games.insert(*game.id(), game);
-                for category in categories {
-                    self.categories.insert(*category.id(), category);
-                }
-                for level in levels {
-                    self.levels.insert(*level.id(), level);
-                }
-            }
-            Err(error) => {
-                error!("{}", error.description());
-            }
+        let (game, categories, levels) = api_game.normalize().unwrap();
+        self.games.insert(*game.id(), game);
+        for category in categories {
+            self.categories.insert(*category.id(), category);
+        }
+        for level in levels {
+            self.levels.insert(*level.id(), level);
         }
     }
 
-    pub fn load_api_user(&mut self, user: &api::User) {
-        //     let id = Self::id_from_str(&user.id());
-        //     let name =
-        //         Self::read_name(user.names()).unwrap_or_else(|| format!("Unknown User
-        // {}", id));     self.users.insert(id, User { id, name });
+    pub fn load_api_user(&mut self, api_user: &api::User) {
+        let user = api_user.normalize().unwrap();
+        self.users.insert(*user.id(), user);
     }
 
-    pub fn load_api_run(&mut self, run: &api::Run) {
-        //     let id = Self::id_from_str(run.id());
-        //     let created = run.submitted().clone();
-        //     let game_id = Self::id_from_str(run.game());
-        //     self.runs.insert(
-        //         id,
-        //         Run {
-        //             id,
-        //             created,
-        //             game_id,
-        //         },
-        //     );
+    pub fn load_api_run(&mut self, api_run: &api::Run) {
+        let run = api_run.normalize().unwrap();
+        self.runs.insert(*run.id(), run);
     }
 }
 
