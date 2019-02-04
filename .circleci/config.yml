@@ -13,11 +13,11 @@
         { "test": { "requires": ["build"] } },
         { "code formatted": { "requires": ["build"] } },
         { "dependencies updated": { "requires": ["build"] } },
-        { "warnings resolved": { "requires": ["test"] } },
+        { "warnings heeded": { "requires": ["test"] } },
         { "could publish": { "requires": [
           "build",
           "test",
-          "warnings resolved",
+          "warnings heeded",
           "code formatted",
           "dependencies updated",
         ] } },
@@ -69,7 +69,7 @@
       ]
     },
 
-    "warnings resolved": {
+    "warnings heeded": {
       "executor": "executor",
       "steps": [
         "checkout",

@@ -1,40 +1,13 @@
 #![feature(proc_macro_hygiene)]
-#![allow(
-    unused_imports,
-    missing_debug_implementations,
-    missing_docs,
-    clippy::useless_attribute
-)]
-use std::{
-    collections::{BTreeMap, HashMap},
-    convert::TryFrom,
-    error::Error,
-    fmt::Debug,
-    fs::File,
-    io::{prelude::*, BufReader, BufWriter, Read},
-    num::NonZeroU64 as Id64,
-    ops::Deref,
-    sync::Arc,
-};
+#![allow(clippy::useless_attribute)]
+use std::sync::Arc;
 
-use futures::future;
-use hyper::{
-    header::HeaderValue,
-    rt::{self, Future, Stream},
-    service::{service_fn, service_fn_ok},
-    Body, Method, Request, Response, Server, StatusCode,
-};
-use lazy_static::lazy_static;
+use hyper::{rt::Future, Body, Response};
 #[allow(unused)] use log::{debug, error, info, trace, warn};
-use maud::{html, Markup, Render};
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
-use validator::Validate;
+use serde::de::DeserializeOwned;
 use xz2::read::XzDecoder;
 
-use speedruns::{
-    data::database::{Database, Tables},
-    types::*,
-};
+use speedruns::data::database::{Database, Tables};
 
 pub type BoxFut = Box<Future<Item = Response<Body>, Error = hyper::Error> + Send>;
 

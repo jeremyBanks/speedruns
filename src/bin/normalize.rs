@@ -20,6 +20,7 @@ use speedruns::{
         database::{Database, IntegrityError, Tables},
         types::Id64,
     },
+    utils::slugify,
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -75,6 +76,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let mut invalid_level_ids = HashSet::<Id64>::new();
                 let mut invalid_category_ids = HashSet::<Id64>::new();
 
+                // TODO: in case of conflicts, pick older record!
+                // the goofs who picked conflicts can drop out.
+                let mut duplicate_game_slugs = HashSet::<String>::new();
+                let mut duplicate_user_slugs = HashSet::<String>::new();
+
                 for error in errors.errors {
                     match error {
                         IntegrityError::ForeignKeyMissing {
@@ -88,8 +94,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                 "game" => &mut invalid_game_ids,
                                 "level" => &mut invalid_level_ids,
                                 "category" => &mut invalid_category_ids,
-                                _ =>
-                                    unreachable!("invalid source_type in validation error"),
+                                _ => unreachable!("invalid source_type in integrity error"),
                             }
                             .insert(source_id);
                         }
@@ -98,6 +103,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         }
                         IntegrityError::IndexingError => {
                             error!("indexing failed");
+                        }
+                        IntegrityError::NonUniqueSlug {
+                            source_type,
+                            source_slug,
+                        } => {
+                            match source_type {
+                                "user" => &mut duplicate_user_slugs,
+                                "game" => &mut duplicate_game_slugs,
+                                _ => &mut other_duplicate_slugs,
+                            }
+                            .insert(source_slug.clone());
                         }
                         IntegrityError::CheckFailed { .. } => {
                             panic!("in-row validation error? shouldn't happen! normalization bug!");
@@ -131,11 +147,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     (invalid_level_ids.len() * 100) / levels.len()
                 );
 
-                error!("dropping invalid items and building again.");
+                error!("{:6} duplicated user slugs", duplicate_user_slugs.len(),);
+                error!("{:6} duplicated game slugs", duplicate_game_slugs.len(),);
 
                 runs.retain(|x| !invalid_run_ids.contains(x.id()));
-                users.retain(|x| !invalid_user_ids.contains(x.id()));
-                games.retain(|x| !invalid_game_ids.contains(x.id()));
+                users.retain(|x| {
+                    !invalid_user_ids.contains(x.id())
+                        && !duplicate_user_slugs.contains(&slugify(x.name()))
+                });
+                games.retain(|x| {
+                    !invalid_game_ids.contains(x.id())
+                        && !duplicate_game_slugs.contains(&slugify(x.slug()))
+                });
                 categories.retain(|x| !invalid_category_ids.contains(x.id()));
                 levels.retain(|x| !invalid_level_ids.contains(x.id()));
             }
