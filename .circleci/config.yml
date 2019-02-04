@@ -6,8 +6,9 @@
       "jobs": [
         "build",
         { "test": { "requires": ["build"] } },
-        { "lint": { "requires": ["build"] } },
+        { "formatting": { "requires": ["build"] } },
         { "warnings": { "requires": ["build"] } },
+        { "updates": { "requires": ["build"] } },
       ]
     }
   },
@@ -53,7 +54,7 @@
       ]
     },
 
-    "lint": {
+    "formatting": {
       "docker": [
         {"image": "circleci/rust:latest"}
       ],
@@ -84,6 +85,23 @@
           ]
         }},
         {"run": "RUSTFLAGS=\"-D warnings\" cargo build --lib"},
+      ]
+    },
+
+    "updates": {
+      "docker": [
+        {"image": "circleci/rust:latest"}
+      ],
+      "steps": [
+        "checkout",
+        {"restore_cache": {
+          "keys": [
+            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}",
+            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}",
+            "v1-cargo-cache-"
+          ]
+        }},
+        {"run": "cargo update --locked"},
       ]
     }
   }
