@@ -27,8 +27,8 @@ use validator_derive::Validate;
 use xz2::write::XzEncoder;
 
 use speedruncom_data_tools::{
-    api_types as api, normalize_api_types::Normalize, normalized_types::*, p64_from_base36,
-    validators::*,
+    api_types as api, database::Database, normalize_api_types::Normalize,
+    normalized_types::*, p64_from_base36, validators::*,
 };
 
 pub type DynError = Box<dyn std::error::Error>;
@@ -40,223 +40,99 @@ fn main() -> Result<(), DynError> {
     )))?;
 
     let mut database = Database::new();
-    database.load_api_data()?;
+
+    info!("Loading API data...");
+    load_api_type("data/api/games.jsonl.gz", &mut database, load_api_game)?;
+    info!("Loaded {} API games.", database.games().len());
+    load_api_type("data/api/users.jsonl.gz", &mut database, load_api_user)?;
+    info!("Loaded {} API users.", database.users().len());
+    load_api_type("data/api/runs.jsonl.gz", &mut database, load_api_run)?;
+    info!("Loaded {} API runs.", database.runs().len());
+
     database.validate()?;
-    database.dump()?;
+
+    info!("Dumping {} games...", database.games().len());
+    dump_table("data/normalized/games", database.games())?;
+    info!("Dumping {} users...", database.users().len());
+    dump_table("data/normalized/users", database.users())?;
+    info!("Dumping {} runs...", database.runs().len());
+    dump_table("data/normalized/runs", database.runs())?;
+    info!("Dumping {} categories...", database.categories().len());
+    dump_table("data/normalized/categories", database.categories())?;
+    info!("Dumping {} levels...", database.levels().len());
+    dump_table("data/normalized/levels", database.levels())?;
 
     Ok(())
 }
 
-#[derive(Debug, Default, Serialize, Deserialize, Clone, Getters)]
-#[get = "pub"]
-pub struct Database {
-    runs:       BTreeMap<p64, Run>,
-    users:      BTreeMap<p64, User>,
-    games:      BTreeMap<p64, Game>,
-    categories: BTreeMap<p64, Category>,
-    levels:     BTreeMap<p64, Level>,
+fn load_api_type<T: DeserializeOwned>(
+    path: &str,
+    database: &mut Database,
+    loader: impl Fn(&mut Database, &T),
+) -> Result<(), DynError> {
+    let file = File::open(path)?;
+    let buffer = BufReader::new(&file);
+    let decompressor = GzDecoder::new(buffer);
+    let deserializer = JsonDeserializer::from_reader(decompressor);
+    let json_results = deserializer.into_iter::<JsonValue>();
+    let items = json_results
+        .map(Result::unwrap)
+        .map(T::deserialize)
+        .map(Result::unwrap);
+
+    for item in items {
+        loader(database, &item);
+    }
+    Ok(())
 }
 
-impl Database {
-    pub fn new() -> Self {
-        Self::default()
+fn load_api_game(database: &mut Database, api_game: &api::Game) {
+    let (game, categories, levels) = api_game.normalize().unwrap();
+    database.insert_game(game);
+    for category in categories {
+        database.insert_category(category);
     }
-
-    pub fn load_api_data(&mut self) -> Result<(), DynError> {
-        fn load_api_type<T: DeserializeOwned>(
-            path: &str,
-            database: &mut Database,
-            loader: impl Fn(&mut Database, &T),
-        ) -> Result<(), DynError> {
-            let file = File::open(path)?;
-            let buffer = BufReader::new(&file);
-            let decompressor = GzDecoder::new(buffer);
-            let deserializer = JsonDeserializer::from_reader(decompressor);
-            let json_results = deserializer.into_iter::<JsonValue>();
-            let items = json_results
-                .map(Result::unwrap)
-                .map(T::deserialize)
-                .map(Result::unwrap);
-
-            for item in items {
-                loader(database, &item);
-            }
-            Ok(())
-        }
-
-        info!("Loading API data...");
-        load_api_type("data/api/games.jsonl.gz", self, Database::load_api_game)?;
-        info!("Loaded {} API games.", self.games().len());
-        load_api_type("data/api/users.jsonl.gz", self, Database::load_api_user)?;
-        info!("Loaded {} API users.", self.users().len());
-        load_api_type("data/api/runs.jsonl.gz", self, Database::load_api_run)?;
-        info!("Loaded {} API runs.", self.runs().len());
-
-        info!("Done");
-        Ok(())
-    }
-
-    pub fn dump(&mut self) -> Result<(), DynError> {
-        fn dump_table<T: Serialize + Ord>(
-            path: &str,
-            table: &BTreeMap<p64, T>,
-        ) -> Result<(), DynError> {
-            let mut file = NamedTempFile::new_in("data")?;
-            {
-                let mut buffer = BufWriter::new(&mut file);
-                for data in table.values().sorted() {
-                    serde_json::to_writer(&mut buffer, &data)?;
-                    buffer.write(b"\n")?;
-                }
-            }
-            file.persist(format!("{}.jsonl", path))?;
-
-            let mut file = NamedTempFile::new_in("data")?;
-            {
-                let buffer = BufWriter::new(&mut file);
-                let mut compressor = XzEncoder::new(buffer, 9);
-                for data in table.values().sorted() {
-                    bincode::serialize_into(&mut compressor, &data)?;
-                }
-                compressor.finish()?;
-            }
-            file.persist(format!("{}.bin.xz", path))?;
-
-            Ok(())
-        }
-
-        info!("Dumping {} games...", self.games().len());
-        dump_table("data/normalized/games", self.games())?;
-        info!("Dumping {} users...", self.users().len());
-        dump_table("data/normalized/users", self.users())?;
-        info!("Dumping {} runs...", self.runs().len());
-        dump_table("data/normalized/runs", self.runs())?;
-        info!("Dumping {} categories...", self.categories().len());
-        dump_table("data/normalized/categories", self.categories())?;
-        info!("Dumping {} levels...", self.levels().len());
-        dump_table("data/normalized/levels", self.levels())?;
-
-        info!("Done");
-        Ok(())
-    }
-
-    pub fn load_api_game(&mut self, api_game: &api::Game) {
-        let (game, categories, levels) = api_game.normalize().unwrap();
-        self.games.insert(*game.id(), game);
-        for category in categories {
-            self.categories.insert(*category.id(), category);
-        }
-        for level in levels {
-            self.levels.insert(*level.id(), level);
-        }
-    }
-
-    pub fn load_api_user(&mut self, api_user: &api::User) {
-        let user = api_user.normalize().unwrap();
-        self.users.insert(*user.id(), user);
-    }
-
-    pub fn load_api_run(&mut self, api_run: &api::Run) {
-        let optional_run = api_run.normalize().unwrap();
-        if let Some(run) = optional_run {
-            self.runs.insert(*run.id(), run);
-        }
+    for level in levels {
+        database.insert_level(level);
     }
 }
 
-impl Validate for Database {
-    fn validate(&self) -> Result<(), ValidationErrors> {
-        fn validate_table<T: Validate + Debug>(
-            table: &BTreeMap<p64, T>,
-        ) -> Result<(), ValidationErrors> {
-            for item in table.values() {
-                let result = item.validate();
-                if let Err(ref error) = result {
-                    error!("{} in {:?}", &error, &item);
-                }
-                result?;
-            }
-            Ok(())
+fn load_api_user(database: &mut Database, api_user: &api::User) {
+    let user = api_user.normalize().unwrap();
+    database.insert_user(user);
+}
+
+fn load_api_run(database: &mut Database, api_run: &api::Run) {
+    let optional_run = api_run.normalize().unwrap();
+    if let Some(run) = optional_run {
+        database.insert_run(run);
+    }
+}
+
+fn dump_table<T: Serialize + Ord>(
+    path: &str,
+    table: &BTreeMap<p64, T>,
+) -> Result<(), DynError> {
+    let mut file = NamedTempFile::new_in("data")?;
+    {
+        let mut buffer = BufWriter::new(&mut file);
+        for data in table.values().sorted() {
+            serde_json::to_writer(&mut buffer, &data)?;
+            buffer.write(b"\n")?;
         }
-
-        // TODO:
-        // foreign keys
-        // unique constraints
-        // indexed by id
-
-        info!("Validating normalized games...");
-        validate_table(self.games())?;
-        info!("Validating normalized users...");
-        validate_table(self.users())?;
-        info!("Validating normalized runs...");
-        validate_table(self.runs())?;
-        info!("Validating normalized levels...");
-        validate_table(self.levels())?;
-        info!("Validating normalized categories...");
-        validate_table(self.categories())?;
-
-        Ok(())
     }
-}
+    file.persist(format!("{}.jsonl", path))?;
 
-#[derive(Debug, Clone, Getters)]
-#[get = "pub"]
-pub struct DbRun {
-    database: Rc<Database>,
-    run:      Run,
-}
-
-impl DbRun {
-    // /// Return all players of this run who are users.
-    // pub fn users(&self) -> Vec<User> {
-    //     let mut users = Vec::<User>::new();
-    //     for player in self.players() {
-    //         if let RunPlayer::UserId(user_id) = player {
-    //             users.push(
-    //                 self.database()
-    //                     .users()
-    //                     .get(user_id)
-    //                     .expect("user ID should be valid")
-    //                     .clone(),
-    //             );
-    //         }
-    //     }
-    //     users
-    // }
-
-    // pub fn category(&self) -> Category {
-    //     self.database
-    //         .categories()
-    //         .get(self.category_id())
-    //         .expect("foreign key should be valid")
-    //         .clone()
-    // }
-
-    // pub fn level(&self) -> Option<Level> {
-    //     self.level_id().and_then(|level_id| {
-    //         Some(
-    //             self.database
-    //                 .levels()
-    //                 .get(&level_id)
-    //                 .expect("foreign key should be valid")
-    //                 .clone(),
-    //         )
-    //     })
-    // }
-
-    pub fn game(&self) -> Game {
-        self.database
-            .games()
-            .get(self.game_id())
-            .expect("foreign key should be valid")
-            .clone()
+    let mut file = NamedTempFile::new_in("data")?;
+    {
+        let buffer = BufWriter::new(&mut file);
+        let mut compressor = XzEncoder::new(buffer, 9);
+        for data in table.values().sorted() {
+            bincode::serialize_into(&mut compressor, &data)?;
+        }
+        compressor.finish()?;
     }
-}
+    file.persist(format!("{}.bin.xz", path))?;
 
-impl Deref for DbRun {
-    type Target = Run;
-
-    fn deref(&self) -> &Run {
-        &self.run
-    }
+    Ok(())
 }

@@ -28,11 +28,30 @@ fn main() -> Result<(), DynError> {
     include_bytes!("../../data/normalized/runs.bin.xz");
     include_bytes!("../../data/normalized/users.bin.xz");
 
+    let database = load_included_data()?;
+
+    let game_name = "Celeste";
+    let category_name = "Any%";
+
+    let game = database
+        .games()
+        .values()
+        .filter(|game| game.name() == game_name)
+        .next()
+        .unwrap();
+
+    let category = database
+        .categories()
+        .values()
+        .filter(|category| category.game_id == game.id && category.name() == category_name)
+        .next()
+        .unwrap();
+
     Ok(())
 }
 
 fn load_included_data() -> Result<Database, DynError> {
-    let database = Database;
+    let database = Database::new();
 
     Ok(database)
 }

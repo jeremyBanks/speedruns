@@ -1,5 +1,6 @@
 #![feature(associated_type_defaults)]
 #![warn(missing_debug_implementations)]
+
 pub mod api_types;
 pub mod database;
 pub mod normalize_api_types;
@@ -37,5 +38,19 @@ pub mod utils {
         }
 
         p64::new(value).map(Ok).unwrap_or(Err(Error::Zero))
+    }
+
+    pub fn base36(value: impl Into<u64>) -> String {
+        let mut digits: Vec<u8> = vec![];
+
+        let mut value = value.into();
+        while value > 0 {
+            let digit = (value % 36) as usize;
+            value /= 36;
+
+            digits.push(b"012346789abcdefghijklmnopqrstuvwxyz"[digit]);
+        }
+
+        String::from_utf8(digits).unwrap()
     }
 }
