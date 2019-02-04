@@ -2,7 +2,7 @@
 #![warn(missing_debug_implementations, missing_docs)]
 #![allow(clippy, missing_debug_implementations, missing_docs)]
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, HashMap},
     convert::TryFrom,
     error::Error,
     fmt::Debug,
@@ -58,6 +58,38 @@ impl Database {
 
     pub fn insert_category(&mut self, category: Category) {
         self.categories.insert(*category.id(), category);
+    }
+
+    /// Generates an index mapping Games to sorted lists of Runs.
+    pub fn runs_by_game_id(&self) -> HashMap<p64, Vec<&Run>> {
+        info!("Indexing runs by game id...");
+        let mut index = HashMap::new();
+
+        for game_id in self.games().keys() {
+            index.insert(*game_id, vec![]);
+        }
+
+        for run in self.runs().values() {
+            index.get_mut(run.game_id()).unwrap().push(run);
+        }
+
+        for game_runs in index.values_mut() {
+            game_runs.sort();
+        }
+
+        index
+    }
+
+    /// Generates an index mapping Games to sorted lists of Runs.
+    pub fn games_by_slug(&self) -> HashMap<&str, &Game> {
+        info!("Indexing games by slug...");
+        let mut index: HashMap<&str, &Game> = HashMap::new();
+
+        for game in self.games().values() {
+            index.insert(game.slug(), game);
+        }
+
+        index
     }
 }
 
