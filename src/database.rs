@@ -91,6 +91,74 @@ impl Database {
 
         index
     }
+
+    /// Ranks a set of runs (all for the same game/category/level) using the
+    /// timing specified for the game rules, then by run date, then by
+    /// submission datetime.
+    pub fn rank_runs<'a>(&'a self, runs: &[&'a Run]) -> Vec<RankedRun> {
+        use TimingMethod::{IGT, RTA, RTA_NL};
+
+        let mut runs: Vec<&Run> = runs.iter().cloned().collect();
+
+        if runs.is_empty() {
+            return vec![]
+        }
+
+        let first = runs[0];
+        let game = self
+            .games()
+            .get(first.game_id())
+            .expect("game should exist");
+
+        runs.sort_by_key(|run| {
+            let time_ms = run.times_ms().get(game.primary_timing()).unwrap();
+
+            (time_ms, run.date(), run.created())
+        });
+
+        let mut ranks: Vec<RankedRun> = vec![];
+
+        for (i, run) in runs.iter().enumerate() {
+            assert_eq!(run.game_id(), first.game_id());
+            assert_eq!(run.level_id(), first.level_id());
+            assert_eq!(run.category_id(), first.category_id());
+
+            let mut time_ms = run.times_ms().get(game.primary_timing()).unwrap();
+            let mut rank = p64::new((i + 1) as u64).unwrap();
+            let mut tied_rank = rank;
+            let mut is_tied = false;
+
+            if let Some(ref mut previous) = ranks.last_mut() {
+                if time_ms == *previous.time_ms() {
+                    is_tied = true;
+                    previous.is_tied = true;
+                    tied_rank = previous.tied_rank;
+                }
+            }
+
+            let mut new = RankedRun {
+                rank,
+                time_ms,
+                is_tied,
+                tied_rank,
+                run,
+            };
+
+            ranks.push(new);
+        }
+
+        ranks
+    }
+}
+
+#[derive(Debug, Clone, Getters)]
+#[get = "pub"]
+pub struct RankedRun<'a> {
+    rank:      p64,
+    time_ms:   u64,
+    is_tied:   bool,
+    tied_rank: p64,
+    run:       &'a Run,
 }
 
 impl Validate for Database {

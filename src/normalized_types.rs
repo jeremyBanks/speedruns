@@ -102,13 +102,13 @@ pub struct Game {
     pub slug: String,
     #[validate(length(min = 1))]
     pub name: String,
-    pub primary_timing: GamePrimaryTiming,
+    pub primary_timing: TimingMethod,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, PartialOrd, Ord, Eq)]
 #[serde(deny_unknown_fields)]
 #[allow(non_camel_case_types)]
-pub enum GamePrimaryTiming {
+pub enum TimingMethod {
     IGT,
     RTA,
     RTA_NL,
@@ -171,6 +171,16 @@ pub struct RunTimesMs {
     pub igt:    Option<u64>,
     pub rta:    Option<u64>,
     pub rta_nl: Option<u64>,
+}
+
+impl RunTimesMs {
+    pub fn get(&self, timing: &TimingMethod) -> Option<u64> {
+        match timing {
+            TimingMethod::IGT => *self.igt(),
+            TimingMethod::RTA => *self.rta(),
+            TimingMethod::RTA_NL => *self.rta_nl(),
+        }
+    }
 }
 
 impl Validate for RunTimesMs {

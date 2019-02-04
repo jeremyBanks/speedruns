@@ -14,6 +14,7 @@ use std::{
 
 use futures::future;
 use hyper::{
+    header::HeaderValue,
     rt::{self, Future, Stream},
     service::{service_fn, service_fn_ok},
     Body, Method, Request, Response, Server, StatusCode,
@@ -24,19 +25,23 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use validator::Validate;
 use xz2::read::XzDecoder;
 
-use speedruncom_data_tools::{database::Database, normalized_types::*, BoxErr};
+use speedruncom_data_tools::{
+    database::Database, escape_html::Escape, normalized_types::*, BoxErr,
+};
 
 pub type BoxFut = Box<Future<Item = Response<Body>, Error = hyper::Error> + Send>;
 
 lazy_static! {
     pub static ref DATABASE: Database = unpack_bundled_database();
-    pub static ref GAMES_BY_SLUG: HashMap<&'static str, &'static Game> = DATABASE.games_by_slug();
-    pub static ref RUNS_BY_GAME_ID: HashMap<p64, Vec<&'static Run>> = DATABASE.runs_by_game_id();
+    pub static ref GAMES_BY_SLUG: HashMap<&'static str, &'static Game> =
+        DATABASE.games_by_slug();
+    pub static ref RUNS_BY_GAME_ID: HashMap<p64, Vec<&'static Run>> =
+        DATABASE.runs_by_game_id();
 }
 
 pub fn main() -> Result<(), BoxErr> {
     env_logger::try_init_from_env(env_logger::Env::new().default_filter_or(format!(
-        "{}=trace,speedruncom_data_tools=trace",
+        "{}=trace,speedruncom_data_tools=trace,hyper=debug",
         module_path!()
     )))?;
 
@@ -59,10 +64,36 @@ fn respond(req: Request<Body>) -> BoxFut {
         (&Method::GET, "/") => {
             let celeste = GAMES_BY_SLUG["Celeste"];
             let runs = &RUNS_BY_GAME_ID[celeste.id()];
+            let any_percent_id = DATABASE
+                .categories()
+                .values()
+                .filter(|c| c.game_id() == celeste.id() && c.name() == "Any%")
+                .next()
+                .unwrap()
+                .id();
+            let any_percent_runs = runs
+                .iter()
+                .filter(|r| r.category_id() == any_percent_id)
+                .cloned()
+                .collect::<Vec<_>>();
+            let any_percent_leaderboard = DATABASE.rank_runs(&any_percent_runs);
+
+            response
+                .headers_mut()
+                .insert("Content-Type", HeaderValue::from_static("text/html"));
             let mut body: Vec<u8> = Vec::new();
 
-            for run in runs {
-                writeln!(&mut body, "{:?}", &run);
+            writeln!(&mut body, "<!doctype html><title>speedruns</title><body>").unwrap();
+            writeln!(
+                &mut body,
+                "{}",
+                "<style>pre { white-space: pre-wrap; }</style>"
+            )
+            .unwrap();
+
+            for run in any_percent_leaderboard {
+                writeln!(&mut body, "<pre>{}</pre>", Escape(&format!("{:#?}", &run)))
+                    .unwrap();
             }
 
             *response.body_mut() = Body::from(body);
@@ -104,27 +135,32 @@ fn unpack_bundled_database() -> Database {
         &mut include_bytes!("../../data/normalized/categories.bin.xz").as_ref(),
         &mut database,
         Database::insert_category,
-    ).expect("category data corrupt");
+    )
+    .expect("category data corrupt");
     load_data(
         &mut include_bytes!("../../data/normalized/games.bin.xz").as_ref(),
         &mut database,
         Database::insert_game,
-    ).expect("game data corrupt");
+    )
+    .expect("game data corrupt");
     load_data(
         &mut include_bytes!("../../data/normalized/levels.bin.xz").as_ref(),
         &mut database,
         Database::insert_level,
-    ).expect("level data corrupt");
+    )
+    .expect("level data corrupt");
     load_data(
         &mut include_bytes!("../../data/normalized/runs.bin.xz").as_ref(),
         &mut database,
         Database::insert_run,
-    ).expect("run data corrupt");
+    )
+    .expect("run data corrupt");
     load_data(
         &mut include_bytes!("../../data/normalized/users.bin.xz").as_ref(),
         &mut database,
         Database::insert_user,
-    ).expect("user data corrupt");
+    )
+    .expect("user data corrupt");
 
     database.validate().expect("database state invalid");
 
