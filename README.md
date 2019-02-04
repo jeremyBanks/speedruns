@@ -22,14 +22,13 @@ Run `cargo build --release --run serve` to build and run the server binary, whic
 - `speedruns/data/`
   - `api/`  
     Records from speedrun.com API responses, as JSON, one per line, gzipped.
+
     - `games.jsonl.gz`  
       Embeds levels, categories, variables, gametypes, platforms, regions, genres, engines, developers, and publishers.
     - `users.jsonl.gz`
     - `runs.jsonl.gz`
   - `normalized/`  
-    Our smaller normalized version of the speedrun.com data.
-    
-    For convenience, these are saved as JSON, one per line (uncompressed).
+    Our smaller normalized version of the speedrun.com records, one per line, uncompressed.
 
     - `games.jsonl`
     - `categories.jsonl`
@@ -37,13 +36,13 @@ Run `cargo build --release --run serve` to build and run the server binary, whic
     - `users.jsonl`
     - `runs.jsonl`
 
-    We also save them in a LZMA-compressed unstable binary format. This is only useful for bundling into the `serve` binary.
+    We also save them in a LZMA-compressed unstable internal format only useful for bundling into the `serve` binary.
 
-    - `games.jsonl`
-    - `categories.jsonl`
-    - `levels.jsonl`
-    - `users.jsonl`
-    - `runs.jsonl`
+    - `games.bin.xz`
+    - `categories.bin.xz`
+    - `levels.bin.xz`
+    - `users.bin.xz`
+    - `runs.bin.xz`
 
 ## Code
 
