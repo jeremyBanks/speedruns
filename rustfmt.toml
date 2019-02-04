@@ -1,3 +1,4 @@
+unstable_features = true
 merge_imports = true
 use_field_init_shorthand = true
 format_doc_comments = true
@@ -6,7 +7,7 @@ comment_width = 92
 max_width = 92
 newline_style = "Unix"
 reorder_impl_items = true
-struct_field_align_threshold = 16
+struct_field_align_threshold = 64
 trailing_semicolon = false
 match_arm_blocks = false
 inline_attribute_width = 64

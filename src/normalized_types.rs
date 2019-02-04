@@ -48,6 +48,7 @@ pub struct Category {
     #[validate(length(min = 1))]
     pub name: String,
     pub per: CategoryType,
+    pub rules: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, PartialOrd, Ord, Eq)]
@@ -101,6 +102,16 @@ pub struct Game {
     pub slug: String,
     #[validate(length(min = 1))]
     pub name: String,
+    pub primary_timing: GamePrimaryTiming,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, PartialOrd, Ord, Eq)]
+#[serde(deny_unknown_fields)]
+#[allow(non_camel_case_types)]
+pub enum GamePrimaryTiming {
+    IGT,
+    RTA,
+    RTA_NL,
 }
 
 #[derive(
@@ -141,12 +152,36 @@ pub struct Level {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Run {
-    pub game_id:     p64,
+    pub game_id: p64,
     pub category_id: p64,
-    pub level_id:    Option<p64>,
-    pub id:          p64,
-    pub created:     Option<DateTime<Utc>>,
-    pub date:        Option<NaiveDate>,
+    pub level_id: Option<p64>,
+    pub id: p64,
+    pub created: Option<DateTime<Utc>>,
+    pub date: Option<NaiveDate>,
+    #[validate]
+    pub times_ms: RunTimesMs,
+}
+
+#[derive(
+    Debug, Serialize, Deserialize, PartialEq, Hash, Clone, PartialOrd, Ord, Eq, Getters,
+)]
+#[serde(deny_unknown_fields)]
+#[get = "pub"]
+pub struct RunTimesMs {
+    pub igt:    Option<u64>,
+    pub rta:    Option<u64>,
+    pub rta_nl: Option<u64>,
+}
+
+impl Validate for RunTimesMs {
+    fn validate(&self) -> Result<(), ValidationErrors> {
+        if self.igt == None && self.rta == None && self.rta_nl == None {
+            let mut errors = ValidationErrors::new();
+            errors.add("", ValidationError::new("all times were None"));
+            return Err(errors)
+        }
+        Ok(())
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, PartialOrd, Ord, Eq)]

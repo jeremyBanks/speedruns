@@ -1,5 +1,10 @@
+use std::{iter::FromIterator, str::FromStr};
+
 use derive_more::From;
 use err_derive::Error;
+use lazy_static::lazy_static;
+#[allow(unused)] use log::{debug, error, info, trace, warn};
+use regex::Regex;
 
 use crate::{api_types as api, normalized_types::*, p64_from_base36};
 
@@ -22,7 +27,10 @@ impl Normalize for api::User {
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         Ok(User {
             id:      p64_from_base36(self.id())?,
-            name:    self.names().normalize()?,
+            name:    self
+                .names()
+                .normalize()
+                .unwrap_or_else(|_| format!("Corrupt User {}", self.id())),
             created: self.signup().clone(),
         })
     }
@@ -56,13 +64,37 @@ impl Normalize for api::Game {
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         let game = Game {
-            id:      p64_from_base36(self.id())?,
-            name:    self.names().normalize()?,
-            slug:    self.abbreviation().clone(),
-            created: self.created().clone(),
+            id:             p64_from_base36(self.id())?,
+            name:           self.names().normalize()?,
+            slug:           self.abbreviation().clone(),
+            created:        self.created().clone(),
+            primary_timing: self.ruleset().default_time().normalize()?,
         };
-        let categories = vec![];
-        let levels = vec![];
+        let categories = self
+            .categories()
+            .iter()
+            .map(|api_category| -> Result<Category, Error> {
+                Ok(Category {
+                    game_id: p64_from_base36(self.id())?,
+                    id:      p64_from_base36(api_category.id())?,
+                    name:    api_category.name().to_string(),
+                    rules:   api_category.rules().clone().unwrap_or(String::new()),
+                    per:     api_category.type_().normalize()?,
+                })
+            })
+            .collect::<Result<_, _>>()?;
+        let levels = self
+            .levels()
+            .iter()
+            .map(|api_category| -> Result<Level, Error> {
+                Ok(Level {
+                    game_id: p64_from_base36(self.id())?,
+                    id:      p64_from_base36(api_category.id())?,
+                    name:    api_category.name().to_string(),
+                    rules:   api_category.rules().clone().unwrap_or(String::new()),
+                })
+            })
+            .collect::<Result<_, _>>()?;
         Ok((game, categories, levels))
     }
 }
@@ -81,6 +113,88 @@ impl Normalize for api::Run {
                 None => None,
                 Some(level_id) => Some(p64_from_base36(level_id)?),
             },
+            times_ms:    self.times().normalize()?,
+        })
+    }
+}
+
+impl Normalize for api::CategoryType {
+    type Normalized = CategoryType;
+
+    fn normalize(&self) -> Result<Self::Normalized, Error> {
+        Ok(match self {
+            api::CategoryType::PerLevel => CategoryType::PerLevel,
+            api::CategoryType::PerGame => CategoryType::PerGame,
+        })
+    }
+}
+
+impl Normalize for api::GameRulesetTiming {
+    type Normalized = GamePrimaryTiming;
+
+    fn normalize(&self) -> Result<Self::Normalized, Error> {
+        Ok(match self {
+            api::GameRulesetTiming::IGT => GamePrimaryTiming::IGT,
+            api::GameRulesetTiming::RTA => GamePrimaryTiming::RTA,
+            api::GameRulesetTiming::RTA_NL => GamePrimaryTiming::RTA_NL,
+        })
+    }
+}
+
+impl Normalize for api::RunTimes {
+    type Normalized = RunTimesMs;
+
+    fn normalize(&self) -> Result<Self::Normalized, Error> {
+        fn u64_or_zero<'t>(s: Option<regex::Match<'t>>) -> u64 {
+            match s {
+                Some(s) => {
+                    let s = s.as_str();
+                    if s.is_empty() {
+                        0
+                    } else {
+                        s.parse().unwrap()
+                    }
+                }
+                None => 0,
+            }
+        }
+
+        fn parse_duration_ms(s: &str) -> u64 {
+            lazy_static! {
+                static ref RE: Regex = Regex::new(
+                    r"(?x)
+                    P
+                    (?:(\d+)D)?
+                    T
+                    (?:(\d+)H)?
+                    (?:(\d+)M)?
+                    (?:
+                        (\d+)
+                        (?:\.(\d\d\d))?
+                        S
+                    )?
+                "
+                )
+                .unwrap();
+            }
+
+            let captures = RE.captures(s).expect("duration regex to cover all cases");
+            let days = u64_or_zero(captures.get(1));
+            let hours = u64_or_zero(captures.get(2));
+            let minutes = u64_or_zero(captures.get(3));
+            let seconds = u64_or_zero(captures.get(4));
+            let millis = u64_or_zero(captures.get(5));
+
+            ((((days * 24) + hours) * 60 + minutes) * 60 + seconds) * 1000 + millis
+        }
+
+        Ok(RunTimesMs {
+            igt:    self.ingame().as_ref().map(|s| parse_duration_ms(s)),
+            rta:    self.realtime().as_ref().map(|s| parse_duration_ms(s)),
+            rta_nl: self
+                .realtime_noloads()
+                .as_ref()
+                .map(|s| parse_duration_ms(s)),
         })
     }
 }
