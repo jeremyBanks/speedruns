@@ -22,23 +22,57 @@ use validator_derive::Validate;
 
 use crate::validators::*;
 
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
+#[serde(deny_unknown_fields)]
+#[get = "pub"]
+pub struct User {
+    pub id: p64,
+    #[validate(length(min = 1))]
+    pub name: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
+#[serde(deny_unknown_fields)]
+#[get = "pub"]
+pub struct Game {
+    pub id: p64,
+    #[validate(length(min = 1))]
+    pub name: String,
+    #[validate(length(min = 1))]
+    pub slug: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
+#[serde(deny_unknown_fields)]
+#[get = "pub"]
+pub struct Category {
+    pub id: p64,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
+#[serde(deny_unknown_fields)]
+#[get = "pub"]
+pub struct Level {
+    pub id: p64,
+}
+
 #[derive(Debug, Serialize, Deserialize, PartialEq, Hash, Clone, Getters, Validate)]
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Run {
-    id: p64,
-    created: Option<DateTime<Utc>>,
-    level_id: Option<p64>,
-    game_id: p64,
-    category_id: p64,
-    players: Vec<RunPlayer>,
-    date: Option<NaiveDate>,
-    time_ms: u64,
-    comment: String,
-    #[validate(custom = "urls")]
-    video_urls: Vec<String>,
-    #[validate(custom = "urls")]
-    split_urls: Vec<String>,
+    pub id: p64,
+    pub created: Option<DateTime<Utc>>,
+    pub game_id: p64,
+    /* level_id: Option<p64>,
+    pub primary_time_ms: u64,
+     * category_id: p64,
+     * players: Vec<RunPlayer>,
+     * date: Option<NaiveDate>,
+     * comment: String,
+     * #[validate(custom = "urls")]
+     * video_urls: Vec<String>,
+     * #[validate(custom = "urls")]
+     * split_urls: Vec<String>, */
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash)]
@@ -59,34 +93,4 @@ impl Validate for RunPlayer {
         }
         Ok(())
     }
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
-#[serde(deny_unknown_fields)]
-#[get = "pub"]
-pub struct User {
-    pub id: p64,
-    #[validate(length(min = 1))]
-    pub name: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
-#[serde(deny_unknown_fields)]
-#[get = "pub"]
-pub struct Category {
-    pub id: p64,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
-#[serde(deny_unknown_fields)]
-#[get = "pub"]
-pub struct Level {
-    pub id: p64,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, Getters, Validate)]
-#[serde(deny_unknown_fields)]
-#[get = "pub"]
-pub struct Game {
-    pub id: p64,
 }
