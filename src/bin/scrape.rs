@@ -45,10 +45,7 @@ struct Spider {
 }
 
 impl Spider {
-    fn resource_by_id(
-        &mut self,
-        resource: &Resource,
-    ) -> &mut BTreeMap<String, JsonValue> {
+    fn resource_by_id(&mut self, resource: &Resource) -> &mut BTreeMap<String, JsonValue> {
         match resource.id {
             "runs" => &mut self.runs_by_id,
             "games" => &mut self.games_by_id,
@@ -63,16 +60,14 @@ impl Spider {
         let loaded: Result<(), Box<dyn std::error::Error>> = try {
             for resource in RESOURCES.iter() {
                 info!("Loading {}...", resource.id);
-                let file =
-                    File::open(&format!("data/api/{}.jsonl.gz", resource.id))?;
+                let file = File::open(&format!("data/api/{}.jsonl.gz", resource.id))?;
                 let buffer = BufReader::new(&file);
                 let decompressor = GzDecoder::new(buffer);
                 let deserializer = JsonDeserializer::from_reader(decompressor);
                 let iterator = deserializer.into_iter::<JsonValue>();
                 for item in iterator {
                     let item = item?;
-                    let id =
-                        item.get("id").unwrap().as_str().unwrap().to_string();
+                    let id = item.get("id").unwrap().as_str().unwrap().to_string();
                     spider.resource_by_id(resource).insert(id, item);
                 }
                 info!(
@@ -100,8 +95,7 @@ impl Spider {
             let mut file = NamedTempFile::new_in("data")?;
             {
                 let buffer = BufWriter::new(&mut file);
-                let mut compressor =
-                    GzEncoder::new(buffer, flate2::Compression::best());
+                let mut compressor = GzEncoder::new(buffer, flate2::Compression::best());
                 for data in self.resource_by_id(resource).values() {
                     serde_json::to_writer(&mut compressor, &data)?;
                     compressor.write(b"\n")?;
@@ -178,9 +172,7 @@ impl Spider {
                             }
                             Err(error) => {
                                 error!("{:?}", error);
-                                std::thread::sleep(
-                                    std::time::Duration::from_secs(30),
-                                );
+                                std::thread::sleep(std::time::Duration::from_secs(30));
                                 continue;
                             }
                         }
@@ -190,12 +182,7 @@ impl Spider {
                     let items = response["data"].as_array().unwrap();
 
                     for item in items.iter().cloned() {
-                        let id = item
-                            .get("id")
-                            .unwrap()
-                            .as_str()
-                            .unwrap()
-                            .to_string();
+                        let id = item.get("id").unwrap().as_str().unwrap().to_string();
                         self.resource_by_id(resource).insert(id, item);
                     }
 
@@ -234,10 +221,8 @@ impl Spider {
 
 fn main() -> Result<!, DynError> {
     env_logger::try_init_from_env(
-        env_logger::Env::new().default_filter_or(format!(
-            "reqwest=debug,{}=trace",
-            module_path!()
-        )),
+        env_logger::Env::new()
+            .default_filter_or(format!("reqwest=debug,{}=trace", module_path!())),
     )?;
 
     Spider::load_or_create().run()

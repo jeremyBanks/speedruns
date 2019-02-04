@@ -15,8 +15,7 @@ pub type DynError = Box<dyn std::error::Error>;
 
 fn main() -> Result<(), DynError> {
     env_logger::try_init_from_env(
-        env_logger::Env::new()
-            .default_filter_or(format!("{}=trace", module_path!())),
+        env_logger::Env::new().default_filter_or(format!("{}=trace", module_path!())),
     )?;
 
     let file = File::open("data/api/games.jsonl.gz")?;
