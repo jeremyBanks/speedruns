@@ -13,7 +13,7 @@ pub use utils::*;
 pub type BoxErr = Box<dyn std::error::Error>;
 
 pub mod utils {
-    use std::num::NonZeroU64 as p64;
+    use std::num::NonZeroU64 as id64;
 
     use derive_more::From;
     use err_derive::Error;
@@ -26,7 +26,7 @@ pub mod utils {
         Zero,
     }
 
-    pub fn p64_from_base36(digits: &str) -> Result<p64, Error> {
+    pub fn id64_from_base36(digits: &str) -> Result<id64, Error> {
         let mut value = 0;
 
         for digit in digits.chars() {
@@ -39,7 +39,7 @@ pub mod utils {
             value = (value * 36) + u64::from(digit_value);
         }
 
-        p64::new(value).map(Ok).unwrap_or(Err(Error::Zero))
+        id64::new(value).map(Ok).unwrap_or(Err(Error::Zero))
     }
 
     pub fn base36(value: impl Into<u64>) -> String {

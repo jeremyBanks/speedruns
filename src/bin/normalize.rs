@@ -1,6 +1,11 @@
 //! Convert our API data into our simplified and normalized format.
 #![warn(missing_debug_implementations, missing_docs)]
-#![allow(unused_imports, missing_debug_implementations, missing_docs)]
+#![allow(
+    unused_imports,
+    missing_debug_implementations,
+    missing_docs,
+    clippy::useless_attribute
+)]
 use std::{
     collections::BTreeMap,
     convert::TryFrom,
@@ -8,7 +13,7 @@ use std::{
     fmt::Debug,
     fs::File,
     io::{prelude::*, BufReader, BufWriter},
-    num::NonZeroU64 as p64,
+    num::NonZeroU64 as id64,
     ops::Deref,
     rc::Rc,
 };
@@ -27,8 +32,8 @@ use validator_derive::Validate;
 use xz2::write::XzEncoder;
 
 use speedruns::{
-    api_types as api, database::Database, normalize_api_types::Normalize,
-    normalized_types::*, p64_from_base36, validators::*,
+    api_types as api, database::Database, id64_from_base36, normalize_api_types::Normalize,
+    normalized_types::*, validators::*,
 };
 
 pub type BoxErr = Box<dyn std::error::Error>;
@@ -111,7 +116,7 @@ fn load_api_run(database: &mut Database, api_run: &api::Run) {
 
 fn dump_table<T: Serialize + Ord>(
     path: &str,
-    table: &BTreeMap<p64, T>,
+    table: &BTreeMap<id64, T>,
 ) -> Result<(), BoxErr> {
     let mut file = NamedTempFile::new_in("data")?;
     {

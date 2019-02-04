@@ -1,6 +1,11 @@
 #![feature(proc_macro_hygiene)]
 #![warn(missing_debug_implementations, missing_docs)]
-#![allow(unused_imports, missing_debug_implementations, missing_docs)]
+#![allow(
+    unused_imports,
+    missing_debug_implementations,
+    missing_docs,
+    clippy::useless_attribute
+)]
 use std::{
     collections::{BTreeMap, HashMap},
     convert::TryFrom,
@@ -8,7 +13,7 @@ use std::{
     fmt::Debug,
     fs::File,
     io::{prelude::*, BufReader, BufWriter, Read},
-    num::NonZeroU64 as p64,
+    num::NonZeroU64 as id64,
     ops::Deref,
     rc::Rc,
 };
@@ -38,7 +43,7 @@ lazy_static! {
     pub static ref DATABASE: Database = unpack_bundled_database();
     pub static ref GAMES_BY_SLUG: HashMap<&'static str, &'static Game> =
         DATABASE.games_by_slug();
-    pub static ref RUNS_BY_GAME_ID: HashMap<p64, Vec<&'static Run>> =
+    pub static ref RUNS_BY_GAME_ID: HashMap<id64, Vec<&'static Run>> =
         DATABASE.runs_by_game_id();
 }
 
@@ -48,13 +53,32 @@ pub fn main() -> Result<(), BoxErr> {
         module_path!()
     )))?;
 
-    let server =
-        Server::bind(&([127, 0, 0, 1], 59330).into()).serve(|| service_fn(respond));
+    let addresses = vec![
+        ([0, 0, 0, 0], 80),
+        ([127, 0, 0, 1], 59330),
+        ([127, 0, 0, 1], 0),
+    ];
+
+    let mut binding = None;
+    for address in addresses {
+        let address = address.into();
+        match Server::try_bind(&address) {
+            Ok(binding_) => {
+                binding = Some(binding_);
+                break
+            }
+            Err(error) => {
+                warn!("Failed to bind {:?}: {:?}", &address, &error);
+            }
+        }
+    }
+    let server = binding
+        .expect("failed to bind any port")
+        .serve(|| service_fn(respond));
     let addr = server.local_addr();
 
     let url = format!("http://{}", addr);
     info!("Listening at {}", &url);
-    // webbrowser::open(&url)?;
 
     rt::run(server.map_err(|e| error!("server error: {}", e)));
 
@@ -71,8 +95,7 @@ fn respond(req: Request<Body>) -> BoxFut {
             let category = DATABASE
                 .categories()
                 .values()
-                .filter(|c| c.game_id() == game.id() && c.name() == "Any%")
-                .next()
+                .find(|c| c.game_id() == game.id() && c.name() == "Any%")
                 .unwrap();
             let runs = runs
                 .iter()
