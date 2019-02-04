@@ -2,29 +2,15 @@
 //!
 //! This doesn't include all of the metadata from speedrun.com, and excludes
 //! corrupt records and rejected or pending runs.
-#![warn(missing_debug_implementations, missing_docs)]
-#![allow(unused_imports, missing_debug_implementations, missing_docs)]
-use std::{
-    collections::BTreeMap,
-    convert::{From, TryFrom},
-    fmt::Debug,
-    fs::File,
-    io::BufReader,
-    ops::Deref,
-    sync::Arc,
-};
+#![allow(missing_docs)]
+use std::convert::From;
 
 use chrono::{DateTime, NaiveDate, Utc};
-use flate2::read::GzDecoder;
 use getset::Getters;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
-use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
-use url::Url;
+use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationError, ValidationErrors};
 use validator_derive::Validate;
-
-use super::validators::*;
 
 /// We currently represent all ids as NonZeroU64s for efficiency.
 /// You can use [crate::utils] to convert to and from speedrun.com's

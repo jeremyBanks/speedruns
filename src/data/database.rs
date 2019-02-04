@@ -1,6 +1,4 @@
 //! The world's worst in-memory database of normalized speedrun data.
-#![warn(missing_debug_implementations, missing_docs)]
-#![allow(missing_debug_implementations, missing_docs)]
 use std::{
     collections::{BTreeMap, HashMap},
     fmt::{Debug, Display},
@@ -48,6 +46,7 @@ impl Display for IntegrityErrors {
 }
 
 #[derive(Debug, Error, From)]
+#[allow(missing_docs)]
 pub enum IntegrityError {
     #[error(
         display = "{} with id {} does not exist, specified by {} of {} {} in {:#?}",
@@ -447,7 +446,7 @@ impl Linked<Run> {
     fn validate(&self) -> Result<(), IntegrityErrors> {
         let mut errors = Vec::new();
 
-        if let None = self.database.clone().game_by_id(*self.game_id()) {
+        if self.database.clone().game_by_id(*self.game_id()).is_none() {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "game",
                 target_id:         *self.game_id(),
@@ -465,7 +464,12 @@ impl Linked<Run> {
             }
         }
 
-        if let None = self.database.clone().category_by_id(*self.category_id()) {
+        if self
+            .database
+            .clone()
+            .category_by_id(*self.category_id())
+            .is_none()
+        {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "category",
                 target_id:         *self.category_id(),
@@ -477,7 +481,7 @@ impl Linked<Run> {
         }
 
         if let Some(level_id) = self.level_id() {
-            if let None = self.database.clone().level_by_id(*level_id) {
+            if self.database.clone().level_by_id(*level_id).is_none() {
                 errors.push(IntegrityError::ForeignKeyMissing {
                     target_type:       "level",
                     target_id:         *level_id,
@@ -491,7 +495,7 @@ impl Linked<Run> {
 
         for player in self.players() {
             if let RunPlayer::UserId(user_id) = player {
-                if let None = self.database.clone().user_by_id(*user_id) {
+                if self.database.clone().user_by_id(*user_id).is_none() {
                     errors.push(IntegrityError::ForeignKeyMissing {
                         target_type:       "user",
                         target_id:         *user_id,
@@ -584,7 +588,7 @@ impl Linked<Level> {
             });
         }
 
-        if let None = self.database.clone().game_by_id(*self.game_id()) {
+        if self.database.clone().game_by_id(*self.game_id()).is_none() {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "game",
                 target_id:         *self.game_id(),
@@ -637,7 +641,7 @@ impl Linked<Category> {
             });
         }
 
-        if let None = self.database.clone().game_by_id(*self.game_id()) {
+        if self.database.clone().game_by_id(*self.game_id()).is_none() {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "game",
                 target_id:         *self.game_id(),
