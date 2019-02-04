@@ -1,5 +1,3 @@
-use std::{iter::FromIterator, str::FromStr};
-
 use derive_more::From;
 use err_derive::Error;
 use lazy_static::lazy_static;
