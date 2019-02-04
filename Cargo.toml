@@ -43,3 +43,4 @@ validator = "0.8.0"
 validator_derive = "0.8.0"
 url = { version = "1.7.2", features = ["serde"] }
 url_serde = "0.2.0"
+err-derive = "0.1.5"

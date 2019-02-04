@@ -4,6 +4,7 @@
 use std::{
     collections::BTreeMap,
     convert::TryFrom,
+    error::Error,
     fmt::Debug,
     fs::File,
     io::{prelude::*, BufReader, BufWriter},
@@ -25,7 +26,8 @@ use validator::{Validate, ValidationError, ValidationErrors};
 use validator_derive::Validate;
 
 use speedruncom_data_tools::{
-    api_types, decode_base_36, normalized_types::*, validators::*,
+    api_types as api, normalize_api_types::Normalize, normalized_types::*, p64_from_base36,
+    validators::*,
 };
 
 pub type DynError = Box<dyn std::error::Error>;
@@ -129,55 +131,42 @@ impl Database {
         Ok(())
     }
 
-    fn id_from_str(id_str: &str) -> p64 {
-        p64::new(decode_base_36(id_str)).unwrap()
-    }
-
-    pub fn read_name(names: &api_types::Names) -> Option<String> {
-        if let Some(name) = names.international() {
-            if !name.is_empty() {
-                return Some(name.to_string());
+    pub fn load_api_game(&mut self, api_game: &api::Game) {
+        match api_game.normalize() {
+            Ok((game, categories, levels)) => {
+                self.games.insert(*game.id(), game);
+                for category in categories {
+                    self.categories.insert(*category.id(), category);
+                }
+                for level in levels {
+                    self.levels.insert(*level.id(), level);
+                }
+            }
+            Err(error) => {
+                error!("{}", error.description());
             }
         }
-        if let Some(name) = names.twitch() {
-            if !name.is_empty() {
-                return Some(name.to_string());
-            }
-        }
-        if let Some(name) = names.japanese() {
-            if !name.is_empty() {
-                return Some(name.to_string());
-            }
-        }
-        None
     }
 
-    pub fn load_api_game(&mut self, game: &api_types::Game) {
-        let id = Self::id_from_str(&game.id());
-        let slug = game.abbreviation().to_string();
-        let name = Self::read_name(game.names()).unwrap_or(slug.clone());
-        self.games.insert(id, Game { id, name, slug });
+    pub fn load_api_user(&mut self, user: &api::User) {
+        //     let id = Self::id_from_str(&user.id());
+        //     let name =
+        //         Self::read_name(user.names()).unwrap_or_else(|| format!("Unknown User
+        // {}", id));     self.users.insert(id, User { id, name });
     }
 
-    pub fn load_api_user(&mut self, user: &api_types::User) {
-        let id = Self::id_from_str(&user.id());
-        let name =
-            Self::read_name(user.names()).unwrap_or_else(|| format!("Unknown User {}", id));
-        self.users.insert(id, User { id, name });
-    }
-
-    pub fn load_api_run(&mut self, run: &api_types::Run) {
-        let id = Self::id_from_str(run.id());
-        let created = run.submitted().clone();
-        let game_id = Self::id_from_str(run.game());
-        self.runs.insert(
-            id,
-            Run {
-                id,
-                created,
-                game_id,
-            },
-        );
+    pub fn load_api_run(&mut self, run: &api::Run) {
+        //     let id = Self::id_from_str(run.id());
+        //     let created = run.submitted().clone();
+        //     let game_id = Self::id_from_str(run.game());
+        //     self.runs.insert(
+        //         id,
+        //         Run {
+        //             id,
+        //             created,
+        //             game_id,
+        //         },
+        //     );
     }
 }
 
