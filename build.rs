@@ -16,9 +16,7 @@ fn main() {
             .open(&out_path)
             .expect("unable to open/create normalized data file");
 
-        if let Ok(mut source_file) =
-            fs::OpenOptions::new().read(true).open(&path)
-        {
+        if let Ok(mut source_file) = fs::OpenOptions::new().read(true).open(&path) {
             io::copy(&mut source_file, &mut out_file)
                 .expect("failed to copy normalized data");
         }
