@@ -7,14 +7,18 @@ use std::{
     sync::Arc,
 };
 
-use derive_more::From;
+use chrono::{DateTime, Utc};
+use derive_more::{From, TryInto};
 use err_derive::Error;
 use getset::Getters;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationErrors};
 
-use crate::{data::types::*, utils::slugify};
+use crate::{
+    data::{models::*, types::*},
+    utils::slugify,
+};
 
 #[derive(Debug, Error, From)]
 pub struct IntegrityErrors {
@@ -47,37 +51,33 @@ impl Display for IntegrityErrors {
 
 #[derive(Debug, Error, From)]
 pub enum IntegrityError {
+    #[error(display = "integrity failure during indexing")]
+    IndexingError,
     #[error(
-        display = "{} with id {} does not exist, specified by {} of {} {} in {:#?}",
+        display = "{} with id {} does not exist, specified by {} in {:#?}",
         target_type,
         target_id,
         foreign_key_field,
-        source_type,
-        source_id,
         source
     )]
     ForeignKeyMissing {
-        source:            Box<dyn Debug>,
-        source_type:       &'static str,
-        source_id:         Id64,
-        foreign_key_field: &'static str,
-        target_id:         Id64,
         target_type:       &'static str,
+        target_id:         Id64,
+        foreign_key_field: &'static str,
+        source:            AnyModel,
     },
-    #[error(display = "row validation check failed: {:?} in {:?}", errors, item)]
+    #[error(display = "row validation check failed: {:?} in {:?}", errors, source)]
     CheckFailed {
-        item:   Box<dyn Debug>,
         errors: ValidationErrors,
+        source: AnyModel,
     },
-    #[error(display = "duplicate {} slug: {:?}", source_type, source_slug)]
+    #[error(display = "duplicate {:?} slug for {:?}", slug, sources)]
     NonUniqueSlug {
-        source_type: &'static str,
-        source_slug: String,
+        slug:    String,
+        sources: AnyModelVec,
     },
-    #[error(display = "indexing failed, expect a ForeignKeyMissing saying why")]
-    IndexingError,
     #[error(display = "run is missing primary timing: {:?}", _0)]
-    MissingPrimaryTiming(Linked<Run>),
+    MissingPrimaryTiming(Run),
 }
 
 /// All of the speedrun data in our normalized format, indexed by ID.
@@ -90,14 +90,6 @@ pub struct Tables {
     categories: BTreeMap<Id64, Category>,
     levels:     BTreeMap<Id64, Level>,
 }
-
-/// Marker trait for types that we store in [Tables].
-pub trait Model: Debug + Serialize + Validate {}
-impl Model for Run {}
-impl Model for User {}
-impl Model for Game {}
-impl Model for Category {}
-impl Model for Level {}
 
 impl Tables {
     pub fn new(
@@ -234,39 +226,49 @@ impl Database {
         }
 
         trace!("Validating {} users.", self.tables.users().len());
-        let mut user_slugs = HashSet::<String>::new();
+        let mut user_slugs = HashMap::<String, Vec<User>>::new();
         for user in self.clone().users() {
             if let Err(mut error) = user.validate() {
                 errors.append(&mut error.errors);
             } else {
-                let slug = slugify(user.name());
-                if !user_slugs.insert(slug.clone()) {
-                    errors.push(IntegrityError::NonUniqueSlug {
-                        source_type: "user",
-                        source_slug: slug.clone(),
-                    });
-                }
+                user_slugs
+                    .entry(slugify(user.name()))
+                    .or_insert_with(Vec::new)
+                    .push(User::clone(&*user));
+            }
+        }
+        for (slug, items) in user_slugs {
+            if items.len() >= 2 {
+                errors.push(IntegrityError::NonUniqueSlug {
+                    slug,
+                    sources: AnyModelVec::Users(items),
+                });
             }
         }
 
         trace!("Validating {} games.", self.tables.games().len());
-        let mut game_slugs = HashSet::<String>::new();
+        let mut game_slugs = HashMap::<String, Vec<Game>>::new();
         for game in self.clone().games() {
             if let Err(mut error) = game.validate() {
                 errors.append(&mut error.errors);
             } else {
-                let slug = slugify(game.slug());
-                if !game_slugs.insert(slug.clone()) {
-                    errors.push(IntegrityError::NonUniqueSlug {
-                        source_type: "game",
-                        source_slug: slug.clone(),
-                    });
-                }
+                game_slugs
+                    .entry(slugify(game.slug()))
+                    .or_insert_with(Vec::new)
+                    .push(Game::clone(&*game));
+            }
+        }
+        for (slug, items) in game_slugs {
+            if items.len() >= 2 {
+                errors.push(IntegrityError::NonUniqueSlug {
+                    slug,
+                    sources: AnyModelVec::Games(items),
+                });
             }
         }
 
         trace!("Validating {} categories.", self.tables.categories().len());
-        let mut category_slugs = HashSet::<String>::new();
+        let mut category_slugs = HashMap::<String, Vec<Category>>::new();
         for category in self.clone().categories() {
             if let Err(mut error) = category.validate() {
                 errors.append(&mut error.errors);
@@ -277,29 +279,41 @@ impl Database {
                     slugify(&format!("{:?}", category.per())),
                     slugify(category.name())
                 );
-                if !category_slugs.insert(slug.clone()) {
-                    errors.push(IntegrityError::NonUniqueSlug {
-                        source_type: "category",
-                        source_slug: slug.clone(),
-                    });
-                }
+                category_slugs
+                    .entry(slug)
+                    .or_insert_with(Vec::new)
+                    .push(Category::clone(&*category));
+            }
+        }
+        for (slug, items) in category_slugs {
+            if items.len() >= 2 {
+                errors.push(IntegrityError::NonUniqueSlug {
+                    slug,
+                    sources: AnyModelVec::Categories(items),
+                });
             }
         }
 
         trace!("Validating {} levels.", self.tables.levels().len());
-        let mut level_slugs = HashSet::<String>::new();
+        let mut level_slugs = HashMap::<String, Vec<Level>>::new();
         for level in self.clone().levels() {
             if let Err(mut error) = level.validate() {
                 errors.append(&mut error.errors);
             } else {
                 let slug =
                     format!("{}/{}", slugify(level.game().slug()), slugify(level.name()));
-                if !level_slugs.insert(slug.clone()) {
-                    errors.push(IntegrityError::NonUniqueSlug {
-                        source_type: "level",
-                        source_slug: slug,
-                    });
-                }
+                level_slugs
+                    .entry(slug)
+                    .or_insert_with(Vec::new)
+                    .push(Level::clone(&*level));
+            }
+        }
+        for (slug, items) in level_slugs {
+            if items.len() >= 2 {
+                errors.push(IntegrityError::NonUniqueSlug {
+                    slug,
+                    sources: AnyModelVec::Levels(items),
+                });
             }
         }
 
@@ -494,17 +508,15 @@ impl Linked<Run> {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "game",
                 target_id:         *self.game_id(),
-                source_type:       "run",
-                source_id:         *self.id(),
                 foreign_key_field: "game_id",
-                source:            Box::new(self.item),
+                source:            (*self.item).clone().into(),
             });
         } else {
             let game = self.game();
             let primary_timing = game.primary_timing();
             let times = self.times_ms();
             if times.get(primary_timing).is_none() {
-                errors.push(IntegrityError::MissingPrimaryTiming(self.clone()))
+                errors.push(IntegrityError::MissingPrimaryTiming((**self).clone()))
             }
         }
 
@@ -517,10 +529,8 @@ impl Linked<Run> {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "category",
                 target_id:         *self.category_id(),
-                source_type:       "run",
-                source_id:         *self.id(),
                 foreign_key_field: "category_id",
-                source:            Box::new(self.item),
+                source:            (*self.item).clone().into(),
             });
         }
 
@@ -529,10 +539,8 @@ impl Linked<Run> {
                 errors.push(IntegrityError::ForeignKeyMissing {
                     target_type:       "level",
                     target_id:         *level_id,
-                    source_type:       "run",
-                    source_id:         *self.id(),
                     foreign_key_field: "level_id",
-                    source:            Box::new(self.item),
+                    source:            (*self.item).clone().into(),
                 });
             }
         }
@@ -543,10 +551,8 @@ impl Linked<Run> {
                     errors.push(IntegrityError::ForeignKeyMissing {
                         target_type:       "user",
                         target_id:         *user_id,
-                        source_type:       "run",
-                        source_id:         *self.id(),
                         foreign_key_field: "players[…].0",
-                        source:            Box::new(self.item),
+                        source:            (*self.item).clone().into(),
                     });
                 }
             }
@@ -555,7 +561,7 @@ impl Linked<Run> {
         if let Err(validation_errors) = self.item.validate() {
             errors.push(IntegrityError::CheckFailed {
                 errors: validation_errors,
-                item:   Box::new(self.item),
+                source: (*self.item).clone().into(),
             });
         }
 
@@ -570,7 +576,7 @@ impl Linked<User> {
         if let Err(validation_errors) = self.item.validate() {
             errors.push(IntegrityError::CheckFailed {
                 errors: validation_errors,
-                item:   Box::new(self.item),
+                source: (*self.item).clone().into(),
             });
         }
 
@@ -605,7 +611,7 @@ impl Linked<Game> {
         if let Err(validation_errors) = self.item.validate() {
             errors.push(IntegrityError::CheckFailed {
                 errors: validation_errors,
-                item:   Box::new(self.item),
+                source: (*self.item).clone().into(),
             });
         }
 
@@ -628,7 +634,7 @@ impl Linked<Level> {
         if let Err(validation_errors) = self.item.validate() {
             errors.push(IntegrityError::CheckFailed {
                 errors: validation_errors,
-                item:   Box::new(self.item),
+                source: (*self.item).clone().into(),
             });
         }
 
@@ -636,10 +642,8 @@ impl Linked<Level> {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "game",
                 target_id:         *self.game_id(),
-                source_type:       "level",
-                source_id:         *self.id(),
                 foreign_key_field: "game_id",
-                source:            Box::new(self.item),
+                source:            (*self.item).clone().into(),
             });
         }
 
@@ -681,7 +685,7 @@ impl Linked<Category> {
         if let Err(validation_errors) = self.item.validate() {
             errors.push(IntegrityError::CheckFailed {
                 errors: validation_errors,
-                item:   Box::new(self.item),
+                source: (*self.item).clone().into(),
             });
         }
 
@@ -689,10 +693,8 @@ impl Linked<Category> {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "game",
                 target_id:         *self.game_id(),
-                source_type:       "category",
-                source_id:         *self.id(),
                 foreign_key_field: "game_id",
-                source:            Box::new(self.item),
+                source:            (*self.item).clone().into(),
             });
         }
 
