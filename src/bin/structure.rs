@@ -31,8 +31,6 @@ fn main() -> Result<!, DynError> {
     let deserializer = JsonDeserializer::from_reader(decompressor);
     let iterator = deserializer.into_iter::<JsonValue>();
     for data in iterator {
-        break;
-
         let data = data?;
         let game_result = api_types::Game::deserialize(&data);
         if let Err(err) = game_result {
