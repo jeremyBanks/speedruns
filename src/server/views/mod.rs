@@ -26,7 +26,7 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use validator::Validate;
 use xz2::read::XzDecoder;
 
-use crate::data::{base::Database, types::*};
+use crate::data::{database::Database, types::*};
 
 pub trait View: Serialize + Debug {
     fn render(&self) -> Markup;

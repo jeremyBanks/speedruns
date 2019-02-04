@@ -1,5 +1,5 @@
 //! Leaderboard logic.
-use crate::data::{base::Database, types::*};
+use crate::data::{database::Database, types::*};
 
 // #[derive(Debug, Clone, Getters, Serialize)]
 // #[get = "pub"]
