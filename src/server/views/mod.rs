@@ -72,6 +72,7 @@ impl<'db> View for Homepage {
     }
 }
 
+#[allow(unused)]
 #[derive(Debug, Serialize)]
 pub struct Debug<T: std::fmt::Debug + Serialize>(pub T);
 
