@@ -1,6 +1,6 @@
 //! Convert our API data into our simplified and normalized format.
 #![warn(missing_debug_implementations, missing_docs)]
-#![allow(clippy::useless_attribute)]
+#![allow(clippy::useless_attribute, clippy::cognitive_complexity)]
 use std::{
     collections::HashSet,
     fs::File,
@@ -93,6 +93,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                     unreachable!("invalid source_type in validation error"),
                             }
                             .insert(source_id);
+                        }
+                        IntegrityError::MissingPrimaryTiming(run) => {
+                            invalid_run_ids.insert(*run.id());
                         }
                         IntegrityError::IndexingError => {
                             error!("indexing failed");

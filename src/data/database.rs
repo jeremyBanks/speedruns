@@ -16,7 +16,7 @@ use getset::Getters;
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationErrors};
 
-use crate::{data::types::*, utils::base36};
+use crate::{data::types::*, utils::slugify};
 
 #[derive(Debug, Error, From)]
 pub struct IntegrityErrors {
@@ -73,6 +73,8 @@ pub enum IntegrityError {
     },
     #[error(display = "indexing failed, expect a ForeignKeyMissing saying why")]
     IndexingError,
+    #[error(display = "run is missing primary timing: {:?}", _0)]
+    MissingPrimaryTiming(Linked<Run>),
 }
 
 /// All of the speedrun data in our normalized format, indexed by ID.
@@ -131,10 +133,16 @@ const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validat
 pub struct Database {
     tables:                         &'static Tables,
     runs_by_game_id:                HashMap<Id64, Vec<&'static Run>>,
-    games_by_slug:                  HashMap<&'static str, &'static Game>,
-    users_by_name:                  HashMap<&'static str, &'static User>,
-    categories_by_game_id_and_name: HashMap<(Id64, &'static str), &'static Category>,
-    levels_by_game_id_and_name:     HashMap<(Id64, &'static str), &'static Level>,
+    games_by_slug:                  HashMap<String, &'static Game>,
+    users_by_slug:                  HashMap<String, &'static User>,
+    categories_by_game_id_and_slug: HashMap<(Id64, String), &'static Category>,
+    levels_by_game_id_and_slug:     HashMap<(Id64, String), &'static Level>,
+}
+
+impl std::fmt::Debug for Database {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "Database {{ .. }}")
+    }
 }
 
 impl Database {
@@ -148,19 +156,17 @@ impl Database {
     /// Creates a new Database indexing a collection of static tables.
     pub fn new(tables: &'static Tables) -> Result<Arc<Self>, IntegrityErrors> {
         let mut runs_by_game_id: HashMap<Id64, Vec<&'static Run>> = HashMap::new();
-        let mut games_by_slug: HashMap<&'static str, &'static Game> = HashMap::new();
-        let mut users_by_name: HashMap<&'static str, &'static User> = HashMap::new();
-        let mut categories_by_game_id_and_name: HashMap<
-            (Id64, &'static str),
-            &'static Category,
-        > = HashMap::new();
-        let mut levels_by_game_id_and_name: HashMap<(Id64, &'static str), &'static Level> =
+        let mut games_by_slug: HashMap<String, &'static Game> = HashMap::new();
+        let mut users_by_slug: HashMap<String, &'static User> = HashMap::new();
+        let mut categories_by_game_id_and_slug: HashMap<(Id64, String), &'static Category> =
+            HashMap::new();
+        let mut levels_by_game_id_and_slug: HashMap<(Id64, String), &'static Level> =
             HashMap::new();
 
         let index_errored = 'indexing: {
             for game in tables.games().values() {
                 runs_by_game_id.insert(*game.id(), Vec::new());
-                games_by_slug.insert(game.slug(), game);
+                games_by_slug.insert(slugify(game.slug()), game);
             }
 
             for run in tables.runs().values() {
@@ -172,16 +178,17 @@ impl Database {
             }
 
             for user in tables.users().values() {
-                users_by_name.insert(user.name(), user);
+                users_by_slug.insert(slugify(user.name()), user);
             }
 
             for category in tables.categories().values() {
-                categories_by_game_id_and_name
-                    .insert((*category.game_id(), category.name()), category);
+                categories_by_game_id_and_slug
+                    .insert((*category.game_id(), slugify(category.name())), category);
             }
 
             for level in tables.levels().values() {
-                levels_by_game_id_and_name.insert((*level.game_id(), level.name()), level);
+                levels_by_game_id_and_slug
+                    .insert((*level.game_id(), slugify(level.name())), level);
             }
 
             for game_runs in runs_by_game_id.values_mut() {
@@ -201,9 +208,9 @@ impl Database {
             tables,
             runs_by_game_id,
             games_by_slug,
-            users_by_name,
-            categories_by_game_id_and_name,
-            levels_by_game_id_and_name,
+            users_by_slug,
+            categories_by_game_id_and_slug,
+            levels_by_game_id_and_slug,
         });
 
         if let Err(mut errors_) = self_.clone().validate() {
@@ -291,9 +298,9 @@ impl Database {
     }
 
     /// Finds a Linked<User> by name.
-    pub fn user_by_name(self: Arc<Self>, name: &str) -> Option<Linked<User>> {
-        self.users_by_name
-            .get(name)
+    pub fn user_by_slugify(self: Arc<Self>, slug: &str) -> Option<Linked<User>> {
+        self.users_by_slug
+            .get(&slugify(slug))
             .map(|user| self.clone().link(*user))
     }
 
@@ -311,20 +318,20 @@ impl Database {
     }
 
     /// Finds a Linked<Game> by slug.
-    pub fn game_by_slug(self: Arc<Self>, slug: &str) -> Option<Linked<Game>> {
+    pub fn game_by_slugify(self: Arc<Self>, slug: &str) -> Option<Linked<Game>> {
         self.games_by_slug
-            .get(slug)
+            .get(&slugify(slug))
             .map(|game| self.clone().link(*game))
     }
 
     /// Finds a level with the given name and game ID.
-    pub fn level_by_game_id_and_name(
+    pub fn level_by_game_id_and_slug(
         self: Arc<Self>,
         game_id: Id64,
-        name: &str,
+        slug: &str,
     ) -> Option<Linked<Level>> {
-        self.levels_by_game_id_and_name
-            .get(&(game_id, name))
+        self.levels_by_game_id_and_slug
+            .get(&(game_id, slugify(slug)))
             .map(|level| self.clone().link(*level))
     }
 
@@ -350,13 +357,13 @@ impl Database {
     }
 
     /// Finds a category with the given name and game ID.
-    pub fn category_by_game_id_and_name(
+    pub fn category_by_game_id_and_slug(
         self: Arc<Self>,
         game_id: Id64,
         name: &str,
     ) -> Option<Linked<Category>> {
-        self.categories_by_game_id_and_name
-            .get(&(game_id, name))
+        self.categories_by_game_id_and_slug
+            .get(&(game_id, slugify(name)))
             .map(|category| self.clone().link(*category))
     }
 
@@ -371,8 +378,8 @@ impl Database {
 
 /// Wraps [Model] types to add references to the Database, adding new
 /// accessor methods.
-#[derive(Serialize)]
-pub struct Linked<ModelType: 'static + Model> {
+#[derive(Serialize, Debug, Clone)]
+pub struct Linked<ModelType: 'static + Model + Debug> {
     #[serde(skip)]
     database: Arc<Database>,
     #[serde(flatten)]
@@ -449,6 +456,13 @@ impl Linked<Run> {
                 foreign_key_field: "game_id",
                 source:            Box::new(self.item),
             });
+        } else {
+            let game = self.game();
+            let primary_timing = game.primary_timing();
+            let times = self.times_ms();
+            if times.get(primary_timing).is_none() {
+                errors.push(IntegrityError::MissingPrimaryTiming(self.clone()))
+            }
         }
 
         if let None = self.database.clone().category_by_id(*self.category_id()) {
@@ -525,16 +539,16 @@ impl Linked<Game> {
             .expect(DATABASE_INTEGRITY)
     }
 
-    pub fn category_by_name(&self, name: &str) -> Option<Linked<Category>> {
+    pub fn category_by_slugify(&self, slug: &str) -> Option<Linked<Category>> {
         self.database
             .clone()
-            .category_by_game_id_and_name(*self.id(), name)
+            .category_by_game_id_and_slug(*self.id(), slug)
     }
 
-    pub fn level_by_name(&self, name: &str) -> Option<Linked<Level>> {
+    pub fn level_by_slugify(&self, slug: &str) -> Option<Linked<Level>> {
         self.database
             .clone()
-            .level_by_game_id_and_name(*self.id(), name)
+            .level_by_game_id_and_slug(*self.id(), slug)
     }
 
     fn validate(&self) -> Result<(), IntegrityErrors> {

@@ -4,7 +4,6 @@ use std::{
     collections::{BTreeMap, HashMap},
     convert::TryFrom,
     error::Error,
-    fmt::Debug,
     fs::File,
     io::{prelude::*, BufReader, BufWriter, Read},
     num::NonZeroU64 as Id64,
@@ -28,21 +27,30 @@ use xz2::read::XzDecoder;
 
 use crate::data::{database::Database, types::*};
 
-pub trait View: Serialize + Debug {
+pub trait View: Serialize + std::fmt::Debug {
     fn render(&self) -> Markup;
+
+    fn html_to(&self, response: &mut hyper::Response<hyper::Body>) {
+        response
+            .headers_mut()
+            .insert("Content-Type", HeaderValue::from_static("text/html"));
+
+        let render = self.render().into_string();
+        *response.body_mut() = Body::from(render);
+    }
 }
 
 fn page(body: Markup) -> Markup {
-    unimplemented!()
-    // return html! {
-    //     (maud::DOCTYPE)
-    //     head {
-    //         title { "speedruns" }
-    //         link rel="icon" href="/srca.gif"
-    //         link rel="stylesheet" href="/style.css"
-    //     }
-    //     body { (body) }
-    // };
+    html! {
+        (maud::DOCTYPE)
+        head {
+            link charset="utf-8";
+            link rel="stylesheet" href="/style.css";
+            link rel="icon" href="/srca.gif";
+            title { "speedruns" }
+        }
+        body { (body) }
+    }
 }
 
 #[derive(Debug, Serialize)]
@@ -51,8 +59,21 @@ pub struct Homepage;
 impl<'db> View for Homepage {
     fn render(&self) -> Markup {
         page(html! {
-            "try"
-            a href="/celeste" { "celeste" }
+            "try "
+            a href="/celeste/anypercent" { "Celeste Any%" }
+        })
+    }
+}
+
+#[derive(Debug, Serialize)]
+pub struct Debug<T: std::fmt::Debug + Serialize>(pub T);
+
+impl<'db, T: std::fmt::Debug + Serialize> View for Debug<T> {
+    fn render(&self) -> Markup {
+        page(html! {
+            pre {
+                (format!("{:#?}", self.0))
+            }
         })
     }
 }

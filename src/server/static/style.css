@@ -1,0 +1,19 @@
+html {
+    background: #111;
+    padding: 8px;
+}
+
+body {
+    margin: 0 auto;
+    border: 3px double currentColor;
+    padding: 8px;
+    max-width: 600px;
+    min-height: 600px;
+    background: #FFF;
+    border-radius: 8px;
+    font-family: sans-serif;
+}
+
+pre {
+    white-space: pre-wrap;
+}

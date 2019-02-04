@@ -11,11 +11,11 @@ A few Rust tools for mirroring speedrun.com data.
 
 Optionally, download archived copies of `{runs,users,games}.jsonl.gz` from https://archive.org/download/speedrun.com-2019-04-27 and put them in `data/api`. If you skip this, you'll need to spend about a day download everything from the API yourself.
 
-Run `cargo run --release --bin --scrape` to download any new data. This doesn't include changes or deletions of existing items.
+Run `cargo run --release --bin scrape` to download any new data. This doesn't include changes or deletions of existing items.
 
 Run `cargo run --release --bin normalize` to normalize the data, including only essential fields and records (no rejected or pending runs), and discarding anything that fails validation or integrity checking.
 
-Run `cargo build --release --run serve` to build and run the server binary, which bundling in a compressed copy of the normalized data generated we generated with `normalize`. The server doesn't really do anything yet.
+Run `cargo build --release --run serve` to build and run the server binary, which bundling in a compressed copy of the normalized data generated we generated with `normalize`. The server runs at http://127.0.0.1:59330 and doesn't do anything.
 
 ## Data
 

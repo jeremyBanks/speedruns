@@ -71,7 +71,7 @@ impl Normalize for api::Game {
         let game = Game {
             id:             id64_from_base36(self.id())?,
             name:           self.names().normalize()?,
-            slug:           self.abbreviation().to_ascii_lowercase(),
+            slug:           self.abbreviation().to_string(),
             created:        *self.created(),
             primary_timing: self.ruleset().default_time().normalize()?,
         };
