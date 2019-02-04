@@ -1,5 +1,4 @@
 //! Convert our API data into our simplified and normalized format.
-#![warn(missing_debug_implementations, missing_docs)]
 #![allow(clippy::useless_attribute, clippy::cognitive_complexity)]
 use std::{
     collections::HashSet,

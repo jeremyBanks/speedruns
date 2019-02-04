@@ -1,5 +1,6 @@
 //! Types for all speedrun.com API resources we use.
 //! <https://github.com/speedruncomorg/api/tree/master/version1>
+#![allow(missing_docs)]
 use chrono::{DateTime, NaiveDate, Utc};
 use derive_more::Deref;
 use getset::Getters;

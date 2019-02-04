@@ -1,5 +1,4 @@
 #![feature(proc_macro_hygiene)]
-#![warn(missing_debug_implementations, missing_docs)]
 #![allow(
     unused_imports,
     missing_debug_implementations,

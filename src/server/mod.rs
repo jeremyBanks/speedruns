@@ -9,10 +9,7 @@ use hyper::{
 };
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 
-use crate::{
-    data::{leaderboard::rank_runs, types::*},
-    Database,
-};
+use crate::{data::leaderboard::rank_runs, Database};
 
 mod views;
 
