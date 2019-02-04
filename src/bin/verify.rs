@@ -1,11 +1,10 @@
-//! Verify that the data we have in jsonl.gz files matches the structure of our
-//! API types.
-#![feature(never_type)]
+//! Verify that the data we have in jsonl.gz files matches the expected
+//! structure of our API types.
 use env_logger;
 use flate2::read::GzDecoder;
 #[allow(unused)]
 use log::{debug, error, info, trace, warn};
-use serde::Deserialize;
+use serde::de::DeserializeOwned;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use std::{fs::File, io::BufReader};
 
@@ -18,62 +17,32 @@ fn main() -> Result<(), DynError> {
         env_logger::Env::new().default_filter_or(format!("{}=trace", module_path!())),
     )?;
 
-    let file = File::open("data/api/games.jsonl.gz")?;
-    let buffer = BufReader::new(&file);
-    let decompressor = GzDecoder::new(buffer);
-    let deserializer = JsonDeserializer::from_reader(decompressor);
-    let iterator = deserializer.into_iter::<JsonValue>();
-    for data in iterator {
-        let data = data?;
-        let game_result = api_types::Game::deserialize(&data);
-        if let Err(err) = game_result {
-            error!(
-                "{:#?} deserializing {}",
-                err,
-                serde_json::to_string(&data).unwrap()
-            );
-            return Err(err.into());
+    fn verify<T: DeserializeOwned>(path: &str, label: &str) -> Result<(), DynError> {
+        let file = File::open(path)?;
+        let buffer = BufReader::new(&file);
+        let decompressor = GzDecoder::new(buffer);
+        let deserializer = JsonDeserializer::from_reader(decompressor);
+        let iterator = deserializer.into_iter::<JsonValue>();
+        let mut count = 0;
+        for data in iterator {
+            count += 1;
+            let data = data?;
+            let game_result = T::deserialize(&data);
+            if let Err(ref err) = game_result {
+                panic!(
+                    "{:#?} deserializing {}",
+                    err,
+                    serde_json::to_string(&data).unwrap()
+                );
+            }
         }
+        info!("Deserialized {} {}.", count, label);
+        Ok(())
     }
-    info!("Deserialized all games.");
 
-    let file = File::open("data/api/users.jsonl.gz")?;
-    let buffer = BufReader::new(&file);
-    let decompressor = GzDecoder::new(buffer);
-    let deserializer = JsonDeserializer::from_reader(decompressor);
-    let iterator = deserializer.into_iter::<JsonValue>();
-    for data in iterator {
-        let data = data?;
-        let user_result = api_types::User::deserialize(&data);
-        if let Err(err) = user_result {
-            error!(
-                "{:#?} deserializing {}",
-                err,
-                serde_json::to_string(&data).unwrap()
-            );
-            return Err(err.into());
-        }
-    }
-    info!("Deserialized all users.");
-
-    let file = File::open("data/api/runs.jsonl.gz")?;
-    let buffer = BufReader::new(&file);
-    let decompressor = GzDecoder::new(buffer);
-    let deserializer = JsonDeserializer::from_reader(decompressor);
-    let iterator = deserializer.into_iter::<JsonValue>();
-    for data in iterator {
-        let data = data?;
-        let run_result = api_types::Run::deserialize(&data);
-        if let Err(err) = run_result {
-            error!(
-                "{:#?} deserializing {}",
-                err,
-                serde_json::to_string(&data).unwrap()
-            );
-            return Err(err.into());
-        }
-    }
-    info!("Deserialized all runs.");
+    verify::<api_types::Game>("data/api/games.jsonl.gz", "games")?;
+    verify::<api_types::User>("data/api/users.jsonl.gz", "users")?;
+    verify::<api_types::Run>("data/api/runs.jsonl.gz", "runs")?;
 
     Ok(())
 }

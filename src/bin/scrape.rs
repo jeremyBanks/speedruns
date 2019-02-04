@@ -1,4 +1,8 @@
-#![feature(never_type, try_blocks)]
+//! Fetches/updates our local mirror of speedrun.com API content. This
+//! just stores the JSON representation of each item as-is, it doesn't
+//! make any assumptions about their structure beyond the existence of
+//! a string "id" value.
+#![feature(try_blocks)]
 use flate2::{read::GzDecoder, write::GzEncoder};
 #[allow(unused)]
 use log::{debug, error, info, trace, warn};
@@ -109,7 +113,7 @@ impl Spider {
         Ok(())
     }
 
-    pub fn run(&mut self) -> Result<!, DynError> {
+    pub fn run(&mut self) -> Result<(), DynError> {
         let mut headers = reqwest::header::HeaderMap::new();
 
         let user_agent = format!(
@@ -172,7 +176,7 @@ impl Spider {
                             }
                             Err(error) => {
                                 error!("{:?}", error);
-                                std::thread::sleep(std::time::Duration::from_secs(30));
+                                std::thread::sleep(std::time::Duration::from_secs(32));
                                 continue;
                             }
                         }
@@ -208,7 +212,7 @@ impl Spider {
 
                     previous = self.resource_by_id(resource).len();
 
-                    std::thread::sleep(std::time::Duration::from_secs(1));
+                    std::thread::sleep(std::time::Duration::from_secs(4));
                 }
             }
 
@@ -219,7 +223,7 @@ impl Spider {
     }
 }
 
-fn main() -> Result<!, DynError> {
+fn main() -> Result<(), DynError> {
     env_logger::try_init_from_env(
         env_logger::Env::new()
             .default_filter_or(format!("reqwest=debug,{}=trace", module_path!())),
