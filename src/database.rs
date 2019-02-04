@@ -95,7 +95,7 @@ impl Database {
     /// Ranks a set of runs (all for the same game/category/level) using the
     /// timing specified for the game rules, then by run date, then by
     /// submission datetime.
-    pub fn rank_runs<'a>(&'a self, runs: &[&'a Run]) -> Vec<RankedRun> {
+    pub fn rank_runs<'db>(&'db self, runs: &[&'db Run]) -> Vec<RankedRun> {
         use TimingMethod::{IGT, RTA, RTA_NL};
 
         let mut runs: Vec<&Run> = runs.iter().cloned().collect();
@@ -151,14 +151,14 @@ impl Database {
     }
 }
 
-#[derive(Debug, Clone, Getters)]
+#[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
-pub struct RankedRun<'a> {
+pub struct RankedRun<'db> {
     rank:      p64,
     time_ms:   u64,
     is_tied:   bool,
     tied_rank: p64,
-    run:       &'a Run,
+    run:       &'db Run,
 }
 
 impl Validate for Database {
