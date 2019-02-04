@@ -125,8 +125,7 @@ impl Tables {
 /// Panic message used when the database state is invalid but that shouldn't be
 /// possible, because it must have alrady been validated, such as for foreign
 /// key lookups.
-const DATABASE_UNEXPECTEDLY_INVALID: &str =
-    "Database state invalid despite passing validation?!";
+const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validation?!";
 
 /// A collection of [Tables] with various generated indexes.
 pub struct Database {
@@ -216,6 +215,8 @@ impl Database {
 
     pub fn validate(self: Rc<Self>) -> Result<(), IntegrityErrors> {
         let mut errors = vec![];
+
+        warn!("TODO: validate name/slug uniqueness");
 
         trace!("Validating {} runs.", self.tables.runs().len());
         for run in self.clone().runs() {
@@ -398,7 +399,7 @@ impl Linked<Run> {
         self.database
             .clone()
             .game_by_id(*self.game_id())
-            .expect(DATABASE_UNEXPECTEDLY_INVALID)
+            .expect(DATABASE_INTEGRITY)
     }
 
     /// Returns the Linked<Category> for this Run.
@@ -406,7 +407,7 @@ impl Linked<Run> {
         self.database
             .clone()
             .category_by_id(*self.category_id())
-            .expect(DATABASE_UNEXPECTEDLY_INVALID)
+            .expect(DATABASE_INTEGRITY)
     }
 
     /// Returns Some(Linked<Level>) for this Run, or None if it's a full-game run.
@@ -415,7 +416,7 @@ impl Linked<Run> {
             self.database
                 .clone()
                 .level_by_id(level_id)
-                .expect(DATABASE_UNEXPECTEDLY_INVALID)
+                .expect(DATABASE_INTEGRITY)
         })
     }
 
@@ -429,7 +430,7 @@ impl Linked<Run> {
                     self.database
                         .clone()
                         .user_by_id(*user_id)
-                        .expect(DATABASE_UNEXPECTEDLY_INVALID),
+                        .expect(DATABASE_INTEGRITY),
                 ),
                 RunPlayer::GuestName(_) => None,
             })
@@ -521,7 +522,7 @@ impl Linked<Game> {
         self.database
             .clone()
             .runs_by_game_id(*self.id())
-            .expect(DATABASE_UNEXPECTEDLY_INVALID)
+            .expect(DATABASE_INTEGRITY)
     }
 
     pub fn category_by_name(&self, name: &str) -> Option<Linked<Category>> {
@@ -556,7 +557,7 @@ impl Linked<Level> {
         self.database
             .clone()
             .game_by_id(*self.game_id())
-            .expect(DATABASE_UNEXPECTEDLY_INVALID)
+            .expect(DATABASE_INTEGRITY)
     }
 
     fn validate(&self) -> Result<(), IntegrityErrors> {
@@ -590,7 +591,26 @@ impl Linked<Category> {
         self.database
             .clone()
             .game_by_id(*self.game_id())
-            .expect(DATABASE_UNEXPECTEDLY_INVALID)
+            .expect(DATABASE_INTEGRITY)
+    }
+
+    pub fn runs(&self) -> Vec<Linked<Run>> {
+        self.database
+            .clone()
+            .runs_by_game_id(*self.game_id())
+            .expect(DATABASE_INTEGRITY)
+    }
+
+    pub fn full_runs(&self) -> Vec<Linked<Run>> {
+        let mut runs = self.runs();
+        runs.retain(|run| run.level_id().is_none());
+        runs
+    }
+
+    pub fn level_runs(&self, level: &Level) -> Vec<Linked<Run>> {
+        let mut runs = self.runs();
+        runs.retain(|run| *run.level_id() == Some(*level.id()));
+        runs
     }
 
     fn validate(&self) -> Result<(), IntegrityErrors> {

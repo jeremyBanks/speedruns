@@ -32,6 +32,31 @@ pub trait View: Serialize + Debug {
     fn render(&self) -> Markup;
 }
 
+fn page(body: Markup) -> Markup {
+    unimplemented!()
+    // return html! {
+    //     (maud::DOCTYPE)
+    //     head {
+    //         title { "speedruns" }
+    //         link rel="icon" href="/srca.gif"
+    //         link rel="stylesheet" href="/style.css"
+    //     }
+    //     body { (body) }
+    // };
+}
+
+#[derive(Debug, Serialize)]
+pub struct Homepage;
+
+impl<'db> View for Homepage {
+    fn render(&self) -> Markup {
+        page(html! {
+            "try"
+            a href="/celeste" { "celeste" }
+        })
+    }
+}
+
 // #[derive(Debug, Serialize)]
 // pub struct LeaderboardPage {
 //     pub game:     &'static Game,
@@ -42,34 +67,17 @@ pub trait View: Serialize + Debug {
 
 // impl<'db> View for LeaderboardPage {
 //     fn render(&self) -> Markup {
-//         html! {
-//             (maud::DOCTYPE)
-//             head {
-//                 title {
-//                     "speedruns"
-//                 }
-
-//                 link rel="icon" href="/srca.gif"
-//                 link rel="stylesheet" href="/style.css"
-
-//                 style { r"
-//                     body { font-family: sans-serif; }
-//                     pre { white-space: pre-wrap; }
-//                 " }
+//         page(html!{
+//             h1 {
+//                 "unofficial speedrun.com data mirror"
 //             }
 
-//             body {
-//                 h1 {
-//                     "unofficial speedrun.com data mirror"
-//                 }
-
-//                 @for run in &self.ranks {
-//                     p {
-//                         "#" (run.rank()) ". "
-//                         (run.time_ms()) " ms"
-//                     }
+//             @for run in &self.ranks {
+//                 p {
+//                     "#" (run.rank()) ". "
+//                     (run.time_ms()) " ms"
 //                 }
 //             }
-//         }
+//         })
 //     }
 // }
