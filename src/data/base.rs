@@ -6,7 +6,7 @@ use std::{
     fmt::{Debug, Display},
     num::NonZeroU64 as Id64,
     ops::Deref,
-    rc::Rc,
+    sync::Arc,
 };
 
 use derive_more::From;
@@ -139,14 +139,14 @@ pub struct Database {
 
 impl Database {
     fn link<ModelType: Model>(
-        self: Rc<Self>,
+        self: Arc<Self>,
         item: &'static ModelType,
     ) -> Linked<ModelType> {
         Linked::new(self.clone(), item)
     }
 
     /// Creates a new Database indexing a collection of static tables.
-    pub fn new(tables: &'static Tables) -> Result<Rc<Self>, IntegrityErrors> {
+    pub fn new(tables: &'static Tables) -> Result<Arc<Self>, IntegrityErrors> {
         let mut runs_by_game_id: HashMap<Id64, Vec<&'static Run>> = HashMap::new();
         let mut games_by_slug: HashMap<&'static str, &'static Game> = HashMap::new();
         let mut users_by_name: HashMap<&'static str, &'static User> = HashMap::new();
@@ -197,7 +197,7 @@ impl Database {
             errors.push(IntegrityError::IndexingError)
         }
 
-        let self_ = Rc::new(Self {
+        let self_ = Arc::new(Self {
             tables,
             runs_by_game_id,
             games_by_slug,
@@ -213,7 +213,7 @@ impl Database {
         IntegrityErrors::try_from(errors).map(|_| self_)
     }
 
-    pub fn validate(self: Rc<Self>) -> Result<(), IntegrityErrors> {
+    pub fn validate(self: Arc<Self>) -> Result<(), IntegrityErrors> {
         let mut errors = vec![];
 
         warn!("TODO: validate name/slug uniqueness");
@@ -257,7 +257,7 @@ impl Database {
     }
 
     /// Iterator over all Linked<Run>s.
-    pub fn runs(self: Rc<Self>) -> impl Iterator<Item = Linked<Run>> {
+    pub fn runs(self: Arc<Self>) -> impl Iterator<Item = Linked<Run>> {
         self.tables
             .runs()
             .values()
@@ -265,20 +265,20 @@ impl Database {
     }
 
     /// Finds a Linked<Run> by id.
-    pub fn run_by_id(self: Rc<Self>, id: Id64) -> Option<Linked<Run>> {
+    pub fn run_by_id(self: Arc<Self>, id: Id64) -> Option<Linked<Run>> {
         self.tables.runs().get(&id).map(|run| self.link(run))
     }
 
     /// Returns a Vec of Linked<Run> for a given game ID, sorted by category,
     /// level, and then primary time (ascending).
-    pub fn runs_by_game_id(self: Rc<Self>, game_id: Id64) -> Option<Vec<Linked<Run>>> {
+    pub fn runs_by_game_id(self: Arc<Self>, game_id: Id64) -> Option<Vec<Linked<Run>>> {
         self.runs_by_game_id
             .get(&game_id)
             .map(|ref runs| runs.iter().map(|run| self.clone().link(*run)).collect())
     }
 
     /// Iterator over all Linked<User>s.
-    pub fn users(self: Rc<Self>) -> impl Iterator<Item = Linked<User>> {
+    pub fn users(self: Arc<Self>) -> impl Iterator<Item = Linked<User>> {
         self.tables
             .users()
             .values()
@@ -286,19 +286,19 @@ impl Database {
     }
 
     /// Finds a Linked<Run> by id.
-    pub fn user_by_id(self: Rc<Self>, id: Id64) -> Option<Linked<User>> {
+    pub fn user_by_id(self: Arc<Self>, id: Id64) -> Option<Linked<User>> {
         self.tables.users().get(&id).map(|user| self.link(user))
     }
 
     /// Finds a Linked<User> by name.
-    pub fn user_by_name(self: Rc<Self>, name: &str) -> Option<Linked<User>> {
+    pub fn user_by_name(self: Arc<Self>, name: &str) -> Option<Linked<User>> {
         self.users_by_name
             .get(name)
             .map(|user| self.clone().link(*user))
     }
 
     /// Iterator over all Linked<Game>s.
-    pub fn games(self: Rc<Self>) -> impl Iterator<Item = Linked<Game>> {
+    pub fn games(self: Arc<Self>) -> impl Iterator<Item = Linked<Game>> {
         self.tables
             .games()
             .values()
@@ -306,12 +306,12 @@ impl Database {
     }
 
     /// Finds a Game<Run> by id.
-    pub fn game_by_id(self: Rc<Self>, id: Id64) -> Option<Linked<Game>> {
+    pub fn game_by_id(self: Arc<Self>, id: Id64) -> Option<Linked<Game>> {
         self.tables.games().get(&id).map(|game| self.link(game))
     }
 
     /// Finds a Linked<Game> by slug.
-    pub fn game_by_slug(self: Rc<Self>, slug: &str) -> Option<Linked<Game>> {
+    pub fn game_by_slug(self: Arc<Self>, slug: &str) -> Option<Linked<Game>> {
         self.games_by_slug
             .get(slug)
             .map(|game| self.clone().link(*game))
@@ -319,7 +319,7 @@ impl Database {
 
     /// Finds a level with the given name and game ID.
     pub fn level_by_game_id_and_name(
-        self: Rc<Self>,
+        self: Arc<Self>,
         game_id: Id64,
         name: &str,
     ) -> Option<Linked<Level>> {
@@ -329,7 +329,7 @@ impl Database {
     }
 
     /// Iterator over all Linked<Level>s.
-    pub fn levels(self: Rc<Self>) -> impl Iterator<Item = Linked<Level>> {
+    pub fn levels(self: Arc<Self>) -> impl Iterator<Item = Linked<Level>> {
         self.tables
             .levels()
             .values()
@@ -337,12 +337,12 @@ impl Database {
     }
 
     /// Finds a Level<Run> by id.
-    pub fn level_by_id(self: Rc<Self>, id: Id64) -> Option<Linked<Level>> {
+    pub fn level_by_id(self: Arc<Self>, id: Id64) -> Option<Linked<Level>> {
         self.tables.levels().get(&id).map(|level| self.link(level))
     }
 
     /// An iterator over all Linked<Category>s.
-    pub fn category_by_id(self: Rc<Self>, id: Id64) -> Option<Linked<Category>> {
+    pub fn category_by_id(self: Arc<Self>, id: Id64) -> Option<Linked<Category>> {
         self.tables
             .categories()
             .get(&id)
@@ -351,7 +351,7 @@ impl Database {
 
     /// Finds a category with the given name and game ID.
     pub fn category_by_game_id_and_name(
-        self: Rc<Self>,
+        self: Arc<Self>,
         game_id: Id64,
         name: &str,
     ) -> Option<Linked<Category>> {
@@ -361,7 +361,7 @@ impl Database {
     }
 
     /// Iterator over all Linked<Category>s.
-    pub fn categories(self: Rc<Self>) -> impl Iterator<Item = Linked<Category>> {
+    pub fn categories(self: Arc<Self>) -> impl Iterator<Item = Linked<Category>> {
         self.tables
             .categories()
             .values()
@@ -374,13 +374,13 @@ impl Database {
 #[derive(Serialize)]
 pub struct Linked<ModelType: 'static + Model> {
     #[serde(skip)]
-    database: Rc<Database>,
+    database: Arc<Database>,
     #[serde(flatten)]
     item: &'static ModelType,
 }
 
 impl<ModelType: Model> Linked<ModelType> {
-    pub fn new(database: Rc<Database>, item: &'static ModelType) -> Self {
+    pub fn new(database: Arc<Database>, item: &'static ModelType) -> Self {
         Self { database, item }
     }
 }

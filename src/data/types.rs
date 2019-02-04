@@ -11,7 +11,7 @@ use std::{
     fs::File,
     io::BufReader,
     ops::Deref,
-    rc::Rc,
+    sync::Arc,
 };
 
 use chrono::{DateTime, NaiveDate, Utc};
