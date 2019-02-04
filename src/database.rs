@@ -81,15 +81,18 @@ impl Validate for Database {
         // unique constraints
         // indexed by id
 
-        info!("Validating normalized games...");
+        info!("Validating {} normalized games...", self.games().len());
         validate_table(self.games())?;
-        info!("Validating normalized users...");
+        info!("Validating {} normalized users...", self.users().len());
         validate_table(self.users())?;
-        info!("Validating normalized runs...");
+        info!("Validating {} normalized runs...", self.runs().len());
         validate_table(self.runs())?;
-        info!("Validating normalized levels...");
+        info!("Validating {} normalized levels...", self.levels().len());
         validate_table(self.levels())?;
-        info!("Validating normalized categories...");
+        info!(
+            "Validating {} normalized categories...",
+            self.categories().len()
+        );
         validate_table(self.categories())?;
 
         Ok(())
