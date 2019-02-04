@@ -2,6 +2,8 @@
 #![warn(missing_debug_implementations, missing_docs)]
 #![allow(clippy::useless_attribute)]
 use std::{
+    any::TypeId,
+    collections::HashSet,
     fs::File,
     io::{prelude::*, BufReader, BufWriter},
 };
@@ -16,7 +18,10 @@ use xz2::write::XzEncoder;
 
 use speedruns::{
     api::{self, normalize::Normalize},
-    data::base::{Database, Tables},
+    data::{
+        base::{Database, IntegrityError, IntegrityErrors, Tables},
+        types::Id64,
+    },
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -66,7 +71,69 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Ok(_) => break,
             Err(errors) => {
                 error!("Database validation failed: {}", errors);
-                panic!("oh no");
+                let mut invalid_run_ids = HashSet::<Id64>::new();
+                let mut invalid_game_ids = HashSet::<Id64>::new();
+                let mut invalid_user_ids = HashSet::<Id64>::new();
+                let mut invalid_level_ids = HashSet::<Id64>::new();
+                let mut invalid_category_ids = HashSet::<Id64>::new();
+
+                for error in errors.errors {
+                    match error {
+                        IntegrityError::ForeignKeyMissing {
+                            source_type,
+                            source_id,
+                            ..
+                        } => {
+                            match source_type {
+                                "run" => &mut invalid_run_ids,
+                                "user" => &mut invalid_user_ids,
+                                "game" => &mut invalid_game_ids,
+                                "level" => &mut invalid_level_ids,
+                                "category" => &mut invalid_category_ids,
+                                _ =>
+                                    unreachable!("invalid source_type in validation error"),
+                            }
+                            .insert(source_id);
+                        }
+                        IntegrityError::CheckFailed { .. } => {
+                            panic!("in-row validation error? shouldn't happen! normalization bug!");
+                        }
+                    }
+                }
+
+                error!(
+                    "{:6} ({:3}%) invalid runs",
+                    invalid_run_ids.len(),
+                    (invalid_run_ids.len() * 100) / runs.len()
+                );
+                error!(
+                    "{:6} ({:3}%) invalid users",
+                    invalid_user_ids.len(),
+                    (invalid_user_ids.len() * 100) / users.len()
+                );
+                error!(
+                    "{:6} ({:3}%) invalid games",
+                    invalid_game_ids.len(),
+                    (invalid_game_ids.len() * 100) / games.len()
+                );
+                error!(
+                    "{:6} ({:3}%) invalid categories",
+                    invalid_category_ids.len(),
+                    (invalid_category_ids.len() * 100) / categories.len()
+                );
+                error!(
+                    "{:6} ({:3}%) invalid levels",
+                    invalid_level_ids.len(),
+                    (invalid_level_ids.len() * 100) / levels.len()
+                );
+
+                error!("dropping invalid items and building again.");
+
+                runs.retain(|x| !invalid_run_ids.contains(x.id()));
+                users.retain(|x| !invalid_user_ids.contains(x.id()));
+                games.retain(|x| !invalid_game_ids.contains(x.id()));
+                categories.retain(|x| !invalid_category_ids.contains(x.id()));
+                levels.retain(|x| !invalid_level_ids.contains(x.id()));
             }
         }
     }

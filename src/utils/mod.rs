@@ -19,6 +19,10 @@ pub enum Base36DecodingError {
 pub fn id64_from_base36(digits: &str) -> Result<Id64, Base36DecodingError> {
     let mut value = 0;
 
+    if digits.len() != 8 {
+        panic!("expected all IDs to have length 8");
+    }
+
     if digits.len() > 10 {
         return Err(Base36DecodingError::TooLong)
     }
@@ -56,5 +60,5 @@ pub fn base36(value: impl Into<u64>) -> String {
     }
 
     digits.reverse();
-    String::from_utf8(digits).unwrap()
+    format!("{:08}", String::from_utf8(digits).unwrap())
 }

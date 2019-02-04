@@ -19,24 +19,26 @@ use validator::{Validate, ValidationErrors};
 use crate::{data::types::*, utils::base36};
 
 #[derive(Debug, Error, From)]
-pub struct IntegrityErrors(Vec<IntegrityError>);
+pub struct IntegrityErrors {
+    pub errors: Vec<IntegrityError>,
+}
 
 impl IntegrityErrors {
     fn try_from(errors: Vec<IntegrityError>) -> Result<(), IntegrityErrors> {
         if errors.is_empty() {
             Ok(())
         } else {
-            Err(IntegrityErrors(errors))
+            Err(IntegrityErrors { errors })
         }
     }
 }
 
 impl Display for IntegrityErrors {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        writeln!(f, "{} IntegrityErrors:", self.0.len())?;
-        for (i, error) in self.0.iter().enumerate() {
+        writeln!(f, "{} IntegrityErrors:", self.errors.len())?;
+        for (i, error) in self.errors.iter().enumerate() {
             writeln!(f, "{:4}. {}", i + 1, error)?;
-            if i >= 4 {
+            if i >= 3 {
                 writeln!(f, "     ...and more!")?;
                 break
             }
@@ -48,20 +50,20 @@ impl Display for IntegrityErrors {
 #[derive(Debug, Error, From)]
 pub enum IntegrityError {
     #[error(
-        display = "{} with id {} ({}) does not exist, specified by {} in {} {:#?}",
+        display = "{} with id {} does not exist, specified by {} of {} {} in {:#?}",
         target_type,
         target_id,
-        target_id_b36,
-        source_id_b32,
         foreign_key_field,
+        source_type,
+        source_id,
         source
     )]
     ForeignKeyMissing {
         source:            Box<dyn Debug>,
+        source_type:       &'static str,
+        source_id:         Id64,
         foreign_key_field: &'static str,
         target_id:         Id64,
-        target_id_b36:     String,
-        source_id_b32:     String,
         target_type:       &'static str,
     },
     #[error(display = "row validation check failed: {:?} in {:?}", errors, item)]
@@ -155,8 +157,8 @@ impl Database {
                         errors.push(IntegrityError::ForeignKeyMissing {
                             target_type:       "game",
                             target_id:         *run.game_id(),
-                            target_id_b36:     base36(*run.game_id()),
-                            source_id_b32:     base36(*run.id()),
+                            source_id:         *run.id(),
+                            source_type:       "run",
                             foreign_key_field: "game_id",
                             source:            Box::new(run),
                         });
@@ -205,7 +207,7 @@ impl Database {
         let mut errors = Vec::new();
 
         if let Err(mut errors_) = self_.clone().validate() {
-            errors.append(&mut errors_.0);
+            errors.append(&mut errors_.errors);
         }
 
         IntegrityErrors::try_from(errors).map(|_| self_)
@@ -217,35 +219,35 @@ impl Database {
         trace!("Validating {} runs.", self.tables.runs().len());
         for run in self.clone().runs() {
             if let Err(mut error) = run.validate() {
-                errors.append(&mut error.0);
+                errors.append(&mut error.errors);
             }
         }
 
         trace!("Validating {} users.", self.tables.users().len());
         for user in self.clone().users() {
             if let Err(mut error) = user.validate() {
-                errors.append(&mut error.0);
+                errors.append(&mut error.errors);
             }
         }
 
         trace!("Validating {} games.", self.tables.games().len());
         for game in self.clone().games() {
             if let Err(mut error) = game.validate() {
-                errors.append(&mut error.0);
+                errors.append(&mut error.errors);
             }
         }
 
         trace!("Validating {} categories.", self.tables.categories().len());
         for category in self.clone().categories() {
             if let Err(mut error) = category.validate() {
-                errors.append(&mut error.0);
+                errors.append(&mut error.errors);
             }
         }
 
         trace!("Validating {} levels.", self.tables.levels().len());
         for level in self.clone().levels() {
             if let Err(mut error) = level.validate() {
-                errors.append(&mut error.0);
+                errors.append(&mut error.errors);
             }
         }
 
@@ -418,8 +420,8 @@ impl Linked<Run> {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "game",
                 target_id:         *self.game_id(),
-                target_id_b36:     base36(*self.game_id()),
-                source_id_b32:     base36(*self.id()),
+                source_type:       "run",
+                source_id:         *self.id(),
                 foreign_key_field: "game_id",
                 source:            Box::new(self.item),
             });
@@ -429,8 +431,8 @@ impl Linked<Run> {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "category",
                 target_id:         *self.category_id(),
-                target_id_b36:     base36(*self.category_id()),
-                source_id_b32:     base36(*self.id()),
+                source_type:       "run",
+                source_id:         *self.id(),
                 foreign_key_field: "category_id",
                 source:            Box::new(self.item),
             });
@@ -441,8 +443,8 @@ impl Linked<Run> {
                 errors.push(IntegrityError::ForeignKeyMissing {
                     target_type:       "level",
                     target_id:         *level_id,
-                    target_id_b36:     base36(*level_id),
-                    source_id_b32:     base36(*self.id()),
+                    source_type:       "run",
+                    source_id:         *self.id(),
                     foreign_key_field: "level_id",
                     source:            Box::new(self.item),
                 });
@@ -455,8 +457,8 @@ impl Linked<Run> {
                     errors.push(IntegrityError::ForeignKeyMissing {
                         target_type:       "user",
                         target_id:         *user_id,
-                        target_id_b36:     base36(*user_id),
-                        source_id_b32:     base36(*self.id()),
+                        source_type:       "run",
+                        source_id:         *self.id(),
                         foreign_key_field: "players[…].0",
                         source:            Box::new(self.item),
                     });
@@ -536,8 +538,8 @@ impl Linked<Level> {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "game",
                 target_id:         *self.game_id(),
-                target_id_b36:     base36(*self.game_id()),
-                source_id_b32:     base36(*self.id()),
+                source_type:       "level",
+                source_id:         *self.id(),
                 foreign_key_field: "game_id",
                 source:            Box::new(self.item),
             });
@@ -570,8 +572,8 @@ impl Linked<Category> {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "game",
                 target_id:         *self.game_id(),
-                target_id_b36:     base36(*self.game_id()),
-                source_id_b32:     base36(*self.id()),
+                source_type:       "category",
+                source_id:         *self.id(),
                 foreign_key_field: "game_id",
                 source:            Box::new(self.item),
             });
