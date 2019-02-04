@@ -85,7 +85,7 @@ pub fn slugify(s: &str) -> String {
         last_was_replaced = this_was_replaced;
     }
 
-    if last_was_replaced {
+    if last_was_replaced && slug.len() > 1 {
         slug.truncate(slug.len() - 1);
     }
 

@@ -5,7 +5,11 @@ use lazy_static::lazy_static;
 use regex::Regex;
 use validator::Validate;
 
-use crate::{api, types::*, utils::id64_from_base36};
+use crate::{
+    api,
+    types::*,
+    utils::{id64_from_base36, slugify},
+};
 
 #[derive(Debug, Error, From)]
 pub enum Error {
@@ -26,13 +30,16 @@ impl Normalize for api::User {
     type Normalized = User;
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
+        let name = self
+            .names()
+            .normalize()
+            .unwrap_or_else(|_| format!("Corrupt User {}", self.id()));
+        let slug = slugify(&name);
         let user = User {
-            id:      id64_from_base36(self.id())?,
-            name:    self
-                .names()
-                .normalize()
-                .unwrap_or_else(|_| format!("Corrupt User {}", self.id())),
+            id: id64_from_base36(self.id())?,
             created: *self.signup(),
+            name,
+            slug,
         };
 
         user.validate()?;
@@ -71,7 +78,7 @@ impl Normalize for api::Game {
         let game = Game {
             id:             id64_from_base36(self.id())?,
             name:           self.names().normalize()?,
-            slug:           self.abbreviation().to_string(),
+            slug:           slugify(self.abbreviation()),
             created:        *self.created(),
             primary_timing: self.ruleset().default_time().normalize()?,
         };
@@ -84,6 +91,7 @@ impl Normalize for api::Game {
                 let category = Category {
                     game_id: id64_from_base36(self.id())?,
                     id:      id64_from_base36(api_category.id())?,
+                    slug:    slugify(api_category.name()),
                     name:    api_category.name().to_string(),
                     rules:   api_category.rules().clone().unwrap_or_else(String::new),
                     per:     api_category.type_().normalize()?,
@@ -98,12 +106,13 @@ impl Normalize for api::Game {
         let levels = self
             .levels()
             .iter()
-            .map(|api_category| -> Result<Level, Error> {
+            .map(|api_level| -> Result<Level, Error> {
                 let level = Level {
                     game_id: id64_from_base36(self.id())?,
-                    id:      id64_from_base36(api_category.id())?,
-                    name:    api_category.name().to_string(),
-                    rules:   api_category.rules().clone().unwrap_or_default(),
+                    id:      id64_from_base36(api_level.id())?,
+                    slug:    slugify(api_level.name()),
+                    name:    api_level.name().to_string(),
+                    rules:   api_level.rules().clone().unwrap_or_default(),
                 };
 
                 level.validate()?;
