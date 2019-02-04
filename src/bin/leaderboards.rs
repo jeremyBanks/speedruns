@@ -27,9 +27,7 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use validator::Validate;
 use xz2::read::XzDecoder;
 
-use speedruncom_data_tools::{
-    database::Database, escape_html::Escape, normalized_types::*, BoxErr,
-};
+use speedruns::{database::Database, normalized_types::*, BoxErr};
 
 mod views;
 use views::*;
@@ -46,7 +44,7 @@ lazy_static! {
 
 pub fn main() -> Result<(), BoxErr> {
     env_logger::try_init_from_env(env_logger::Env::new().default_filter_or(format!(
-        "{}=trace,speedruncom_data_tools=trace,hyper=debug",
+        "{}=trace,speedruns=trace,hyper=debug",
         module_path!()
     )))?;
 

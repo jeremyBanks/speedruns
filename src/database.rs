@@ -1,27 +1,18 @@
 //! The world's worst in-memory database of normalized speedrun data.
 #![warn(missing_debug_implementations, missing_docs)]
-#![allow(clippy, missing_debug_implementations, missing_docs)]
+#![allow(missing_debug_implementations, missing_docs)]
 use std::{
     collections::{BTreeMap, HashMap},
-    convert::TryFrom,
-    error::Error,
     fmt::Debug,
-    fs::File,
-    io::{prelude::*, BufReader, BufWriter},
     num::NonZeroU64 as p64,
     ops::Deref,
     rc::Rc,
 };
 
-use chrono::{DateTime, NaiveDate, Utc};
-use flate2::{read::GzDecoder, write::GzEncoder};
 use getset::Getters;
-use itertools::Itertools;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
-use url::Url;
-use validator::{Validate, ValidationError, ValidationErrors};
-use validator_derive::Validate;
+use validator::{Validate, ValidationErrors};
 
 use crate::normalized_types::*;
 
@@ -96,9 +87,7 @@ impl Database {
     /// timing specified for the game rules, then by run date, then by
     /// submission datetime.
     pub fn rank_runs<'db>(&'db self, runs: &[&'db Run]) -> Vec<RankedRun> {
-        use TimingMethod::{IGT, RTA, RTA_NL};
-
-        let mut runs: Vec<&Run> = runs.iter().cloned().collect();
+        let mut runs: Vec<&Run> = runs.to_vec();
 
         if runs.is_empty() {
             return vec![]
@@ -123,8 +112,8 @@ impl Database {
             assert_eq!(run.level_id(), first.level_id());
             assert_eq!(run.category_id(), first.category_id());
 
-            let mut time_ms = run.times_ms().get(game.primary_timing()).unwrap();
-            let mut rank = p64::new((i + 1) as u64).unwrap();
+            let time_ms = run.times_ms().get(game.primary_timing()).unwrap();
+            let rank = p64::new((i + 1) as u64).unwrap();
             let mut tied_rank = rank;
             let mut is_tied = false;
 
@@ -136,7 +125,7 @@ impl Database {
                 }
             }
 
-            let mut new = RankedRun {
+            let new = RankedRun {
                 rank,
                 time_ms,
                 is_tied,
@@ -222,4 +211,46 @@ impl Deref for DbRun {
     fn deref(&self) -> &Run {
         &self.run
     }
+}
+
+mod tmp {
+    #![allow(unused)]
+
+    #[derive(Debug, serde::Serialize)]
+    struct Run {
+        id:   u64,
+        time: u64,
+    }
+
+    trait Model: std::fmt::Debug + serde::Serialize {
+        fn get_by_id(database: &Database, id: u64) -> Option<&Self>;
+    }
+
+    impl Model for Run {
+        fn get_by_id(_database: &Database, _id: u64) -> Option<&Run> {
+            None
+        }
+    }
+
+    struct Database;
+
+    impl Database {
+        fn get_by_id<T: Model>(&self, id: u64) -> Option<&T> {
+            T::get_by_id(self, id)
+        }
+    }
+
+    struct Linked<'db, ModelType: Model> {
+        db:    &'db Database,
+        model: ModelType,
+    }
+
+    impl<T: Model> Linked<'_, T> {
+        fn get_by_id() -> () {}
+    }
+
+    impl Linked<'_, Run> {
+        fn best_time() -> () {}
+    }
+
 }

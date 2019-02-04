@@ -1,3 +1,4 @@
+#[allow(unused)]
 use validator::{Validate, ValidationError, ValidationErrors};
 
 pub fn urls(value: &[String]) -> Result<(), ValidationError> {

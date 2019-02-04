@@ -26,7 +26,7 @@ use validator::{Validate, ValidationError, ValidationErrors};
 use validator_derive::Validate;
 use xz2::write::XzEncoder;
 
-use speedruncom_data_tools::{
+use speedruns::{
     api_types as api, database::Database, normalize_api_types::Normalize,
     normalized_types::*, p64_from_base36, validators::*,
 };
@@ -34,10 +34,10 @@ use speedruncom_data_tools::{
 pub type BoxErr = Box<dyn std::error::Error>;
 
 pub fn main() -> Result<(), BoxErr> {
-    env_logger::try_init_from_env(env_logger::Env::new().default_filter_or(format!(
-        "{}=trace,speedruncom_data_tools=trace",
-        module_path!()
-    )))?;
+    env_logger::try_init_from_env(
+        env_logger::Env::new()
+            .default_filter_or(format!("{}=trace,speedruns=trace", module_path!())),
+    )?;
 
     let mut database = Database::new();
 

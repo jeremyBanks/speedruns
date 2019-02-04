@@ -1,9 +1,9 @@
 #![feature(associated_type_defaults)]
 #![warn(missing_debug_implementations)]
+#![allow(clippy::useless_attribute)]
 
 pub mod api_types;
 pub mod database;
-pub mod escape_html;
 pub mod normalize_api_types;
 pub mod normalized_types;
 pub mod validators;
