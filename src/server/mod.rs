@@ -34,7 +34,7 @@ impl Server {
         // Automatically selectiing different ports would be bad for production, but is
         // convenient for dev.
         let addresses = vec![
-            // ([0, 0, 0, 0], 80),
+            ([0, 0, 0, 0], 80),
             ([127, 0, 0, 1], 59330),
             ([127, 0, 0, 1], 59331),
             ([127, 0, 0, 1], 59332),
