@@ -15,7 +15,6 @@ use std::{
     fs::File,
     io::{prelude::*, BufReader, BufWriter},
 };
-use tempfile::NamedTempFile;
 
 use speedruncom_data_tools::api_types;
 
@@ -31,29 +30,59 @@ fn main() -> Result<!, DynError> {
     let decompressor = GzDecoder::new(buffer);
     let deserializer = JsonDeserializer::from_reader(decompressor);
     let iterator = deserializer.into_iter::<JsonValue>();
+    for data in iterator {
+        break;
 
-    // let file = File::create("data/games.bin.gz")?;
-    // let buffer = BufWriter::new(&file);
-    // let mut compressor = GzEncoder::new(buffer, Default::default());
-
-    for (i, data) in iterator.enumerate() {
         let data = data?;
-        match api_types::Game::deserialize(&data) {
-            Ok(game) => {
-                // bincode::serialize_into(&mut compressor, &game)?;
-            }
-            Err(err) => {
-                error!(
-                    "{:#?} deserializing {}",
-                    err,
-                    serde_json::to_string(&data).unwrap()
-                );
-                break;
-            }
+        let game_result = api_types::Game::deserialize(&data);
+        if let Err(err) = game_result {
+            error!(
+                "{:#?} deserializing {}",
+                err,
+                serde_json::to_string(&data).unwrap()
+            );
+            return Err(err.into());
         }
     }
+    info!("Deserialized all games.");
 
-    info!("Done!");
+    let file = File::open("data/users.jsonl.gz")?;
+    let buffer = BufReader::new(&file);
+    let decompressor = GzDecoder::new(buffer);
+    let deserializer = JsonDeserializer::from_reader(decompressor);
+    let iterator = deserializer.into_iter::<JsonValue>();
+    for data in iterator {
+        let data = data?;
+        let user_result = api_types::User::deserialize(&data);
+        if let Err(err) = user_result {
+            error!(
+                "{:#?} deserializing {}",
+                err,
+                serde_json::to_string(&data).unwrap()
+            );
+            return Err(err.into());
+        }
+    }
+    info!("Deserialized all users.");
+
+    let file = File::open("data/run.jsonl.gz")?;
+    let buffer = BufReader::new(&file);
+    let decompressor = GzDecoder::new(buffer);
+    let deserializer = JsonDeserializer::from_reader(decompressor);
+    let iterator = deserializer.into_iter::<JsonValue>();
+    for data in iterator {
+        let data = data?;
+        let run_result = api_types::Run::deserialize(&data);
+        if let Err(err) = run_result {
+            error!(
+                "{:#?} deserializing {}",
+                err,
+                serde_json::to_string(&data).unwrap()
+            );
+            return Err(err.into());
+        }
+    }
+    info!("Deserialized all runs.");
 
     std::process::exit(0)
 }
