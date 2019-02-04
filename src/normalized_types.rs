@@ -4,7 +4,7 @@
 //! corrupt records and rejected or pending runs.
 #![warn(missing_debug_implementations, missing_docs)]
 #![allow(unused_imports, missing_debug_implementations, missing_docs)]
-pub use std::num::NonZeroU64 as p64;
+pub use std::num::NonZeroU64 as id64;
 use std::{
     collections::BTreeMap,
     convert::{From, TryFrom},
@@ -43,8 +43,8 @@ use crate::validators::*;
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Category {
-    pub game_id: p64,
-    pub id: p64,
+    pub game_id: id64,
+    pub id: id64,
     #[validate(length(min = 1))]
     pub name: String,
     pub per: CategoryType,
@@ -74,7 +74,7 @@ pub enum CategoryType {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct User {
-    pub id: p64,
+    pub id: id64,
     pub created: Option<DateTime<Utc>>,
     #[validate(length(min = 1))]
     pub name: String,
@@ -96,7 +96,7 @@ pub struct User {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Game {
-    pub id: p64,
+    pub id: id64,
     pub created: Option<DateTime<Utc>>,
     #[validate(length(min = 1))]
     pub slug: String,
@@ -130,8 +130,8 @@ pub enum TimingMethod {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Level {
-    pub game_id: p64,
-    pub id:      p64,
+    pub game_id: id64,
+    pub id:      id64,
     pub name:    String,
     pub rules:   String,
 }
@@ -152,10 +152,10 @@ pub struct Level {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Run {
-    pub game_id: p64,
-    pub category_id: p64,
-    pub level_id: Option<p64>,
-    pub id: p64,
+    pub game_id: id64,
+    pub category_id: id64,
+    pub level_id: Option<id64>,
+    pub id: id64,
     pub created: Option<DateTime<Utc>>,
     pub date: Option<NaiveDate>,
     #[validate]
@@ -197,7 +197,7 @@ impl Validate for RunTimesMs {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, PartialOrd, Ord, Eq)]
 #[serde(deny_unknown_fields)]
 pub enum RunPlayer {
-    UserId(p64),
+    UserId(id64),
     GuestName(String),
 }
 

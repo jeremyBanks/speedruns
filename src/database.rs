@@ -4,7 +4,7 @@
 use std::{
     collections::{BTreeMap, HashMap},
     fmt::Debug,
-    num::NonZeroU64 as p64,
+    num::NonZeroU64 as id64,
     ops::Deref,
     rc::Rc,
 };
@@ -19,11 +19,11 @@ use crate::normalized_types::*;
 #[derive(Debug, Default, Serialize, Deserialize, Clone, Getters)]
 #[get = "pub"]
 pub struct Database {
-    runs:       BTreeMap<p64, Run>,
-    users:      BTreeMap<p64, User>,
-    games:      BTreeMap<p64, Game>,
-    categories: BTreeMap<p64, Category>,
-    levels:     BTreeMap<p64, Level>,
+    runs:       BTreeMap<id64, Run>,
+    users:      BTreeMap<id64, User>,
+    games:      BTreeMap<id64, Game>,
+    categories: BTreeMap<id64, Category>,
+    levels:     BTreeMap<id64, Level>,
 }
 
 impl Database {
@@ -52,7 +52,7 @@ impl Database {
     }
 
     /// Generates an index mapping Games to sorted lists of Runs.
-    pub fn runs_by_game_id(&self) -> HashMap<p64, Vec<&Run>> {
+    pub fn runs_by_game_id(&self) -> HashMap<id64, Vec<&Run>> {
         info!("Indexing runs by game id...");
         let mut index = HashMap::new();
 
@@ -113,7 +113,7 @@ impl Database {
             assert_eq!(run.category_id(), first.category_id());
 
             let time_ms = run.times_ms().get(game.primary_timing()).unwrap();
-            let rank = p64::new((i + 1) as u64).unwrap();
+            let rank = id64::new((i + 1) as u64).unwrap();
             let mut tied_rank = rank;
             let mut is_tied = false;
 
@@ -143,17 +143,17 @@ impl Database {
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
 pub struct RankedRun<'db> {
-    rank:      p64,
+    rank:      id64,
     time_ms:   u64,
     is_tied:   bool,
-    tied_rank: p64,
+    tied_rank: id64,
     run:       &'db Run,
 }
 
 impl Validate for Database {
     fn validate(&self) -> Result<(), ValidationErrors> {
         fn validate_table<T: Validate + Debug>(
-            table: &BTreeMap<p64, T>,
+            table: &BTreeMap<id64, T>,
         ) -> Result<(), ValidationErrors> {
             for item in table.values() {
                 let result = item.validate();

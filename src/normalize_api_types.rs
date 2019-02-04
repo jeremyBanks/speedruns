@@ -5,7 +5,7 @@ use lazy_static::lazy_static;
 use regex::Regex;
 use validator::Validate;
 
-use crate::{api_types as api, normalized_types::*, p64_from_base36};
+use crate::{api_types as api, id64_from_base36, normalized_types::*};
 
 #[derive(Debug, Error, From)]
 pub enum Error {
@@ -27,7 +27,7 @@ impl Normalize for api::User {
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         let user = User {
-            id:      p64_from_base36(self.id())?,
+            id:      id64_from_base36(self.id())?,
             name:    self
                 .names()
                 .normalize()
@@ -69,7 +69,7 @@ impl Normalize for api::Game {
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         let game = Game {
-            id:             p64_from_base36(self.id())?,
+            id:             id64_from_base36(self.id())?,
             name:           self.names().normalize()?,
             slug:           self.abbreviation().clone(),
             created:        self.created().clone(),
@@ -83,8 +83,8 @@ impl Normalize for api::Game {
             .iter()
             .map(|api_category| -> Result<Category, Error> {
                 let category = Category {
-                    game_id: p64_from_base36(self.id())?,
-                    id:      p64_from_base36(api_category.id())?,
+                    game_id: id64_from_base36(self.id())?,
+                    id:      id64_from_base36(api_category.id())?,
                     name:    api_category.name().to_string(),
                     rules:   api_category.rules().clone().unwrap_or(String::new()),
                     per:     api_category.type_().normalize()?,
@@ -101,8 +101,8 @@ impl Normalize for api::Game {
             .iter()
             .map(|api_category| -> Result<Level, Error> {
                 let level = Level {
-                    game_id: p64_from_base36(self.id())?,
-                    id:      p64_from_base36(api_category.id())?,
+                    game_id: id64_from_base36(self.id())?,
+                    id:      id64_from_base36(api_category.id())?,
                     name:    api_category.name().to_string(),
                     rules:   api_category.rules().clone().unwrap_or(String::new()),
                 };
@@ -125,14 +125,14 @@ impl Normalize for api::Run {
         match self.status() {
             api::RunStatus::Verified { .. } => {
                 let run = Run {
-                    game_id:     p64_from_base36(self.game())?,
-                    id:          p64_from_base36(self.id())?,
+                    game_id:     id64_from_base36(self.game())?,
+                    id:          id64_from_base36(self.id())?,
                     created:     *self.submitted(),
                     date:        *self.date(),
-                    category_id: p64_from_base36(self.category())?,
+                    category_id: id64_from_base36(self.category())?,
                     level_id:    match self.level() {
                         None => None,
-                        Some(level_id) => Some(p64_from_base36(level_id)?),
+                        Some(level_id) => Some(id64_from_base36(level_id)?),
                     },
                     times_ms:    self.times().normalize()?,
                 };

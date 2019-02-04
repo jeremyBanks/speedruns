@@ -2,6 +2,7 @@
 //! just stores the JSON representation of each item as-is, it doesn't
 //! make any assumptions about their structure beyond the existence of
 //! a string "id" value.
+#![allow(clippy::useless_attribute)]
 use flate2::{read::GzDecoder, write::GzEncoder};
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
