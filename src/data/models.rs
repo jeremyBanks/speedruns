@@ -98,7 +98,7 @@ impl Model for Run {
     }
 
     fn created(&self) -> Option<DateTime<Utc>> {
-        Run::created(self).clone()
+        *Run::created(self)
     }
 }
 
@@ -108,7 +108,7 @@ impl Model for User {
     }
 
     fn created(&self) -> Option<DateTime<Utc>> {
-        User::created(self).clone()
+        *User::created(self)
     }
 }
 
@@ -118,7 +118,7 @@ impl Model for Game {
     }
 
     fn created(&self) -> Option<DateTime<Utc>> {
-        Game::created(self).clone()
+        *Game::created(self)
     }
 }
 

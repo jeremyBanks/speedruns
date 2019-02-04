@@ -22,10 +22,9 @@ use speedruns::{
     api::{self, normalize::Normalize},
     data::{
         database::{Database, IntegrityError, Tables},
-        models::{AnyModel, AnyModelVec, Model},
+        models::{AnyModel, AnyModelVec},
         types::Id64,
     },
-    utils::slugify,
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
