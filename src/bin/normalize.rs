@@ -46,7 +46,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         users.push(user);
     }
 
-    info!("Loading API games, categories, and levels...");
+    info!("Loading API games, with categories and levels...");
     for api_game in load_api_type::<api::Game>("data/api/games.jsonl.gz")? {
         let (game, mut game_categories, mut game_levels) = api_game.normalize().unwrap();
         games.push(game);
@@ -59,8 +59,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     )));
 
     info!("Validating API data...");
-    // Panics unless valid.
-    Database::new(tables);
+
+    while let Err(error) = Database::new(tables) {
+        error!("Database validation failed: {}", error);
+    }
 
     info!("Dumping {} games...", tables.games().len());
     dump_table("data/normalized/games", tables.games())?;

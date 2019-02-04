@@ -71,8 +71,8 @@ impl Normalize for api::Game {
         let game = Game {
             id:             id64_from_base36(self.id())?,
             name:           self.names().normalize()?,
-            slug:           self.abbreviation().clone(),
-            created:        self.created().clone(),
+            slug:           self.abbreviation().to_ascii_lowercase(),
+            created:        *self.created(),
             primary_timing: self.ruleset().default_time().normalize()?,
         };
 
@@ -86,7 +86,7 @@ impl Normalize for api::Game {
                     game_id: id64_from_base36(self.id())?,
                     id:      id64_from_base36(api_category.id())?,
                     name:    api_category.name().to_string(),
-                    rules:   api_category.rules().clone().unwrap_or(String::new()),
+                    rules:   api_category.rules().clone().unwrap_or_else(String::new),
                     per:     api_category.type_().normalize()?,
                 };
 
@@ -135,12 +135,30 @@ impl Normalize for api::Run {
                         Some(level_id) => Some(id64_from_base36(level_id)?),
                     },
                     times_ms:    self.times().normalize()?,
+                    players:     self
+                        .players()
+                        .iter()
+                        .map(Normalize::normalize)
+                        .map(Result::unwrap)
+                        .collect(),
                 };
                 run.validate()?;
                 Ok(Some(run))
             }
             _ => Ok(None),
         }
+    }
+}
+
+impl Normalize for api::RunPlayer {
+    type Normalized = RunPlayer;
+
+    fn normalize(&self) -> Result<Self::Normalized, Error> {
+        Ok(match self {
+            api::RunPlayer::Guest { name, uri: _ } =>
+                RunPlayer::GuestName(name.to_string()),
+            api::RunPlayer::User { id, uri: _ } => RunPlayer::UserId(id64_from_base36(id)?),
+        })
     }
 }
 

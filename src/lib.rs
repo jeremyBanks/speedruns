@@ -5,7 +5,7 @@
 
 pub mod api;
 pub mod data;
-pub mod server;
+// pub mod server;
 pub mod utils;
 
 pub use crate::data::{

@@ -64,40 +64,51 @@ impl Server {
 fn respond(req: Request<Body>, database: &Database) -> BoxFut {
     let mut response = Response::new(Body::empty());
 
-    // match (req.method(), req.uri().path()) {
-    //     (&Method::GET, "/") => {
-    //         let game = database.games_by_slug()["Celeste"];;
-    //         let runs = &database.runs_by_game_id()[game.id()];
-    //         let category = database
-    //             .categories()
-    //             .values()
-    //             .find(|c| c.game_id() == game.id() && c.name() == "Any%")
-    //             .unwrap();
-    //         let runs = runs
-    //             .iter()
-    //             .filter(|r| r.category_id() == category.id())
-    //             .cloned()
-    //             .collect::<Vec<_>>();
-    //         let ranks = database.rank_runs(&runs);
+    match (req.method(), req.uri().path()) {
+        (&Method::GET, "/icon.gif") => {
+            response
+                .headers_mut()
+                .insert("Content-Type", HeaderValue::from_static("image/gif"));
 
-    //         let view = LeaderboardPage {
-    //             game,
-    //             category,
-    //             level: None,
-    //             ranks,
-    //         };
+            *response.body_mut() = Body::from(include_bytes!("static/srca.gif").as_ref());
+        }
 
-    //         response
-    //             .headers_mut()
-    //             .insert("Content-Type", HeaderValue::from_static("text/html"));
+        (&Method::GET, "/Celeste") => {
+            let game_slug = "/Celeste";
 
-    //         let render = view.render().into_string();
-    //         *response.body_mut() = Body::from(render);
-    //     }
+            let game = database.games_by_slug()[game_slug];;
+            let runs = &database.runs_by_game_id()[game.id()];
+            let category = database
+                .categories()
+                .values()
+                .find(|c| c.game_id() == game.id() && c.name() == "Any%")
+                .unwrap();
+            let runs = runs
+                .iter()
+                .filter(|r| r.category_id() == category.id())
+                .cloned()
+                .collect::<Vec<_>>();
+            let ranks = database.rank_runs(&runs);
 
-    //     _ => {
-    //         *response.status_mut() = StatusCode::NOT_FOUND;
-    //     }
-    // }
+            let view = LeaderboardPage {
+                game,
+                category,
+                level: None,
+                ranks,
+            };
+
+            response
+                .headers_mut()
+                .insert("Content-Type", HeaderValue::from_static("text/html"));
+
+            let render = view.render().into_string();
+            *response.body_mut() = Body::from(render);
+        }
+
+        _ => {
+            *response.status_mut() = StatusCode::NOT_FOUND;
+        }
+    }
+
     Box::new(future::ok(response))
 }
