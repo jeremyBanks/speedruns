@@ -75,7 +75,6 @@ impl Normalize for api::Game {
             created:        *self.created(),
             primary_timing: self.ruleset().default_time().normalize()?,
         };
-
         game.validate()?;
 
         let categories = self
