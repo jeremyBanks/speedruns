@@ -22,7 +22,7 @@ use hyper::{
 };
 use lazy_static::lazy_static;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
-use maud::html;
+use maud::{html, Markup, Render};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use validator::Validate;
 use xz2::read::XzDecoder;
@@ -30,6 +30,9 @@ use xz2::read::XzDecoder;
 use speedruncom_data_tools::{
     database::Database, escape_html::Escape, normalized_types::*, BoxErr,
 };
+
+mod views;
+use views::*;
 
 pub type BoxFut = Box<Future<Item = Response<Body>, Error = hyper::Error> + Send>;
 
@@ -47,12 +50,13 @@ pub fn main() -> Result<(), BoxErr> {
         module_path!()
     )))?;
 
-    let server = Server::bind(&([127, 0, 0, 1], 0).into()).serve(|| service_fn(respond));
+    let server =
+        Server::bind(&([127, 0, 0, 1], 59330).into()).serve(|| service_fn(respond));
     let addr = server.local_addr();
 
     let url = format!("http://{}", addr);
     info!("Listening at {}", &url);
-    webbrowser::open(&url)?;
+    // webbrowser::open(&url)?;
 
     rt::run(server.map_err(|e| error!("server error: {}", e)));
 
@@ -64,54 +68,34 @@ fn respond(req: Request<Body>) -> BoxFut {
 
     match (req.method(), req.uri().path()) {
         (&Method::GET, "/") => {
-            let celeste = GAMES_BY_SLUG["Celeste"];
-            let runs = &RUNS_BY_GAME_ID[celeste.id()];
-            let any_percent_id = DATABASE
+            let game = GAMES_BY_SLUG["Celeste"];
+            let runs = &RUNS_BY_GAME_ID[game.id()];
+            let category = DATABASE
                 .categories()
                 .values()
-                .filter(|c| c.game_id() == celeste.id() && c.name() == "Any%")
+                .filter(|c| c.game_id() == game.id() && c.name() == "Any%")
                 .next()
-                .unwrap()
-                .id();
-            let any_percent_runs = runs
+                .unwrap();
+            let runs = runs
                 .iter()
-                .filter(|r| r.category_id() == any_percent_id)
+                .filter(|r| r.category_id() == category.id())
                 .cloned()
                 .collect::<Vec<_>>();
-            let any_percent_leaderboard = DATABASE.rank_runs(&any_percent_runs);
+            let ranks = DATABASE.rank_runs(&runs);
+
+            let view = LeaderboardPage {
+                game,
+                category,
+                level: None,
+                ranks,
+            };
 
             response
                 .headers_mut()
                 .insert("Content-Type", HeaderValue::from_static("text/html"));
 
-            let mut body: Vec<u8> = Vec::new();
-
-            let html = {
-                html! {
-                    (maud::DOCTYPE)
-                    head {
-                        title {
-                            "speedruns"
-                        }
-                        style { r"
-                        pre { white-space: pre-wrap; }
-                    " }
-                    }
-
-                    body {
-                        @for run in any_percent_leaderboard {
-                            p {
-                                "#" (run.rank()) ". "
-                                (run.time_ms()) " ms"
-                            }
-                        }
-                    }
-                }
-            };
-
-            writeln!(&mut body, "{}", html.into_string()).unwrap();
-
-            *response.body_mut() = Body::from(body);
+            let render = view.render().into_string();
+            *response.body_mut() = Body::from(render);
         }
 
         _ => {
