@@ -32,7 +32,10 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use validator::Validate;
 use xz2::read::XzDecoder;
 
-use speedruns::{types::*, Database};
+use speedruns::{
+    data::base::{Database, Tables},
+    types::*,
+};
 
 pub type BoxFut = Box<Future<Item = Response<Body>, Error = hyper::Error> + Send>;
 
@@ -42,19 +45,60 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
         module_path!()
     )))?;
 
-    let static_database = Box::leak(Box::new(unpack_bundled_database()));
+    let tables: &'static Tables = Box::leak(Box::new(unpack_bundled_tables()));
+    let database: Rc<Database> = Database::new(tables);
 
-    let mut server = speedruns::server::Server::new(static_database);
-    server.run();
+    let user = database.user_by_name("TGH").expect("TGH in database");
+
+    let celeste = database
+        .game_by_slug("Celeste")
+        .expect("Celeste in database");
+    let any_percent = celeste.category_by_name("Any%").expect("Any% in Celeste");
+    let runs = any_percent.full_runs();
+
+    let clear = celeste.category_by_name("Clear").expect("Any% in Celeste");
+    let forsaken_city = celeste
+        .level_by_name("Forsaken City")
+        .expect("Forsaken City in Celeste");
+    let runs = clear.level_runs(forsaken_city);
+
+    // let mut server = speedruns::server::Server::new(static_database);
+    // server.run();
 
     Ok(())
 }
 
-fn load_data<T: DeserializeOwned>(
+fn unpack_bundled_tables() -> Tables {
+    trace!("Unpacking bundled database...");
+
+    let runs =
+        unpack_table(&mut include_bytes!("../../data/normalized/runs.bin.xz").as_ref())
+            .expect("run data corrupt");
+
+    let users =
+        unpack_table(&mut include_bytes!("../../data/normalized/users.bin.xz").as_ref())
+            .expect("user data corrupt");
+
+    let games =
+        unpack_table(&mut include_bytes!("../../data/normalized/games.bin.xz").as_ref())
+            .expect("game data corrupt");
+
+    let categories = unpack_table(
+        &mut include_bytes!("../../data/normalized/categories.bin.xz").as_ref(),
+    )
+    .expect("category data corrupt");
+
+    let levels =
+        unpack_table(&mut include_bytes!("../../data/normalized/levels.bin.xz").as_ref())
+            .expect("level data corrupt");
+
+    Tables::new(runs, users, games, categories, levels)
+}
+
+fn unpack_table<T: DeserializeOwned>(
     reader: &mut &[u8],
-    database: &mut Database,
-    loader: impl Fn(&mut Database, T),
-) -> Result<(), Box<dyn std::error::Error>> {
+) -> Result<Vec<T>, Box<dyn std::error::Error>> {
+    let mut items = vec![];
     let mut decompressor = XzDecoder::new(reader);
     loop {
         // We have left no way to detect the last item except for EOF.
@@ -65,48 +109,7 @@ fn load_data<T: DeserializeOwned>(
                 break
             }
         }
-        loader(database, item?);
+        items.push(item?);
     }
-    Ok(())
-}
-
-fn unpack_bundled_database() -> Database {
-    let mut database = Database::new();
-
-    trace!("Unpacking bundled database...");
-
-    load_data(
-        &mut include_bytes!("../../data/normalized/categories.bin.xz").as_ref(),
-        &mut database,
-        Database::insert_category,
-    )
-    .expect("category data corrupt");
-    load_data(
-        &mut include_bytes!("../../data/normalized/games.bin.xz").as_ref(),
-        &mut database,
-        Database::insert_game,
-    )
-    .expect("game data corrupt");
-    load_data(
-        &mut include_bytes!("../../data/normalized/levels.bin.xz").as_ref(),
-        &mut database,
-        Database::insert_level,
-    )
-    .expect("level data corrupt");
-    load_data(
-        &mut include_bytes!("../../data/normalized/runs.bin.xz").as_ref(),
-        &mut database,
-        Database::insert_run,
-    )
-    .expect("run data corrupt");
-    load_data(
-        &mut include_bytes!("../../data/normalized/users.bin.xz").as_ref(),
-        &mut database,
-        Database::insert_user,
-    )
-    .expect("user data corrupt");
-
-    database.validate().expect("database state invalid");
-
-    database
+    Ok(items)
 }

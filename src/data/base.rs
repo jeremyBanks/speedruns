@@ -5,19 +5,21 @@ use std::{
     collections::{BTreeMap, HashMap},
     fmt::Debug,
     num::NonZeroU64 as Id64,
+    ops::Deref,
+    rc::Rc,
 };
 
 use getset::Getters;
-use lazy_init::Lazy;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationErrors};
 
-use crate::data::{linked::Linked, types::*};
+use crate::data::types::*;
 
+/// All of the speedrun data in our normalized format, indexed by ID.
 #[derive(Debug, Default, Serialize, Deserialize, Clone, Getters)]
 #[get = "pub"]
-pub struct Database {
+pub struct Tables {
     runs:       BTreeMap<Id64, Run>,
     users:      BTreeMap<Id64, User>,
     games:      BTreeMap<Id64, Game>,
@@ -25,193 +27,414 @@ pub struct Database {
     levels:     BTreeMap<Id64, Level>,
 }
 
+/// Marker trait for types that we store in [Tables].
+pub trait Model: Debug + Serialize + Validate {}
+impl Model for Run {}
+impl Model for User {}
+impl Model for Game {}
+impl Model for Category {}
+impl Model for Level {}
+
+impl Tables {
+    pub fn new(
+        runs: Vec<Run>,
+        users: Vec<User>,
+        games: Vec<Game>,
+        categories: Vec<Category>,
+        levels: Vec<Level>,
+    ) -> Self {
+        let mut self_ = Self::default();
+        for run in runs {
+            self_.runs.insert(*run.id(), run);
+        }
+        for user in users {
+            self_.users.insert(*user.id(), user);
+        }
+        for game in games {
+            self_.games.insert(*game.id(), game);
+        }
+        for category in categories {
+            self_.categories.insert(*category.id(), category);
+        }
+        for level in levels {
+            self_.levels.insert(*level.id(), level);
+        }
+        self_
+    }
+}
+
+/// A collection of [Tables] with various generated indexes.
+pub struct Database {
+    tables:          &'static Tables,
+    runs_by_game_id: HashMap<Id64, Vec<&'static Run>>,
+    games_by_slug:   HashMap<&'static str, &'static Game>,
+    users_by_name:   HashMap<&'static str, &'static User>,
+}
+
 impl Database {
-    pub fn new() -> Self {
-        Self::default()
+    fn link<ModelType: Model>(
+        self: Rc<Self>,
+        item: &'static ModelType,
+    ) -> Linked<ModelType> {
+        Linked::new(self.clone(), item)
     }
 
-    pub fn indices(&self) -> Indices {
-        Indices::new(self)
-    }
+    /// Creates a new Database indexing a collection of static tables.
+    pub fn new(tables: &'static Tables) -> Rc<Self> {
+        let runs_by_game_id = {
+            trace!("Indexing runs by game id...");
+            let mut runs_by_game_id: HashMap<Id64, Vec<&'static Run>> = HashMap::new();
 
-    pub fn insert_game(&mut self, game: Game) {
-        self.games.insert(*game.id(), game);
-    }
+            for game_id in tables.games().keys() {
+                runs_by_game_id.insert(*game_id, vec![]);
+            }
 
-    pub fn insert_user(&mut self, user: User) {
-        self.users.insert(*user.id(), user);
-    }
+            for run in tables.runs().values() {
+                runs_by_game_id.get_mut(run.game_id()).unwrap().push(run);
+            }
 
-    pub fn insert_run(&mut self, run: Run) {
-        self.runs.insert(*run.id(), run);
-    }
+            for game_runs in runs_by_game_id.values_mut() {
+                game_runs.sort();
+            }
 
-    pub fn insert_level(&mut self, level: Level) {
-        self.levels.insert(*level.id(), level);
-    }
+            runs_by_game_id
+        };
 
-    pub fn insert_category(&mut self, category: Category) {
-        self.categories.insert(*category.id(), category);
-    }
+        let games_by_slug = {
+            trace!("Indexing games by slug...");
+            let mut games_by_slug: HashMap<&'static str, &'static Game> = HashMap::new();
 
-    /// Generates an index mapping Games to sorted lists of Runs.
-    pub fn runs_by_game_id(&self) -> HashMap<Id64, Vec<&Run>> {
-        info!("Indexing runs by game id...");
-        let mut index = HashMap::new();
+            for game in tables.games().values() {
+                games_by_slug.insert(game.slug(), game);
+            }
 
-        for game_id in self.games().keys() {
-            index.insert(*game_id, vec![]);
-        }
+            games_by_slug
+        };
 
-        for run in self.runs().values() {
-            index.get_mut(run.game_id()).unwrap().push(run);
-        }
+        let users_by_name = {
+            trace!("Indexing users by name...");
+            let mut users_by_name: HashMap<&'static str, &'static User> = HashMap::new();
 
-        for game_runs in index.values_mut() {
-            game_runs.sort();
-        }
+            for user in tables.users().values() {
+                users_by_name.insert(user.name(), user);
+            }
 
-        index
-    }
+            users_by_name
+        };
 
-    /// Generates an index mapping Games to sorted lists of Runs.
-    pub fn games_by_slug(&self) -> HashMap<&str, &Game> {
-        info!("Indexing games by slug...");
-        let mut index: HashMap<&str, &Game> = HashMap::new();
-
-        for game in self.games().values() {
-            index.insert(game.slug(), game);
-        }
-
-        index
-    }
-
-    /// Ranks a set of runs (all for the same game/category/level) using the
-    /// timing specified for the game rules, then by run date, then by
-    /// submission datetime.
-    pub fn rank_runs<'db>(&'db self, runs: &[&'db Run]) -> Vec<RankedRun> {
-        let mut runs: Vec<&Run> = runs.to_vec();
-
-        if runs.is_empty() {
-            return vec![]
-        }
-
-        let first = runs[0];
-        let game = self
-            .games()
-            .get(first.game_id())
-            .expect("game should exist");
-
-        runs.sort_by_key(|run| {
-            let time_ms = run.times_ms().get(game.primary_timing()).unwrap();
-
-            (time_ms, run.date(), run.created())
+        let self_ = Rc::new(Self {
+            tables,
+            runs_by_game_id,
+            games_by_slug,
+            users_by_name,
         });
 
-        let mut ranks: Vec<RankedRun> = vec![];
+        self_.clone().validate().expect("database data invalid");
 
-        for (i, run) in runs.iter().enumerate() {
-            assert_eq!(run.game_id(), first.game_id());
-            assert_eq!(run.level_id(), first.level_id());
-            assert_eq!(run.category_id(), first.category_id());
+        self_
+    }
 
-            let time_ms = run.times_ms().get(game.primary_timing()).unwrap();
-            let rank = Id64::new((i + 1) as u64).unwrap();
-            let mut tied_rank = rank;
-            let mut is_tied = false;
-
-            if let Some(ref mut previous) = ranks.last_mut() {
-                if time_ms == *previous.time_ms() {
-                    is_tied = true;
-                    previous.is_tied = true;
-                    tied_rank = previous.tied_rank;
-                }
-            }
-
-            let new = RankedRun {
-                rank,
-                time_ms,
-                is_tied,
-                tied_rank,
-                run,
-            };
-
-            ranks.push(new);
+    pub fn validate(self: Rc<Self>) -> Result<(), ValidationErrors> {
+        trace!("Validating {} runs.", self.tables.runs().len());
+        for run in self.clone().runs() {
+            run.validate()?;
         }
 
-        ranks
-    }
-}
-
-pub struct Indices<'db> {
-    database: &'db Database,
-    runs_by_game_id: Lazy<BTreeMap<Id64, Vec<Linked<'db, Run>>>>,
-}
-
-impl<'db> Indices<'db> {
-    pub fn new(database: &'db Database) -> Self {
-        Self {
-            database,
-            runs_by_game_id: Lazy::new(),
-        }
-    }
-
-    pub fn game(&self, id: Id64) -> Linked<'db, Game> {
-        Linked::new(&self, self.database.games.get(&id).expect("foreign key to be valid"))
-    }
-
-    pub fn runs_by_game_id(&self) -> &BTreeMap<Id64, Vec<Linked<'db, Run>>> {
-        self.runs_by_game_id.get_or_create(|| {
-            self.database.runs().len();
-            BTreeMap::new()
-        })
-    }
-}
-
-#[derive(Debug, Clone, Getters, Serialize)]
-#[get = "pub"]
-pub struct RankedRun<'db> {
-    rank:      Id64,
-    time_ms:   u64,
-    is_tied:   bool,
-    tied_rank: Id64,
-    run:       &'db Run,
-}
-
-impl Validate for Database {
-    fn validate(&self) -> Result<(), ValidationErrors> {
-        fn validate_table<T: Validate + Debug>(
-            table: &BTreeMap<Id64, T>,
-        ) -> Result<(), ValidationErrors> {
-            for item in table.values() {
-                let result = item.validate();
-                if let Err(ref error) = result {
-                    error!("{} in {:?}", &error, &item);
-                }
-                result?;
-            }
-            Ok(())
+        trace!("Validating {} users.", self.tables.users().len());
+        for user in self.clone().users() {
+            user.validate()?;
         }
 
-        // TODO:
-        // foreign keys
-        // unique constraints
-        // indexed by id
+        trace!("Validating {} games.", self.tables.games().len());
+        for game in self.clone().games() {
+            game.validate()?;
+        }
 
-        info!("Validating {} normalized games...", self.games().len());
-        validate_table(self.games())?;
-        info!("Validating {} normalized users...", self.users().len());
-        validate_table(self.users())?;
-        info!("Validating {} normalized runs...", self.runs().len());
-        validate_table(self.runs())?;
-        info!("Validating {} normalized levels...", self.levels().len());
-        validate_table(self.levels())?;
-        info!(
-            "Validating {} normalized categories...",
-            self.categories().len()
-        );
-        validate_table(self.categories())?;
+        trace!("Validating {} categories.", self.tables.categories().len());
+        for category in self.clone().categories() {
+            category.validate()?;
+        }
+
+        trace!("Validating {} levels.", self.tables.levels().len());
+        for level in self.clone().levels() {
+            level.validate()?;
+        }
 
         Ok(())
     }
+
+    /// Iterator over all Linked<Run>s.
+    pub fn runs(self: Rc<Self>) -> impl Iterator<Item = Linked<Run>> {
+        self.tables
+            .runs()
+            .values()
+            .map(move |run| self.clone().link(run))
+    }
+
+    /// Finds a Linked<Run> by id.
+    pub fn run_by_id(self: Rc<Self>, id: Id64) -> Option<Linked<Run>> {
+        self.tables.runs().get(&id).map(|run| self.link(run))
+    }
+
+    /// Returns a Vec of Linked<Run> for a given game ID, sorted by category,
+    /// level, and then primary time (ascending).
+    pub fn runs_by_game_id(self: Rc<Self>, game_id: Id64) -> Option<Vec<Linked<Run>>> {
+        self.runs_by_game_id
+            .get(&game_id)
+            .map(|ref runs| runs.iter().map(|run| self.clone().link(*run)).collect())
+    }
+
+    /// Iterator over all Linked<User>s.
+    pub fn users(self: Rc<Self>) -> impl Iterator<Item = Linked<User>> {
+        self.tables
+            .users()
+            .values()
+            .map(move |user| self.clone().link(user))
+    }
+
+    /// Finds a Linked<Run> by id.
+    pub fn user_by_id(self: Rc<Self>, id: Id64) -> Option<Linked<User>> {
+        self.tables.users().get(&id).map(|user| self.link(user))
+    }
+
+    /// Finds a Linked<User> by name.
+    pub fn user_by_name(self: Rc<Self>, name: &str) -> Option<Linked<User>> {
+        self.users_by_name
+            .get(name)
+            .map(|user| self.clone().link(*user))
+    }
+
+    /// Iterator over all Linked<Game>s.
+    pub fn games(self: Rc<Self>) -> impl Iterator<Item = Linked<Game>> {
+        self.tables
+            .games()
+            .values()
+            .map(move |game| self.clone().link(game))
+    }
+
+    /// Finds a Game<Run> by id.
+    pub fn game_by_id(self: Rc<Self>, id: Id64) -> Option<Linked<Game>> {
+        self.tables.games().get(&id).map(|game| self.link(game))
+    }
+
+    /// Finds a Linked<Game> by slug.
+    pub fn game_by_slug(self: Rc<Self>, slug: &str) -> Option<Linked<Game>> {
+        self.games_by_slug
+            .get(slug)
+            .map(|game| self.clone().link(*game))
+    }
+
+    /// Iterator over all Linked<Level>s.
+    pub fn levels(self: Rc<Self>) -> impl Iterator<Item = Linked<Level>> {
+        self.tables
+            .levels()
+            .values()
+            .map(move |level| self.clone().link(level))
+    }
+
+    /// Finds a Level<Run> by id.
+    pub fn level_by_id(self: Rc<Self>, id: Id64) -> Option<Linked<Level>> {
+        self.tables.levels().get(&id).map(|level| self.link(level))
+    }
+
+    /// An iterator over all Linked<Category>s.
+    pub fn category_by_id(self: Rc<Self>, id: Id64) -> Option<Linked<Category>> {
+        self.tables
+            .categories()
+            .get(&id)
+            .map(|category| self.link(category))
+    }
+
+    /// Iterator over all Linked<Category>s.
+    pub fn categories(self: Rc<Self>) -> impl Iterator<Item = Linked<Category>> {
+        self.tables
+            .categories()
+            .values()
+            .map(move |category| self.clone().link(category))
+    }
 }
+
+/// Wraps [Model] types to add references to the Database, adding new
+/// accessor methods.
+pub struct Linked<ModelType: 'static + Model> {
+    database: Rc<Database>,
+    model:    &'static ModelType,
+}
+
+impl<ModelType: Model> Linked<ModelType> {
+    pub fn new(database: Rc<Database>, model: &'static ModelType) -> Self {
+        Self { database, model }
+    }
+}
+
+impl<ModelType: Model> Deref for Linked<ModelType> {
+    type Target = ModelType;
+
+    fn deref(&self) -> &ModelType {
+        &self.model
+    }
+}
+
+impl Linked<Run> {
+    /// Returns the Linked<Game> for this Run.
+    pub fn game(&self) -> Linked<Game> {
+        self.database
+            .clone()
+            .game_by_id(*self.game_id())
+            .expect("database state invalid")
+    }
+
+    /// Returns the Linked<Category> for this Run.
+    pub fn category(&self) -> Linked<Category> {
+        self.database
+            .clone()
+            .category_by_id(*self.category_id())
+            .expect("database state invalid")
+    }
+
+    /// Returns Some(Linked<Level>) for this Run, or None if it's a full-game run.
+    pub fn level(&self) -> Option<Linked<Level>> {
+        self.level_id().map(|level_id| {
+            self.database
+                .clone()
+                .level_by_id(level_id)
+                .expect("database state invalid")
+        })
+    }
+
+    /// Returns Vec<Linked<User>> for this Run. May be empty if all runners
+    /// unregistered/guests.
+    pub fn users(&self) -> Option<Linked<Level>> {
+        unimplemented!()
+    }
+}
+
+impl Validate for Linked<Run> {
+    fn validate(&self) -> Result<(), ValidationErrors> {
+        self.category();
+        self.level();
+        self.users();
+        self.model.validate()
+    }
+}
+
+impl Validate for Linked<User> {
+    fn validate(&self) -> Result<(), ValidationErrors> {
+        self.model.validate()
+    }
+}
+
+impl Linked<Game> {
+    /// Returns a Vec of all the verified Runs for this Game.
+    pub fn runs(&self) -> Vec<Linked<Run>> {
+        self.database
+            .clone()
+            .runs_by_game_id(*self.id())
+            .expect("database state invalid")
+    }
+}
+
+impl Validate for Linked<Game> {
+    fn validate(&self) -> Result<(), ValidationErrors> {
+        self.model.validate()
+    }
+}
+
+impl Linked<Level> {
+    /// Returns the Linked<Game> for this Level.
+    pub fn game(&self) -> Linked<Game> {
+        self.database
+            .clone()
+            .game_by_id(*self.game_id())
+            .expect("database state invalid")
+    }
+}
+
+impl Validate for Linked<Level> {
+    fn validate(&self) -> Result<(), ValidationErrors> {
+        self.game();
+        self.model.validate()
+    }
+}
+
+impl Linked<Category> {
+    /// Returns the Linked<Game> for this Category.
+    pub fn game(&self) -> Linked<Game> {
+        self.database
+            .clone()
+            .game_by_id(*self.game_id())
+            .expect("database state invalid")
+    }
+}
+
+impl Validate for Linked<Category> {
+    fn validate(&self) -> Result<(), ValidationErrors> {
+        self.game();
+        self.model.validate()
+    }
+}
+
+// #[derive(Debug, Clone, Getters, Serialize)]
+// #[get = "pub"]
+// pub struct RankedRun {
+//     rank:      Id64,
+//     time_ms:   u64,
+//     is_tied:   bool,
+//     tied_rank: Id64,
+//     run:       &'static Run,
+// }
+// /// Ranks a set of runs (all for the same game/category/level) using the
+// /// timing specified for the game rules, then by run date, then by
+// /// submission datetime.
+// pub fn rank_runs<'db>(&'db self, runs: &[&'db Run]) -> Vec<RankedRun> {
+//     let mut runs: Vec<&Run> = runs.to_vec();
+
+//     if runs.is_empty() {
+//         return vec![]
+//     }
+
+//     let first = runs[0];
+//     let game = self
+//         .games()
+//         .get(first.game_id())
+//         .expect("game should exist");
+
+//     runs.sort_by_key(|run| {
+//         let time_ms = run.times_ms().get(game.primary_timing()).unwrap();
+
+//         (time_ms, run.date(), run.created())
+//     });
+
+//     let mut ranks: Vec<RankedRun> = vec![];
+
+//     for (i, run) in runs.iter().enumerate() {
+//         assert_eq!(run.game_id(), first.game_id());
+//         assert_eq!(run.level_id(), first.level_id());
+//         assert_eq!(run.category_id(), first.category_id());
+
+//         let time_ms = run.times_ms().get(game.primary_timing()).unwrap();
+//         let rank = Id64::new((i + 1) as u64).unwrap();
+//         let mut tied_rank = rank;
+//         let mut is_tied = false;
+
+//         if let Some(ref mut previous) = ranks.last_mut() {
+//             if time_ms == *previous.time_ms() {
+//                 is_tied = true;
+//                 previous.is_tied = true;
+//                 tied_rank = previous.tied_rank;
+//             }
+//         }
+
+//         let new = RankedRun {
+//             rank,
+//             time_ms,
+//             is_tied,
+//             tied_rank,
+//             run,
+//         };
+
+//         ranks.push(new);
+//     }
+
+//     ranks
+// }

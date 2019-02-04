@@ -100,7 +100,7 @@ impl Spider {
                 let mut compressor = GzEncoder::new(buffer, flate2::Compression::best());
                 for data in self.resource_by_id(resource).values() {
                     serde_json::to_writer(&mut compressor, &data)?;
-                    compressor.write(b"\n")?;
+                    compressor.write_all(b"\n")?;
                 }
                 compressor.finish()?;
             }
