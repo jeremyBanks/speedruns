@@ -7,8 +7,9 @@ use flate2::read::GzDecoder;
 use log::{debug, error, info, trace, warn};
 use serde::Deserialize;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
-use speedruncom_data_tools::api_types;
 use std::{fs::File, io::BufReader};
+
+use speedruncom_data_tools::api_types;
 
 pub type DynError = Box<dyn std::error::Error>;
 
