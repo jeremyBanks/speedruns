@@ -210,7 +210,7 @@ impl Spider {
 
                     previous = self.resource_by_id(resource).len();
 
-                    std::thread::sleep(std::time::Duration::from_secs(4));
+                    std::thread::sleep(std::time::Duration::from_secs(1));
                 }
             }
 

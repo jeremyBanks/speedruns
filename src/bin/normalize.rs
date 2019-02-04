@@ -2,10 +2,8 @@
 #![warn(missing_debug_implementations, missing_docs)]
 #![allow(clippy::useless_attribute)]
 use std::{
-    collections::BTreeMap,
     fs::File,
     io::{prelude::*, BufReader, BufWriter},
-    num::NonZeroU64 as Id64,
 };
 
 use flate2::read::GzDecoder;
@@ -54,26 +52,35 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         levels.append(&mut game_levels);
     }
 
-    let tables = Box::leak(Box::new(Tables::new(
-        runs, users, games, categories, levels,
-    )));
-
     info!("Validating API data...");
 
-    while let Err(error) = Database::new(tables) {
-        error!("Database validation failed: {}", error);
+    loop {
+        // memory leak, so hopefully not many iterations!
+        match Database::new(Box::leak(Box::new(Tables::new(
+            runs.clone(),
+            users.clone(),
+            games.clone(),
+            categories.clone(),
+            levels.clone(),
+        )))) {
+            Ok(_) => break,
+            Err(errors) => {
+                error!("Database validation failed: {}", errors);
+                panic!("oh no");
+            }
+        }
     }
 
-    info!("Dumping {} games...", tables.games().len());
-    dump_table("data/normalized/games", tables.games())?;
-    info!("Dumping {} users...", tables.users().len());
-    dump_table("data/normalized/users", tables.users())?;
-    info!("Dumping {} runs...", tables.runs().len());
-    dump_table("data/normalized/runs", tables.runs())?;
-    info!("Dumping {} categories...", tables.categories().len());
-    dump_table("data/normalized/categories", tables.categories())?;
-    info!("Dumping {} levels...", tables.levels().len());
-    dump_table("data/normalized/levels", tables.levels())?;
+    info!("Dumping {} games...", games.len());
+    dump_table("data/normalized/games", games)?;
+    info!("Dumping {} users...", users.len());
+    dump_table("data/normalized/users", users)?;
+    info!("Dumping {} runs...", runs.len());
+    dump_table("data/normalized/runs", runs)?;
+    info!("Dumping {} categories...", categories.len());
+    dump_table("data/normalized/categories", categories)?;
+    info!("Dumping {} levels...", levels.len());
+    dump_table("data/normalized/levels", levels)?;
 
     Ok(())
 }
@@ -95,12 +102,12 @@ fn load_api_type<ApiType: DeserializeOwned>(
 
 fn dump_table<T: Serialize + Ord>(
     path: &str,
-    table: &BTreeMap<Id64, T>,
+    table: Vec<T>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let mut file = NamedTempFile::new_in("data")?;
     {
         let mut buffer = BufWriter::new(&mut file);
-        for data in table.values().sorted() {
+        for data in table.iter().sorted() {
             serde_json::to_writer(&mut buffer, &data)?;
             buffer.write_all(b"\n")?;
         }
@@ -111,7 +118,7 @@ fn dump_table<T: Serialize + Ord>(
     {
         let buffer = BufWriter::new(&mut file);
         let mut compressor = XzEncoder::new(buffer, 6);
-        for data in table.values().sorted() {
+        for data in table.iter().sorted() {
             bincode::serialize_into(&mut compressor, &data)?;
         }
         compressor.finish()?;

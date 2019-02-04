@@ -3,7 +3,7 @@
 #![allow(missing_debug_implementations, missing_docs)]
 use std::{
     collections::{BTreeMap, HashMap},
-    fmt::Debug,
+    fmt::{Debug, Display},
     num::NonZeroU64 as Id64,
     ops::Deref,
     rc::Rc,
@@ -19,21 +19,48 @@ use validator::{Validate, ValidationErrors};
 use crate::{data::types::*, utils::base36};
 
 #[derive(Debug, Error, From)]
+pub struct IntegrityErrors(Vec<IntegrityError>);
+
+impl IntegrityErrors {
+    fn try_from(errors: Vec<IntegrityError>) -> Result<(), IntegrityErrors> {
+        if errors.is_empty() {
+            Ok(())
+        } else {
+            Err(IntegrityErrors(errors))
+        }
+    }
+}
+
+impl Display for IntegrityErrors {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        writeln!(f, "{} IntegrityErrors:", self.0.len())?;
+        for (i, error) in self.0.iter().enumerate() {
+            writeln!(f, "{:4}. {:#?}", i + 1, error)?;
+            if i >= 4 {
+                writeln!(f, "     ...and more!")?;
+                break
+            }
+        }
+        Ok(())
+    }
+}
+
+#[derive(Debug, Error, From)]
 pub enum IntegrityError {
     #[error(
         display = "{} with id {} ({}) does not exist, specified by {} in {} {:#?}",
         target_type,
         target_id,
-        target_id_b32,
+        target_id_b36,
         source_id_b32,
         foreign_key_field,
-        item
+        source
     )]
     ForeignKeyMissing {
-        item:              Box<dyn Debug>,
+        source:            Box<dyn Debug>,
         foreign_key_field: &'static str,
         target_id:         Id64,
-        target_id_b32:     String,
+        target_id_b36:     String,
         source_id_b32:     String,
         target_type:       &'static str,
     },
@@ -108,7 +135,9 @@ impl Database {
     }
 
     /// Creates a new Database indexing a collection of static tables.
-    pub fn new(tables: &'static Tables) -> Result<Rc<Self>, IntegrityError> {
+    pub fn new(tables: &'static Tables) -> Result<Rc<Self>, IntegrityErrors> {
+        let mut errors = Vec::new();
+
         let runs_by_game_id = {
             trace!("Indexing runs by game id...");
             let mut runs_by_game_id: HashMap<Id64, Vec<&'static Run>> = HashMap::new();
@@ -118,7 +147,21 @@ impl Database {
             }
 
             for run in tables.runs().values() {
-                runs_by_game_id.get_mut(run.game_id()).unwrap().push(run);
+                match runs_by_game_id.get_mut(run.game_id()) {
+                    Some(runs) => {
+                        runs.push(run);
+                    }
+                    None => {
+                        errors.push(IntegrityError::ForeignKeyMissing {
+                            target_type:       "game",
+                            target_id:         *run.game_id(),
+                            target_id_b36:     base36(*run.game_id()),
+                            source_id_b32:     base36(*run.id()),
+                            foreign_key_field: "game_id",
+                            source:            Box::new(run),
+                        });
+                    }
+                }
             }
 
             for game_runs in runs_by_game_id.values_mut() {
@@ -157,38 +200,52 @@ impl Database {
             users_by_name,
         });
 
-        self_.clone().validate()?;
+        if let Err(mut errors_) = self_.clone().validate() {
+            errors.append(&mut errors_.0);
+        }
 
-        Ok(self_)
+        IntegrityErrors::try_from(errors).map(|_| self_)
     }
 
-    pub fn validate(self: Rc<Self>) -> Result<(), IntegrityError> {
+    pub fn validate(self: Rc<Self>) -> Result<(), IntegrityErrors> {
+        let mut errors = vec![];
+
         trace!("Validating {} runs.", self.tables.runs().len());
         for run in self.clone().runs() {
-            run.validate()?;
+            if let Err(mut error) = run.validate() {
+                errors.append(&mut error.0);
+            }
         }
 
         trace!("Validating {} users.", self.tables.users().len());
         for user in self.clone().users() {
-            user.validate()?;
+            if let Err(mut error) = user.validate() {
+                errors.append(&mut error.0);
+            }
         }
 
         trace!("Validating {} games.", self.tables.games().len());
         for game in self.clone().games() {
-            game.validate()?;
+            if let Err(mut error) = game.validate() {
+                errors.append(&mut error.0);
+            }
         }
 
         trace!("Validating {} categories.", self.tables.categories().len());
         for category in self.clone().categories() {
-            category.validate()?;
+            if let Err(mut error) = category.validate() {
+                errors.append(&mut error.0);
+            }
         }
 
         trace!("Validating {} levels.", self.tables.levels().len());
         for level in self.clone().levels() {
-            level.validate()?;
+            if let Err(mut error) = level.validate() {
+                errors.append(&mut error.0);
+            }
         }
 
-        Ok(())
+        IntegrityErrors::try_from(errors)
     }
 
     /// Iterator over all Linked<Run>s.
@@ -350,64 +407,79 @@ impl Linked<Run> {
             .collect()
     }
 
-    fn validate(&self) -> Result<(), IntegrityError> {
+    fn validate(&self) -> Result<(), IntegrityErrors> {
+        let mut errors = Vec::new();
+
+        if let None = self.database.clone().game_by_id(*self.game_id()) {
+            errors.push(IntegrityError::ForeignKeyMissing {
+                target_type:       "game",
+                target_id:         *self.game_id(),
+                target_id_b36:     base36(*self.game_id()),
+                source_id_b32:     base36(*self.id()),
+                foreign_key_field: "game_id",
+                source:            Box::new(self.item),
+            });
+        }
+
         if let None = self.database.clone().category_by_id(*self.category_id()) {
-            return Err(IntegrityError::ForeignKeyMissing {
+            errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "category",
                 target_id:         *self.category_id(),
-                target_id_b32:     base36(*self.category_id()),
+                target_id_b36:     base36(*self.category_id()),
                 source_id_b32:     base36(*self.id()),
                 foreign_key_field: "category_id",
-                item:              Box::new(self.item),
-            })
+                source:            Box::new(self.item),
+            });
         }
 
         if let Some(level_id) = self.level_id() {
             if let None = self.database.clone().level_by_id(*level_id) {
-                return Err(IntegrityError::ForeignKeyMissing {
+                errors.push(IntegrityError::ForeignKeyMissing {
                     target_type:       "level",
                     target_id:         *level_id,
-                    target_id_b32:     base36(*level_id),
+                    target_id_b36:     base36(*level_id),
                     source_id_b32:     base36(*self.id()),
                     foreign_key_field: "level_id",
-                    item:              Box::new(self.item),
-                })
+                    source:            Box::new(self.item),
+                });
             }
         }
 
         for player in self.players() {
             if let RunPlayer::UserId(user_id) = player {
-                if let None = self.database.clone().level_by_id(*user_id) {
-                    return Err(IntegrityError::ForeignKeyMissing {
+                if let None = self.database.clone().user_by_id(*user_id) {
+                    errors.push(IntegrityError::ForeignKeyMissing {
                         target_type:       "user",
                         target_id:         *user_id,
-                        target_id_b32:     base36(*user_id),
+                        target_id_b36:     base36(*user_id),
                         source_id_b32:     base36(*self.id()),
                         foreign_key_field: "players[…].0",
-                        item:              Box::new(self.item),
-                    })
+                        source:            Box::new(self.item),
+                    });
                 }
             }
         }
 
-        if let Err(errors) = self.item.validate() {
-            return Err(IntegrityError::CheckFailed {
-                errors,
-                item: Box::new(self.item),
-            })
+        if let Err(validation_errors) = self.item.validate() {
+            errors.push(IntegrityError::CheckFailed {
+                errors: validation_errors,
+                item:   Box::new(self.item),
+            });
         }
 
-        Ok(())
+        IntegrityErrors::try_from(errors)
     }
 }
 
 impl Linked<User> {
-    fn validate(&self) -> Result<(), IntegrityError> {
-        if let Err(errors) = self.item.validate() {
-            return Err(IntegrityError::CheckFailed {
-                errors,
-                item: Box::new(self.item),
-            })
+    fn validate(&self) -> Result<(), IntegrityErrors> {
+        let mut errors = Vec::new();
+
+        if let Err(validation_errors) = self.item.validate() {
+            errors.push(IntegrityError::CheckFailed {
+                errors: validation_errors,
+                item:   Box::new(self.item),
+            });
         }
 
         Ok(())
@@ -423,15 +495,17 @@ impl Linked<Game> {
             .expect("database state invalid")
     }
 
-    fn validate(&self) -> Result<(), IntegrityError> {
-        if let Err(errors) = self.item.validate() {
-            return Err(IntegrityError::CheckFailed {
-                errors,
-                item: Box::new(self.item),
-            })
+    fn validate(&self) -> Result<(), IntegrityErrors> {
+        let mut errors = Vec::new();
+
+        if let Err(validation_errors) = self.item.validate() {
+            errors.push(IntegrityError::CheckFailed {
+                errors: validation_errors,
+                item:   Box::new(self.item),
+            });
         }
 
-        Ok(())
+        IntegrityErrors::try_from(errors)
     }
 }
 
@@ -444,17 +518,28 @@ impl Linked<Level> {
             .expect("database state invalid")
     }
 
-    fn validate(&self) -> Result<(), IntegrityError> {
-        self.game();
+    fn validate(&self) -> Result<(), IntegrityErrors> {
+        let mut errors = Vec::new();
 
-        if let Err(errors) = self.item.validate() {
-            return Err(IntegrityError::CheckFailed {
-                errors,
-                item: Box::new(self.item),
-            })
+        if let Err(validation_errors) = self.item.validate() {
+            errors.push(IntegrityError::CheckFailed {
+                errors: validation_errors,
+                item:   Box::new(self.item),
+            });
         }
 
-        Ok(())
+        if let None = self.database.clone().game_by_id(*self.game_id()) {
+            errors.push(IntegrityError::ForeignKeyMissing {
+                target_type:       "game",
+                target_id:         *self.game_id(),
+                target_id_b36:     base36(*self.game_id()),
+                source_id_b32:     base36(*self.id()),
+                foreign_key_field: "game_id",
+                source:            Box::new(self.item),
+            });
+        }
+
+        IntegrityErrors::try_from(errors)
     }
 }
 
@@ -467,81 +552,27 @@ impl Linked<Category> {
             .expect("database state invalid")
     }
 
-    fn validate(&self) -> Result<(), IntegrityError> {
-        self.game();
+    fn validate(&self) -> Result<(), IntegrityErrors> {
+        let mut errors = Vec::new();
 
-        if let Err(errors) = self.item.validate() {
-            return Err(IntegrityError::CheckFailed {
-                errors,
-                item: Box::new(self.item),
-            })
+        if let Err(validation_errors) = self.item.validate() {
+            errors.push(IntegrityError::CheckFailed {
+                errors: validation_errors,
+                item:   Box::new(self.item),
+            });
         }
 
-        Ok(())
+        if let None = self.database.clone().game_by_id(*self.game_id()) {
+            errors.push(IntegrityError::ForeignKeyMissing {
+                target_type:       "game",
+                target_id:         *self.game_id(),
+                target_id_b36:     base36(*self.game_id()),
+                source_id_b32:     base36(*self.id()),
+                foreign_key_field: "game_id",
+                source:            Box::new(self.item),
+            });
+        }
+
+        IntegrityErrors::try_from(errors)
     }
 }
-
-// #[derive(Debug, Clone, Getters, Serialize)]
-// #[get = "pub"]
-// pub struct RankedRun {
-//     rank:      Id64,
-//     time_ms:   u64,
-//     is_tied:   bool,
-//     tied_rank: Id64,
-//     run:       &'static Run,
-// }
-// /// Ranks a set of runs (all for the same game/category/level) using the
-// /// timing specified for the game rules, then by run date, then by
-// /// submission datetime.
-// pub fn rank_runs<'db>(&'db self, runs: &[&'db Run]) -> Vec<RankedRun> {
-//     let mut runs: Vec<&Run> = runs.to_vec();
-
-//     if runs.is_empty() {
-//         return vec![]
-//     }
-
-//     let first = runs[0];
-//     let game = self
-//         .games()
-//         .get(first.game_id())
-//         .expect("game should exist");
-
-//     runs.sort_by_key(|run| {
-//         let time_ms = run.times_ms().get(game.primary_timing()).unwrap();
-
-//         (time_ms, run.date(), run.created())
-//     });
-
-//     let mut ranks: Vec<RankedRun> = vec![];
-
-//     for (i, run) in runs.iter().enumerate() {
-//         assert_eq!(run.game_id(), first.game_id());
-//         assert_eq!(run.level_id(), first.level_id());
-//         assert_eq!(run.category_id(), first.category_id());
-
-//         let time_ms = run.times_ms().get(game.primary_timing()).unwrap();
-//         let rank = Id64::new((i + 1) as u64).unwrap();
-//         let mut tied_rank = rank;
-//         let mut is_tied = false;
-
-//         if let Some(ref mut previous) = ranks.last_mut() {
-//             if time_ms == *previous.time_ms() {
-//                 is_tied = true;
-//                 previous.is_tied = true;
-//                 tied_rank = previous.tied_rank;
-//             }
-//         }
-
-//         let new = RankedRun {
-//             rank,
-//             time_ms,
-//             is_tied,
-//             tied_rank,
-//             run,
-//         };
-
-//         ranks.push(new);
-//     }
-
-//     ranks
-// }

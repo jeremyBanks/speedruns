@@ -2,6 +2,7 @@ use crate::data::types::Id64;
 
 use derive_more::From;
 use err_derive::Error;
+#[allow(unused)] use log::{debug, error, info, trace, warn};
 
 /// Errors for [id64_from_base36].
 #[derive(Debug, Error, From)]
@@ -10,11 +11,21 @@ pub enum Base36DecodingError {
     InvalidDigit(char),
     #[error(display = "value was zero")]
     Zero,
+    #[error(display = "value was too long for an Id64")]
+    TooLong,
 }
 
 /// Decodes a nonzero lowercase base 36 string to an [Id64].
 pub fn id64_from_base36(digits: &str) -> Result<Id64, Base36DecodingError> {
     let mut value = 0;
+
+    if digits.len() > 10 {
+        return Err(Base36DecodingError::TooLong)
+    }
+
+    // if digits.starts_with('0') {
+    //     warn!("Leading zero in base36 value won't round-trip correctly.");
+    // }
 
     for digit in digits.chars() {
         let digit_value = match digit {
@@ -23,7 +34,8 @@ pub fn id64_from_base36(digits: &str) -> Result<Id64, Base36DecodingError> {
             _ => return Err(Base36DecodingError::InvalidDigit(digit)),
         };
 
-        value = (value * 36) + u64::from(digit_value);
+        value *= 36;
+        value += u64::from(digit_value);
     }
 
     Id64::new(value)
@@ -40,8 +52,9 @@ pub fn base36(value: impl Into<u64>) -> String {
         let digit = (value % 36) as usize;
         value /= 36;
 
-        digits.push(b"012346789abcdefghijklmnopqrstuvwxyz"[digit]);
+        digits.push(b"0123456789abcdefghijklmnopqrstuvwxyz"[digit]);
     }
 
+    digits.reverse();
     String::from_utf8(digits).unwrap()
 }
