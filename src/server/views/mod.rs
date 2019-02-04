@@ -49,6 +49,9 @@ pub trait View: Serialize + Debug {
 //                     "speedruns"
 //                 }
 
+//                 link rel="icon" href="/srca.gif"
+//                 link rel="stylesheet" href="/style.css"
+
 //                 style { r"
 //                     body { font-family: sans-serif; }
 //                     pre { white-space: pre-wrap; }

@@ -9,12 +9,40 @@ use std::{
     rc::Rc,
 };
 
+use derive_more::From;
+use err_derive::Error;
 use getset::Getters;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationErrors};
 
-use crate::data::types::*;
+use crate::{data::types::*, utils::base36};
+
+#[derive(Debug, Error, From)]
+pub enum IntegrityError {
+    #[error(
+        display = "{} with id {} ({}) does not exist, specified by {} in {} {:#?}",
+        target_type,
+        target_id,
+        target_id_b32,
+        source_id_b32,
+        foreign_key_field,
+        item
+    )]
+    ForeignKeyMissing {
+        item:              Box<dyn Debug>,
+        foreign_key_field: &'static str,
+        target_id:         Id64,
+        target_id_b32:     String,
+        source_id_b32:     String,
+        target_type:       &'static str,
+    },
+    #[error(display = "row validation check failed: {:?} in {:?}", errors, item)]
+    CheckFailed {
+        item:   Box<dyn Debug>,
+        errors: ValidationErrors,
+    },
+}
 
 /// All of the speedrun data in our normalized format, indexed by ID.
 #[derive(Debug, Default, Serialize, Deserialize, Clone, Getters)]
@@ -80,7 +108,7 @@ impl Database {
     }
 
     /// Creates a new Database indexing a collection of static tables.
-    pub fn new(tables: &'static Tables) -> Rc<Self> {
+    pub fn new(tables: &'static Tables) -> Result<Rc<Self>, IntegrityError> {
         let runs_by_game_id = {
             trace!("Indexing runs by game id...");
             let mut runs_by_game_id: HashMap<Id64, Vec<&'static Run>> = HashMap::new();
@@ -129,12 +157,12 @@ impl Database {
             users_by_name,
         });
 
-        self_.clone().validate().expect("database data invalid");
+        self_.clone().validate()?;
 
-        self_
+        Ok(self_)
     }
 
-    pub fn validate(self: Rc<Self>) -> Result<(), ValidationErrors> {
+    pub fn validate(self: Rc<Self>) -> Result<(), IntegrityError> {
         trace!("Validating {} runs.", self.tables.runs().len());
         for run in self.clone().runs() {
             run.validate()?;
@@ -256,14 +284,17 @@ impl Database {
 
 /// Wraps [Model] types to add references to the Database, adding new
 /// accessor methods.
+#[derive(Serialize)]
 pub struct Linked<ModelType: 'static + Model> {
+    #[serde(skip)]
     database: Rc<Database>,
-    model:    &'static ModelType,
+    #[serde(flatten)]
+    item: &'static ModelType,
 }
 
 impl<ModelType: Model> Linked<ModelType> {
-    pub fn new(database: Rc<Database>, model: &'static ModelType) -> Self {
-        Self { database, model }
+    pub fn new(database: Rc<Database>, item: &'static ModelType) -> Self {
+        Self { database, item }
     }
 }
 
@@ -271,7 +302,7 @@ impl<ModelType: Model> Deref for Linked<ModelType> {
     type Target = ModelType;
 
     fn deref(&self) -> &ModelType {
-        &self.model
+        &self.item
     }
 }
 
@@ -304,23 +335,82 @@ impl Linked<Run> {
 
     /// Returns Vec<Linked<User>> for this Run. May be empty if all runners
     /// unregistered/guests.
-    pub fn users(&self) -> Option<Linked<Level>> {
-        unimplemented!()
+    pub fn users(&self) -> Vec<Linked<User>> {
+        self.players()
+            .iter()
+            .flat_map(|player| match player {
+                RunPlayer::UserId(user_id) => Some(
+                    self.database
+                        .clone()
+                        .user_by_id(*user_id)
+                        .expect("database state invalid"),
+                ),
+                RunPlayer::GuestName(_) => None,
+            })
+            .collect()
+    }
+
+    fn validate(&self) -> Result<(), IntegrityError> {
+        if let None = self.database.clone().category_by_id(*self.category_id()) {
+            return Err(IntegrityError::ForeignKeyMissing {
+                target_type:       "category",
+                target_id:         *self.category_id(),
+                target_id_b32:     base36(*self.category_id()),
+                source_id_b32:     base36(*self.id()),
+                foreign_key_field: "category_id",
+                item:              Box::new(self.item),
+            })
+        }
+
+        if let Some(level_id) = self.level_id() {
+            if let None = self.database.clone().level_by_id(*level_id) {
+                return Err(IntegrityError::ForeignKeyMissing {
+                    target_type:       "level",
+                    target_id:         *level_id,
+                    target_id_b32:     base36(*level_id),
+                    source_id_b32:     base36(*self.id()),
+                    foreign_key_field: "level_id",
+                    item:              Box::new(self.item),
+                })
+            }
+        }
+
+        for player in self.players() {
+            if let RunPlayer::UserId(user_id) = player {
+                if let None = self.database.clone().level_by_id(*user_id) {
+                    return Err(IntegrityError::ForeignKeyMissing {
+                        target_type:       "user",
+                        target_id:         *user_id,
+                        target_id_b32:     base36(*user_id),
+                        source_id_b32:     base36(*self.id()),
+                        foreign_key_field: "players[…].0",
+                        item:              Box::new(self.item),
+                    })
+                }
+            }
+        }
+
+        if let Err(errors) = self.item.validate() {
+            return Err(IntegrityError::CheckFailed {
+                errors,
+                item: Box::new(self.item),
+            })
+        }
+
+        Ok(())
     }
 }
 
-impl Validate for Linked<Run> {
-    fn validate(&self) -> Result<(), ValidationErrors> {
-        self.category();
-        self.level();
-        self.users();
-        self.model.validate()
-    }
-}
+impl Linked<User> {
+    fn validate(&self) -> Result<(), IntegrityError> {
+        if let Err(errors) = self.item.validate() {
+            return Err(IntegrityError::CheckFailed {
+                errors,
+                item: Box::new(self.item),
+            })
+        }
 
-impl Validate for Linked<User> {
-    fn validate(&self) -> Result<(), ValidationErrors> {
-        self.model.validate()
+        Ok(())
     }
 }
 
@@ -332,11 +422,16 @@ impl Linked<Game> {
             .runs_by_game_id(*self.id())
             .expect("database state invalid")
     }
-}
 
-impl Validate for Linked<Game> {
-    fn validate(&self) -> Result<(), ValidationErrors> {
-        self.model.validate()
+    fn validate(&self) -> Result<(), IntegrityError> {
+        if let Err(errors) = self.item.validate() {
+            return Err(IntegrityError::CheckFailed {
+                errors,
+                item: Box::new(self.item),
+            })
+        }
+
+        Ok(())
     }
 }
 
@@ -348,12 +443,18 @@ impl Linked<Level> {
             .game_by_id(*self.game_id())
             .expect("database state invalid")
     }
-}
 
-impl Validate for Linked<Level> {
-    fn validate(&self) -> Result<(), ValidationErrors> {
+    fn validate(&self) -> Result<(), IntegrityError> {
         self.game();
-        self.model.validate()
+
+        if let Err(errors) = self.item.validate() {
+            return Err(IntegrityError::CheckFailed {
+                errors,
+                item: Box::new(self.item),
+            })
+        }
+
+        Ok(())
     }
 }
 
@@ -365,12 +466,18 @@ impl Linked<Category> {
             .game_by_id(*self.game_id())
             .expect("database state invalid")
     }
-}
 
-impl Validate for Linked<Category> {
-    fn validate(&self) -> Result<(), ValidationErrors> {
+    fn validate(&self) -> Result<(), IntegrityError> {
         self.game();
-        self.model.validate()
+
+        if let Err(errors) = self.item.validate() {
+            return Err(IntegrityError::CheckFailed {
+                errors,
+                item: Box::new(self.item),
+            })
+        }
+
+        Ok(())
     }
 }
 

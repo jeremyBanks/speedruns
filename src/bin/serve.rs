@@ -46,7 +46,7 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     )))?;
 
     let tables: &'static Tables = Box::leak(Box::new(unpack_bundled_tables()));
-    let database: Rc<Database> = Database::new(tables);
+    let database: Rc<Database> = Database::new(tables).expect("database should be valid");
 
     let user = database.user_by_name("TGH").expect("TGH in database");
 
