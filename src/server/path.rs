@@ -102,18 +102,26 @@ impl Path {
         debug!("got path: {}", s);
         assert!(s.starts_with('/'), "path must have leading slash");
 
-        let pieces = &s[1..].split('/').collect::<Vec<_>>();
+        let pieces = s.split('/').skip(1).collect::<Vec<_>>();
+
+        debug!("{:?}", pieces);
 
         let path = match pieces.len() {
-            0 => Ok(Path::Home),
+            1 => Ok(Path::Home),
             3 => {
                 let game_slug = slugify(&pieces[0]);
                 let category_slug = slugify(&pieces[1]);
                 let level_slug = slugify(&pieces[2]);
 
-                let game = database.game_by_slug(&game_slug).unwrap();
-                let category = game.category_by_slug(&category_slug).unwrap();
-                let level = game.level_by_slug(&level_slug).unwrap();
+                let game = database
+                    .game_by_slug(&game_slug)
+                    .ok_or(PathParsingError::NotFound)?;
+                let category = game
+                    .category_by_slug(&category_slug)
+                    .ok_or(PathParsingError::NotFound)?;
+                let level = game
+                    .level_by_slug(&level_slug)
+                    .ok_or(PathParsingError::NotFound)?;
 
                 Ok(Path::LevelCategory(category, level))
             }
