@@ -9,6 +9,6 @@ pub mod server;
 pub mod utils;
 
 pub use crate::data::{
-    base::Database,
+    database::Database,
     types::{self, *},
 };

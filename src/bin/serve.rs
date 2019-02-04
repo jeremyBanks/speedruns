@@ -33,7 +33,7 @@ use validator::Validate;
 use xz2::read::XzDecoder;
 
 use speedruns::{
-    data::base::{Database, Tables},
+    data::database::{Database, Tables},
     types::*,
 };
 

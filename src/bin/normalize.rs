@@ -18,7 +18,7 @@ use xz2::write::XzEncoder;
 use speedruns::{
     api::{self, normalize::Normalize},
     data::{
-        base::{Database, IntegrityError, Tables},
+        database::{Database, IntegrityError, Tables},
         types::Id64,
     },
 };
