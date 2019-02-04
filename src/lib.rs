@@ -1,6 +1,7 @@
 #![feature(associated_type_defaults)]
 #![warn(missing_debug_implementations)]
 pub mod api_types;
+pub mod database;
 pub mod normalize_api_types;
 pub mod normalized_types;
 pub mod validators;
@@ -9,7 +10,7 @@ pub use utils::*;
 pub type DynError = Box<dyn std::error::Error>;
 
 pub mod utils {
-    use std::{convert::TryFrom, num::NonZeroU64 as p64};
+    use std::num::NonZeroU64 as p64;
 
     use derive_more::From;
     use err_derive::Error;

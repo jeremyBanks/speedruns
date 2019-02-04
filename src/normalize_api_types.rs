@@ -3,8 +3,10 @@ use std::{iter::FromIterator, str::FromStr};
 use derive_more::From;
 use err_derive::Error;
 use lazy_static::lazy_static;
-#[allow(unused)] use log::{debug, error, info, trace, warn};
+#[allow(unused)]
+use log::{debug, error, info, trace, warn};
 use regex::Regex;
+use validator::Validate;
 
 use crate::{api_types as api, normalized_types::*, p64_from_base36};
 
@@ -14,6 +16,8 @@ pub enum Error {
     NoNames,
     #[error(display = "an ID was invalid and could not be decoded: {:?}", _0)]
     InvalidId(crate::utils::Error),
+    #[error(display = "internal error: invalid object created. {:?}", _0)]
+    InternalValidationErrors(validator::ValidationErrors),
 }
 
 pub trait Normalize {
@@ -25,14 +29,18 @@ impl Normalize for api::User {
     type Normalized = User;
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
-        Ok(User {
+        let user = User {
             id:      p64_from_base36(self.id())?,
             name:    self
                 .names()
                 .normalize()
                 .unwrap_or_else(|_| format!("Corrupt User {}", self.id())),
-            created: self.signup().clone(),
-        })
+            created: *self.signup(),
+        };
+
+        user.validate()?;
+
+        Ok(user)
     }
 }
 
@@ -41,21 +49,21 @@ impl Normalize for api::Names {
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         if let Some(name) = self.international() {
-            if name.len() > 0 {
+            if !name.is_empty() {
                 return Ok(name.to_string())
             }
         }
         if let Some(name) = self.international() {
-            if name.len() > 0 {
+            if !name.is_empty() {
                 return Ok(name.to_string())
             }
         }
         if let Some(name) = self.japanese() {
-            if name.len() > 0 {
+            if !name.is_empty() {
                 return Ok(name.to_string())
             }
         }
-        Err(Error::NoNames.into())
+        Err(Error::NoNames)
     }
 }
 
@@ -70,51 +78,72 @@ impl Normalize for api::Game {
             created:        self.created().clone(),
             primary_timing: self.ruleset().default_time().normalize()?,
         };
+
+        game.validate()?;
+
         let categories = self
             .categories()
             .iter()
             .map(|api_category| -> Result<Category, Error> {
-                Ok(Category {
+                let category = Category {
                     game_id: p64_from_base36(self.id())?,
                     id:      p64_from_base36(api_category.id())?,
                     name:    api_category.name().to_string(),
                     rules:   api_category.rules().clone().unwrap_or(String::new()),
                     per:     api_category.type_().normalize()?,
-                })
+                };
+
+                category.validate()?;
+
+                Ok(category)
             })
-            .collect::<Result<_, _>>()?;
+            .collect::<Result<Vec<_>, _>>()?;
+
         let levels = self
             .levels()
             .iter()
             .map(|api_category| -> Result<Level, Error> {
-                Ok(Level {
+                let level = Level {
                     game_id: p64_from_base36(self.id())?,
                     id:      p64_from_base36(api_category.id())?,
                     name:    api_category.name().to_string(),
                     rules:   api_category.rules().clone().unwrap_or(String::new()),
-                })
+                };
+
+                level.validate()?;
+
+                Ok(level)
             })
             .collect::<Result<_, _>>()?;
+
         Ok((game, categories, levels))
     }
 }
 
 impl Normalize for api::Run {
-    type Normalized = Run;
+    // Option because we drop runs that aren't verified.
+    type Normalized = Option<Run>;
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
-        Ok(Run {
-            game_id:     p64_from_base36(self.game())?,
-            id:          p64_from_base36(self.id())?,
-            created:     self.submitted().clone(),
-            date:        self.date().clone(),
-            category_id: p64_from_base36(self.category())?,
-            level_id:    match self.level() {
-                None => None,
-                Some(level_id) => Some(p64_from_base36(level_id)?),
-            },
-            times_ms:    self.times().normalize()?,
-        })
+        match self.status() {
+            api::RunStatus::Verified { .. } => {
+                let run = Run {
+                    game_id:     p64_from_base36(self.game())?,
+                    id:          p64_from_base36(self.id())?,
+                    created:     *self.submitted(),
+                    date:        *self.date(),
+                    category_id: p64_from_base36(self.category())?,
+                    level_id:    match self.level() {
+                        None => None,
+                        Some(level_id) => Some(p64_from_base36(level_id)?),
+                    },
+                    times_ms:    self.times().normalize()?,
+                };
+                run.validate()?;
+                Ok(Some(run))
+            }
+            _ => Ok(None),
+        }
     }
 }
 

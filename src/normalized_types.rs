@@ -4,13 +4,13 @@
 //! corrupt records and rejected or pending runs.
 #![warn(missing_debug_implementations, missing_docs)]
 #![allow(unused_imports, missing_debug_implementations, missing_docs)]
+pub use std::num::NonZeroU64 as p64;
 use std::{
     collections::BTreeMap,
     convert::{From, TryFrom},
     fmt::Debug,
     fs::File,
     io::BufReader,
-    num::NonZeroU64 as p64,
     ops::Deref,
     rc::Rc,
 };

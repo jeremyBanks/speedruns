@@ -1,3 +1,7 @@
+TODO NOW
+
+
+
 ## About
 
 A few Rust tools for mirroring speedrun.com data.
@@ -5,7 +9,8 @@ A few Rust tools for mirroring speedrun.com data.
 ## Data
 
 You should start by download an existing data archive so you only need to pull
-new records from speedrun.com. You can find one at <https://archive.org/details/speedrun.com-2019-04-27>.
+the newest records from speedrun.com. You can find one at
+<https://archive.org/details/speedrun.com-2019-04-27>.
 
 ## Tools
 
@@ -38,11 +43,11 @@ gotten any new data that has a structure we aren't prepared to handle.
 Converts the data into a normalized form you might put in a SQL database.
 This excludes some of the metadata and rejected runs in the original data.
 
-- `data/normalized/users.jsonl.gz`
-- `data/normalized/games.jsonl.gz`
-- `data/normalized/runs.jsonl.gz`
-- `data/normalized/levels.jsonl.gz`
-- `data/normalized/categories.jsonl.gz`
+- `data/normalized/users.jsonl`
+- `data/normalized/games.jsonl`
+- `data/normalized/runs.jsonl`
+- `data/normalized/levels.jsonl`
+- `data/normalized/categories.jsonl`
 
 ### `serve`
 

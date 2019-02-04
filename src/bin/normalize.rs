@@ -24,6 +24,7 @@ use tempfile::NamedTempFile;
 use url::Url;
 use validator::{Validate, ValidationError, ValidationErrors};
 use validator_derive::Validate;
+use xz2::write::XzEncoder;
 
 use speedruncom_data_tools::{
     api_types as api, normalize_api_types::Normalize, normalized_types::*, p64_from_base36,
@@ -105,28 +106,37 @@ impl Database {
             let mut file = NamedTempFile::new_in("data")?;
             {
                 let mut buffer = BufWriter::new(&mut file);
-                // let mut compressor = GzEncoder::new(buffer, flate2::Compression::best());
                 for data in table.values().sorted() {
                     serde_json::to_writer(&mut buffer, &data)?;
                     buffer.write(b"\n")?;
                 }
-                // compressor.finish()?;
             }
-            file.persist(path)?;
+            file.persist(format!("{}.jsonl", path))?;
+
+            let mut file = NamedTempFile::new_in("data")?;
+            {
+                let buffer = BufWriter::new(&mut file);
+                let mut compressor = XzEncoder::new(buffer, 9);
+                for data in table.values().sorted() {
+                    bincode::serialize_into(&mut compressor, &data)?;
+                }
+                compressor.finish()?;
+            }
+            file.persist(format!("{}.bin.xz", path))?;
 
             Ok(())
         }
 
         info!("Dumping {} games...", self.games().len());
-        dump_table("data/normalized/games.jsonl", self.games())?;
+        dump_table("data/normalized/games", self.games())?;
         info!("Dumping {} users...", self.users().len());
-        dump_table("data/normalized/users.jsonl", self.users())?;
+        dump_table("data/normalized/users", self.users())?;
         info!("Dumping {} runs...", self.runs().len());
-        dump_table("data/normalized/runs.jsonl", self.runs())?;
+        dump_table("data/normalized/runs", self.runs())?;
         info!("Dumping {} categories...", self.categories().len());
-        dump_table("data/normalized/categories.jsonl", self.categories())?;
+        dump_table("data/normalized/categories", self.categories())?;
         info!("Dumping {} levels...", self.levels().len());
-        dump_table("data/normalized/levels.jsonl", self.levels())?;
+        dump_table("data/normalized/levels", self.levels())?;
 
         info!("Done");
         Ok(())
@@ -149,8 +159,10 @@ impl Database {
     }
 
     pub fn load_api_run(&mut self, api_run: &api::Run) {
-        let run = api_run.normalize().unwrap();
-        self.runs.insert(*run.id(), run);
+        let optional_run = api_run.normalize().unwrap();
+        if let Some(run) = optional_run {
+            self.runs.insert(*run.id(), run);
+        }
     }
 }
 
