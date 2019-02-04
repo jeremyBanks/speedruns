@@ -94,37 +94,25 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
         }
 
         (&Method::GET, "/celeste/anypercent") => {
-            let celeste = database
+            let game = database
                 .clone()
                 .game_by_slugify("celeste")
                 .expect("Celeste in database");
-            let clear = celeste
-                .category_by_slugify("Clear")
-                .expect("Any% in Celeste");
-            let forsaken_city = celeste
+            let category = game.category_by_slugify("Clear").expect("Any% in Celeste");
+            let level = game
                 .level_by_slugify("Forsaken City")
                 .expect("Forsaken City in Celeste");
-            let runs = clear.level_runs(&forsaken_city);
-
-            let leaderboards = rank_runs(database.clone(), &runs);
-
-            // Debug(&leaderboards).html_to(&mut response);
+            let runs = category.level_runs(&level);
 
             let ranks = rank_runs(database.clone(), &runs);
 
-            let view = LeaderboardPage {
-                game: celeste.as_static(),
-                category: clear.as_static(),
-                level: Some(forsaken_city.as_static()),
+            LeaderboardPage {
+                game: game.clone(),
+                category: category.clone(),
+                level: Some(level.clone()),
                 ranks,
-            };
-
-            response
-                .headers_mut()
-                .insert("Content-Type", HeaderValue::from_static("text/html"));
-
-            let render = view.render().into_string();
-            *response.body_mut() = Body::from(render);
+            }
+            .html_to(&mut response);
         }
 
         _ => {

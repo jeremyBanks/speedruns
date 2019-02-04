@@ -1,20 +1,29 @@
+use std::io::Write;
+
+use flate2::write::GzEncoder;
 use hyper::{header::HeaderValue, Body};
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use maud::{html, Markup};
 use serde::Serialize;
 
-use crate::data::{leaderboard::RankedRun, types::*};
+use crate::data::{database::Linked, leaderboard::RankedRun, types::*};
 
 pub trait View: Serialize + std::fmt::Debug {
     fn render(&self) -> Markup;
 
     fn html_to(&self, response: &mut hyper::Response<hyper::Body>) {
-        response
-            .headers_mut()
-            .insert("Content-Type", HeaderValue::from_static("text/html"));
+        let headers = response.headers_mut();
+        headers.insert("Content-Type", HeaderValue::from_static("text/html"));
+        headers.insert("Content-Encoding", HeaderValue::from_static("gzip"));
 
         let render = self.render().into_string();
-        *response.body_mut() = Body::from(render);
+
+        let mut buffer = Vec::<u8>::new();
+        let mut compressor = GzEncoder::new(&mut buffer, flate2::Compression::best());
+        compressor.write_all(render.as_bytes()).unwrap();
+        compressor.finish().unwrap();
+
+        *response.body_mut() = Body::from(buffer);
     }
 }
 
@@ -78,19 +87,31 @@ impl<'db, T: std::fmt::Debug + Serialize> View for Debug<T> {
 
 #[derive(Debug, Serialize)]
 pub struct LeaderboardPage {
-    pub game:     &'static Game,
-    pub category: &'static Category,
-    pub level:    Option<&'static Level>,
+    pub game:     Linked<Game>,
+    pub category: Linked<Category>,
+    pub level:    Option<Linked<Level>>,
     pub ranks:    Vec<RankedRun>,
 }
 
 impl<'db> View for LeaderboardPage {
     fn render(&self) -> Markup {
         page(html! {
-            @for run in &self.ranks {
+            h2 {
+                (self.game.name())
+            }
+            h3 {
+                (self.category.name())
+            }
+            @if let Some(level) = &self.level {
+                h4 {
+                    (level.name())
+                }
+            }
+            @for rank in &self.ranks {
                 p {
-                    "#" (run.rank()) ". "
-                    (run.time_ms()) " ms"
+                    "#" (rank.rank()) ". "
+                    (rank.time_ms()) " ms"
+                    " by " (format!("{:#?}", rank.run().users().to_vec().iter().map(|u| u.name()).collect::<Vec<_>>()))
                 }
             }
         })
