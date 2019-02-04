@@ -1,0 +1,7 @@
+merge_imports = true
+use_field_init_shorthand = true
+format_doc_comments = true
+wrap_comments = true
+comment_width = 80
+max_width = 80
+imports_layout = "Mixed"
