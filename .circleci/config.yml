@@ -54,7 +54,7 @@
         {"restore_cache": {
           "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}"
         }},
-        {"run": "cargo fmt"},
+        {"run": "cargo fmt --all -- --check"},
       ]
     },
 
