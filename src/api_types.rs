@@ -329,10 +329,8 @@ pub enum VariableScope {
 pub struct VariableValues {
     default: Option<String>,
     values: HashMap<String, VariableValue>,
-    #[deprecated]
     #[serde(rename = "_note")]
     _note: String,
-    #[deprecated]
     choices: HashMap<String, String>,
 }
 
