@@ -20,7 +20,7 @@ fn page(body: Markup) -> Markup {
     html! {
         (maud::DOCTYPE)
         head {
-            link charset="utf-8";
+            meta charset="utf-8";
             link rel="stylesheet" href="/style.css";
             link rel="icon" href="/icon.gif";
             title { "SpeedRun.Com Archive" }
