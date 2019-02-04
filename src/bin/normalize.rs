@@ -1,5 +1,9 @@
 //! Convert our API data into our simplified and normalized format.
-#![allow(clippy::useless_attribute, clippy::cognitive_complexity)]
+#![allow(
+    clippy::useless_attribute,
+    clippy::cognitive_complexity,
+    clippy::clone_on_copy
+)]
 use std::{
     collections::HashSet,
     fs::File,
@@ -18,6 +22,7 @@ use speedruns::{
     api::{self, normalize::Normalize},
     data::{
         database::{Database, IntegrityError, Tables},
+        models::{AnyModel, AnyModelVec, Model},
         types::Id64,
     },
     utils::slugify,
@@ -56,7 +61,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         levels.append(&mut game_levels);
     }
 
-    info!("Validating API data...");
+    info!("Validating and cleaning API data...");
 
     loop {
         // memory leak, so hopefully not many iterations!
@@ -67,100 +72,143 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             categories.clone(),
             levels.clone(),
         )))) {
-            Ok(_) => break,
+            Ok(_) => {
+                info!("Database validation successful.");
+                break
+            }
             Err(errors) => {
                 error!("Database validation failed: {}", errors);
-                let mut invalid_run_ids = HashSet::<Id64>::new();
-                let mut invalid_game_ids = HashSet::<Id64>::new();
-                let mut invalid_user_ids = HashSet::<Id64>::new();
-                let mut invalid_level_ids = HashSet::<Id64>::new();
-                let mut invalid_category_ids = HashSet::<Id64>::new();
-
-                // TODO: in case of conflicts, pick older record!
-                // the goofs who picked conflicts can drop out.
-                let mut duplicate_game_slugs = HashSet::<String>::new();
-                let mut duplicate_user_slugs = HashSet::<String>::new();
+                let mut dead_run_ids = HashSet::<Id64>::new();
+                let mut dead_game_ids = HashSet::<Id64>::new();
+                let mut dead_user_ids = HashSet::<Id64>::new();
+                let mut dead_level_ids = HashSet::<Id64>::new();
+                let mut dead_category_ids = HashSet::<Id64>::new();
 
                 for error in errors.errors {
                     match error {
-                        IntegrityError::ForeignKeyMissing {
-                            source_type,
-                            source_id,
-                            ..
-                        } => {
-                            match source_type {
-                                "run" => &mut invalid_run_ids,
-                                "user" => &mut invalid_user_ids,
-                                "game" => &mut invalid_game_ids,
-                                "level" => &mut invalid_level_ids,
-                                "category" => &mut invalid_category_ids,
-                                _ => unreachable!("invalid source_type in integrity error"),
-                            }
-                            .insert(source_id);
-                        }
-                        IntegrityError::MissingPrimaryTiming(run) => {
-                            invalid_run_ids.insert(*run.id());
-                        }
                         IntegrityError::IndexingError => {
                             error!("indexing failed");
                         }
-                        IntegrityError::NonUniqueSlug {
-                            source_type,
-                            source_slug,
-                        } => {
-                            match source_type {
-                                "user" => &mut duplicate_user_slugs,
-                                "game" => &mut duplicate_game_slugs,
-                                _ => &mut other_duplicate_slugs,
-                            }
-                            .insert(source_slug.clone());
+                        IntegrityError::ForeignKeyMissing { source, .. } => {
+                            use AnyModel::*;
+                            match source {
+                                Run(run) => dead_run_ids.insert(*run.id()),
+                                User(user) => dead_user_ids.insert(*user.id()),
+                                Game(game) => dead_game_ids.insert(*game.id()),
+                                Level(level) => dead_level_ids.insert(*level.id()),
+                                Category(category) =>
+                                    dead_category_ids.insert(*category.id()),
+                            };
                         }
                         IntegrityError::CheckFailed { .. } => {
-                            panic!("in-row validation error? shouldn't happen! normalization bug!");
+                            panic!("value incorrectly normalized and fails validation?!");
+                        }
+                        IntegrityError::NonUniqueSlug { sources, .. } => {
+                            use AnyModelVec::*;
+                            match sources {
+                                Runs(_) => unreachable!("runs don't have slugs?!"),
+                                Games(games) => {
+                                    let dead_dupes = games
+                                        .iter()
+                                        .sorted_by_key(|game| {
+                                            (
+                                                game.created(),
+                                                game.slug().len(),
+                                                game.name().len(),
+                                                game.name(),
+                                                game.id(),
+                                            )
+                                                .clone()
+                                        })
+                                        .skip(1);
+                                    for dupe in dead_dupes {
+                                        dead_game_ids.insert(*dupe.id());
+                                    }
+                                }
+                                Users(users) => {
+                                    let dead_dupes = users
+                                        .iter()
+                                        .sorted_by_key(|user| {
+                                            (
+                                                user.created(),
+                                                user.name().len(),
+                                                user.name(),
+                                                user.id(),
+                                            )
+                                                .clone()
+                                        })
+                                        .skip(1);
+                                    for dupe in dead_dupes {
+                                        dead_user_ids.insert(*dupe.id());
+                                    }
+                                }
+                                Categories(categories) => {
+                                    let dead_dupes = categories
+                                        .iter()
+                                        .sorted_by_key(|category| {
+                                            (
+                                                category.name().len(),
+                                                category.name(),
+                                                category.id(),
+                                            )
+                                                .clone()
+                                        })
+                                        .skip(1);
+                                    for dupe in dead_dupes {
+                                        dead_category_ids.insert(*dupe.id());
+                                    }
+                                }
+                                Levels(levels) => {
+                                    let dead_dupes = levels
+                                        .iter()
+                                        .sorted_by_key(|level| {
+                                            (level.name().len(), level.name(), level.id())
+                                                .clone()
+                                        })
+                                        .skip(1);
+                                    for dupe in dead_dupes {
+                                        dead_level_ids.insert(*dupe.id());
+                                    }
+                                }
+                            };
+                        }
+                        IntegrityError::MissingPrimaryTiming(run) => {
+                            dead_run_ids.insert(*run.id());
                         }
                     }
                 }
 
                 error!(
                     "{:6} ({:3}%) invalid runs",
-                    invalid_run_ids.len(),
-                    (invalid_run_ids.len() * 100) / runs.len()
+                    dead_run_ids.len(),
+                    (dead_run_ids.len() * 100) / runs.len()
                 );
                 error!(
                     "{:6} ({:3}%) invalid users",
-                    invalid_user_ids.len(),
-                    (invalid_user_ids.len() * 100) / users.len()
+                    dead_user_ids.len(),
+                    (dead_user_ids.len() * 100) / users.len()
                 );
                 error!(
                     "{:6} ({:3}%) invalid games",
-                    invalid_game_ids.len(),
-                    (invalid_game_ids.len() * 100) / games.len()
+                    dead_game_ids.len(),
+                    (dead_game_ids.len() * 100) / games.len()
                 );
                 error!(
                     "{:6} ({:3}%) invalid categories",
-                    invalid_category_ids.len(),
-                    (invalid_category_ids.len() * 100) / categories.len()
+                    dead_category_ids.len(),
+                    (dead_category_ids.len() * 100) / categories.len()
                 );
                 error!(
                     "{:6} ({:3}%) invalid levels",
-                    invalid_level_ids.len(),
-                    (invalid_level_ids.len() * 100) / levels.len()
+                    dead_level_ids.len(),
+                    (dead_level_ids.len() * 100) / levels.len()
                 );
 
-                error!("{:6} duplicated user slugs", duplicate_user_slugs.len(),);
-                error!("{:6} duplicated game slugs", duplicate_game_slugs.len(),);
-
-                runs.retain(|x| !invalid_run_ids.contains(x.id()));
-                users.retain(|x| {
-                    !invalid_user_ids.contains(x.id())
-                        && !duplicate_user_slugs.contains(&slugify(x.name()))
-                });
-                games.retain(|x| {
-                    !invalid_game_ids.contains(x.id())
-                        && !duplicate_game_slugs.contains(&slugify(x.slug()))
-                });
-                categories.retain(|x| !invalid_category_ids.contains(x.id()));
-                levels.retain(|x| !invalid_level_ids.contains(x.id()));
+                runs.retain(|x| !dead_run_ids.contains(x.id()));
+                users.retain(|x| !dead_user_ids.contains(x.id()));
+                games.retain(|x| !dead_game_ids.contains(x.id()));
+                categories.retain(|x| !dead_category_ids.contains(x.id()));
+                levels.retain(|x| !dead_level_ids.contains(x.id()));
             }
         }
     }

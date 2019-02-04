@@ -19,6 +19,8 @@ fn main() {
         if let Ok(mut source_file) = fs::OpenOptions::new().read(true).open(&path) {
             io::copy(&mut source_file, &mut out_file)
                 .expect("failed to copy normalized data");
+        } else {
+            panic!("expected to find source files!");
         }
     }
 }
