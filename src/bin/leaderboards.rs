@@ -6,12 +6,15 @@ use std::{
     error::Error,
     fmt::Debug,
     fs::File,
-    io::{prelude::*, BufReader, BufWriter},
+    io::{prelude::*, BufReader, BufWriter, Read},
     num::NonZeroU64 as p64,
     ops::Deref,
     rc::Rc,
 };
 
+#[allow(unused)] use log::{debug, error, info, trace, warn};
+use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use validator::Validate;
 use xz2::read::XzDecoder;
 
 use speedruncom_data_tools::{database::Database, normalized_types::*, DynError};
@@ -22,13 +25,8 @@ fn main() -> Result<(), DynError> {
         module_path!()
     )))?;
 
-    include_bytes!("../../data/normalized/categories.bin.xz");
-    include_bytes!("../../data/normalized/games.bin.xz");
-    include_bytes!("../../data/normalized/levels.bin.xz");
-    include_bytes!("../../data/normalized/runs.bin.xz");
-    include_bytes!("../../data/normalized/users.bin.xz");
-
     let database = load_included_data()?;
+    database.validate()?;
 
     let game = database
         .games()
@@ -49,8 +47,54 @@ fn main() -> Result<(), DynError> {
     Ok(())
 }
 
+fn load_data<T: DeserializeOwned>(
+    reader: &mut &[u8],
+    database: &mut Database,
+    loader: impl Fn(&mut Database, T),
+) -> Result<(), DynError> {
+    let mut decompressor = XzDecoder::new(reader);
+    loop {
+        // We have left no way to detect the last item except for EOF.
+        let item = bincode::deserialize_from::<_, T>(&mut decompressor);
+        if let Err(ref error) = item {
+            if let bincode::ErrorKind::Io(ref error) = **error {
+                trace!("Assuming IO error is end of data EOF: {:?}", error);
+                break
+            }
+        }
+        loader(database, item?);
+    }
+    Ok(())
+}
+
 fn load_included_data() -> Result<Database, DynError> {
-    let database = Database::new();
+    let mut database = Database::new();
+
+    load_data(
+        &mut include_bytes!("../../data/normalized/categories.bin.xz").as_ref(),
+        &mut database,
+        Database::insert_category,
+    )?;
+    load_data(
+        &mut include_bytes!("../../data/normalized/games.bin.xz").as_ref(),
+        &mut database,
+        Database::insert_game,
+    )?;
+    load_data(
+        &mut include_bytes!("../../data/normalized/levels.bin.xz").as_ref(),
+        &mut database,
+        Database::insert_level,
+    )?;
+    load_data(
+        &mut include_bytes!("../../data/normalized/runs.bin.xz").as_ref(),
+        &mut database,
+        Database::insert_run,
+    )?;
+    load_data(
+        &mut include_bytes!("../../data/normalized/users.bin.xz").as_ref(),
+        &mut database,
+        Database::insert_user,
+    )?;
 
     Ok(database)
 }
