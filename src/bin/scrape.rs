@@ -13,8 +13,6 @@ use std::{
 };
 use tempfile::NamedTempFile;
 
-pub type BoxErr = Box<dyn std::error::Error>;
-
 #[derive(PartialEq, Eq, Hash)]
 struct Resource {
     id:    &'static str,
@@ -89,7 +87,7 @@ impl Spider {
         spider
     }
 
-    fn save(&mut self, resource: &Resource) -> Result<(), BoxErr> {
+    fn save(&mut self, resource: &Resource) -> Result<(), Box<dyn std::error::Error>> {
         info!(
             "Saving {} {}...",
             self.resource_by_id(resource).len(),
@@ -113,7 +111,7 @@ impl Spider {
         Ok(())
     }
 
-    pub fn run(&mut self) -> Result<(), BoxErr> {
+    pub fn run(&mut self) -> Result<(), Box<dyn std::error::Error>> {
         let mut headers = reqwest::header::HeaderMap::new();
 
         let user_agent = format!(
@@ -223,7 +221,7 @@ impl Spider {
     }
 }
 
-pub fn main() -> Result<(), BoxErr> {
+pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::try_init_from_env(
         env_logger::Env::new()
             .default_filter_or(format!("reqwest=debug,{}=trace", module_path!())),

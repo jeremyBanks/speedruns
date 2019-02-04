@@ -5,14 +5,14 @@ use lazy_static::lazy_static;
 use regex::Regex;
 use validator::Validate;
 
-use crate::{api_types as api, id64_from_base36, normalized_types::*};
+use crate::{api, types::*, utils::id64_from_base36};
 
 #[derive(Debug, Error, From)]
 pub enum Error {
     #[error(display = "all names were None or zero-length")]
     NoNames,
     #[error(display = "an ID was invalid and could not be decoded: {:?}", _0)]
-    InvalidId(crate::utils::Error),
+    InvalidId(crate::utils::Base36DecodingError),
     #[error(display = "internal error: invalid object created. {:?}", _0)]
     InternalValidationErrors(validator::ValidationErrors),
 }
