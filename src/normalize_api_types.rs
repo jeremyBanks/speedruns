@@ -158,13 +158,13 @@ impl Normalize for api::CategoryType {
 }
 
 impl Normalize for api::GameRulesetTiming {
-    type Normalized = GamePrimaryTiming;
+    type Normalized = TimingMethod;
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         Ok(match self {
-            api::GameRulesetTiming::IGT => GamePrimaryTiming::IGT,
-            api::GameRulesetTiming::RTA => GamePrimaryTiming::RTA,
-            api::GameRulesetTiming::RTA_NL => GamePrimaryTiming::RTA_NL,
+            api::GameRulesetTiming::IGT => TimingMethod::IGT,
+            api::GameRulesetTiming::RTA => TimingMethod::RTA,
+            api::GameRulesetTiming::RTA_NL => TimingMethod::RTA_NL,
         })
     }
 }

@@ -3,9 +3,11 @@
 
 pub mod api_types;
 pub mod database;
+pub mod escape_html;
 pub mod normalize_api_types;
 pub mod normalized_types;
 pub mod validators;
+
 pub use utils::*;
 
 pub type BoxErr = Box<dyn std::error::Error>;
