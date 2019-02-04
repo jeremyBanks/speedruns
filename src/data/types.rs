@@ -166,6 +166,8 @@ pub struct Run {
     pub date: Option<NaiveDate>,
     #[validate]
     pub times_ms: RunTimesMs,
+    #[validate]
+    pub players: Vec<RunPlayer>,
 }
 
 #[derive(
@@ -219,5 +221,3 @@ impl Validate for RunPlayer {
         Ok(())
     }
 }
-
-pub struct Region {}

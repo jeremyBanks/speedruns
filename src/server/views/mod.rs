@@ -26,50 +26,47 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use validator::Validate;
 use xz2::read::XzDecoder;
 
-use crate::data::{
-    base::{Database, RankedRun},
-    types::*,
-};
+use crate::data::{base::Database, types::*};
 
 pub trait View: Serialize + Debug {
     fn render(&self) -> Markup;
 }
 
-#[derive(Debug, Serialize)]
-pub struct LeaderboardPage<'db> {
-    pub game:     &'db Game,
-    pub category: &'db Category,
-    pub level:    Option<&'db Level>,
-    pub ranks:    Vec<RankedRun<'db>>,
-}
+// #[derive(Debug, Serialize)]
+// pub struct LeaderboardPage {
+//     pub game:     &'static Game,
+//     pub category: &'static Category,
+//     pub level:    Option<&'static Level>,
+//     pub ranks:    Vec<RankedRun>,
+// }
 
-impl<'db> View for LeaderboardPage<'db> {
-    fn render(&self) -> Markup {
-        html! {
-            (maud::DOCTYPE)
-            head {
-                title {
-                    "speedruns"
-                }
+// impl<'db> View for LeaderboardPage {
+//     fn render(&self) -> Markup {
+//         html! {
+//             (maud::DOCTYPE)
+//             head {
+//                 title {
+//                     "speedruns"
+//                 }
 
-                style { r"
-                    body { font-family: sans-serif; }
-                    pre { white-space: pre-wrap; }
-                " }
-            }
+//                 style { r"
+//                     body { font-family: sans-serif; }
+//                     pre { white-space: pre-wrap; }
+//                 " }
+//             }
 
-            body {
-                h1 {
-                    "unofficial speedrun.com data mirror"
-                }
+//             body {
+//                 h1 {
+//                     "unofficial speedrun.com data mirror"
+//                 }
 
-                @for run in &self.ranks {
-                    p {
-                        "#" (run.rank()) ". "
-                        (run.time_ms()) " ms"
-                    }
-                }
-            }
-        }
-    }
-}
+//                 @for run in &self.ranks {
+//                     p {
+//                         "#" (run.rank()) ". "
+//                         (run.time_ms()) " ms"
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
