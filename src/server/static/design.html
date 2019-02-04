@@ -1,0 +1,293 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+    :root {
+        font-size: 14px;
+        font-family: sans-serif;
+        background: rgb(240, 240, 240);
+        color: rgb(0, 0, 0);
+        /* white-space: pre-wrap; */
+    }
+
+    * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+        border: none;
+        color: inherit;
+        font: inherit;
+    }
+
+    nav {
+        display: flex;
+    }
+
+    nav>* {
+        font-weight: bold;
+    }
+
+    nav>a,
+    main,
+    footer {
+        background: rgb(255, 255, 255);
+        border: 1px solid rgb(222, 222, 222);
+        box-shadow: 0 0 3px 0px rgb(255, 255, 255);
+        margin: 3px;
+        text-decoration: none;
+        padding: 4px 8px;
+    }
+
+    nav.site {
+        justify-content: space-between;
+        font-size: 24px;
+    }
+
+    nav.resource {
+        font-size: 18px;
+    }
+
+    nav.view {
+        font-size: 14px;
+    }
+
+    nav>a:hover {
+        background-color: rgb(255, 255, 200);
+    }
+
+    body {
+        background: rgb(240, 240, 240);
+        max-width: 600px;
+        margin: 16px auto;
+        border-radius: 4px;
+    }
+
+    main {
+        min-height: 400px;
+    }
+
+    footer {
+        font-size: 10px;
+    }
+
+    .logo {
+        background-image: url('srca-icon.gif');
+        background-position: 6px;
+        background-repeat: no-repeat;
+        background-size: 18px;
+        padding-left: 28px;
+
+    }
+
+    .source {
+        color: transparent;
+        background-image: url('src-logo.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 130px;
+        background-size: 120px;
+        background-color: rgb(32, 32, 32);
+    }
+
+    .source:hover {
+        background-color: rgb(75, 75, 25);
+    }
+
+    table {
+        text-align: left;
+        width: 100%;
+        margin: auto;
+    }
+
+    th {
+        font-weight: bold;
+    }
+
+    td,
+    th {
+        padding: 2px 6px;
+        vertical-align: top;
+    }
+
+    td.rank,
+    td.time,
+    td.date,
+    code,
+    pre {
+        font-family:
+            "Fira Code", Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",
+            "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono",
+            "Liberation Mono", "Nimbus Mono L", Monaco, monospace;
+    }
+
+    tbody tr:hover {
+        background-color: #F8F8F8;
+    }
+
+    tr>.rank {
+        text-align: right;
+        width: 40px;
+    }
+
+    tr>th.time {
+        text-align: center;
+        width: 100px;
+    }
+
+    tr>td.time {
+        text-align: right;
+        width: 100px;
+    }
+
+    tr>.date {
+        text-align: center;
+        width: 100px;
+    }
+
+    tr>.runner {
+        text-align: left;
+        width: auto;
+    }
+
+    tbody>tr>.rank {
+        border-left: 6px solid #CDC;
+        background-color: #E8E8E8;
+        color: #888;
+    }
+
+    tbody>tr[data-rank="1"]>.rank {
+        border-left-color: #FFAA00;
+        background-color: #FFF0E0;
+        color: black;
+    }
+
+    tbody>tr[data-rank="2"]>.rank {
+        border-left-color: #AAB;
+        background-color: #EEF;
+        color: black;
+    }
+
+    tbody>tr[data-rank="3"]>.rank {
+        border-left-color: #EE5511;
+        background-color: #F8D8C0;
+        color: black;
+    }
+
+    .inactive {
+        opacity: 0.5;
+    }
+
+    .inactive:hover {
+        opacity: 1.0;
+    }
+</style>
+
+<body>
+    <section>
+        <nav class="site">
+            <a class="logo" href="https://speedrun.ca">SRC Archive</a>
+        </nav>
+    </section>
+
+    <nav class="resource">
+        <a class="game" href="https://speedrun.com">Celeste</a>
+        <a class="category" href="https://speedrun.com">Any%</a>
+        <a class="level" href="https://speedrun.com">Forsaken City</a>
+    </nav>
+
+    <nav class="view">
+        <a>Leaderboard</a>
+        <a class="inactive">History</a>
+        <a class="inactive">Rules</a>
+        <div style="flex-grow: 1;"></div>
+        <a class="source" href="https://speedrun.com">speedrun.com</a>
+    </nav>
+
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th class="rank">rank</th>
+                    <th class="time">time</th>
+                    <th class="date">date</th>
+                    <th class="runner">runner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-rank="1">
+                    <th class="rank">1</th>
+                    <td class="time">5:55 </td>
+                    <td class="date"><a href="/wc2/mission/orc-04-assault-on-hillsbrad/szwagier-z03o">2018-10-08</a>
+                    </td>
+                    <td class="runner"><a href="/@szwagier">Szwagier</a></td>
+                </tr>
+                <tr data-rank="2">
+                    <th class="rank">2</th>
+                    <td class="time">5:58 </td>
+                    <td class="date"><a href="/wc2/mission/orc-04-assault-on-hillsbrad/zpr-mekd">2018-03-22</a></td>
+                    <td class="runner"><a href="/@zpr">ZPR</a></td>
+                </tr>
+                <tr data-rank="2">
+                    <th class="rank">2</th>
+                    <td class="time">5:58 </td>
+                    <td class="date"><a href="/wc2/mission/orc-04-assault-on-hillsbrad/greenmixtape-yjkv">2018-04-07</a>
+                    </td>
+                    <td class="runner"><a href="/@greenmixtape">GreenMixTape</a></td>
+                </tr>
+                <tr data-rank="4">
+                    <th class="rank">4</th>
+                    <td class="time">7:54 </td>
+                    <td class="date"><a href="/wc2/mission/orc-04-assault-on-hillsbrad/stu-y238">2015-08-29</a></td>
+                    <td class="runner"><a href="/@stu">Stu</a></td>
+                </tr>
+                <tr data-rank="5">
+                    <th class="rank">5</th>
+                    <td class="time">8:59 </td>
+                    <td class="date"><a href="/wc2/mission/orc-04-assault-on-hillsbrad/z13v9rwm">2010-04-06</a></td>
+                    <td class="runner"></td>
+                </tr>
+                <tr data-rank="6">
+                    <th class="rank">6</th>
+                    <td class="time">9:41 </td>
+                    <td class="date"><a href="/wc2/mission/orc-04-assault-on-hillsbrad/karmikkoala-yl9j">2017-08-07</a>
+                    </td>
+                    <td class="runner"><a href="/@karmikkoala">KarmikKoala</a></td>
+                </tr>
+                <tr data-rank="7">
+                    <th class="rank">7</th>
+                    <td class="time">9:59 </td>
+                    <td class="date"><a href="/wc2/mission/orc-04-assault-on-hillsbrad/fralor-y8qp">2018-01-27</a></td>
+                    <td class="runner"><a href="/@fralor">Fralor</a></td>
+                </tr>
+                <tr data-rank="8">
+                    <th class="rank">8</th>
+                    <td class="time">11:48 </td>
+                    <td class="date"><a href="/wc2/mission/orc-04-assault-on-hillsbrad/banks-yvgk">2018-04-09</a></td>
+                    <td class="runner"><a href="/@banks">Banks</a></td>
+                </tr>
+                <tr data-rank="9">
+                    <th class="rank">9</th>
+                    <td class="time">16:47 </td>
+                    <td class="date"><a href="/wc2/mission/orc-04-assault-on-hillsbrad/bias60gaming-yo40">2018-01-22</a>
+                    </td>
+                    <td class="runner"><a href="/@bias60gaming">bias60gaming</a></td>
+                </tr>
+                <tr data-rank="10">
+                    <th class="rank">10</th>
+                    <td class="time">18:05 </td>
+                    <td class="date"><a
+                            href="/wc2/mission/orc-04-assault-on-hillsbrad/yt-veritas0923-z137">2018-03-13</a></td>
+                    <td class="runner"><a href="/@yt-veritas0923">YT_Veritas0923</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        Archive last updated on 2019-05-09.
+        Some data still missing some data due to incomplete import logic.
+        This site is not affiliated with or endorsed by speedrun.com.
+        All data is from speedrun.com contributors, and is used and
+        distributed under the Creative Commons
+        Attribution-NonCommercial 4.0 International license.
+    </footer>
+</body>
