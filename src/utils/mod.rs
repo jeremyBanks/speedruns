@@ -22,20 +22,58 @@ pub fn slugify(s: &str) -> String {
     let mut slug = String::new();
 
     let mut last_was_replaced = false;
-    for c in s.chars() {
+    let chars = s.chars().collect::<Vec<_>>();
+    for i in 0..chars.len() {
         let mut this_was_replaced = false;
+        let c = chars[i];
         match c {
             'a'..='z' | 'A'..='Z' | '0'..='9' => slug.push(c),
             '%' => slug.push_str("percent"),
             '+' => slug.push_str("plus"),
             '&' => slug.push_str("and"),
-            '\'' => {}
+            '\'' =>
+                if i == chars.len() - 1 {
+                    if !last_was_replaced {
+                        slug.push('-');
+                    }
+                    slug.push_str("prime");
+                },
             '/' => {
                 this_was_replaced = true;
                 if !last_was_replaced {
                     slug.push('-');
                 }
                 slug.push_str("or-")
+            }
+            '.' => {
+                if !last_was_replaced {
+                    slug.push('-');
+                }
+                if i == chars.len() - 1 {
+                    slug.push_str("dot");
+                } else {
+                    this_was_replaced = true;
+                }
+            }
+            '_' => {
+                if !last_was_replaced {
+                    slug.push('-');
+                }
+                if i == chars.len() - 1 {
+                    slug.push_str("underscore");
+                } else {
+                    this_was_replaced = true;
+                }
+            }
+            '-' => {
+                if !last_was_replaced {
+                    slug.push('-');
+                }
+                if i == chars.len() - 1 {
+                    slug.push_str("minus");
+                } else {
+                    this_was_replaced = true;
+                }
             }
             _ => {
                 this_was_replaced = true;
@@ -121,6 +159,13 @@ mod tests {
             ),
             ("mike-tysons-punch-out", "Mike Tyson's Punch-Out!!"),
             ("pokemon-blue", "Pokémon Blue"),
+            ("route-z-prime", "Route-Z'"),
+            ("peace-dot", "Peace."),
+            (
+                "crash-bandicoot-n-sane-trilogy",
+                "Crash Bandicoot: N. Sane Trilogy",
+            ),
+            ("c-minus", "c-"),
         ] {
             assert_eq!(slug, &slugify(name));
         }

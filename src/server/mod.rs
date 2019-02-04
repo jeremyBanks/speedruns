@@ -15,9 +15,11 @@ mod views;
 
 use views::*;
 
+/// A Boxed Future for interfacing with Hyper.
 pub type BoxFut = Box<Future<Item = Response<Body>, Error = hyper::Error> + Send>;
 
 /// A web server displaying a static snapshot of https://speedrun.com leaderboards.
+#[derive(Debug)]
 pub struct Server {
     database: Arc<Database>,
 }

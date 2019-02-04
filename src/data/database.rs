@@ -1,6 +1,6 @@
 //! The world's worst in-memory database of normalized speedrun data.
 use std::{
-    collections::{BTreeMap, HashMap},
+    collections::{BTreeMap, HashMap, HashSet},
     fmt::{Debug, Display},
     num::NonZeroU64 as Id64,
     ops::Deref,
@@ -36,7 +36,7 @@ impl Display for IntegrityErrors {
         writeln!(f, "{} IntegrityErrors:", self.errors.len())?;
         for (i, error) in self.errors.iter().enumerate() {
             writeln!(f, "{:4}. {}", i + 1, error)?;
-            if i >= 3 {
+            if i >= 16 {
                 writeln!(f, "     ...and more!")?;
                 break
             }
@@ -46,7 +46,6 @@ impl Display for IntegrityErrors {
 }
 
 #[derive(Debug, Error, From)]
-#[allow(missing_docs)]
 pub enum IntegrityError {
     #[error(
         display = "{} with id {} does not exist, specified by {} of {} {} in {:#?}",
@@ -69,6 +68,11 @@ pub enum IntegrityError {
     CheckFailed {
         item:   Box<dyn Debug>,
         errors: ValidationErrors,
+    },
+    #[error(display = "duplicate {} slug: {:?}", source_type, source_slug)]
+    NonUniqueSlug {
+        source_type: &'static str,
+        source_slug: String,
     },
     #[error(display = "indexing failed, expect a ForeignKeyMissing saying why")]
     IndexingError,
@@ -222,8 +226,6 @@ impl Database {
     pub fn validate(self: Arc<Self>) -> Result<(), IntegrityErrors> {
         let mut errors = vec![];
 
-        warn!("TODO: validate name/slug uniqueness");
-
         trace!("Validating {} runs.", self.tables.runs().len());
         for run in self.clone().runs() {
             if let Err(mut error) = run.validate() {
@@ -232,30 +234,72 @@ impl Database {
         }
 
         trace!("Validating {} users.", self.tables.users().len());
+        let mut user_slugs = HashSet::<String>::new();
         for user in self.clone().users() {
             if let Err(mut error) = user.validate() {
                 errors.append(&mut error.errors);
+            } else {
+                let slug = slugify(user.name());
+                if !user_slugs.insert(slug.clone()) {
+                    errors.push(IntegrityError::NonUniqueSlug {
+                        source_type: "user",
+                        source_slug: slug.clone(),
+                    });
+                }
             }
         }
 
         trace!("Validating {} games.", self.tables.games().len());
+        let mut game_slugs = HashSet::<String>::new();
         for game in self.clone().games() {
             if let Err(mut error) = game.validate() {
                 errors.append(&mut error.errors);
+            } else {
+                let slug = slugify(game.slug());
+                if !game_slugs.insert(slug.clone()) {
+                    errors.push(IntegrityError::NonUniqueSlug {
+                        source_type: "game",
+                        source_slug: slug.clone(),
+                    });
+                }
             }
         }
 
         trace!("Validating {} categories.", self.tables.categories().len());
+        let mut category_slugs = HashSet::<String>::new();
         for category in self.clone().categories() {
             if let Err(mut error) = category.validate() {
                 errors.append(&mut error.errors);
+            } else {
+                let slug = format!(
+                    "{}/{}/{}",
+                    slugify(category.game().slug()),
+                    slugify(&format!("{:?}", category.per())),
+                    slugify(category.name())
+                );
+                if !category_slugs.insert(slug.clone()) {
+                    errors.push(IntegrityError::NonUniqueSlug {
+                        source_type: "category",
+                        source_slug: slug.clone(),
+                    });
+                }
             }
         }
 
         trace!("Validating {} levels.", self.tables.levels().len());
+        let mut level_slugs = HashSet::<String>::new();
         for level in self.clone().levels() {
             if let Err(mut error) = level.validate() {
                 errors.append(&mut error.errors);
+            } else {
+                let slug =
+                    format!("{}/{}", slugify(level.game().slug()), slugify(level.name()));
+                if !level_slugs.insert(slug.clone()) {
+                    errors.push(IntegrityError::NonUniqueSlug {
+                        source_type: "level",
+                        source_slug: slug,
+                    });
+                }
             }
         }
 
