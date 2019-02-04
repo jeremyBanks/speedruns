@@ -1,13 +1,10 @@
 #![feature(never_type, try_blocks)]
-#![allow(unused_imports, dead_code)]
 use flate2::{read::GzDecoder, write::GzEncoder};
-use getset::{Getters, MutGetters, Setters};
 use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
-use serde_json::{map::Map as JsonMap, Value as JsonValue};
+use serde_json::Value as JsonValue;
 use std::{
     collections::BTreeMap,
-    convert::TryFrom,
     fs::File,
     io::{prelude::*, BufReader, BufWriter},
 };
