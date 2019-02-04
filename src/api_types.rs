@@ -42,12 +42,12 @@ pub struct User {
     twitter: Option<Uri<String>>,
     youtube: Option<Uri<String>>,
     hitbox: Option<Uri<String>>,
-    weblink: Option<String>,
     speedrunslive: Option<Uri<String>>,
     signup: Option<DateTime<Utc>>,
     location: Option<Location>,
     role: UserRole,
     name_style: NameStyle,
+    weblink: Option<String>,
     links: Vec<Link>,
 }
 
@@ -59,10 +59,30 @@ pub struct Run {
     id: String,
     date: NaiveDate,
     category: String,
-    comment: String,
+    game: String,
+    players: Vec<Player>,
+    comment: Option<String>,
     level: Option<String>,
-    split: Option<String>,
+    splits: Option<String>,
+    weblink: Option<String>,
+    status: RunStatus,
     links: Vec<Link>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+#[serde(tag = "rel")]
+pub enum Player {
+    User { id: String, uri: String },
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+#[serde(tag = "status")]
+pub enum RunStatus {
+    Verified,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
@@ -369,6 +389,7 @@ pub enum Link {
     DerivedGames(String),
     Romhacks(String),
     BaseGame(String),
+    Examiner(String),
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
