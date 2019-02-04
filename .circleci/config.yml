@@ -19,7 +19,11 @@
       "steps": [
         "checkout",
         {"restore_cache": {
-          "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}"
+          "keys": [
+            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}",
+            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}",
+            "v1-cargo-cache-"
+          ]
         }},
         {"run": "cargo build --lib"},
         {"save_cache": {
@@ -27,7 +31,7 @@
             "/usr/local/cargo/registry",
             "target/"
           ],
-          "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}"
+          "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}"
         }}
       ]
     },
@@ -39,7 +43,11 @@
       "steps": [
         "checkout",
         {"restore_cache": {
-          "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}"
+          "keys": [
+            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}",
+            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}",
+            "v1-cargo-cache-"
+          ]
         }},
         {"run": "cargo test --lib"},
       ]
@@ -52,7 +60,11 @@
       "steps": [
         "checkout",
         {"restore_cache": {
-          "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}"
+          "keys": [
+            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}",
+            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}",
+            "v1-cargo-cache-"
+          ]
         }},
         {"run": "cargo fmt --all -- --check"},
       ]
@@ -65,7 +77,11 @@
       "steps": [
         "checkout",
         {"restore_cache": {
-          "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}"
+          "keys": [
+            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}",
+            "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}",
+            "v1-cargo-cache-"
+          ]
         }},
         {"run": "RUSTFLAGS=\"-D warnings\" cargo build --lib"},
       ]

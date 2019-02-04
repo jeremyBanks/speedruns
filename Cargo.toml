@@ -2,7 +2,7 @@
 edition = "2018"
 name = "speedruns"
 license = "MIT"
-version = "0.0.1"
+version = "0.0.2"
 publish = false
 [dependencies]
 anymap = "0.12.1"
