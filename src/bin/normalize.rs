@@ -2,61 +2,84 @@
 //! a database.
 #![warn(missing_debug_implementations, missing_docs)]
 #![allow(unused_imports, missing_debug_implementations, missing_docs)]
-use std::{fs::File, io::BufReader, ops::Deref};
+use std::{
+    collections::BTreeMap, fs::File, io::BufReader, num::NonZeroU64 as p64,
+    ops::Deref, rc::Rc,
+};
 
 use chrono::{DateTime, NaiveDate, Utc};
+use flate2::read::GzDecoder;
 use getset::Getters;
 #[allow(unused)]
 use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
-use std::{collections::BTreeMap, num::NonZeroU64 as p64, rc::Rc};
+use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
+use std::convert::TryFrom;
 use url::Url;
 use validator::{Validate, ValidationError, ValidationErrors};
 use validator_derive::Validate;
 
-use speedruncom_data_tools::api_types;
+use speedruncom_data_tools::{api_types, validators::*};
 
 pub type DynError = Box<dyn std::error::Error>;
 
-trait IsDefault: Default + PartialEq {
-    fn is_default(&self) -> bool {
-        *self == Self::default()
-    }
-}
+fn main() -> Result<(), DynError> {
+    env_logger::try_init_from_env(
+        env_logger::Env::new()
+            .default_filter_or(format!("{}=trace", module_path!())),
+    )?;
 
-impl IsDefault for &str {
-    fn is_default(&self) -> bool {
-        self.is_empty()
-    }
-}
+    let mut database = Database::new();
 
-impl<T> IsDefault for Vec<T>
-where
-    T: PartialEq,
-{
-    fn is_default(&self) -> bool {
-        self.is_empty()
-    }
-}
-
-fn nondefault(value: impl IsDefault) -> Result<(), ValidationError> {
-    if value.is_default() {
-        Err(ValidationError::new("value is uninitialized"))
-    } else {
+    fn load<'de, T: Deserialize<'de>>(
+        path: &str,
+        database: &mut Database,
+        loader: impl Fn(&mut Database, &T),
+    ) -> Result<(), DynError> {
+        let file = File::open(path)?;
+        let buffer = BufReader::new(&file);
+        let decompressor = GzDecoder::new(buffer);
+        let deserializer = JsonDeserializer::from_reader(decompressor);
+        let json_results = deserializer.into_iter::<JsonValue>();
+        let items = json_results
+            .map(Result::unwrap)
+            .map(T::deserialize)
+            .map(Result::unwrap);
+        for item in items {
+            loader(database, &item);
+        }
         Ok(())
     }
-}
 
-fn urls(value: &[String]) -> Result<(), ValidationError> {
-    for item in value {
-        if !validator::validate_url(item) {
-            return Err(ValidationError::new("invalid URL"));
-        }
-    }
+    load(
+        "data/api/games.jsonl.gz",
+        &mut database,
+        Database::load_api_game,
+    )?;
+    load(
+        "data/api/users.jsonl.gz",
+        &mut database,
+        Database::load_api_user,
+    )?;
+    load(
+        "data/api/runs.jsonl.gz",
+        &mut database,
+        Database::load_api_run,
+    )?;
+
+    database.validate()?;
+
+    info!(
+        "Loaded {} games, {} users, {} runs.",
+        database.games().len(),
+        database.users().len(),
+        database.runs.len()
+    );
+
     Ok(())
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, Getters)]
+#[derive(Debug, Default, Serialize, Deserialize, Clone, Getters)]
 #[get = "pub"]
 pub struct Database {
     runs: BTreeMap<p64, Run>,
@@ -66,9 +89,54 @@ pub struct Database {
     levels: BTreeMap<p64, Level>,
 }
 
+impl Database {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    fn id_from_str(id_str: &str) -> p64 {
+        let mut id: u64 = 0;
+
+        if id_str.bytes().len() > 8 {
+            panic!("id too long");
+        }
+
+        for byte in id_str.bytes() {
+            id = (id << 8) | u64::from(byte);
+        }
+
+        p64::new(id).unwrap()
+    }
+
+    pub fn load_api_game(&mut self, game: &api_types::Game) {
+        let id = Self::id_from_str(&game.id());
+        self.games.insert(id, Game { id });
+    }
+
+    pub fn load_api_user(&mut self, user: &api_types::User) {
+        let id = Self::id_from_str(&user.id());
+        // self.users.insert(id, User {
+        //     id,
+        // });
+    }
+
+    pub fn load_api_run(&mut self, run: &api_types::Run) {
+        let id = Self::id_from_str(&run.id());
+        // self.runs.insert(id, Run {
+        //     id,
+        // });
+    }
+}
+
 impl Validate for Database {
     fn validate(&self) -> Result<(), ValidationErrors> {
-        Ok(())
+        let mut errors = ValidationErrors::new();
+
+        if errors.is_empty() {
+            Ok(())
+        } else {
+            Err(errors)
+        }
     }
 }
 
@@ -184,13 +252,4 @@ pub struct Level {
 #[serde(deny_unknown_fields)]
 pub struct Game {
     pub id: p64,
-}
-
-fn main() -> Result<(), DynError> {
-    env_logger::try_init_from_env(
-        env_logger::Env::new()
-            .default_filter_or(format!("{}=trace", module_path!())),
-    )?;
-
-    Ok(())
 }
