@@ -2,7 +2,6 @@
 //! just stores the JSON representation of each item as-is, it doesn't
 //! make any assumptions about their structure beyond the existence of
 //! a string "id" value.
-#![feature(try_blocks)]
 use flate2::{read::GzDecoder, write::GzEncoder};
 #[allow(unused)]
 use log::{debug, error, info, trace, warn};
@@ -61,7 +60,7 @@ impl Spider {
     pub fn load_or_create() -> Self {
         let mut spider = Spider::default();
 
-        let loaded: Result<(), Box<dyn std::error::Error>> = try {
+        let mut load = || -> Result<(), Box<dyn std::error::Error>> {
             for resource in RESOURCES.iter() {
                 info!("Loading {}...", resource.id);
                 let file = File::open(&format!("data/api/{}.jsonl.gz", resource.id))?;
@@ -80,9 +79,10 @@ impl Spider {
                     resource.id
                 );
             }
+            Ok(())
         };
 
-        if let Err(error) = loaded {
+        if let Err(error) = load() {
             info!("Error: {:?}", error);
         }
 
