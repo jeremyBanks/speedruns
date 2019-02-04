@@ -1,32 +1,41 @@
 {
   "version": "2.1",
+  "executors": {
+    "executor": {"docker": [
+      {"image": "circleci/rust:latest"}
+    ] }
+  },
   "workflows": {
     "version": 2,
-    "workflow": {
+    "speedruns": {
       "jobs": [
-        "build --lib",
-        { "test --lib": { "requires": ["build --lib"] } },
-        { "build --lib --deny warnings": { "requires": ["build --lib"] } },
-        { "cargo fmt": { "requires": ["build --lib"] } },
-        { "cargo update": { "requires": ["build --lib"] } },
+        "build",
+        { "test": { "requires": ["build"] } },
+        { "code formatted": { "requires": ["build"] } },
+        { "dependencies updated": { "requires": ["build"] } },
+        { "warnings resolved": { "requires": ["test"] } },
+        { "could publish": { "requires": [
+          "build",
+          "test",
+          "warnings resolved",
+          "code formatted",
+          "dependencies updated",
+        ] } },
       ]
     }
   },
   "jobs": {
-    "build --lib": {
-      "docker": [
-        {"image": "circleci/rust:latest"}
-      ],
+    "build": {
+      "executor": "executor",
       "steps": [
         "checkout",
         {"restore_cache": {
           "keys": [
             "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}",
             "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}",
-            "v1-cargo-cache-"
           ]
         }},
-        {"run": "cargo build --lib"},
+        {"run": "cargo build --all"},
         {"save_cache": {
           "paths": [
             "/usr/local/cargo/registry",
@@ -37,23 +46,19 @@
       ]
     },
 
-    "test --lib": {
-      "docker": [
-        {"image": "circleci/rust:latest"}
-      ],
+    "test": {
+      "executor": "executor",
       "steps": [
         "checkout",
         {"restore_cache": {
           "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}"
         }},
-        {"run": "cargo test --lib"},
+        {"run": "cargo test --all"},
       ]
     },
 
-    "cargo fmt": {
-      "docker": [
-        {"image": "circleci/rust:latest"}
-      ],
+    "code formatted": {
+      "executor": "executor",
       "steps": [
         "checkout",
         {"restore_cache": {
@@ -64,29 +69,36 @@
       ]
     },
 
-    "build --lib --deny warnings": {
-      "docker": [
-        {"image": "circleci/rust:latest"}
-      ],
+    "warnings resolved": {
+      "executor": "executor",
       "steps": [
         "checkout",
         {"restore_cache": {
           "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}"
         }},
-        {"run": "RUSTFLAGS=\"--deny warnings\" cargo build --lib"},
+        {"run": "RUSTFLAGS=\"--deny warnings\" cargo build --all"},
       ]
     },
 
-    "cargo update": {
-      "docker": [
-        {"image": "circleci/rust:latest"}
-      ],
+    "dependencies updated": {
+      "executor": "executor",
       "steps": [
         "checkout",
         {"restore_cache": {
           "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}"
         }},
         {"run": "cargo update --locked"},
+      ]
+    },
+
+    "could publish": {
+      "executor": "executor",
+      "steps": [
+        "checkout",
+        {"restore_cache": {
+          "key": "v1-cargo-cache-{{ checksum \"Cargo.lock\" }}-{{ .Revision }}"
+        }},
+        {"run": "cargo publish --dry-run"},
       ]
     }
   }
