@@ -35,7 +35,7 @@ impl Display for IntegrityErrors {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         writeln!(f, "{} IntegrityErrors:", self.0.len())?;
         for (i, error) in self.0.iter().enumerate() {
-            writeln!(f, "{:4}. {:#?}", i + 1, error)?;
+            writeln!(f, "{:4}. {}", i + 1, error)?;
             if i >= 4 {
                 writeln!(f, "     ...and more!")?;
                 break
@@ -199,6 +199,10 @@ impl Database {
             games_by_slug,
             users_by_name,
         });
+
+        // XXX: for now we're ignoring indexing errors, to see whether our
+        // validation routine is complete.
+        let mut errors = Vec::new();
 
         if let Err(mut errors_) = self_.clone().validate() {
             errors.append(&mut errors_.0);
