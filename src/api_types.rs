@@ -1,13 +1,5 @@
 //! Types for all speedrun.com API resources we use.
 //! <https://github.com/speedruncomorg/api/tree/master/version1>
-//!
-//! ## Style
-//! - Everything in this file that isn't sensitive to ordering should be ordered
-//!   alphabetically. That includes imports, top-level items, struct fields, and
-//!   enum variants. It may not include attributes and attribute arguments.
-//! - Subresources that are only used within a single other resource should get
-//!   a derivative name, such as UserRole and CategoryPlayersType. Everything
-//!   else should get a simple name, such as Game and Category.
 use chrono::{DateTime, NaiveDate, Utc};
 use derive_more::Deref;
 use getset::Getters;
@@ -17,27 +9,72 @@ use std::collections::HashMap;
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
+pub struct Category {
+    id: String,
+    links: Vec<Link>,
+    miscellaneous: bool,
+    name: String,
+    players: CategoryPlayers,
+    rules: Option<String>,
+    #[serde(rename = "type")]
+    type_: CategoryType,
+    weblink: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct CategoryPlayers {
+    #[serde(rename = "type")]
+    type_: CategoryPlayersType,
+    value: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+pub enum CategoryPlayersType {
+    Exactly,
+    UpTo,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+pub enum CategoryType {
+    PerGame,
+    PerLevel,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters, Deref)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct Data<T> {
+    data: T,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
 pub struct Game {
     abbreviation: String,
-    assets: HashMap<String, Option<Asset>>,
+    assets: HashMap<String, Option<GameAsset>>,
     categories: Data<Vec<Category>>,
     created: Option<DateTime<Utc>>,
-    developers: Data<Vec<Developer>>,
-    engines: Data<Vec<Engine>>,
+    developers: Data<Vec<GameDeveloper>>,
+    engines: Data<Vec<GameEngine>>,
     gametypes: Data<Vec<GameType>>,
-    genres: Data<Vec<Genre>>,
+    genres: Data<Vec<GameGenre>>,
     id: String,
     levels: Data<Vec<Level>>,
     links: Vec<Link>,
-    moderators: HashMap<String, ModeratorType>,
+    moderators: HashMap<String, GameModeratorType>,
     names: Names,
     platforms: Data<Vec<Platform>>,
-    publishers: Data<Vec<Publisher>>,
-    regions: Data<Vec<GameRegion>>,
+    publishers: Data<Vec<GamePublisher>>,
+    regions: Data<Vec<Region>>,
     release_date: NaiveDate,
     released: u32,
     romhack: bool,
-    ruleset: Ruleset,
+    ruleset: GameRuleset,
     variables: Data<Vec<Variable>>,
     weblink: String,
 }
@@ -45,20 +82,83 @@ pub struct Game {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
-pub struct User {
-    hitbox: Option<Uri>,
+pub struct GameAsset {
+    height: u32,
+    uri: String,
+    width: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct GameDeveloper {
     id: String,
     links: Vec<Link>,
-    location: Option<Location>,
-    name_style: NameStyle,
-    names: Names,
-    role: UserRole,
-    signup: Option<DateTime<Utc>>,
-    speedrunslive: Option<Uri>,
-    twitch: Option<Uri>,
-    twitter: Option<Uri>,
-    weblink: Option<String>,
-    youtube: Option<Uri>,
+    name: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct GameEngine {
+    id: String,
+    links: Vec<Link>,
+    name: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct GameGenre {
+    id: String,
+    links: Vec<Link>,
+    name: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+pub enum GameModeratorType {
+    Moderator,
+    SuperModerator,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct GamePublisher {
+    id: String,
+    links: Vec<Link>,
+    name: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct GameRuleset {
+    default_time: GameRulesetTiming,
+    emulators_allowed: bool,
+    require_verification: bool,
+    require_video: bool,
+    run_times: Vec<GameRulesetTiming>,
+    show_milliseconds: bool,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(deny_unknown_fields, rename_all = "snake_case")]
+pub enum GameRulesetTiming {
+    Ingame,
+    Realtime,
+    RealtimeNoloads,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct GameType {
+    allows_base_game: Option<bool>,
+    id: String,
+    links: Vec<Link>,
+    name: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
@@ -72,21 +172,21 @@ pub struct Run {
     id: String,
     level: Option<String>,
     links: Vec<Link>,
-    players: Vec<Player>,
-    splits: Option<Splits>,
+    players: Vec<RunPlayer>,
+    splits: Option<RunSplitsOrBuggyValue>,
     status: RunStatus,
     submitted: Option<DateTime<Utc>>,
-    system: System,
-    times: Times,
+    system: RunSystem,
+    times: RunTimes,
     values: HashMap<String, String>,
-    videos: Option<Videos>,
+    videos: Option<RunVideos>,
     weblink: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
-pub struct Videos {
+pub struct RunVideos {
     links: Option<Vec<Uri>>,
     text: Option<String>,
 }
@@ -94,11 +194,11 @@ pub struct Videos {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "snake_case")]
 #[get = "pub"]
-pub struct Times {
+pub struct RunTimes {
     ingame_t: Option<f32>,
     ingame: Option<String>,
-    primary_t: f32,
-    primary: String,
+    primary_t: Option<f32>,
+    primary: Option<String>,
     realtime_noloads_t: Option<f32>,
     realtime_noloads: Option<String>,
     realtime_t: Option<f32>,
@@ -106,15 +206,22 @@ pub struct Times {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "rel")]
-pub enum Splits {
-    #[serde(rename = "splits.io")]
-    SplitsIo { uri: String },
+#[serde(deny_unknown_fields, rename_all = "kebab-case", untagged)]
+pub enum RunSplitsOrBuggyValue {
+    RunSplits(RunSplits),
+    BuggyValue(String),
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "rel")]
-pub enum Player {
+pub enum RunSplits {
+    #[serde(rename = "splits.io")]
+    RunSplitsIo { uri: String },
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "rel")]
+pub enum RunPlayer {
     Guest { name: String, uri: String },
     User { id: String, uri: String },
 }
@@ -137,15 +244,34 @@ pub enum RunStatus {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
-pub struct Location {
-    country: Country,
-    region: Option<UserRegion>,
+pub struct User {
+    hitbox: Option<Uri>,
+    id: String,
+    links: Vec<Link>,
+    location: Option<UserLocation>,
+    name_style: UserNameStyle,
+    names: Names,
+    role: UserRole,
+    signup: Option<DateTime<Utc>>,
+    speedrunslive: Option<Uri>,
+    twitch: Option<Uri>,
+    twitter: Option<Uri>,
+    weblink: Option<String>,
+    youtube: Option<Uri>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
-pub struct Country {
+pub struct UserLocation {
+    country: UserLocationCountry,
+    region: Option<UserLocationRegion>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+#[get = "pub"]
+pub struct UserLocationCountry {
     code: Option<String>,
     names: Names,
 }
@@ -153,29 +279,29 @@ pub struct Country {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
-pub struct UserRegion {
+pub struct UserLocationRegion {
     code: Option<String>,
     names: Names,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "style")]
-pub enum NameStyle {
+pub enum UserNameStyle {
     Gradient {
         #[serde(rename = "color-from")]
-        color_from: ColorThemes,
+        color_from: UserNameStyleColor,
         #[serde(rename = "color-to")]
-        color_to: ColorThemes,
+        color_to: UserNameStyleColor,
     },
     Solid {
-        color: ColorThemes,
+        color: UserNameStyleColor,
     },
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
-pub struct ColorThemes {
+pub struct UserNameStyleColor {
     dark: String,
     light: String,
 }
@@ -196,84 +322,12 @@ pub enum UserRole {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
-pub struct Category {
-    id: String,
-    links: Vec<Link>,
-    miscellaneous: bool,
-    name: String,
-    players: CategoryPlayers,
-    rules: Option<String>,
-    #[serde(rename = "type")]
-    type_: CategoryType,
-    weblink: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-pub enum CategoryType {
-    PerGame,
-    PerLevel,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct CategoryPlayers {
-    #[serde(rename = "type")]
-    type_: CategoryPlayersType,
-    value: u32,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-pub enum CategoryPlayersType {
-    Exactly,
-    UpTo,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
 pub struct Level {
     id: String,
     links: Vec<Link>,
     name: String,
     rules: Option<String>,
     weblink: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-#[serde(deny_unknown_fields, rename_all = "snake_case")]
-pub enum Timing {
-    Ingame,
-    Realtime,
-    RealtimeNoloads,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-pub enum ModeratorType {
-    Moderator,
-    SuperModerator,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct Publisher {
-    id: String,
-    links: Vec<Link>,
-    name: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct GameType {
-    allows_base_game: Option<bool>,
-    id: String,
-    links: Vec<Link>,
-    name: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
@@ -293,8 +347,7 @@ pub struct Variable {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-#[serde(rename_all = "kebab-case", tag = "type")]
-#[serde(deny_unknown_fields)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "type")]
 pub enum VariableScope {
     AllLevels,
     FullGame,
@@ -332,34 +385,7 @@ pub struct VariableValueFlags {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
-pub struct GameRegion {
-    id: String,
-    links: Vec<Link>,
-    name: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct Genre {
-    id: String,
-    links: Vec<Link>,
-    name: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct Engine {
-    id: String,
-    links: Vec<Link>,
-    name: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct Developer {
+pub struct Region {
     id: String,
     links: Vec<Link>,
     name: String,
@@ -378,22 +404,10 @@ pub struct Platform {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
-pub struct System {
+pub struct RunSystem {
     emulated: bool,
     platform: Option<String>,
     region: Option<String>,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct Ruleset {
-    default_time: Timing,
-    emulators_allowed: bool,
-    require_verification: bool,
-    require_video: bool,
-    run_times: Vec<Timing>,
-    show_milliseconds: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
@@ -433,22 +447,6 @@ pub struct Names {
     international: Option<String>,
     japanese: Option<String>,
     twitch: Option<String>,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct Asset {
-    height: u32,
-    uri: String,
-    width: u32,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters, Deref)]
-#[serde(deny_unknown_fields, rename_all = "kebab-case")]
-#[get = "pub"]
-pub struct Data<T> {
-    data: T,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters, Deref)]
