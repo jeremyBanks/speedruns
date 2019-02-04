@@ -24,6 +24,7 @@ use lazy_static::lazy_static;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use validator::Validate;
 use xz2::read::XzDecoder;
+use maud;
 
 use speedruncom_data_tools::{
     database::Database, escape_html::Escape, normalized_types::*, BoxErr,

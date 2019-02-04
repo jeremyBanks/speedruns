@@ -24,6 +24,7 @@ validator = "0.8.0"
 validator_derive = "0.8.0"
 webbrowser = "0.5.1"
 xz2 = "0.1.6"
+maud = "0.20.0"
 
 [dependencies.chrono]
 features = ["serde"]
