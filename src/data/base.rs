@@ -71,6 +71,8 @@ pub enum IntegrityError {
         item:   Box<dyn Debug>,
         errors: ValidationErrors,
     },
+    #[error(display = "indexing failed, expect a ForeignKeyMissing saying why")]
+    IndexingError,
 }
 
 /// All of the speedrun data in our normalized format, indexed by ID.
@@ -120,12 +122,20 @@ impl Tables {
     }
 }
 
+/// Panic message used when the database state is invalid but that shouldn't be
+/// possible, because it must have alrady been validated, such as for foreign
+/// key lookups.
+const DATABASE_UNEXPECTEDLY_INVALID: &str =
+    "Database state invalid despite passing validation?!";
+
 /// A collection of [Tables] with various generated indexes.
 pub struct Database {
-    tables:          &'static Tables,
-    runs_by_game_id: HashMap<Id64, Vec<&'static Run>>,
-    games_by_slug:   HashMap<&'static str, &'static Game>,
-    users_by_name:   HashMap<&'static str, &'static User>,
+    tables:                         &'static Tables,
+    runs_by_game_id:                HashMap<Id64, Vec<&'static Run>>,
+    games_by_slug:                  HashMap<&'static str, &'static Game>,
+    users_by_name:                  HashMap<&'static str, &'static User>,
+    categories_by_game_id_and_name: HashMap<(Id64, &'static str), &'static Category>,
+    levels_by_game_id_and_name:     HashMap<(Id64, &'static str), &'static Level>,
 }
 
 impl Database {
@@ -138,73 +148,64 @@ impl Database {
 
     /// Creates a new Database indexing a collection of static tables.
     pub fn new(tables: &'static Tables) -> Result<Rc<Self>, IntegrityErrors> {
-        let mut errors = Vec::new();
+        let mut runs_by_game_id: HashMap<Id64, Vec<&'static Run>> = HashMap::new();
+        let mut games_by_slug: HashMap<&'static str, &'static Game> = HashMap::new();
+        let mut users_by_name: HashMap<&'static str, &'static User> = HashMap::new();
+        let mut categories_by_game_id_and_name: HashMap<
+            (Id64, &'static str),
+            &'static Category,
+        > = HashMap::new();
+        let mut levels_by_game_id_and_name: HashMap<(Id64, &'static str), &'static Level> =
+            HashMap::new();
 
-        let runs_by_game_id = {
-            trace!("Indexing runs by game id...");
-            let mut runs_by_game_id: HashMap<Id64, Vec<&'static Run>> = HashMap::new();
-
-            for game_id in tables.games().keys() {
-                runs_by_game_id.insert(*game_id, vec![]);
+        let index_errored = 'indexing: {
+            for game in tables.games().values() {
+                runs_by_game_id.insert(*game.id(), Vec::new());
+                games_by_slug.insert(game.slug(), game);
             }
 
             for run in tables.runs().values() {
-                match runs_by_game_id.get_mut(run.game_id()) {
-                    Some(runs) => {
-                        runs.push(run);
-                    }
-                    None => {
-                        errors.push(IntegrityError::ForeignKeyMissing {
-                            target_type:       "game",
-                            target_id:         *run.game_id(),
-                            source_id:         *run.id(),
-                            source_type:       "run",
-                            foreign_key_field: "game_id",
-                            source:            Box::new(run),
-                        });
-                    }
+                if let Some(runs) = runs_by_game_id.get_mut(run.game_id()) {
+                    runs.push(run);
+                } else {
+                    break 'indexing true
                 }
+            }
+
+            for user in tables.users().values() {
+                users_by_name.insert(user.name(), user);
+            }
+
+            for category in tables.categories().values() {
+                categories_by_game_id_and_name
+                    .insert((*category.game_id(), category.name()), category);
+            }
+
+            for level in tables.levels().values() {
+                levels_by_game_id_and_name.insert((*level.game_id(), level.name()), level);
             }
 
             for game_runs in runs_by_game_id.values_mut() {
                 game_runs.sort();
             }
 
-            runs_by_game_id
+            false
         };
 
-        let games_by_slug = {
-            trace!("Indexing games by slug...");
-            let mut games_by_slug: HashMap<&'static str, &'static Game> = HashMap::new();
-
-            for game in tables.games().values() {
-                games_by_slug.insert(game.slug(), game);
-            }
-
-            games_by_slug
-        };
-
-        let users_by_name = {
-            trace!("Indexing users by name...");
-            let mut users_by_name: HashMap<&'static str, &'static User> = HashMap::new();
-
-            for user in tables.users().values() {
-                users_by_name.insert(user.name(), user);
-            }
-
-            users_by_name
-        };
+        let mut errors = Vec::new();
+        if index_errored {
+            error!("indexing failed, database must have validity errors");
+            errors.push(IntegrityError::IndexingError)
+        }
 
         let self_ = Rc::new(Self {
             tables,
             runs_by_game_id,
             games_by_slug,
             users_by_name,
+            categories_by_game_id_and_name,
+            levels_by_game_id_and_name,
         });
-
-        // XXX: for now we're ignoring indexing errors, to see whether our
-        // validation routine is complete.
-        let mut errors = Vec::new();
 
         if let Err(mut errors_) = self_.clone().validate() {
             errors.append(&mut errors_.errors);
@@ -315,6 +316,17 @@ impl Database {
             .map(|game| self.clone().link(*game))
     }
 
+    /// Finds a level with the given name and game ID.
+    pub fn level_by_game_id_and_name(
+        self: Rc<Self>,
+        game_id: Id64,
+        name: &str,
+    ) -> Option<Linked<Level>> {
+        self.levels_by_game_id_and_name
+            .get(&(game_id, name))
+            .map(|level| self.clone().link(*level))
+    }
+
     /// Iterator over all Linked<Level>s.
     pub fn levels(self: Rc<Self>) -> impl Iterator<Item = Linked<Level>> {
         self.tables
@@ -334,6 +346,17 @@ impl Database {
             .categories()
             .get(&id)
             .map(|category| self.link(category))
+    }
+
+    /// Finds a category with the given name and game ID.
+    pub fn category_by_game_id_and_name(
+        self: Rc<Self>,
+        game_id: Id64,
+        name: &str,
+    ) -> Option<Linked<Category>> {
+        self.categories_by_game_id_and_name
+            .get(&(game_id, name))
+            .map(|category| self.clone().link(*category))
     }
 
     /// Iterator over all Linked<Category>s.
@@ -375,7 +398,7 @@ impl Linked<Run> {
         self.database
             .clone()
             .game_by_id(*self.game_id())
-            .expect("database state invalid")
+            .expect(DATABASE_UNEXPECTEDLY_INVALID)
     }
 
     /// Returns the Linked<Category> for this Run.
@@ -383,7 +406,7 @@ impl Linked<Run> {
         self.database
             .clone()
             .category_by_id(*self.category_id())
-            .expect("database state invalid")
+            .expect(DATABASE_UNEXPECTEDLY_INVALID)
     }
 
     /// Returns Some(Linked<Level>) for this Run, or None if it's a full-game run.
@@ -392,7 +415,7 @@ impl Linked<Run> {
             self.database
                 .clone()
                 .level_by_id(level_id)
-                .expect("database state invalid")
+                .expect(DATABASE_UNEXPECTEDLY_INVALID)
         })
     }
 
@@ -406,7 +429,7 @@ impl Linked<Run> {
                     self.database
                         .clone()
                         .user_by_id(*user_id)
-                        .expect("database state invalid"),
+                        .expect(DATABASE_UNEXPECTEDLY_INVALID),
                 ),
                 RunPlayer::GuestName(_) => None,
             })
@@ -498,7 +521,19 @@ impl Linked<Game> {
         self.database
             .clone()
             .runs_by_game_id(*self.id())
-            .expect("database state invalid")
+            .expect(DATABASE_UNEXPECTEDLY_INVALID)
+    }
+
+    pub fn category_by_name(&self, name: &str) -> Option<Linked<Category>> {
+        self.database
+            .clone()
+            .category_by_game_id_and_name(*self.id(), name)
+    }
+
+    pub fn level_by_name(&self, name: &str) -> Option<Linked<Level>> {
+        self.database
+            .clone()
+            .level_by_game_id_and_name(*self.id(), name)
     }
 
     fn validate(&self) -> Result<(), IntegrityErrors> {
@@ -521,7 +556,7 @@ impl Linked<Level> {
         self.database
             .clone()
             .game_by_id(*self.game_id())
-            .expect("database state invalid")
+            .expect(DATABASE_UNEXPECTEDLY_INVALID)
     }
 
     fn validate(&self) -> Result<(), IntegrityErrors> {
@@ -555,7 +590,7 @@ impl Linked<Category> {
         self.database
             .clone()
             .game_by_id(*self.game_id())
-            .expect("database state invalid")
+            .expect(DATABASE_UNEXPECTEDLY_INVALID)
     }
 
     fn validate(&self) -> Result<(), IntegrityErrors> {

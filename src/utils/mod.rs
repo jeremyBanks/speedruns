@@ -23,14 +23,6 @@ pub fn id64_from_base36(digits: &str) -> Result<Id64, Base36DecodingError> {
         panic!("expected all IDs to have length 8");
     }
 
-    if digits.len() > 10 {
-        return Err(Base36DecodingError::TooLong)
-    }
-
-    // if digits.starts_with('0') {
-    //     warn!("Leading zero in base36 value won't round-trip correctly.");
-    // }
-
     for digit in digits.chars() {
         let digit_value = match digit {
             '0'..='9' => u32::from(digit) - u32::from('0'),
