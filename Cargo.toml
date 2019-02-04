@@ -8,18 +8,6 @@ publish = false
 name = "speedruncom_data_tools"
 path = "src/lib.rs"
 
-[[bin]]
-name = "scrape"
-path = "src/bin/scrape.rs"
-
-[[bin]]
-name = "verify"
-path = "src/bin/verify.rs"
-
-[[bin]]
-name = "normalize"
-path = "src/bin/normalize.rs"
-
 [dependencies]
 serde = { version = "1.0.90", features = ["derive"] }
 serde_json = "1.0.39"

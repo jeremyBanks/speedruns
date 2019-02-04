@@ -78,8 +78,6 @@ impl Database {
                 .map(T::deserialize)
                 .map(Result::unwrap);
 
-            // let items = items.take(2048);
-
             for item in items {
                 loader(database, &item);
             }

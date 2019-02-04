@@ -22,7 +22,11 @@ fn main() -> Result<(), DynError> {
         module_path!()
     )))?;
 
-    let users_xz = include_bytes!("../../data/normalized/users.bin.xz");
+    include_bytes!("../../data/normalized/categories.bin.xz");
+    include_bytes!("../../data/normalized/games.bin.xz");
+    include_bytes!("../../data/normalized/levels.bin.xz");
+    include_bytes!("../../data/normalized/runs.bin.xz");
+    include_bytes!("../../data/normalized/users.bin.xz");
 
     Ok(())
 }

@@ -3,8 +3,7 @@ use std::{iter::FromIterator, str::FromStr};
 use derive_more::From;
 use err_derive::Error;
 use lazy_static::lazy_static;
-#[allow(unused)]
-use log::{debug, error, info, trace, warn};
+#[allow(unused)] use log::{debug, error, info, trace, warn};
 use regex::Regex;
 use validator::Validate;
 
