@@ -31,13 +31,6 @@ captured.
 This only looks for new records, it doesn't try to update existing records,s
 so we currently won't know if a pending run becomes verified, or deleted.
 
-### `verify`
-
-Verifies that all of the scraped records can be deserialized into the
-`api_types` we've defined. These types should preserve all of the details of
-the original API data, even the buggy bits. This just confirms that we haven't
-gotten any new data that has a structure we aren't prepared to handle.
-
 ### `normalize`
 
 Converts the data into a normalized form you might put in a SQL database.
@@ -49,7 +42,7 @@ This excludes some of the metadata and rejected runs in the original data.
 - `data/normalized/levels.jsonl`
 - `data/normalized/categories.jsonl`
 
-### `serve`
+### `leaderboards`
 
 Serve a web view of the leaderboards.
 
