@@ -33,9 +33,10 @@ use speedruncom_data_tools::{
 pub type DynError = Box<dyn std::error::Error>;
 
 fn main() -> Result<(), DynError> {
-    env_logger::try_init_from_env(
-        env_logger::Env::new().default_filter_or(format!("{}=info", module_path!())),
-    )?;
+    env_logger::try_init_from_env(env_logger::Env::new().default_filter_or(format!(
+        "{}=trace,speedruncom_data_tools=trace",
+        module_path!()
+    )))?;
 
     let mut database = Database::new();
     database.load_api_data()?;
@@ -76,7 +77,7 @@ impl Database {
                 .map(T::deserialize)
                 .map(Result::unwrap);
 
-            let items = items.take(2048);
+            // let items = items.take(2048);
 
             for item in items {
                 loader(database, &item);

@@ -145,10 +145,14 @@ pub struct GameRuleset {
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "snake_case")]
+#[allow(non_camel_case_types)]
 pub enum GameRulesetTiming {
-    Ingame,
-    Realtime,
-    RealtimeNoloads,
+    #[serde(rename = "ingame")]
+    IGT,
+    #[serde(rename = "realtime")]
+    RTA,
+    #[serde(rename = "realtime_noloads")]
+    RTA_NL,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
