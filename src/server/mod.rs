@@ -36,6 +36,9 @@ impl Server {
         let addresses = vec![
             // ([0, 0, 0, 0], 80),
             ([127, 0, 0, 1], 59330),
+            ([127, 0, 0, 1], 59331),
+            ([127, 0, 0, 1], 59332),
+            ([127, 0, 0, 1], 59333),
             ([127, 0, 0, 1], 0),
         ];
 
@@ -62,6 +65,8 @@ impl Server {
 
         let url = format!("http://{}", addr);
         info!("Listening at {}", &url);
+
+        println!("Listening at {}", &url);
 
         rt::run(server.map_err(|e| error!("server error: {}", e)));
     }
