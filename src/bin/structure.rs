@@ -1,20 +1,10 @@
 #![feature(never_type)]
-#![allow(dead_code)]
 use bincode;
-use chrono::{DateTime, NaiveDate, Utc};
-use flate2::{read::GzDecoder, write::GzEncoder};
-use getset::{Getters, MutGetters, Setters};
+use flate2::read::GzDecoder;
 use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
-use serde_json::{
-    map::Map as JsonMap, Deserializer as JsonDeserializer, Value as JsonValue,
-};
-use std::{
-    collections::{BTreeMap, HashMap},
-    convert::TryFrom,
-    fs::File,
-    io::{prelude::*, BufReader, BufWriter},
-};
+use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
+use std::{fs::File, io::BufReader};
 
 use speedruncom_data_tools::api_types;
 

@@ -2,6 +2,7 @@ use chrono::{DateTime, NaiveDate, Utc};
 use getset::Getters;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[get = "pub"]
 #[serde(rename_all = "kebab-case")]
@@ -38,11 +39,11 @@ pub struct Game {
 pub struct User {
     id: String,
     names: Names,
-    twitch: Option<Uri<String>>,
-    twitter: Option<Uri<String>>,
-    youtube: Option<Uri<String>>,
-    hitbox: Option<Uri<String>>,
-    speedrunslive: Option<Uri<String>>,
+    twitch: Option<Uri>,
+    twitter: Option<Uri>,
+    youtube: Option<Uri>,
+    hitbox: Option<Uri>,
+    speedrunslive: Option<Uri>,
     signup: Option<DateTime<Utc>>,
     location: Option<Location>,
     role: UserRole,
@@ -57,16 +58,56 @@ pub struct User {
 #[serde(deny_unknown_fields)]
 pub struct Run {
     id: String,
-    date: NaiveDate,
+    date: Option<NaiveDate>,
+    submitted: Option<DateTime<Utc>>,
+    videos: Option<Videos>,
     category: String,
     game: String,
+    system: System,
     players: Vec<Player>,
     comment: Option<String>,
     level: Option<String>,
-    splits: Option<String>,
-    weblink: Option<String>,
+    splits: Option<Splits>,
     status: RunStatus,
+    times: RunTimes,
+    values: HashMap<String, String>,
+    weblink: Option<String>,
     links: Vec<Link>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[get = "pub"]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+pub struct Videos {
+    text: Option<String>,
+    links: Option<Vec<Uri>>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[get = "pub"]
+#[serde(rename_all = "snake_case")]
+#[serde(deny_unknown_fields)]
+pub struct RunTimes {
+    // as an ISO 8601 duration
+    primary: String,
+    // as a number of seconds
+    primary_t: f32,
+    realtime: Option<String>,
+    realtime_t: Option<f32>,
+    realtime_noloads: Option<String>,
+    realtime_noloads_t: Option<f32>,
+    ingame: Option<String>,
+    ingame_t: Option<f32>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
+#[serde(tag = "rel")]
+pub enum Splits {
+    #[serde(rename = "splits.io")]
+    SplitsIo { uri: String },
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
@@ -75,6 +116,7 @@ pub struct Run {
 #[serde(tag = "rel")]
 pub enum Player {
     User { id: String, uri: String },
+    Guest { name: String, uri: String },
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
@@ -82,7 +124,16 @@ pub enum Player {
 #[serde(deny_unknown_fields)]
 #[serde(tag = "status")]
 pub enum RunStatus {
-    Verified,
+    New,
+    Verified {
+        examiner: Option<String>,
+        #[serde(rename = "verify-date")]
+        verify_date: Option<DateTime<Utc>>,
+    },
+    Rejected {
+        examiner: Option<String>,
+        reason: Option<String>,
+    },
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
@@ -358,6 +409,16 @@ pub struct Platform {
 #[get = "pub"]
 #[serde(rename_all = "kebab-case")]
 #[serde(deny_unknown_fields)]
+pub struct System {
+    platform: Option<String>,
+    emulated: bool,
+    region: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
+#[get = "pub"]
+#[serde(rename_all = "kebab-case")]
+#[serde(deny_unknown_fields)]
 pub struct Ruleset {
     default_time: Timing,
     emulators_allowed: bool,
@@ -390,6 +451,8 @@ pub enum Link {
     Romhacks(String),
     BaseGame(String),
     Examiner(String),
+    Platform(String),
+    Region(String),
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
@@ -440,14 +503,14 @@ impl<T: Default> std::default::Default for Data<T> {
 #[get = "pub"]
 #[serde(rename_all = "kebab-case")]
 #[serde(deny_unknown_fields)]
-pub struct Uri<T> {
-    uri: T,
+pub struct Uri {
+    uri: String,
 }
 
-impl<T> std::ops::Deref for Uri<T> {
-    type Target = T;
+impl std::ops::Deref for Uri {
+    type Target = String;
 
-    fn deref(&self) -> &T {
+    fn deref(&self) -> &String {
         &self.uri
     }
 }
