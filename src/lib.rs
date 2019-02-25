@@ -23,3 +23,7 @@ pub use crate::data::{
     database::Database,
     types::{self, *},
 };
+
+// mod renter;
+// #[macro_use]
+// extern crate rental;

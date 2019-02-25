@@ -7,6 +7,7 @@ use getset::Getters;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -22,6 +23,7 @@ pub struct Category {
     weblink: String,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -31,6 +33,7 @@ pub struct CategoryPlayers {
     value: u32,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 pub enum CategoryPlayersType {
@@ -38,6 +41,7 @@ pub enum CategoryPlayersType {
     UpTo,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 pub enum CategoryType {
@@ -45,6 +49,7 @@ pub enum CategoryType {
     PerLevel,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters, Deref)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -52,6 +57,7 @@ pub struct Data<T> {
     data: T,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -80,6 +86,7 @@ pub struct Game {
     weblink:      String,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -89,6 +96,7 @@ pub struct GameAsset {
     width:  u32,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -98,6 +106,7 @@ pub struct GameDeveloper {
     name:  String,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -107,6 +116,7 @@ pub struct GameEngine {
     name:  String,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -116,6 +126,7 @@ pub struct GameGenre {
     name:  String,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 pub enum GameModeratorType {
@@ -123,6 +134,7 @@ pub enum GameModeratorType {
     SuperModerator,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -132,6 +144,7 @@ pub struct GamePublisher {
     name:  String,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -144,6 +157,7 @@ pub struct GameRuleset {
     show_milliseconds:    bool,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "snake_case")]
 #[allow(non_camel_case_types)]
@@ -156,6 +170,7 @@ pub enum GameRulesetTiming {
     RTA_NL,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -166,6 +181,7 @@ pub struct GameType {
     name:             String,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -177,6 +193,7 @@ pub struct Level {
     weblink: String,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(
     deny_unknown_fields,
@@ -207,6 +224,7 @@ pub enum Link {
     Variables(String),
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -216,6 +234,7 @@ pub struct Names {
     twitch:        Option<String>,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -226,6 +245,7 @@ pub struct Platform {
     released: u32,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -235,6 +255,7 @@ pub struct Region {
     name:  String,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -257,6 +278,7 @@ pub struct Run {
     weblink:   Option<String>,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "rel")]
 pub enum RunPlayer {
@@ -264,6 +286,7 @@ pub enum RunPlayer {
     User { id: String, uri: String },
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "rel")]
 pub enum RunSplits {
@@ -271,13 +294,15 @@ pub enum RunSplits {
     RunSplitsIo { uri: String },
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case", untagged)]
 pub enum RunSplitsOrBuggyValue {
-    RunSplits(RunSplits),
     BuggyValue(String),
+    RunSplits(RunSplits),
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "status")]
 pub enum RunStatus {
@@ -293,6 +318,7 @@ pub enum RunStatus {
     },
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -302,20 +328,22 @@ pub struct RunSystem {
     region:   Option<String>,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "snake_case")]
 #[get = "pub"]
 pub struct RunTimes {
-    ingame_t:           Option<f32>,
     ingame:             Option<String>,
-    primary_t:          Option<f32>,
+    ingame_t:           Option<f32>,
     primary:            Option<String>,
-    realtime_noloads_t: Option<f32>,
-    realtime_noloads:   Option<String>,
-    realtime_t:         Option<f32>,
+    primary_t:          Option<f32>,
     realtime:           Option<String>,
+    realtime_noloads:   Option<String>,
+    realtime_noloads_t: Option<f32>,
+    realtime_t:         Option<f32>,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -324,6 +352,7 @@ pub struct RunVideos {
     text:  Option<String>,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters, Deref)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -331,6 +360,7 @@ pub struct Uri {
     uri: String,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -350,6 +380,7 @@ pub struct User {
     youtube:       Option<Uri>,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -358,6 +389,7 @@ pub struct UserLocation {
     region:  Option<UserLocationRegion>,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -366,6 +398,7 @@ pub struct UserLocationCountry {
     names: Names,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -374,6 +407,7 @@ pub struct UserLocationRegion {
     names: Names,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "style")]
 pub enum UserNameStyle {
@@ -388,6 +422,7 @@ pub enum UserNameStyle {
     },
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -396,6 +431,7 @@ pub struct UserNameStyleColor {
     light: String,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 pub enum UserRole {
@@ -409,6 +445,7 @@ pub enum UserRole {
     User,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -425,6 +462,7 @@ pub struct Variable {
     values:         VariableValues,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case", tag = "type")]
 pub enum VariableScope {
@@ -434,6 +472,7 @@ pub enum VariableScope {
     SingleLevel { level: String },
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -445,6 +484,7 @@ pub struct VariableValues {
     values: HashMap<String, VariableValue>,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
@@ -454,6 +494,7 @@ pub struct VariableValue {
     rules: Option<String>,
 }
 
+#[remain::sorted]
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Getters)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
