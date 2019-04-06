@@ -98,7 +98,7 @@ const apiCache = new SqliteStringMap('api-cache');
 // apiCache.clear();
 
 app.get(/^\/api\/(.*)/, async (req, res) => {
-  const url = 'https://www.speedrun.com/api/' + req.url.slice(1);
+  const url = 'https://www.speedrun.com/' + req.url.slice(1);
   const cached = await apiCache.get(url);
 
   if (cached) {
