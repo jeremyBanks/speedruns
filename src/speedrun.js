@@ -5,7 +5,7 @@ import {compareAll, compareDefault, nProps} from '/assets/bester/utils.js';
 import {extraRuns} from '/assets/data/runs.js';
 import {fetch} from '/assets/bester/deps.js';
 
-export const speedrunDotComApiRootUrl = '/https://www.speedrun.com/api/v1/';
+export const speedrunDotComApiRootUrl = '/api/v1/';
 
 export const api = async (path, maxPages = 32) => {
   if (!apiCache.has(path)) {

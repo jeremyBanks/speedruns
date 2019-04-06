@@ -97,7 +97,7 @@ export class BestsRouter extends RootComponent {
   
   async *render({url}) {
     const hostName = url.host;
-    const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : null;
+    const projectName = hostName.match(/^[a-z0-9\-]+\.glitch\.me$/) ? hostName.split('.')[0] : 'bests';
     const shortName = projectName || hostName;
         
     yield Header.of({currentProject: projectName, currentHost: hostName});
