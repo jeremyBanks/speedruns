@@ -48,7 +48,7 @@ app.get('/*.md', async (req, res, next) => {
   const reader = new commonmark.Parser();
   const writer = new commonmark.HtmlRenderer({safe: true});
   const result = writer.render(reader.parse(input));
-  const projectName = process.env.PROJECT_NAME || undefined;
+  const projectName = process.env.PROJECT_NAME || 'bests';
   
   res.set('Content-Type', 'text/html');
           
