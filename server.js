@@ -97,8 +97,8 @@ import {SqliteStringMap} from './sqlite-string-map.js';
 const apiCache = new SqliteStringMap('api-cache');
 // apiCache.clear();
 
-app.get(/^\/(https:\/\/(www\.)?speedrun\.com\/api\/(.*))/, async (req, res) => {
-  const url = req.url.slice(1);
+app.get(/^\/api\/(.*)/, async (req, res) => {
+  const url = 'https://www.speedrun.com/api/' + req.url.slice(1);
   const cached = await apiCache.get(url);
 
   if (cached) {
