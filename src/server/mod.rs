@@ -9,7 +9,7 @@ use hyper::{
 };
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 
-use crate::{data::leaderboard::rank_runs, Database};
+use crate::{data::leaderboard::rank_runs, server::path::Path, Database};
 
 pub(self) mod path;
 pub(self) mod views;
@@ -81,32 +81,6 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
     }
 
     match (req.method(), path.as_ref()) {
-        (&Method::GET, "/") => {
-            Homepage.write_response(&mut response, json_view);
-        }
-
-        (&Method::GET, "/celeste/clear/forsaken-city") => {
-            let game = database
-                .clone()
-                .game_by_slugify("celeste")
-                .expect("Celeste in database");
-            let category = game.category_by_slugify("Clear").expect("Any% in Celeste");
-            let level = game
-                .level_by_slugify("Forsaken City")
-                .expect("Forsaken City in Celeste");
-            let runs = category.level_runs(&level);
-
-            let ranks = rank_runs(database.clone(), &runs);
-
-            LeaderboardPage {
-                game: game.clone(),
-                category: category.clone(),
-                level: Some(level.clone()),
-                ranks,
-            }
-            .write_response(&mut response, json_view);
-        }
-
         (&Method::GET, "/style.css") => {
             response
                 .headers_mut()
@@ -117,18 +91,51 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
             response
                 .headers_mut()
                 .insert("Content-Type", HeaderValue::from_static("image/gif"));
-            *response.body_mut() = Body::from(include_bytes!("static/srca.gif").as_ref());
+            *response.body_mut() =
+                Body::from(include_bytes!("static/srca-icon.gif").as_ref());
         }
 
         (&Method::GET, "/src.png") => {
             response
                 .headers_mut()
                 .insert("Content-Type", HeaderValue::from_static("image/png"));
-            *response.body_mut() = Body::from(include_bytes!("static/src.png").as_ref());
+            *response.body_mut() =
+                Body::from(include_bytes!("static/src-icon.png").as_ref());
         }
 
+        (&Method::GET, path) => match Path::from_str(path, database.clone()).unwrap() {
+            Path::Home => Homepage.write_response(&mut response, json_view),
+            Path::FullCategory(category) => {
+                let runs = category.full_runs();
+                let ranks = rank_runs(database.clone(), &runs);
+                LeaderboardPage {
+                    game: category.game().clone(),
+                    category: category.clone(),
+                    level: None,
+                    ranks,
+                }
+                .write_response(&mut response, json_view);
+            }
+            Path::LevelCategory(category, level) => {
+                let runs = category.level_runs(&level);
+                let ranks = rank_runs(database.clone(), &runs);
+                LeaderboardPage {
+                    game: category.game().clone(),
+                    category: category.clone(),
+                    level: Some(level.clone()),
+                    ranks,
+                }
+                .write_response(&mut response, json_view);
+            }
+            _ => unimplemented!(),
+        },
+
         _ => {
-            *response.status_mut() = StatusCode::NOT_FOUND;
+            *response.status_mut() = StatusCode::BAD_REQUEST;
+            response
+                .headers_mut()
+                .insert("Content-Type", HeaderValue::from_static("image/plain"));
+            *response.body_mut() = Body::from("bad request");
         }
     }
 

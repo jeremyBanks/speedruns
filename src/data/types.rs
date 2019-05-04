@@ -12,6 +12,8 @@ use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationError, ValidationErrors};
 use validator_derive::Validate;
 
+use crate::utils::{base36, src_slugify};
+
 /// We currently represent all ids as NonZeroU64s for efficiency.
 /// You can use [crate::utils] to convert to and from speedrun.com's
 /// API IDs. (This isn't the same conversion as speedrun.com uses,
@@ -45,6 +47,18 @@ pub struct Category {
     pub rules: String,
 }
 
+impl Category {
+    /// This item's ID as it would be formatted for SpeedRun.Com.
+    pub fn src_id(&self) -> String {
+        base36(*self.id())
+    }
+
+    /// This item's URL as it would be formatted for SpeedRun.com.
+    pub fn src_slug(&self) -> String {
+        src_slugify(self.name())
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, PartialOrd, Ord, Eq)]
 #[serde(deny_unknown_fields)]
 pub enum CategoryType {
@@ -76,6 +90,18 @@ pub struct User {
     pub id: Id64,
 }
 
+impl User {
+    /// This item's ID as it would be formatted for SpeedRun.Com.
+    pub fn src_id(&self) -> String {
+        base36(*self.id())
+    }
+
+    /// This item's URL as it would be formatted for SpeedRun.com.
+    pub fn src_slug(&self) -> String {
+        src_slugify(self.name())
+    }
+}
+
 #[derive(
     Debug,
     Serialize,
@@ -97,8 +123,17 @@ pub struct Game {
     #[validate(length(min = 1))]
     pub slug: String,
     #[validate(length(min = 1))]
+    pub src_slug: String,
+    #[validate(length(min = 1))]
     pub name: String,
     pub primary_timing: TimingMethod,
+}
+
+impl Game {
+    /// This item's ID as it would be formatted for SpeedRun.Com.
+    pub fn src_id(&self) -> String {
+        base36(*self.id())
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, PartialOrd, Ord, Eq)]
@@ -135,6 +170,18 @@ pub struct Level {
     pub rules: String,
 }
 
+impl Level {
+    /// This item's ID as it would be formatted for SpeedRun.Com.
+    pub fn src_id(&self) -> String {
+        base36(*self.id())
+    }
+
+    /// This item's URL as it would be formatted for SpeedRun.com.
+    pub fn src_slug(&self) -> String {
+        src_slugify(self.name())
+    }
+}
+
 #[derive(
     Debug,
     Serialize,
@@ -161,6 +208,13 @@ pub struct Run {
     pub times_ms: RunTimesMs,
     #[validate]
     pub players: Vec<RunPlayer>,
+}
+
+impl Run {
+    /// This item's ID as it would be formatted for SpeedRun.Com.
+    pub fn src_id(&self) -> String {
+        base36(*self.id())
+    }
 }
 
 #[derive(

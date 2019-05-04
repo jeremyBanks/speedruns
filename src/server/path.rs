@@ -1,7 +1,7 @@
 //! How do we want to handle URLs?
 #![allow(unused)]
 
-use std::{rc::Rc, str::FromStr};
+use std::{str::FromStr, sync::Arc};
 
 use derive_more::{Display, From};
 use err_derive::Error;
@@ -78,7 +78,23 @@ pub enum PathParsingError {
 }
 
 impl Path {
-    fn from_str(s: &str, database: Rc<Database>) -> Result<Path, PathParsingError> {
+    /// Returns the fully-qualified URL of a roughly-equivalent page on SpeedRun.Com.
+    pub fn to_src(&self) -> String {
+        // TODO: define Path::to_str() and use it in a view.
+        unimplemented!();
+
+        use Path::*;
+        match self {
+            Home => format!("https://speedrun.com/"),
+            Game(game) => format!("https://speedrun.com/{}", game.src_slug()),
+            User(user) => format!("https://speedrun.com/user/{}", user.src_slug()),
+            FullCategory(category) => unimplemented!(),
+            LevelCategory(category, level) => unimplemented!(),
+            Run(run) => unimplemented!(),
+        }
+    }
+
+    pub fn from_str(s: &str, database: Arc<Database>) -> Result<Path, PathParsingError> {
         let path: Result<Path, PathParsingError> = unimplemented!(
         r"
         Our URLs:
@@ -99,6 +115,7 @@ impl Path {
 
         Compatibility Redirects for SpeedRun.com Compatibility:
             /TGH                                       # user profile
+            /user/TGH                                  # user profile
             /Celeste/full_game                         # game category list
             /Celeste/individual_levels                 # game category list
             /Celeste/Forsaken_City                     # game category list
