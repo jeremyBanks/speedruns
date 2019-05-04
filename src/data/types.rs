@@ -36,9 +36,11 @@ pub type Id64 = std::num::NonZeroU64;
 #[get = "pub"]
 pub struct Category {
     pub game_id: Id64,
-    pub id: Id64,
+    #[validate(length(min = 1))]
+    pub slug: String,
     #[validate(length(min = 1))]
     pub name: String,
+    pub id: Id64,
     pub per: CategoryType,
     pub rules: String,
 }
@@ -66,10 +68,12 @@ pub enum CategoryType {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct User {
-    pub id: Id64,
     pub created: Option<DateTime<Utc>>,
     #[validate(length(min = 1))]
+    pub slug: String,
+    #[validate(length(min = 1))]
     pub name: String,
+    pub id: Id64,
 }
 
 #[derive(
@@ -123,9 +127,12 @@ pub enum TimingMethod {
 #[get = "pub"]
 pub struct Level {
     pub game_id: Id64,
-    pub id:      Id64,
-    pub name:    String,
-    pub rules:   String,
+    pub id: Id64,
+    #[validate(length(min = 1))]
+    pub slug: String,
+    #[validate(length(min = 1))]
+    pub name: String,
+    pub rules: String,
 }
 
 #[derive(

@@ -40,3 +40,20 @@ footer {
     margin-top: 128px;
     font-size: 0.5em;
 }
+
+tr {
+    border-left: 4px solid black;
+    text-align: left;
+}
+
+tr[data-rank="1"] {
+    border-left-color: gold;
+}
+
+tr[data-rank="2"] {
+    border-left-color: silver;
+}
+
+tr[data-rank="3"] {
+    border-left-color: orangered;
+}

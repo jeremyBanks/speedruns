@@ -108,11 +108,32 @@ impl<'db> View for LeaderboardPage {
                     (level.name())
                 }
             }
-            @for rank in &self.ranks {
-                p {
-                    "#" (rank.rank()) ". "
-                    (rank.time_ms()) " ms"
-                    " by " (format!("{:#?}", rank.run().users().to_vec().iter().map(|u| u.name()).collect::<Vec<_>>()))
+            table {
+                thead {
+                    tr {
+                        th { "rank" }
+                        th { "time" }
+                        th { "runner" }
+                        th { "date" }
+                    }
+                }
+                tbody {
+                    @for rank in &self.ranks {
+                        tr data-rank=(rank.tied_rank()) {
+                            td {
+                                (rank.tied_rank())
+                            }
+                            td {
+                                (rank.time_ms())
+                            }
+                            td {
+                                (format!("{:#?}", rank.run().users().to_vec().iter().map(|u| u.name()).collect::<Vec<_>>()))
+                            }
+                            td {
+                                (rank.run().date().map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default())
+                            }
+                        }
+                    }
                 }
             }
         })
