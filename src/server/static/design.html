@@ -20,6 +20,8 @@
 
     nav {
         display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
     }
 
     nav>* {
@@ -38,11 +40,12 @@
     }
 
     nav.site {
-        justify-content: space-between;
+        justify-content: flex-start;
         font-size: 24px;
     }
 
     nav.resource {
+        justify-content: flex-start;
         font-size: 18px;
     }
 
@@ -52,13 +55,6 @@
 
     nav>a:hover {
         background-color: rgb(255, 255, 200);
-    }
-
-    body {
-        background: rgb(240, 240, 240);
-        max-width: 600px;
-        margin: 16px auto;
-        border-radius: 4px;
     }
 
     main {
@@ -195,11 +191,12 @@
     </nav>
 
     <nav class="view">
-        <a>Leaderboard</a>
-        <a class="inactive">History</a>
-        <a class="inactive">Rules</a>
+        <a href="/">Leaderboard</a>
+        <a href="/" class="inactive">History</a>
+        <a href="/" class="inactive">Rules</a>
         <div style="flex-grow: 1;"></div>
-        <a class="source" href="https://speedrun.com">speedrun.com</a>
+        <a href="/" class="inactive"><code>{json}</code></a>
+        <a href="/" class="source" href="https://speedrun.com">speedrun.com</a>
     </nav>
 
     <main>
