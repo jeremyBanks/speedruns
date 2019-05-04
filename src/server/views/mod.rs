@@ -46,13 +46,16 @@ fn page(body: Markup) -> Markup {
         head {
             meta charset="utf-8";
             link rel="stylesheet" href="/style.css";
-            link rel="icon" href="/icon.gif";
+            link rel="icon" href="/srca.gif";
             title { "SpeedRun.Com Archive" }
         }
         body {
             header {
                 h1 {
-                    a href="/" { "SpeedRun.Com Archive" }
+                    a href="/" {
+                        img src="/srca.gif" alt="" style="height: 1em";
+                        "SpeedRun.Com Archive"
+                    }
                 }
             }
             main {
@@ -118,14 +121,16 @@ impl<'db> View for LeaderboardPage {
                     ": "
                     (level.name())
                 }
-
-                " ["
-                a href="/celeste/clear/forsaken-city.json" { "json" }
-                "]"
-
-                " ["
-                a href="https://www.speedrun.com/Celeste/Forsaken_City#Clear" { "source" }
-                "]"
+                " "
+                a href="https://www.speedrun.com/Celeste/Forsaken_City#Clear" {
+                    img src="/src.png" alt="on speedrun.com" style="height: 1em";
+                }
+                " "
+                a href="/celeste/clear/forsaken-city.json" {
+                    code {
+                        "{…}"
+                    }
+                }
             }
             table {
                 thead {

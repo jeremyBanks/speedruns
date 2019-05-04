@@ -81,20 +81,6 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
     }
 
     match (req.method(), path.as_ref()) {
-        (&Method::GET, "/icon.gif") => {
-            response
-                .headers_mut()
-                .insert("Content-Type", HeaderValue::from_static("image/gif"));
-            *response.body_mut() = Body::from(include_bytes!("static/srca.gif").as_ref());
-        }
-
-        (&Method::GET, "/style.css") => {
-            response
-                .headers_mut()
-                .insert("Content-Type", HeaderValue::from_static("text/css"));
-            *response.body_mut() = Body::from(include_bytes!("static/style.css").as_ref());
-        }
-
         (&Method::GET, "/") => {
             Homepage.write_response(&mut response, json_view);
         }
@@ -119,6 +105,26 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
                 ranks,
             }
             .write_response(&mut response, json_view);
+        }
+
+        (&Method::GET, "/style.css") => {
+            response
+                .headers_mut()
+                .insert("Content-Type", HeaderValue::from_static("text/css"));
+            *response.body_mut() = Body::from(include_bytes!("static/style.css").as_ref());
+        }
+        (&Method::GET, "/srca.gif") => {
+            response
+                .headers_mut()
+                .insert("Content-Type", HeaderValue::from_static("image/gif"));
+            *response.body_mut() = Body::from(include_bytes!("static/srca.gif").as_ref());
+        }
+
+        (&Method::GET, "/src.png") => {
+            response
+                .headers_mut()
+                .insert("Content-Type", HeaderValue::from_static("image/png"));
+            *response.body_mut() = Body::from(include_bytes!("static/src.png").as_ref());
         }
 
         _ => {
