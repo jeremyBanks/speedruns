@@ -53,7 +53,7 @@ fn page(body: Markup) -> Markup {
             header {
                 h1 {
                     a href="/" {
-                        img src="/srca.gif" alt="" style="height: 1em";
+                        img src="/srca.gif" alt="";
                         "SpeedRun.Com Archive"
                     }
                 }
@@ -121,14 +121,15 @@ impl<'db> View for LeaderboardPage {
                     ": "
                     (level.name())
                 }
-                " "
-                a href="https://www.speedrun.com/Celeste/Forsaken_City#Clear" {
-                    img src="/src.png" alt="on speedrun.com" style="height: 1em";
-                }
-                " "
-                a href="/celeste/clear/forsaken-city.json" {
-                    code {
-                        "{…}"
+                span class="links" {
+                    a href="https://www.speedrun.com/Celeste/Forsaken_City#Clear" {
+                        img src="/src.png" alt="on speedrun.com";
+                    }
+                    " "
+                    a href="/celeste/clear/forsaken-city.json" {
+                        code {
+                            "{…}"
+                        }
                     }
                 }
             }
