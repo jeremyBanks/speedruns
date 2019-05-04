@@ -16,7 +16,7 @@ use validator::{Validate, ValidationErrors};
 
 use crate::{
     data::{models::*, types::*},
-    utils::slugify,
+    utils::{base36, slugify},
 };
 
 #[derive(Debug, Error, From)]
@@ -125,12 +125,13 @@ const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validat
 
 /// A collection of [Tables] with various generated indexes.
 pub struct Database {
-    tables:                         &'static Tables,
-    runs_by_game_id:                HashMap<Id64, Vec<&'static Run>>,
-    games_by_slug:                  HashMap<String, &'static Game>,
-    users_by_slug:                  HashMap<String, &'static User>,
-    categories_by_game_id_and_slug: HashMap<(Id64, String), &'static Category>,
-    levels_by_game_id_and_slug:     HashMap<(Id64, String), &'static Level>,
+    tables:                          &'static Tables,
+    runs_by_game_id:                 HashMap<Id64, Vec<&'static Run>>,
+    games_by_slug:                   HashMap<String, &'static Game>,
+    users_by_slug:                   HashMap<String, &'static User>,
+    categories_by_game_id_and_slug:  HashMap<(Id64, String), &'static Category>,
+    levels_by_game_id_and_slug:      HashMap<(Id64, String), &'static Level>,
+    runs_by_category_level_and_slug: HashMap<(Id64, Option<Id64>, String), &'static Run>,
 }
 
 impl std::fmt::Debug for Database {
@@ -156,6 +157,10 @@ impl Database {
             HashMap::new();
         let mut levels_by_game_id_and_slug: HashMap<(Id64, String), &'static Level> =
             HashMap::new();
+        let mut runs_by_category_level_and_slug: HashMap<
+            (Id64, Option<Id64>, String),
+            &'static Run,
+        > = HashMap::new();
 
         let index_errored = 'indexing: {
             for game in tables.games().values() {
@@ -205,6 +210,7 @@ impl Database {
             users_by_slug,
             categories_by_game_id_and_slug,
             levels_by_game_id_and_slug,
+            runs_by_category_level_and_slug,
         });
 
         if let Err(mut errors_) = self_.clone().validate() {
@@ -487,6 +493,27 @@ impl Linked<Run> {
                 .level_by_id(level_id)
                 .expect(DATABASE_INTEGRITY)
         })
+    }
+
+    /// Returns a URL-safe slug identifying this run within its given game,
+    /// category, and level (it may conflict with slugs in others).
+    pub fn slug(&self) -> String {
+        let users = self.users();
+        let b36id = base36(*self.id());
+        if users.is_empty() {
+            b36id
+        } else {
+            format!(
+                "{}-{}",
+                users
+                    .iter()
+                    .map(|u| u.slug())
+                    .map(ToString::to_string)
+                    .collect::<Vec<String>>()
+                    .join("-"),
+                &b36id[..4]
+            )
+        }
     }
 
     /// Returns Vec<Linked<User>> for this Run. May be empty if all runners
