@@ -41,19 +41,28 @@ footer {
     font-size: 0.5em;
 }
 
-tr {
-    border-left: 4px solid black;
+table {
     text-align: left;
 }
 
-tr[data-rank="1"] {
+th.rank {
+    text-align: right;
+}
+
+tr > td.rank {
+    border-left: 6px solid #CDC;
+    padding-left: 2px;
+    text-align: right;
+}
+
+tr[data-rank="1"] > td.rank {
     border-left-color: gold;
 }
 
-tr[data-rank="2"] {
-    border-left-color: silver;
+tr[data-rank="2"] > td.rank {
+    border-left-color: #AAB;
 }
 
-tr[data-rank="3"] {
+tr[data-rank="3"] > td.rank {
     border-left-color: orangered;
 }

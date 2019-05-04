@@ -11,9 +11,9 @@ use hyper::{
 
 use crate::{data::leaderboard::rank_runs, Database};
 
-mod paths;
-mod views;
-use views::*;
+pub(self) mod path;
+pub(self) mod views;
+pub(self) use views::*;
 
 /// A Boxed Future for interfacing with Hyper.
 pub type BoxFut = Box<Future<Item = Response<Body>, Error = hyper::Error> + Send>;
@@ -93,7 +93,7 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
             Homepage.html_to(&mut response);
         }
 
-        (&Method::GET, "/celeste/anypercent") => {
+        (&Method::GET, "/celeste/clear/forsaken-city") => {
             let game = database
                 .clone()
                 .game_by_slugify("celeste")

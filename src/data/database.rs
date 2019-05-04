@@ -697,6 +697,10 @@ impl Linked<Category> {
             .clone()
             .runs_by_game_id(*self.game_id())
             .expect(DATABASE_INTEGRITY)
+            .iter()
+            .filter(|r| r.category_id() == self.id())
+            .cloned()
+            .collect()
     }
 
     pub fn full_runs(&self) -> Vec<Linked<Run>> {
