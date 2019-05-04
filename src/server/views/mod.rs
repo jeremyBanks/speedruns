@@ -6,6 +6,7 @@ use hyper::{header::HeaderValue, Body};
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use maud::{html, Markup};
 use serde::Serialize;
+use serde_json;
 
 use crate::{
     data::{database::Linked, leaderboard::RankedRun, types::*},
@@ -15,16 +16,24 @@ use crate::{
 pub trait View: Serialize + std::fmt::Debug {
     fn render(&self) -> Markup;
 
-    fn html_to(&self, response: &mut hyper::Response<hyper::Body>) {
-        let headers = response.headers_mut();
-        headers.insert("Content-Type", HeaderValue::from_static("text/html"));
-        headers.insert("Content-Encoding", HeaderValue::from_static("gzip"));
+    fn write_response(&self, response: &mut hyper::Response<hyper::Body>, as_json: bool) {
+        let string: String;
+        if !as_json {
+            response
+                .headers_mut()
+                .insert("Content-Type", HeaderValue::from_static("text/html"));
 
-        let render = self.render().into_string();
+            string = self.render().into_string();
+        } else {
+            string = serde_json::to_string_pretty(&self).unwrap();
+        }
 
+        response
+            .headers_mut()
+            .insert("Content-Encoding", HeaderValue::from_static("gzip"));
         let mut buffer = Vec::<u8>::new();
         let mut compressor = GzEncoder::new(&mut buffer, flate2::Compression::best());
-        compressor.write_all(render.as_bytes()).unwrap();
+        compressor.write_all(string.as_bytes()).unwrap();
         compressor.finish().unwrap();
 
         *response.body_mut() = Body::from(buffer);
@@ -109,6 +118,14 @@ impl<'db> View for LeaderboardPage {
                     ": "
                     (level.name())
                 }
+
+                " ["
+                a href="/celeste/clear/forsaken-city.json" { "json" }
+                "]"
+
+                " ["
+                a href="https://www.speedrun.com/Celeste/Forsaken_City#Clear" { "source" }
+                "]"
             }
             table {
                 thead {

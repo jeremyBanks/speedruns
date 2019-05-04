@@ -27,9 +27,9 @@ use speedruns::{
     },
 };
 
-// TODO: add Run::videos()
-// TODO: add Run::comment()
-// TODO: add Game::variables() and Run::values()
+// TODO: include Run::videos()
+// TODO: include Run::comment()
+// TODO: include Game::variables() and Run::values()
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::try_init_from_env(

@@ -30,12 +30,8 @@ a {
     color: inherit;
 }
 
-h1 a {
-    text-decoration: none;
-}
-
 a:hover {
-    text-decoration: underline;
+    color: #44F;
 }
 
 footer {
@@ -58,10 +54,6 @@ td.rank, td.time, td.date {
         "Fira Code", Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",
         "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", 
         "Liberation Mono", "Nimbus Mono L", Monaco, monospace;
-}
-
-th {
-    text-transform: small-caps;
 }
 
 tr:hover {

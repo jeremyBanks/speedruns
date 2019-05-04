@@ -74,7 +74,13 @@ impl Server {
 fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
     let mut response = Response::new(Body::empty());
 
-    match (req.method(), req.uri().path()) {
+    let mut path = req.uri().path().to_string();
+    let json_view = path.ends_with(".json");
+    if json_view {
+        path.truncate(path.len() - ".json".len());
+    }
+
+    match (req.method(), path.as_ref()) {
         (&Method::GET, "/icon.gif") => {
             response
                 .headers_mut()
@@ -90,7 +96,7 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
         }
 
         (&Method::GET, "/") => {
-            Homepage.html_to(&mut response);
+            Homepage.write_response(&mut response, json_view);
         }
 
         (&Method::GET, "/celeste/clear/forsaken-city") => {
@@ -112,7 +118,7 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
                 level: Some(level.clone()),
                 ranks,
             }
-            .html_to(&mut response);
+            .write_response(&mut response, json_view);
         }
 
         _ => {
