@@ -79,6 +79,7 @@ impl Normalize for api::Game {
             id:             id64_from_base36(self.id())?,
             name:           self.names().normalize()?,
             slug:           slugify(self.abbreviation()),
+            src_slug:       self.abbreviation().to_string(),
             created:        *self.created(),
             primary_timing: self.ruleset().default_time().normalize()?,
         };

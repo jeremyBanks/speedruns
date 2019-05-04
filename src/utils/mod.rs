@@ -21,75 +21,130 @@ pub fn slugify(s: &str) -> String {
     let s = unidecode(s).to_ascii_lowercase();
     let mut slug = String::new();
 
-    let mut last_was_replaced = false;
+    let mut last_was_spacing = true;
     let chars = s.chars().collect::<Vec<_>>();
     for i in 0..chars.len() {
-        let mut this_was_replaced = false;
+        let mut this_was_spacing = false;
         let c = chars[i];
+        let first_or_last = i == 0 || i == chars.len() - 1;
         match c {
-            'a'..='z' | 'A'..='Z' | '0'..='9' => slug.push(c),
+            // unmodified
+            'a'..='z' | '0'..='9' => slug.push(c),
+            // always escaped
             '%' => slug.push_str("percent"),
             '+' => slug.push_str("plus"),
             '&' => slug.push_str("and"),
+            '/' => slug.push_str("or"),
+            // escaped at ends, entirely ignored elsewhere
             '\'' =>
-                if i == chars.len() - 1 {
-                    if !last_was_replaced {
+                if first_or_last {
+                    if !last_was_spacing {
                         slug.push('-');
                     }
-                    slug.push_str("prime");
+                    if first_or_last {
+                        slug.push_str("prime-");
+                    }
+                    this_was_spacing = true;
                 },
-            '/' => {
-                this_was_replaced = true;
-                if !last_was_replaced {
-                    slug.push('-');
-                }
-                slug.push_str("or-")
-            }
+            // escaped at ends, converted to spacing elsewhere
             '.' => {
-                if !last_was_replaced {
+                if !last_was_spacing {
                     slug.push('-');
                 }
-                if i == chars.len() - 1 {
-                    slug.push_str("dot");
-                } else {
-                    this_was_replaced = true;
+                if first_or_last {
+                    slug.push_str("dot-");
                 }
+                this_was_spacing = true;
+            }
+            '@' => {
+                if !last_was_spacing {
+                    slug.push('-');
+                }
+                if first_or_last {
+                    slug.push_str("at-");
+                }
+                this_was_spacing = true;
+            }
+            '|' => {
+                if !last_was_spacing {
+                    slug.push('-');
+                }
+                if first_or_last {
+                    slug.push_str("bar-");
+                }
+                this_was_spacing = true;
             }
             '_' => {
-                if !last_was_replaced {
+                if !last_was_spacing {
                     slug.push('-');
                 }
-                if i == chars.len() - 1 {
-                    slug.push_str("underscore");
-                } else {
-                    this_was_replaced = true;
+                if first_or_last {
+                    slug.push_str("underscore-");
                 }
+                this_was_spacing = true;
             }
             '-' => {
-                if !last_was_replaced {
+                if !last_was_spacing {
                     slug.push('-');
                 }
-                if i == chars.len() - 1 {
-                    slug.push_str("minus");
-                } else {
-                    this_was_replaced = true;
+                if first_or_last {
+                    slug.push_str("minus-");
                 }
+                this_was_spacing = true;
             }
+            // converted to spacing
             _ => {
-                this_was_replaced = true;
-                if !last_was_replaced {
+                if !last_was_spacing {
                     slug.push('-');
                 }
+                this_was_spacing = true;
             }
         }
-        last_was_replaced = this_was_replaced;
+        last_was_spacing = this_was_spacing;
     }
 
-    if last_was_replaced && slug.len() > 1 {
+    if last_was_spacing && !slug.is_empty() {
         slug.truncate(slug.len() - 1);
     }
 
+    if slug.is_empty() {
+        slug.push('-');
+    }
+
     slug
+}
+
+// Converts a name to a slug as SpeedRun.Com would, for generating links.
+pub fn src_slugify(s: &str) -> String {
+    let mut src_slug = String::new();
+
+    // TODO: check against API URLs during normalization
+
+    let mut last_was_spacing = true;
+    for c in s.chars() {
+        let mut this_was_spacing = false;
+        match c {
+            'a'..='z' | 'A'..='Z' | '0'..='9' | '+' | '-' => src_slug.push(c),
+            '/' | '\'' => {}
+            _ => {
+                this_was_spacing = true;
+                if !last_was_spacing {
+                    src_slug.push('_');
+                }
+            }
+        }
+        last_was_spacing = this_was_spacing;
+    }
+
+    if last_was_spacing && !src_slug.is_empty() {
+        src_slug.truncate(src_slug.len() - 1);
+    }
+
+    if src_slug.is_empty() {
+        src_slug.push('_');
+    }
+
+    src_slug
 }
 
 /// Decodes a nonzero lowercase base 36 string to an [Id64].
@@ -138,36 +193,52 @@ mod tests {
 
     #[test]
     fn test_slugify() {
-        for (slug, name) in vec![
-            ("celeste", "Celeste"),
-            ("anypercent", "Any%"),
-            ("100percent", "100%"),
-            ("all-a-sides", "All A-Sides"),
-            ("120-star", "120 Star"),
-            ("new-game-pc", "New Game (PC)"),
+        for (name, slug, src_slug) in vec![
+            ("Celeste", "celeste", "Celeste"),
+            ("Any%", "anypercent", "Any"),
+            ("100%", "100percent", "100"),
+            ("All A-Sides", "all-a-sides", "All_A-Sides"),
+            ("120 Star", "120-star", "120_Star"),
+            ("New Game (PC)", "new-game-pc", "New_Game_PC"),
             (
-                "all-ng-memories-and-all-beads",
                 "All NG Memories & All Beads",
+                "all-ng-memories-and-all-beads",
+                "All_NG_Memories_All_Beads",
             ),
-            ("new-game-plus-pc", "New Game + (PC)"),
-            ("all-red-berries", "All Red Berries"),
-            ("resident-evil-2-2019", "Resident Evil 2 (2019)"),
-            ("mickeys-speedway-usa", "Mickey's Speedway USA"),
+            ("New Game + (PC)", "new-game-plus-pc", "New_Game_+_PC"),
+            ("All Red Berries", "all-red-berries", "All_Red_Berries"),
             (
-                "lego-star-wars-the-complete-saga-pc-or-console",
+                "Resident Evil 2 (2019)",
+                "resident-evil-2-2019",
+                "Resident_Evil_2_2019",
+            ),
+            (
+                "Mickey's Speedway USA",
+                "mickeys-speedway-usa",
+                "Mickeys_Speedway_USA",
+            ),
+            (
                 "LEGO Star Wars: The Complete Saga (PC/Console)",
+                "lego-star-wars-the-complete-saga-pc-or-console",
+                "LEGO_Star_Wars_The_Complete_Saga_PCConsole",
             ),
-            ("mike-tysons-punch-out", "Mike Tyson's Punch-Out!!"),
-            ("pokemon-blue", "Pokémon Blue"),
-            ("route-z-prime", "Route-Z'"),
-            ("peace-dot", "Peace."),
             (
-                "crash-bandicoot-n-sane-trilogy",
-                "Crash Bandicoot: N. Sane Trilogy",
+                "Mike Tyson's Punch-Out!!",
+                "mike-tysons-punch-out",
+                "Mike_Tysons_Punch-Out",
             ),
-            ("c-minus", "c-"),
+            ("Pokémon Blue", "pokemon-blue", "Pok_mon_Blue"),
+            ("Route-Z'", "route-z-prime", "Route-Z"),
+            ("Peace.", "peace-dot", "Peace"),
+            (
+                "Crash Bandicoot: N. Sane Trilogy",
+                "crash-bandicoot-n-sane-trilogy",
+                "Crash_Bandicoot_N_Sane_Trilogy",
+            ),
+            ("c-", "c-minus", "c-"),
         ] {
             assert_eq!(slug, &slugify(name));
+            assert_eq!(src_slug, &src_slugify(name));
         }
     }
 

@@ -16,7 +16,7 @@ use validator::{Validate, ValidationErrors};
 
 use crate::{
     data::{models::*, types::*},
-    utils::{base36, slugify},
+    utils::slugify,
 };
 
 #[derive(Debug, Error, From)]
@@ -125,10 +125,11 @@ const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validat
 
 /// A collection of [Tables] with various generated indexes.
 pub struct Database {
-    tables:                          &'static Tables,
-    runs_by_game_id:                 HashMap<Id64, Vec<&'static Run>>,
-    games_by_slug:                   HashMap<String, &'static Game>,
-    users_by_slug:                   HashMap<String, &'static User>,
+    tables:          &'static Tables,
+    runs_by_game_id: HashMap<Id64, Vec<&'static Run>>,
+    games_by_slug:   HashMap<String, &'static Game>,
+    users_by_slug:   HashMap<String, &'static User>,
+    // TODO: just index category/level by game, you shouldn't need to index by slug.
     categories_by_game_id_and_slug:  HashMap<(Id64, String), &'static Category>,
     levels_by_game_id_and_slug:      HashMap<(Id64, String), &'static Level>,
     runs_by_category_level_and_slug: HashMap<(Id64, Option<Id64>, String), &'static Run>,
@@ -142,7 +143,7 @@ impl std::fmt::Debug for Database {
 
 impl Database {
     fn link<ModelType: Model>(
-        self: Arc<Self>,
+        self: &Arc<Self>,
         item: &'static ModelType,
     ) -> Linked<ModelType> {
         Linked::new(self.clone(), item)
@@ -165,7 +166,7 @@ impl Database {
         let index_errored = 'indexing: {
             for game in tables.games().values() {
                 runs_by_game_id.insert(*game.id(), Vec::new());
-                games_by_slug.insert(slugify(game.slug()), game);
+                games_by_slug.insert(game.slug().to_string(), game);
             }
 
             for run in tables.runs().values() {
@@ -177,17 +178,18 @@ impl Database {
             }
 
             for user in tables.users().values() {
-                users_by_slug.insert(slugify(user.name()), user);
+                users_by_slug.insert(user.slug().to_string(), user);
             }
 
             for category in tables.categories().values() {
+                // BUG: this collides full-game and individual-level categories
                 categories_by_game_id_and_slug
-                    .insert((*category.game_id(), slugify(category.name())), category);
+                    .insert((*category.game_id(), category.slug().to_string()), category);
             }
 
             for level in tables.levels().values() {
                 levels_by_game_id_and_slug
-                    .insert((*level.game_id(), slugify(level.name())), level);
+                    .insert((*level.game_id(), level.name().to_string()), level);
             }
 
             for game_runs in runs_by_game_id.values_mut() {
@@ -213,18 +215,18 @@ impl Database {
             runs_by_category_level_and_slug,
         });
 
-        if let Err(mut errors_) = self_.clone().validate() {
+        if let Err(mut errors_) = self_.validate() {
             errors.append(&mut errors_.errors);
         }
 
         IntegrityErrors::try_from(errors).map(|_| self_)
     }
 
-    pub fn validate(self: Arc<Self>) -> Result<(), IntegrityErrors> {
+    pub fn validate(self: &Arc<Self>) -> Result<(), IntegrityErrors> {
         let mut errors = vec![];
 
         trace!("Validating {} runs.", self.tables.runs().len());
-        for run in self.clone().runs() {
+        for run in self.runs() {
             if let Err(mut error) = run.validate() {
                 errors.append(&mut error.errors);
             }
@@ -232,12 +234,12 @@ impl Database {
 
         trace!("Validating {} users.", self.tables.users().len());
         let mut user_slugs = HashMap::<String, Vec<User>>::new();
-        for user in self.clone().users() {
+        for user in self.users() {
             if let Err(mut error) = user.validate() {
                 errors.append(&mut error.errors);
             } else {
                 user_slugs
-                    .entry(slugify(user.name()))
+                    .entry(user.slug().to_string())
                     .or_insert_with(Vec::new)
                     .push(User::clone(&*user));
             }
@@ -253,12 +255,12 @@ impl Database {
 
         trace!("Validating {} games.", self.tables.games().len());
         let mut game_slugs = HashMap::<String, Vec<Game>>::new();
-        for game in self.clone().games() {
+        for game in self.games() {
             if let Err(mut error) = game.validate() {
                 errors.append(&mut error.errors);
             } else {
                 game_slugs
-                    .entry(slugify(game.slug()))
+                    .entry(game.slug().to_string())
                     .or_insert_with(Vec::new)
                     .push(Game::clone(&*game));
             }
@@ -274,15 +276,15 @@ impl Database {
 
         trace!("Validating {} categories.", self.tables.categories().len());
         let mut category_slugs = HashMap::<String, Vec<Category>>::new();
-        for category in self.clone().categories() {
+        for category in self.categories() {
             if let Err(mut error) = category.validate() {
                 errors.append(&mut error.errors);
             } else {
                 let slug = format!(
                     "{}/{}/{}",
-                    slugify(category.game().slug()),
+                    category.game().slug(),
                     slugify(&format!("{:?}", category.per())),
-                    slugify(category.name())
+                    category.slug()
                 );
                 category_slugs
                     .entry(slug)
@@ -301,12 +303,11 @@ impl Database {
 
         trace!("Validating {} levels.", self.tables.levels().len());
         let mut level_slugs = HashMap::<String, Vec<Level>>::new();
-        for level in self.clone().levels() {
+        for level in self.levels() {
             if let Err(mut error) = level.validate() {
                 errors.append(&mut error.errors);
             } else {
-                let slug =
-                    format!("{}/{}", slugify(level.game().slug()), slugify(level.name()));
+                let slug = format!("{}/{}", level.game().slug(), level.slug());
                 level_slugs
                     .entry(slug)
                     .or_insert_with(Vec::new)
@@ -326,92 +327,94 @@ impl Database {
     }
 
     /// Iterator over all Linked<Run>s.
-    pub fn runs(self: Arc<Self>) -> impl Iterator<Item = Linked<Run>> {
-        self.tables
-            .runs()
-            .values()
-            .map(move |run| self.clone().link(run))
+    pub fn runs(self: &Arc<Self>) -> impl Iterator<Item = Linked<Run>> {
+        let self_ = self.clone();
+        self.tables.runs().values().map(move |run| self_.link(run))
     }
 
     /// Finds a Linked<Run> by id.
-    pub fn run_by_id(self: Arc<Self>, id: Id64) -> Option<Linked<Run>> {
+    pub fn run_by_id(self: &Arc<Self>, id: Id64) -> Option<Linked<Run>> {
         self.tables.runs().get(&id).map(|run| self.link(run))
     }
 
     /// Returns a Vec of Linked<Run> for a given game ID, sorted by category,
     /// level, and then primary time (ascending).
-    pub fn runs_by_game_id(self: Arc<Self>, game_id: Id64) -> Option<Vec<Linked<Run>>> {
+    pub fn runs_by_game_id(self: &Arc<Self>, game_id: Id64) -> Option<Vec<Linked<Run>>> {
         self.runs_by_game_id
             .get(&game_id)
-            .map(|ref runs| runs.iter().map(|run| self.clone().link(*run)).collect())
+            .map(|ref runs| runs.iter().map(|run| self.link(*run)).collect())
     }
 
     /// Iterator over all Linked<User>s.
-    pub fn users(self: Arc<Self>) -> impl Iterator<Item = Linked<User>> {
+    pub fn users(self: &Arc<Self>) -> impl Iterator<Item = Linked<User>> {
+        let self_ = self.clone();
         self.tables
             .users()
             .values()
-            .map(move |user| self.clone().link(user))
+            .map(move |user| self_.link(user))
     }
 
     /// Finds a Linked<Run> by id.
-    pub fn user_by_id(self: Arc<Self>, id: Id64) -> Option<Linked<User>> {
+    pub fn user_by_id(self: &Arc<Self>, id: Id64) -> Option<Linked<User>> {
         self.tables.users().get(&id).map(|user| self.link(user))
     }
 
     /// Finds a Linked<User> by name.
-    pub fn user_by_slugify(self: Arc<Self>, slug: &str) -> Option<Linked<User>> {
+    pub fn user_by_slugify(self: &Arc<Self>, slug: &str) -> Option<Linked<User>> {
+        // TODO: stop all indexing by slugify, let consumers do that if they want.
         self.users_by_slug
             .get(&slugify(slug))
-            .map(|user| self.clone().link(*user))
+            .map(|user| self.link(*user))
     }
 
     /// Iterator over all Linked<Game>s.
-    pub fn games(self: Arc<Self>) -> impl Iterator<Item = Linked<Game>> {
+    pub fn games(self: &Arc<Self>) -> impl Iterator<Item = Linked<Game>> {
+        let self_ = self.clone();
         self.tables
             .games()
             .values()
-            .map(move |game| self.clone().link(game))
+            .map(move |game| self_.link(game))
     }
 
     /// Finds a Game<Run> by id.
-    pub fn game_by_id(self: Arc<Self>, id: Id64) -> Option<Linked<Game>> {
+    pub fn game_by_id(self: &Arc<Self>, id: Id64) -> Option<Linked<Game>> {
         self.tables.games().get(&id).map(|game| self.link(game))
     }
 
     /// Finds a Linked<Game> by slug.
-    pub fn game_by_slugify(self: Arc<Self>, slug: &str) -> Option<Linked<Game>> {
+    pub fn game_by_slugify(self: &Arc<Self>, slug: &str) -> Option<Linked<Game>> {
         self.games_by_slug
             .get(&slugify(slug))
-            .map(|game| self.clone().link(*game))
+            .map(|game| self.link(*game))
     }
 
     /// Finds a level with the given name and game ID.
     pub fn level_by_game_id_and_slug(
-        self: Arc<Self>,
+        self: &Arc<Self>,
         game_id: Id64,
         slug: &str,
     ) -> Option<Linked<Level>> {
         self.levels_by_game_id_and_slug
             .get(&(game_id, slugify(slug)))
-            .map(|level| self.clone().link(*level))
+            .map(|level| self.link(*level))
     }
 
     /// Iterator over all Linked<Level>s.
-    pub fn levels(self: Arc<Self>) -> impl Iterator<Item = Linked<Level>> {
+    pub fn levels(self: &Arc<Self>) -> impl Iterator<Item = Linked<Level>> {
+        let self_ = self.clone();
         self.tables
             .levels()
             .values()
-            .map(move |level| self.clone().link(level))
+            .map(move |level| self_.link(level))
     }
 
     /// Finds a Level<Run> by id.
-    pub fn level_by_id(self: Arc<Self>, id: Id64) -> Option<Linked<Level>> {
+    pub fn level_by_id(self: &Arc<Self>, id: Id64) -> Option<Linked<Level>> {
         self.tables.levels().get(&id).map(|level| self.link(level))
     }
 
     /// An iterator over all Linked<Category>s.
-    pub fn category_by_id(self: Arc<Self>, id: Id64) -> Option<Linked<Category>> {
+    pub fn category_by_id(self: &Arc<Self>, id: Id64) -> Option<Linked<Category>> {
         self.tables
             .categories()
             .get(&id)
@@ -420,21 +423,22 @@ impl Database {
 
     /// Finds a category with the given name and game ID.
     pub fn category_by_game_id_and_slug(
-        self: Arc<Self>,
+        self: &Arc<Self>,
         game_id: Id64,
         name: &str,
     ) -> Option<Linked<Category>> {
         self.categories_by_game_id_and_slug
             .get(&(game_id, slugify(name)))
-            .map(|category| self.clone().link(*category))
+            .map(|category| self.link(*category))
     }
 
     /// Iterator over all Linked<Category>s.
-    pub fn categories(self: Arc<Self>) -> impl Iterator<Item = Linked<Category>> {
+    pub fn categories(self: &Arc<Self>) -> impl Iterator<Item = Linked<Category>> {
+        let self_ = self.clone();
         self.tables
             .categories()
             .values()
-            .map(move |category| self.clone().link(category))
+            .map(move |category| self_.link(category))
     }
 }
 
@@ -499,9 +503,9 @@ impl Linked<Run> {
     /// category, and level (it may conflict with slugs in others).
     pub fn slug(&self) -> String {
         let users = self.users();
-        let b36id = base36(*self.id());
+        let src_id = self.src_id();
         if users.is_empty() {
-            b36id
+            src_id
         } else {
             format!(
                 "{}-{}",
@@ -511,7 +515,7 @@ impl Linked<Run> {
                     .map(ToString::to_string)
                     .collect::<Vec<String>>()
                     .join("-"),
-                &b36id[..4]
+                &src_id[..4]
             )
         }
     }
@@ -536,7 +540,7 @@ impl Linked<Run> {
     fn validate(&self) -> Result<(), IntegrityErrors> {
         let mut errors = Vec::new();
 
-        if self.database.clone().game_by_id(*self.game_id()).is_none() {
+        if self.database.game_by_id(*self.game_id()).is_none() {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "game",
                 target_id:         *self.game_id(),
@@ -567,7 +571,7 @@ impl Linked<Run> {
         }
 
         if let Some(level_id) = self.level_id() {
-            if self.database.clone().level_by_id(*level_id).is_none() {
+            if self.database.level_by_id(*level_id).is_none() {
                 errors.push(IntegrityError::ForeignKeyMissing {
                     target_type:       "level",
                     target_id:         *level_id,
@@ -579,7 +583,7 @@ impl Linked<Run> {
 
         for player in self.players() {
             if let RunPlayer::UserId(user_id) = player {
-                if self.database.clone().user_by_id(*user_id).is_none() {
+                if self.database.user_by_id(*user_id).is_none() {
                     errors.push(IntegrityError::ForeignKeyMissing {
                         target_type:       "user",
                         target_id:         *user_id,
@@ -670,7 +674,7 @@ impl Linked<Level> {
             });
         }
 
-        if self.database.clone().game_by_id(*self.game_id()).is_none() {
+        if self.database.game_by_id(*self.game_id()).is_none() {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "game",
                 target_id:         *self.game_id(),
@@ -725,7 +729,7 @@ impl Linked<Category> {
             });
         }
 
-        if self.database.clone().game_by_id(*self.game_id()).is_none() {
+        if self.database.game_by_id(*self.game_id()).is_none() {
             errors.push(IntegrityError::ForeignKeyMissing {
                 target_type:       "game",
                 target_id:         *self.game_id(),
