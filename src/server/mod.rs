@@ -11,7 +11,7 @@ use hyper::{
 
 use crate::{data::leaderboard::rank_runs, Database};
 
-// mod paths;
+mod paths;
 mod views;
 use views::*;
 
