@@ -187,7 +187,7 @@ impl Normalize for api::RunTimes {
     type Normalized = RunTimesMs;
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
-        fn u64_or_zero<'t>(s: Option<regex::Match<'t>>) -> u64 {
+        fn u64_or_zero(s: Option<regex::Match<'_>>) -> u64 {
             match s {
                 Some(s) => {
                     let s = s.as_str();
