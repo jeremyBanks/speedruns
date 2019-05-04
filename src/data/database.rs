@@ -189,7 +189,7 @@ impl Database {
 
             for level in tables.levels().values() {
                 levels_by_game_id_and_slug
-                    .insert((*level.game_id(), level.name().to_string()), level);
+                    .insert((*level.game_id(), level.slug().to_string()), level);
             }
 
             for game_runs in runs_by_game_id.values_mut() {
