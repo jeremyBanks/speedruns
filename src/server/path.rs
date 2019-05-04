@@ -5,10 +5,14 @@ use std::{str::FromStr, sync::Arc};
 
 use derive_more::{Display, From};
 use err_derive::Error;
+#[allow(unused)] use log::{debug, error, info, trace, warn};
 
-use crate::data::{
-    database::{Database, Linked},
-    types::*,
+use crate::{
+    data::{
+        database::{Database, Linked},
+        types::*,
+    },
+    utils::slugify,
 };
 
 #[derive(Debug, From)]
@@ -80,7 +84,7 @@ pub enum PathParsingError {
 impl Path {
     /// Returns the fully-qualified URL of a roughly-equivalent page on SpeedRun.Com.
     pub fn to_src(&self) -> String {
-        // TODO: define Path::to_str() and use it in a view.
+        // TODO: define Path::to_src() and use it in a view.
         unimplemented!();
 
         use Path::*;
@@ -95,7 +99,28 @@ impl Path {
     }
 
     pub fn from_str(s: &str, database: Arc<Database>) -> Result<Path, PathParsingError> {
-        let path: Result<Path, PathParsingError> = unimplemented!(
+        debug!("got path: {}", s);
+        assert!(s.starts_with('/'), "path must have leading slash");
+
+        let pieces = &s[1..].split('/').collect::<Vec<_>>();
+
+        let path = match pieces.len() {
+            0 => Ok(Path::Home),
+            3 => {
+                let game_slug = slugify(&pieces[0]);
+                let category_slug = slugify(&pieces[1]);
+                let level_slug = slugify(&pieces[2]);
+
+                let game = database.game_by_slug(&game_slug).unwrap();
+                let category = game.category_by_slug(&category_slug).unwrap();
+                let level = game.level_by_slug(&level_slug).unwrap();
+
+                Ok(Path::LevelCategory(category, level))
+            }
+            _ => Err(PathParsingError::InvalidStructure),
+        };
+
+        let _ =
         r"
         Our URLs:
             /                                          # game list
@@ -129,9 +154,9 @@ impl Path {
             /celeste/anypercent/tgh                    # personal best full run
             /celeste/anypercent/forsaken-city/pac      # personal best level run
         "
-        );
+        ;
 
-        if let Ok(path) = path {
+        if let Ok(ref path) = path {
             assert_eq!(s, path.to_string());
         }
         path

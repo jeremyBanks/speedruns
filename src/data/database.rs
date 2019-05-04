@@ -360,11 +360,9 @@ impl Database {
     }
 
     /// Finds a Linked<User> by name.
-    pub fn user_by_slugify(self: &Arc<Self>, slug: &str) -> Option<Linked<User>> {
+    pub fn user_by_slug(self: &Arc<Self>, slug: &str) -> Option<Linked<User>> {
         // TODO: stop all indexing by slugify, let consumers do that if they want.
-        self.users_by_slug
-            .get(&slugify(slug))
-            .map(|user| self.link(*user))
+        self.users_by_slug.get(slug).map(|user| self.link(*user))
     }
 
     /// Iterator over all Linked<Game>s.
@@ -382,10 +380,8 @@ impl Database {
     }
 
     /// Finds a Linked<Game> by slug.
-    pub fn game_by_slugify(self: &Arc<Self>, slug: &str) -> Option<Linked<Game>> {
-        self.games_by_slug
-            .get(&slugify(slug))
-            .map(|game| self.link(*game))
+    pub fn game_by_slug(self: &Arc<Self>, slug: &str) -> Option<Linked<Game>> {
+        self.games_by_slug.get(slug).map(|game| self.link(*game))
     }
 
     /// Finds a level with the given name and game ID.
@@ -395,7 +391,7 @@ impl Database {
         slug: &str,
     ) -> Option<Linked<Level>> {
         self.levels_by_game_id_and_slug
-            .get(&(game_id, slugify(slug)))
+            .get(&(game_id, slug.to_string()))
             .map(|level| self.link(*level))
     }
 
@@ -421,14 +417,14 @@ impl Database {
             .map(|category| self.link(category))
     }
 
-    /// Finds a category with the given name and game ID.
+    /// Finds a category with the given slug and game ID.
     pub fn category_by_game_id_and_slug(
         self: &Arc<Self>,
         game_id: Id64,
-        name: &str,
+        slug: &str,
     ) -> Option<Linked<Category>> {
         self.categories_by_game_id_and_slug
-            .get(&(game_id, slugify(name)))
+            .get(&(game_id, slug.to_string()))
             .map(|category| self.link(*category))
     }
 
@@ -629,13 +625,13 @@ impl Linked<Game> {
             .expect(DATABASE_INTEGRITY)
     }
 
-    pub fn category_by_slugify(&self, slug: &str) -> Option<Linked<Category>> {
+    pub fn category_by_slug(&self, slug: &str) -> Option<Linked<Category>> {
         self.database
             .clone()
             .category_by_game_id_and_slug(*self.id(), slug)
     }
 
-    pub fn level_by_slugify(&self, slug: &str) -> Option<Linked<Level>> {
+    pub fn level_by_slug(&self, slug: &str) -> Option<Linked<Level>> {
         self.database
             .clone()
             .level_by_game_id_and_slug(*self.id(), slug)
