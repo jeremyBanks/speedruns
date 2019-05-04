@@ -1,4 +1,7 @@
-html {
+html {    
+    font-family: sans-serif;
+    white-space: pre-wrap;
+
     background: #111;
     padding: 8px;
 }
@@ -9,7 +12,6 @@ body {
     max-width: 600px;
     background: #FFF;
     border-radius: 8px;
-    font-family: sans-serif;
 }
 
 main {
@@ -43,26 +45,69 @@ footer {
 
 table {
     text-align: left;
+    width: 100%;
+    margin: auto;
 }
 
-th.rank {
+td, th {
+    padding: 2px 6px;
+}
+
+td.rank, td.time, td.date {
+    font-family:
+        "Fira Code", Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",
+        "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", 
+        "Liberation Mono", "Nimbus Mono L", Monaco, monospace;
+}
+
+th {
+    text-transform: small-caps;
+}
+
+tr:hover {
+    background-color: #F8F8F8;
+}
+
+tr > .rank {
     text-align: right;
+    width: 40px;
 }
 
-tr > td.rank {
+tr > .time {
+    text-align: right;
+    width: 100px;
+}
+
+tr > .date {
+    text-align: center;
+    width: 100px;
+}
+
+tr > .runner {
+    text-align: left;
+    width: auto;
+}
+
+tbody > tr > .rank {
     border-left: 6px solid #CDC;
-    padding-left: 2px;
-    text-align: right;
+    background-color: #E8E8E8;
+    color: #888;
 }
 
-tr[data-rank="1"] > td.rank {
-    border-left-color: gold;
+tbody > tr[data-rank="1"] > .rank {
+    border-left-color: #FFAA00;
+    background-color: #FFF0E0;
+    color: black;
 }
 
-tr[data-rank="2"] > td.rank {
+tbody > tr[data-rank="2"] > .rank {
     border-left-color: #AAB;
+    background-color: #EEF;
+    color: black;
 }
 
-tr[data-rank="3"] > td.rank {
-    border-left-color: orangered;
+tbody > tr[data-rank="3"] > .rank {
+    border-left-color: #EE5511;
+    background-color: #F8D8C0;
+    color: black;
 }

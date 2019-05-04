@@ -103,12 +103,10 @@ impl<'db> View for LeaderboardPage {
         page(html! {
             h2 {
                 (self.game.name())
-            }
-            h3 {
+                ": "
                 (self.category.name())
-            }
-            @if let Some(level) = &self.level {
-                h4 {
+                @if let Some(level) = &self.level {
+                    ": "
                     (level.name())
                 }
             }
@@ -117,19 +115,22 @@ impl<'db> View for LeaderboardPage {
                     tr {
                         th class="rank" { "rank" }
                         th class="time" { "time" }
-                        th class="runner" { "runner" }
                         th class="date" { "date" }
+                        th class="runner" { "runner" }
                     }
                 }
                 tbody {
                     @for rank in &self.ranks {
                         tr data-rank=(rank.tied_rank()) {
-                            td class="rank" {
+                            th class="rank" {
                                 (rank.tied_rank())
                             }
                             td class="time" {
+                                (render_time(*rank.time_ms()))
+                            }
+                            td class="date" {
                                 a href=(Path::Run(rank.run().clone()).to_string()) {
-                                    (rank.time_ms())
+                                    (rank.run().date().render())
                                 }
                             }
                             td class="runner" {
@@ -137,15 +138,49 @@ impl<'db> View for LeaderboardPage {
                                     (user.render())
                                 }
                             }
-                            td class="date" {
-                                (rank.run().date().render())
-                            }
                         }
                     }
                 }
             }
         })
     }
+}
+
+fn render_time(ms_total: u64) -> String {
+    let mut pieces = Vec::<String>::new();
+    let ms = ms_total % 1000;
+    let s_total = ms_total / 1000;
+    let s = s_total % 60;
+    let m_total = s_total / 60;
+    let m = m_total % 60;
+    let h_total = m_total / 60;
+    let h = h_total;
+
+    if h_total > 0 {
+        pieces.push(format!("{}:", h));
+    }
+
+    if m_total > 0 {
+        if h_total > 0 {
+            pieces.push(format!("{:02}:", m));
+        } else {
+            pieces.push(format!("{}:", m));
+        }
+    }
+
+    if m_total > 0 {
+        pieces.push(format!("{:02}", s));
+    } else {
+        pieces.push(format!("{}", s));
+    }
+
+    if ms > 0 {
+        pieces.push(format!(".{:03}", ms));
+    } else {
+        pieces.push("    ".to_string());
+    }
+
+    pieces.join("")
 }
 
 impl View for Linked<User> {
