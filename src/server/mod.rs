@@ -82,6 +82,7 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
 
     match (req.method(), path.as_ref()) {
         (&Method::GET, "/style.css") => {
+            // TODO: serve assets live from filesystem instead of bundling in debug mode
             response
                 .headers_mut()
                 .insert("Content-Type", HeaderValue::from_static("text/css"));
@@ -101,6 +102,10 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
                 .insert("Content-Type", HeaderValue::from_static("image/png"));
             *response.body_mut() =
                 Body::from(include_bytes!("static/src-icon.png").as_ref());
+        }
+
+        (&Method::GET, "/favicon.ico") => {
+            *response.status_mut() = StatusCode::NOT_FOUND;
         }
 
         (&Method::GET, path) => match Path::from_str(path, database.clone()).unwrap() {

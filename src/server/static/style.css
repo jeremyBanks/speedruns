@@ -90,7 +90,13 @@ tr > .rank {
     width: 40px;
 }
 
-tr > .time {
+tr > th.time {
+    text-align: center;
+    width: 100px;
+}
+
+tr > td.time {
+    text-align: right;
     width: 100px;
 }
 
