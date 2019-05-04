@@ -108,37 +108,23 @@ fn respond(req: Request<Body>, database: Arc<Database>) -> BoxFut {
 
             let leaderboards = rank_runs(database.clone(), &runs);
 
-            Debug(&leaderboards).html_to(&mut response);
+            // Debug(&leaderboards).html_to(&mut response);
 
-            // let games = game
+            let ranks = rank_runs(database.clone(), &runs);
 
-            // let game = database.games_by_slug()[game_slug];;
-            // let runs = &database.runs_by_game_id()[game.id()];
-            // let category = database
-            //     .categories()
-            //     .values()
-            //     .find(|c| c.game_id() == game.id() && c.name() == "Any%")
-            //     .unwrap();
-            // let runs = runs
-            //     .iter()
-            //     .filter(|r| r.category_id() == category.id())
-            //     .cloned()
-            //     .collect::<Vec<_>>();
-            // let ranks = database.rank_runs(&runs);
+            let view = LeaderboardPage {
+                game: celeste.as_static(),
+                category: clear.as_static(),
+                level: Some(forsaken_city.as_static()),
+                ranks,
+            };
 
-            // let view = LeaderboardPage {
-            //     game,
-            //     category,
-            //     level: None,
-            //     ranks,
-            // };
+            response
+                .headers_mut()
+                .insert("Content-Type", HeaderValue::from_static("text/html"));
 
-            // response
-            //     .headers_mut()
-            //     .insert("Content-Type", HeaderValue::from_static("text/html"));
-
-            // let render = view.render().into_string();
-            // *response.body_mut() = Body::from(render);
+            let render = view.render().into_string();
+            *response.body_mut() = Body::from(render);
         }
 
         _ => {
