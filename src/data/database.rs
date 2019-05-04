@@ -7,7 +7,7 @@ use std::{
     sync::Arc,
 };
 
-use derive_more::{From};
+use derive_more::From;
 use err_derive::Error;
 use getset::Getters;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
