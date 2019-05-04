@@ -94,7 +94,7 @@ impl Path {
         If slug components of the string aren't already normalized (slugified)
         we redirect the user to the normalized form.
 
-        TODO: The .json extension may be appended to any URL to return the view
+        The .json extension may be appended to any URL to return the view
         model as JSON instead of rendering it to HTML.
 
         Compatibility Redirects for SpeedRun.com Compatibility:
