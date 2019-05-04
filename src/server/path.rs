@@ -3,7 +3,7 @@
 
 use std::{rc::Rc, str::FromStr};
 
-use derive_more::Display;
+use derive_more::{Display, From};
 use err_derive::Error;
 
 use crate::data::{
@@ -11,54 +11,54 @@ use crate::data::{
     types::*,
 };
 
-#[derive(Debug)]
-enum Path {
+#[derive(Debug, From)]
+pub enum Path {
     Home,
     User(Linked<User>),
     Game(Linked<Game>),
     FullCategory(Linked<Category>),
     LevelCategory(Linked<Category>, Linked<Level>),
-    FullRun(Linked<Run>),
-    LevelRun(Linked<Run>),
+    Run(Linked<Run>),
 }
 
 impl std::fmt::Display for Path {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         use Path::*;
         match self {
-            Home => write!(f, "/"),
-            Game(game) => write!(f, "/{}", game.slug()),
-            User(user) => write!(f, "/@{}", user.slug()),
+            Home => {
+                write!(f, "/")?;
+            }
+            Game(game) => {
+                write!(f, "/{}", game.slug())?;
+            }
+            User(user) => {
+                write!(f, "/@{}", user.slug())?;
+            }
             FullCategory(category) =>
-                write!(f, "/{}/{}", category.game().slug(), category.slug()),
-            LevelCategory(category, level) => write!(
-                f,
-                "/{}/{}/{}",
-                level.game().slug(),
-                category.slug(),
-                level.slug()
-            ),
-            FullRun(run) => write!(
-                f,
-                "/{}/{}/{}",
-                run.game().slug(),
-                run.category().slug(),
-                run.slug()
-            ),
-            LevelRun(run) => write!(
-                f,
-                "/{}/{}/{}/{}",
-                run.game().slug(),
-                run.category().slug(),
-                run.level().expect("LevelRun run must have level").slug(),
-                run.slug()
-            ),
-        }
+                write!(f, "/{}/{}", category.game().slug(), category.slug())?,
+            LevelCategory(category, level) => {
+                write!(
+                    f,
+                    "/{}/{}/{}",
+                    level.game().slug(),
+                    category.slug(),
+                    level.slug()
+                )?;
+            }
+            Run(run) => {
+                write!(f, "/{}/{}", run.game().slug(), run.category().slug())?;
+                if let Some(level) = run.level() {
+                    write!(f, "/{}", level.slug())?;
+                }
+                write!(f, "/{}", run.slug())?;
+            }
+        };
+        Ok(())
     }
 }
 
 #[derive(Debug, Error, Display)]
-enum PathParsingError {
+pub enum PathParsingError {
     /// The provided path wasn't in the required format, but were able to
     /// normalize it.
     /// 301 temporary redirect

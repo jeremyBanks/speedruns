@@ -1,12 +1,16 @@
 use std::io::Write;
 
+use chrono::NaiveDate;
 use flate2::write::GzEncoder;
 use hyper::{header::HeaderValue, Body};
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use maud::{html, Markup};
 use serde::Serialize;
 
-use crate::data::{database::Linked, leaderboard::RankedRun, types::*};
+use crate::{
+    data::{database::Linked, leaderboard::RankedRun, types::*},
+    server::path::Path,
+};
 
 pub trait View: Serialize + std::fmt::Debug {
     fn render(&self) -> Markup;
@@ -65,7 +69,7 @@ impl<'db> View for Homepage {
         page(html! {
             p {
                 "Check out "
-                a href="/celeste/anypercent" { "Celeste Any%" }
+                a href="celeste/clear/forsaken-city" { "celeste/clear/forsaken-city" }
                 "."
             }
         })
@@ -111,31 +115,55 @@ impl<'db> View for LeaderboardPage {
             table {
                 thead {
                     tr {
-                        th { "rank" }
-                        th { "time" }
-                        th { "runner" }
-                        th { "date" }
+                        th class="rank" { "rank" }
+                        th class="time" { "time" }
+                        th class="runner" { "runner" }
+                        th class="date" { "date" }
                     }
                 }
                 tbody {
                     @for rank in &self.ranks {
                         tr data-rank=(rank.tied_rank()) {
-                            td {
+                            td class="rank" {
                                 (rank.tied_rank())
                             }
-                            td {
-                                (rank.time_ms())
+                            td class="time" {
+                                a href=(Path::Run(rank.run().clone()).to_string()) {
+                                    (rank.time_ms())
+                                }
                             }
-                            td {
-                                (format!("{:#?}", rank.run().users().to_vec().iter().map(|u| u.name()).collect::<Vec<_>>()))
+                            td class="runner" {
+                                @for user in rank.run().users() {
+                                    (user.render())
+                                }
                             }
-                            td {
-                                (rank.run().date().map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default())
+                            td class="date" {
+                                (rank.run().date().render())
                             }
                         }
                     }
                 }
             }
         })
+    }
+}
+
+impl View for Linked<User> {
+    fn render(&self) -> Markup {
+        html! {
+            a href=(Path::User(self.clone()).to_string()) {
+                (self.name())
+            }
+        }
+    }
+}
+
+impl View for Option<NaiveDate> {
+    fn render(&self) -> Markup {
+        html! {
+            @if let Some(date) = self {
+                (date.format("%Y-%m-%d").to_string())
+            }
+        }
     }
 }
