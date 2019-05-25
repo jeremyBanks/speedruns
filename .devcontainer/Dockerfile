@@ -29,7 +29,7 @@ ENV SHELL /bin/bash
 # Install the version of Rust specified in rust-toolchain, with required components
 COPY rust-toolchain /rust-toolchain
 RUN rustup toolchain install "$(cat "/rust-toolchain")"
-RUN rustup component add --toolchain "$(cat "/rust-toolchain")" rls rust-analysis rust-src 2>&1
+RUN rustup component add --toolchain "$(cat "/rust-toolchain")" rls rust-analysis rust-src rustfmt clippy 2>&1
 
 # Expose ports used by the application
 EXPOSE 59330-59333
