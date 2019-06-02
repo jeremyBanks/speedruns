@@ -6,6 +6,9 @@ COPY settings.vscode.json /root/.vscode-remote/data/Machine/settings.json
 # Update Rustup
 RUN rustup update 2>&1
 
+# Add Cargo `add`, `rm`, and `upgrade` commands.
+RUN cargo install cargo-edit
+
 # Configure apt
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \

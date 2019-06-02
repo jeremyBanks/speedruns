@@ -1,4 +1,3 @@
-//! Tools to download, search, and mirror https://speedrun.com leaderboards.
 #![feature(
     arbitrary_self_types,
     associated_type_defaults,
@@ -10,20 +9,4 @@
 #![warn(missing_debug_implementations)]
 #![deny(unconditional_recursion)]
 
-/// Types for the speedrun.com API data we consume and utilities for normalizing it.  
-pub mod api;
-/// Our normalized data types, a frozen in-memory database, and leaderboard logic.
-pub mod data;
-/// An HTTP server displaying leaderboards from a copy of the normalized database.
-pub mod server;
-/// Utilities that should probably go somewhere more specific.
-pub mod utils;
-
-pub use crate::data::{
-    database::Database,
-    types::{self, *},
-};
-
-// mod renter;
-// #[macro_use]
-// extern crate rental;
+pub mod r#mod {}
