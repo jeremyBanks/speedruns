@@ -15,7 +15,7 @@ Run `cargo run --release --bin scrape` to download any new data. This doesn't in
 
 Run `cargo run --release --bin normalize` to normalize the data, including only essential fields and records (no rejected or pending runs), and discarding anything that fails validation or integrity checking. (Cargo might not detect that the data has changed unless you run `cargo clean` after this step.)
 
-Run `cargo build --release --run serve` to build and run the server binary, which bundles in a compressed copy of the normalized data generated we generated with `normalize`.
+Run `cargo run --release --bin serve` to build and run the server binary, which bundles in a compressed copy of the normalized data generated we generated with `normalize`.
 
 ## Data
 

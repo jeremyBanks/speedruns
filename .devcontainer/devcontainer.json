@@ -10,5 +10,11 @@
 		"--cap-add=SYS_PTRACE",
 		"--security-opt",
 		"seccomp=unconfined"
+	],
+	"appPort": [
+		59330,
+		59331,
+		59332,
+		59333
 	]
 }
