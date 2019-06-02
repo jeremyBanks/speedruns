@@ -56,7 +56,7 @@ impl Default for View {
             // width of rendered area
             diameter: rat!(1 / (1 << 16)),
             // width of rendered image
-            resolution: 1024,
+            resolution: 512,
         }
     }
 }
