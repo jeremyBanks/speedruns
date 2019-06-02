@@ -2,6 +2,3 @@
 **/*.rs.bk
 .atomicwrite.*
 .DS_Store
-
-
-
