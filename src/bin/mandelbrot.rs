@@ -7,6 +7,15 @@ use itertools::Itertools;
 use rug::{Assign, Complex, Float, Rational};
 use serde::Serialize;
 
+macro_rules! rat {
+    ( $n:tt / $d:tt ) => {
+        Rational::from(($n, $d))
+    };
+    ( $n:expr ) => {
+        Rational::from($n)
+    };
+}
+
 trait ComplexUtils {
     fn magnitude(&self) -> Float;
 }
@@ -42,10 +51,10 @@ impl Default for View {
     fn default() -> Self {
         View {
             // center of rendered area
-            real: Rational::from((400, 1024)),
-            imag: Rational::from((270, 1024)),
+            real: rat!(400 / 1024),
+            imag: rat!(270 / 1024),
             // width of rendered area
-            diameter: Rational::from((16, 1024)),
+            diameter: rat!(16 / 1024),
             // width of rendered image
             resolution: 1024,
         }
@@ -64,16 +73,16 @@ impl View {
     pub fn render(&self) -> DynamicImage {
         let mut image = ImageBuffer::new(self.resolution, self.resolution);
 
-        let half_resolution = Rational::from(self.resolution.clone()) / Rational::from(2);
-        let half_diameter = Rational::from(&self.diameter) / Rational::from(2);
-        let pixel_offset = &self.diameter / Rational::from(self.resolution - 1);
-        let real_left = Rational::from(&self.real - &half_diameter);
-        let imag_top = Rational::from(&self.imag - &half_diameter);
+        let half_resolution = rat!(self.resolution.clone()) / rat!(2);
+        let half_diameter = rat!(&self.diameter) / rat!(2);
+        let pixel_offset = &self.diameter / rat!(self.resolution - 1);
+        let real_left = rat!(&self.real - &half_diameter);
+        let imag_top = rat!(&self.imag - &half_diameter);
 
         for x in 0..self.resolution {
-            let real = &real_left + Rational::from(x) * &pixel_offset;
+            let real = &real_left + rat!(x) * &pixel_offset;
             for y in 0..self.resolution {
-                let imag = &imag_top + Rational::from(y) * &pixel_offset;
+                let imag = &imag_top + rat!(y) * &pixel_offset;
 
                 let point = self.point(real.clone(), imag);
                 let color = point.color();
@@ -166,7 +175,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let i = x.render();
     i.save("./target/mandelbrot.png")?;
 
-    let r = Rational::from((1, 2));
+    let r = rat!((1, 2));
     let f = Float::with_val(8, r);
 
     Ok(())
