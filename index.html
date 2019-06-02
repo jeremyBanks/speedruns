@@ -1,0 +1,31 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+    html {
+        width: 100%;
+        height: 100%;
+        background-position: center;
+        background-image: url(target/mandelbrot.png);
+        background-color: black;
+    }
+    body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: bottom;
+        background-image: url(target/mandelbrot.png);
+        background-color: transparent;
+    }
+</style>
+<script type="module">
+    setInterval(async () => {
+        const image = new Image();
+        image.src = `target/mandelbrot.png?${Math.random()}`;
+        await new Promise(resolve => { image.onload = resolve });
+        document.body.style.backgroundImage = `url(${image.src})`;
+        document.documentElement.style.backgroundImage = `url(${image.src})`;
+    }, 8000);
+</script>
+

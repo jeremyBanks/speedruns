@@ -5,46 +5,14 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable: scrape",
+            "name": "Debug executable: mandelbrot",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=scrape"
+                    "--bin=mandelbrot"
                 ],
                 "filter": {
-                    "name": "scrape",
-                    "kind": "bin"
-                }
-            },
-            "args": []
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable: normalize",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=normalize"
-                ],
-                "filter": {
-                    "name": "normalize",
-                    "kind": "bin"
-                }
-            },
-            "args": []
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable: serve",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=serve"
-                ],
-                "filter": {
-                    "name": "serve",
+                    "name": "mandelbrot",
                     "kind": "bin"
                 }
             },

@@ -49,28 +49,39 @@ pub struct Point {
 impl Default for View {
     fn default() -> Self {
         View {
-            // center of rendered area
-            real: rat!(400 / 1024) - rat!(1 / (1 << 21)) - rat!(1 / (1 << 25))
-                + rat!(1 / (1 << 29))
-                - rat!(1 / (1u64 << 41))
-                - rat!(1 / (1u64 << 49))
-                + rat!(1 / (1u64 << 55)),
-            imag: rat!(270 / 1024) - rat!(1 / (1 << 25)),
-            // width of rendered area
-            diameter: rat!(1 / (1u64 << 62)),
-            // width of rendered image
-            resolution: 1024,
+            real:       rat!(-1) / rat!(4),
+            imag:       rat!(0),
+            diameter:   rat!(3),
+            resolution: 256,
         }
     }
 }
 
 impl View {
+    fn cool() -> Self {
+        View {
+            // center of rendered area
+            real: rat!(400 / 1024) - rat!(1 / (1 << 21)) - rat!(1 / (1 << 25))
+                + rat!(1 / (1 << 29))
+                - rat!(1 / (1u64 << 41))
+                - rat!(1 / (1u64 << 49))
+                + rat!(1 / (1u64 << 55))
+                - rat!(1 / (1u64 << 63)),
+            imag: rat!(270 / 1024) - rat!(1 / (1 << 25)) - rat!(1 / (1u64 << 63)),
+            // width of rendered area
+            diameter: rat!(1 / (1u64 << 63)),
+            // width of rendered image
+            resolution: 256,
+        }
+    }
+
     pub fn precision(&self) -> u32 {
+        // should probably be based on each pixel's size
         32 + ((rat!(1) / &self.diameter).to_f64().log2() as u32)
     }
 
     pub fn iteration_limit(&self) -> u32 {
-        512
+        32
     }
 
     pub fn render(&self) -> DynamicImage {
@@ -139,9 +150,10 @@ impl Point {
             Some((iterations, ref magnitude)) =>
                 Float::with_val(32, iterations) - Float::with_val(32, magnitude) / 2.1,
             None =>
-                Float::with_val(32, -4)
-                    + Float::with_val(32, &self.real).abs()
-                    + Float::with_val(32, &self.imag).abs(),
+                Float::with_val(32, 0)
+                // Float::with_val(32, -4)
+                //     + Float::with_val(32, &self.real).abs()
+                //     + Float::with_val(32, &self.imag).abs(),
         }
     }
 }
@@ -158,6 +170,8 @@ impl ColorMap {
             .filter(|x| !x.is_sign_negative())
             .sorted_by(|a, b| a.partial_cmp(b).unwrap())
             .collect::<Vec<_>>();
+
+        assert!(values.len() > 0);
 
         let twentith = values.len() / 8;
 
