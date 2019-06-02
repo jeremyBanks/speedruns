@@ -5,7 +5,6 @@ use image::{self, DynamicImage, ImageBuffer, Rgb};
 use itertools::Itertools;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use rug::{Assign, Complex, Float, Rational};
-use serde::Serialize;
 
 macro_rules! rat {
     ( $n:tt / $d:tt ) => {
@@ -51,12 +50,16 @@ impl Default for View {
     fn default() -> Self {
         View {
             // center of rendered area
-            real: rat!(400 / 1024),
-            imag: rat!(270 / 1024),
+            real: rat!(400 / 1024) - rat!(1 / (1 << 21)) - rat!(1 / (1 << 25))
+                + rat!(1 / (1 << 29))
+                - rat!(1 / (1u64 << 41))
+                - rat!(1 / (1u64 << 49))
+                + rat!(1 / (1u64 << 55)),
+            imag: rat!(270 / 1024) - rat!(1 / (1 << 25)),
             // width of rendered area
-            diameter: rat!(1 / (1 << 16)),
+            diameter: rat!(1 / (1u64 << 62)),
             // width of rendered image
-            resolution: 512,
+            resolution: 1024,
         }
     }
 }
@@ -67,7 +70,7 @@ impl View {
     }
 
     pub fn iteration_limit(&self) -> u32 {
-        256
+        512
     }
 
     pub fn render(&self) -> DynamicImage {
@@ -152,14 +155,21 @@ pub struct ColorMap {
 impl ColorMap {
     pub fn new<'a>(values: impl Iterator<Item = Float>) -> Self {
         let values = values
+            .filter(|x| !x.is_sign_negative())
             .sorted_by(|a, b| a.partial_cmp(b).unwrap())
             .collect::<Vec<_>>();
 
-        let twentith = values.len() / 20;
+        let twentith = values.len() / 8;
+
+        let min = values[twentith].clone();
+        let max = values[values.len() - 1 - twentith].clone();
+        let range = max.clone() - &min;
+        let min = min - (range.clone() / 4);
+        let max = max + (range.clone() / 4);
 
         Self {
-            magnitude_min: values[twentith].clone(),
-            magnitude_max: values[values.len() - 1 - twentith].clone(),
+            magnitude_min: min,
+            magnitude_max: max,
         }
     }
 
@@ -177,10 +187,10 @@ impl ColorMap {
         let value_log_normalized =
             Float::with_val(value.prec(), &value - &self.magnitude_min).log2() / range_log;
 
-        let value_u16 = (value_normalized * Float::with_val(32, 0xFF_FF))
+        let value_u16 = (value_normalized * Float::with_val(64, 0xFF_FF))
             .to_u32_saturating()
             .unwrap();
-        let value_log_u16 = (value_log_normalized * Float::with_val(32, 0xFF_FF))
+        let value_log_u16 = (value_log_normalized * Float::with_val(64, 0xFF_FF))
             .to_u32_saturating()
             .unwrap_or(0);
 
@@ -201,9 +211,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let x = View::default();
     let i = x.render();
     i.save("./target/mandelbrot.png")?;
-
-    let r = rat!((1, 2));
-    let f = Float::with_val(8, r);
 
     Ok(())
 }
