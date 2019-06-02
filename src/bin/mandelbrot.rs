@@ -2,6 +2,7 @@ use std::convert::TryFrom;
 
 use env_logger;
 use image::{self, DynamicImage, ImageBuffer, Rgb};
+use itertools::Itertools;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use rug::{Assign, Complex, Float, Rational};
 use serde::Serialize;
@@ -41,12 +42,12 @@ impl Default for View {
     fn default() -> Self {
         View {
             // center of rendered area
-            real: Rational::from((-21, 32)),
-            imag: Rational::from((-16, 32)),
+            real: Rational::from((400, 1024)),
+            imag: Rational::from((270, 1024)),
             // width of rendered area
-            diameter: Rational::from((1, 1 << 14)),
+            diameter: Rational::from((16, 1024)),
             // width of rendered image
-            resolution: 512,
+            resolution: 1024,
         }
     }
 }
@@ -57,7 +58,7 @@ impl View {
     }
 
     pub fn iteration_limit(&self) -> u32 {
-        64
+        512
     }
 
     pub fn render(&self) -> DynamicImage {
@@ -87,7 +88,7 @@ impl View {
     pub fn point(&self, real: Rational, imag: Rational) -> Point {
         let escape_magnitude = Float::with_val(self.precision(), 2);
 
-        let mut c = Complex::from((
+        let c = Complex::from((
             Float::with_val(self.precision(), &real),
             Float::with_val(self.precision(), &imag),
         ));
@@ -115,12 +116,43 @@ impl Point {
     pub fn color(&self) -> Rgb<u8> {
         Rgb(match self.escape {
             Some((iterations, ref magnitude)) => [
-                0,
+                u8::try_from(iterations >> 4).unwrap_or(255),
                 u8::try_from(iterations).unwrap_or(255),
-                u8::try_from(iterations * 16).unwrap_or(255),
+                u8::try_from(iterations << 4).unwrap_or(255),
             ],
             None => [255, 255, 255],
         })
+    }
+}
+
+pub struct ColorMap {
+    pub magnitude_min: rug::Float,
+    pub magnitude_max: rug::Float,
+}
+
+impl ColorMap {
+    pub fn new<'a>(values: impl Iterator<Item = &'a Float>) -> Self {
+        let values = values
+            .sorted_by(|a, b| a.partial_cmp(b).unwrap())
+            .collect::<Vec<_>>();
+
+        Self {
+            magnitude_min: values[0].clone(),
+            magnitude_max: values[values.len() - 1].clone(),
+        }
+    }
+
+    pub fn color(&self, value: Float) -> image::Rgb<u8> {
+        let range =
+            Float::with_val(value.prec(), &self.magnitude_max - &self.magnitude_min);
+        let range_log2 = range.clone().log2();
+
+        let value_normalized =
+            Float::with_val(value.prec(), &value - &self.magnitude_max) / range;
+        let value_log2_normalized =
+            Float::with_val(value.prec(), &value - &self.magnitude_max).log2() / range_log2;
+
+        Rgb([0, 0, 0])
     }
 }
 
