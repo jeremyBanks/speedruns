@@ -4,6 +4,7 @@ use env_logger;
 use image::{self, DynamicImage, ImageBuffer, Rgb};
 use itertools::Itertools;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
+use palette::{encoding::pixel::Pixel, LabHue, Lch, Srgb};
 use rug::{Assign, Complex, Float, Rational};
 
 macro_rules! rat {
@@ -29,7 +30,7 @@ impl ComplexUtils for Complex {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct View {
     pub real:       Rational,
     pub imag:       Rational,
@@ -37,28 +38,17 @@ pub struct View {
     pub resolution: u32,
 }
 
-#[derive(Debug)]
-pub struct Point {
-    pub real: Rational,
-    pub imag: Rational,
-    // the number of iterations and then distance of the escape,
-    // or none if the point is in the mandelbrot set.
-    pub escape: Option<(u32, Float)>,
-}
-
-impl Default for View {
-    fn default() -> Self {
+impl View {
+    pub fn default() -> Self {
         View {
-            real:       rat!(-1) / rat!(4),
+            real:       rat!(-1) / rat!(2),
             imag:       rat!(0),
             diameter:   rat!(3),
-            resolution: 256,
+            resolution: 1024 * 4,
         }
     }
-}
 
-impl View {
-    fn cool() -> Self {
+    pub fn deep() -> Self {
         View {
             // center of rendered area
             real: rat!(400 / 1024) - rat!(1 / (1 << 21)) - rat!(1 / (1 << 25))
@@ -75,86 +65,112 @@ impl View {
         }
     }
 
-    pub fn precision(&self) -> u32 {
-        // should probably be based on each pixel's size
-        32 + ((rat!(1) / &self.diameter).to_f64().log2() as u32)
+    pub fn pixel_size(&self) -> Rational {
+        &self.diameter / Rational::from(self.resolution)
     }
 
-    pub fn iteration_limit(&self) -> u32 {
-        32
-    }
-
-    pub fn render(&self) -> DynamicImage {
-        let mut image = ImageBuffer::new(self.resolution, self.resolution);
-
-        let half_diameter = rat!(&self.diameter) / rat!(2);
-        let pixel_offset = &self.diameter / rat!(self.resolution - 1);
-        let real_left = rat!(&self.real - &half_diameter);
-        let imag_top = rat!(&self.imag - &half_diameter);
-
-        let mut points = vec![];
-
-        for x in 0..self.resolution {
-            let real = &real_left + rat!(x) * &pixel_offset;
-            for y in 0..self.resolution {
-                let imag = &imag_top + rat!(y) * &pixel_offset;
-
-                let point = self.point(real.clone(), imag);
-                points.push((x, y, point));
-            }
-        }
-
-        let color_map =
-            ColorMap::new(points.iter().map(|(_x, _y, point)| point.magnitude()));
-
-        for (x, y, point) in points.iter() {
-            let magnitude = point.magnitude();
-            let color = color_map.color(magnitude);
-
-            image.put_pixel(*x, *y, color);
-        }
-
-        DynamicImage::ImageRgb8(image)
-    }
-
-    pub fn point(&self, real: Rational, imag: Rational) -> Point {
-        let escape_magnitude = Float::with_val(self.precision(), 2);
-
-        let c = Complex::from((
-            Float::with_val(self.precision(), &real),
-            Float::with_val(self.precision(), &imag),
-        ));
-
-        let mut z_n = c.clone();
-        let mut z_n_minus_one = z_n.clone();
-        let mut escape = None;
-
-        for i in 0..self.iteration_limit() {
-            let magnitude = z_n.magnitude();
-            if magnitude >= escape_magnitude {
-                escape = Some((i, magnitude - escape_magnitude));
-                break
-            }
-
-            z_n_minus_one.assign(&z_n);
-            z_n.assign((&z_n_minus_one * &z_n_minus_one) + &c);
-        }
-
-        Point { real, imag, escape }
+    /// the number of bits of precision required for the floating point calculations
+    /// to simulate this view. (this only applies the significand/value digits, the
+    /// exponent is a bigint in all cases.) this was sort-of a guess.
+    pub fn required_precision(&self) -> u32 {
+        64 + ((rat!(1) / self.pixel_size()).to_f64().log2() as u32)
     }
 }
 
-impl Point {
-    pub fn magnitude(&self) -> Float {
-        match self.escape {
-            Some((iterations, ref magnitude)) =>
-                Float::with_val(32, iterations) - Float::with_val(32, magnitude) / 2.1,
-            None =>
-                Float::with_val(32, 0)
-                // Float::with_val(32, -4)
-                //     + Float::with_val(32, &self.real).abs()
-                //     + Float::with_val(32, &self.imag).abs(),
+#[derive(Debug, Clone)]
+pub struct State {
+    /// the view this state is simulating
+    pub view: View,
+    /// the number of iterations of the mandelbrot loop that we've done so far
+    pub iterations: u32,
+    /// a [y][x] 2D array of the origin positions for each cell/pixel
+    pub origins: Vec<Vec<Complex>>,
+    /// a [y][x] 2D array of the latest position for each cell/pixel
+    pub positions: Vec<Vec<Complex>>,
+}
+
+impl State {
+    pub fn new(view: View) -> State {
+        let half_diameter = rat!(&view.diameter) / rat!(2);
+        let pixel_size = view.pixel_size();
+        let prec = view.required_precision();
+        let real_left = rat!(&view.real - &half_diameter);
+        let imag_top = rat!(&view.imag - &half_diameter);
+
+        let origins: Vec<Vec<Complex>> = (0..view.resolution)
+            .map(|y| {
+                let imag = &imag_top + rat!(y) * &pixel_size;
+                let imag = Float::with_val(prec, imag);
+                (0..view.resolution)
+                    .map(|x| {
+                        let real = &real_left + rat!(x) * &pixel_size;
+                        let real = Float::with_val(prec, real);
+                        let point = Complex::from((real, imag.clone()));
+
+                        point
+                    })
+                    .collect()
+            })
+            .collect();
+
+        State {
+            view: view.clone(),
+            iterations: 0,
+            positions: origins.clone(),
+            origins,
         }
+    }
+
+    pub fn iterate(&mut self) {
+        for x in 0..self.view.resolution {
+            let x = x as usize;
+            for y in 0..self.view.resolution {
+                let y = y as usize;
+                let origin = &self.origins[y][x];
+                let previous = self.positions[y][x].clone();
+                self.positions[y][x].assign(previous.square() + origin);
+            }
+        }
+        self.iterations += 1;
+    }
+
+    // pub fn iteration_limit(&self) -> u32 {
+    //     6
+    // }
+
+    pub fn render(&mut self) -> DynamicImage {
+        let mut image = ImageBuffer::new(self.view.resolution, self.view.resolution);
+
+        // while self.iterations <= self.iteration_limit() {
+        //     self.iterate();
+        // }
+
+        for x in 0..self.view.resolution {
+            for y in 0..self.view.resolution {
+                let position = &self.positions[y as usize][x as usize];
+                let mut radians = position.imag().clone().atan2(position.real());
+                if !radians.is_finite() {
+                    radians = Float::new(32);
+                }
+
+                let mut mag = position.magnitude().to_f64();
+                if !mag.is_finite() || mag > 2.0 {
+                    mag = 2.0;
+                }
+                let color = Srgb::new(0.125, 0.25, 0.5);
+                let mut color = Lch::from(color);
+                // color.chroma = 50.0 + 256.0 / mag.log2();
+                // color.chroma = mag.log2() * 200.0;  //* 128.0;
+                // color.l = mag.log2() * 100.0; // * (100.0 / 10.0);
+                color.l = (mag + 1.0).log2() * 75.0;
+                color.hue = LabHue::from_radians(radians.to_f64());
+
+                let color: [u8; 3] = Srgb::from(color).into_format().into_raw();
+                image.put_pixel(x, y, Rgb(color));
+            }
+        }
+
+        DynamicImage::ImageRgb8(image)
     }
 }
 
@@ -222,9 +238,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .default_filter_or(format!("{}=trace,mandelbrot=trace", module_path!())),
     )?;
 
-    let x = View::default();
-    let i = x.render();
-    i.save("./target/mandelbrot.png")?;
+    let view = View::default();
+    let mut state = State::new(view);
+    for n in 0..128 {
+        trace!("iteration {}", n);
+        let image = state.render();
+        image.save(format!("./target/mandelbrot-{:03}.png", n))?;
+        state.iterate();
+    }
 
     Ok(())
 }
