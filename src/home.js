@@ -21,7 +21,7 @@ export class HomeBody extends Component {
 
 <pre ${style({line: {height: 1.5}})}>
                      <u>Example URLs</u>
-<span ${this.labelStyle}>             runner:</span> ${link({runnerSlugs: ['Szwagier']})}
+<span ${this.labelStyle}>             runner:</span> ${link({runnerSlugs: ['banks']})}
 <span ${this.labelStyle}>               game:</span> ${link({gameSlugs: ['wc2']})}
 <span ${this.labelStyle}>     multiple games:</span> ${link({gameSlugs: ['wc2', 'wc2btdp']})}
 <span ${this.labelStyle}>with personal bests:</span> ${link({gameSlugs: ['wc2', 'wc2btdp'], runnerSlugs: ['ZPR']})}
