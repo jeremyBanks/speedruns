@@ -1,0 +1,12 @@
+{
+  "name": "speedruns",
+  "version": "1.0.0",
+  "author": "Jeremy Banks <_@jeremy.ca>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "apollo-server": "^2.9.14",
+    "graphql": "^14.5.8",
+    "typescript": "^3.7.4"
+  }
+}
