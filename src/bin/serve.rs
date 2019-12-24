@@ -20,9 +20,6 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     let tables: &'static Tables = Box::leak(Box::new(unpack_bundled_tables()));
     let database: Arc<Database> = Database::new(tables).expect("database should be valid");
 
-    let mut server = speedruns::server::Server::new(database);
-    server.run();
-
     Ok(())
 }
 

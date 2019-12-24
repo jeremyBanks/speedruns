@@ -39,12 +39,12 @@ pub type Id64 = std::num::NonZeroU64;
 pub struct Category {
     pub game_id: Id64,
     #[validate(length(min = 1))]
-    pub slug: String,
+    pub slug:    String,
     #[validate(length(min = 1))]
-    pub name: String,
-    pub id: Id64,
-    pub per: CategoryType,
-    pub rules: String,
+    pub name:    String,
+    pub id:      Id64,
+    pub per:     CategoryType,
+    pub rules:   String,
 }
 
 impl Category {
@@ -84,10 +84,10 @@ pub enum CategoryType {
 pub struct User {
     pub created: Option<DateTime<Utc>>,
     #[validate(length(min = 1))]
-    pub slug: String,
+    pub slug:    String,
     #[validate(length(min = 1))]
-    pub name: String,
-    pub id: Id64,
+    pub name:    String,
+    pub id:      Id64,
 }
 
 impl User {
@@ -118,14 +118,14 @@ impl User {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Game {
-    pub id: Id64,
-    pub created: Option<DateTime<Utc>>,
+    pub id:             Id64,
+    pub created:        Option<DateTime<Utc>>,
     #[validate(length(min = 1))]
-    pub slug: String,
+    pub slug:           String,
     #[validate(length(min = 1))]
-    pub src_slug: String,
+    pub src_slug:       String,
     #[validate(length(min = 1))]
-    pub name: String,
+    pub name:           String,
     pub primary_timing: TimingMethod,
 }
 
@@ -162,12 +162,12 @@ pub enum TimingMethod {
 #[get = "pub"]
 pub struct Level {
     pub game_id: Id64,
-    pub id: Id64,
+    pub id:      Id64,
     #[validate(length(min = 1))]
-    pub slug: String,
+    pub slug:    String,
     #[validate(length(min = 1))]
-    pub name: String,
-    pub rules: String,
+    pub name:    String,
+    pub rules:   String,
 }
 
 impl Level {
@@ -198,16 +198,16 @@ impl Level {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Run {
-    pub game_id: Id64,
+    pub game_id:     Id64,
     pub category_id: Id64,
-    pub level_id: Option<Id64>,
-    pub id: Id64,
-    pub created: Option<DateTime<Utc>>,
-    pub date: Option<NaiveDate>,
+    pub level_id:    Option<Id64>,
+    pub id:          Id64,
+    pub created:     Option<DateTime<Utc>>,
+    pub date:        Option<NaiveDate>,
     #[validate]
-    pub times_ms: RunTimesMs,
+    pub times_ms:    RunTimesMs,
     #[validate]
-    pub players: Vec<RunPlayer>,
+    pub players:     Vec<RunPlayer>,
 }
 
 impl Run {

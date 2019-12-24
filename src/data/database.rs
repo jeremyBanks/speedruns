@@ -125,10 +125,10 @@ const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validat
 
 /// A collection of [Tables] with various generated indexes.
 pub struct Database {
-    tables:          &'static Tables,
-    runs_by_game_id: HashMap<Id64, Vec<&'static Run>>,
-    games_by_slug:   HashMap<String, &'static Game>,
-    users_by_slug:   HashMap<String, &'static User>,
+    tables:                          &'static Tables,
+    runs_by_game_id:                 HashMap<Id64, Vec<&'static Run>>,
+    games_by_slug:                   HashMap<String, &'static Game>,
+    users_by_slug:                   HashMap<String, &'static User>,
     // TODO: just index category/level by game, you shouldn't need to index by slug.
     categories_by_game_id_and_slug:  HashMap<(Id64, String), &'static Category>,
     levels_by_game_id_and_slug:      HashMap<(Id64, String), &'static Level>,
@@ -445,7 +445,7 @@ pub struct Linked<ModelType: 'static + Model + Debug> {
     #[serde(skip)]
     database: Arc<Database>,
     #[serde(flatten)]
-    item: &'static ModelType,
+    item:     &'static ModelType,
 }
 
 impl<ModelType: Model> Linked<ModelType> {

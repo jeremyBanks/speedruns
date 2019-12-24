@@ -14,8 +14,6 @@
 pub mod api;
 /// Our normalized data types, a frozen in-memory database, and leaderboard logic.
 pub mod data;
-/// An HTTP server displaying leaderboards from a copy of the normalized database.
-pub mod server;
 /// Utilities that should probably go somewhere more specific.
 pub mod utils;
 
