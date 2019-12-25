@@ -12,15 +12,15 @@ use std::collections::HashMap;
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct Category {
-    id: String,
-    links: Vec<Link>,
+    id:            String,
+    links:         Vec<Link>,
     miscellaneous: bool,
-    name: String,
-    players: CategoryPlayers,
-    rules: Option<String>,
+    name:          String,
+    players:       CategoryPlayers,
+    rules:         Option<String>,
     #[serde(rename = "type")]
-    type_: CategoryType,
-    weblink: String,
+    type_:         CategoryType,
+    weblink:       String,
 }
 
 #[remain::sorted]
@@ -312,7 +312,7 @@ pub enum RunStatus {
         reason:   Option<String>,
     },
     Verified {
-        examiner: Option<String>,
+        examiner:    Option<String>,
         #[serde(rename = "verify-date")]
         verify_date: Option<DateTime<Utc>>,
     },
@@ -415,7 +415,7 @@ pub enum UserNameStyle {
         #[serde(rename = "color-from")]
         color_from: UserNameStyleColor,
         #[serde(rename = "color-to")]
-        color_to: UserNameStyleColor,
+        color_to:   UserNameStyleColor,
     },
     Solid {
         color: UserNameStyleColor,
@@ -478,10 +478,10 @@ pub enum VariableScope {
 #[get = "pub"]
 pub struct VariableValues {
     #[serde(rename = "_note")]
-    _note: String,
+    _note:   String,
     choices: HashMap<String, String>,
     default: Option<String>,
-    values: HashMap<String, VariableValue>,
+    values:  HashMap<String, VariableValue>,
 }
 
 #[remain::sorted]
