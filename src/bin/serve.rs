@@ -1,82 +1,117 @@
-#![feature(proc_macro_hygiene)]
-#![allow(clippy::useless_attribute)]
-use std::sync::Arc;
-
-use hyper::{rt::Future, Body, Response};
+use actix_web::{middleware, web, App, Error, HttpResponse, HttpServer};
+use async_std;
+use futures;
+use hyper::{
+    server::Server,
+    service::{make_service_fn, service_fn},
+    Body, Request, Response,
+};
+use juniper::http::{graphiql::graphiql_source, GraphQLRequest};
 #[allow(unused)] use log::{debug, error, info, trace, warn};
-use serde::de::DeserializeOwned;
-use xz2::read::XzDecoder;
+use std::{convert::Infallible, io, sync::Arc};
+use tokio;
+#[macro_use] extern crate juniper;
 
-use speedruns::data::database::{Database, Tables};
+mod schema {
+    use juniper::{FieldResult, RootNode};
 
-pub type BoxFut = Box<Future<Item = Response<Body>, Error = hyper::Error> + Send>;
-
-pub fn main() -> Result<(), Box<dyn std::error::Error>> {
-    env_logger::try_init_from_env(env_logger::Env::new().default_filter_or(format!(
-        "{}=trace,speedruns=trace,hyper=debug",
-        module_path!()
-    )))?;
-
-    let tables: &'static Tables = Box::leak(Box::new(unpack_bundled_tables()));
-    let database: Arc<Database> = Database::new(tables).expect("database should be valid");
-
-    Ok(())
-}
-
-fn unpack_bundled_tables() -> Tables {
-    trace!("Unpacking bundled database...");
-
-    let runs = unpack_table(
-        &mut include_bytes!(concat!(env!("OUT_DIR"), "/data/normalized/runs.bin.xz"))
-            .as_ref(),
-    )
-    .expect("run data corrupt");
-
-    let users = unpack_table(
-        &mut include_bytes!(concat!(env!("OUT_DIR"), "/data/normalized/users.bin.xz"))
-            .as_ref(),
-    )
-    .expect("user data corrupt");
-
-    let games = unpack_table(
-        &mut include_bytes!(concat!(env!("OUT_DIR"), "/data/normalized/games.bin.xz"))
-            .as_ref(),
-    )
-    .expect("game data corrupt");
-
-    let categories = unpack_table(
-        &mut include_bytes!(concat!(
-            env!("OUT_DIR"),
-            "/data/normalized/categories.bin.xz"
-        ))
-        .as_ref(),
-    )
-    .expect("category data corrupt");
-
-    let levels = unpack_table(
-        &mut include_bytes!(concat!(env!("OUT_DIR"), "/data/normalized/levels.bin.xz"))
-            .as_ref(),
-    )
-    .expect("level data corrupt");
-
-    Tables::new(runs, users, games, categories, levels)
-}
-
-fn unpack_table<T: DeserializeOwned>(
-    reader: &mut &[u8],
-) -> Result<Vec<T>, Box<dyn std::error::Error>> {
-    let mut items = vec![];
-    let mut decompressor = XzDecoder::new(reader);
-    loop {
-        // We have left no way to detect the last item except for EOF.
-        let item = bincode::deserialize_from::<_, T>(&mut decompressor);
-        if let Err(ref error) = item {
-            if let bincode::ErrorKind::Io(ref error) = **error {
-                trace!("Assuming IO error is end of data EOF: {:?}", error);
-                break
-            }
-        }
-        items.push(item?);
+    #[derive(GraphQLEnum)]
+    enum Episode {
+        NewHope,
+        Empire,
+        Jedi,
     }
-    Ok(items)
+
+    #[derive(GraphQLObject)]
+    #[graphql(description = "A humanoid creature in the Star Wars universe")]
+    struct Human {
+        id:          String,
+        name:        String,
+        appears_in:  Vec<Episode>,
+        home_planet: String,
+    }
+
+    #[derive(GraphQLInputObject)]
+    #[graphql(description = "A humanoid creature in the Star Wars universe")]
+    struct NewHuman {
+        name:        String,
+        appears_in:  Vec<Episode>,
+        home_planet: String,
+    }
+
+    pub struct QueryRoot;
+
+    graphql_object!(QueryRoot: () |&self| {
+    field human(&executor, id: String) -> FieldResult<Human> {
+        Ok(Human{
+            id: "1234".to_owned(),
+            name: "Luke".to_owned(),
+            appears_in: vec![Episode::NewHope],
+            home_planet: "Mars".to_owned(),
+        })
+    }
+});
+
+    pub struct MutationRoot;
+
+    graphql_object!(MutationRoot: () |&self| {
+    field createHuman(&executor, new_human: NewHuman) -> FieldResult<Human> {
+        Ok(Human{
+            id: "1234".to_owned(),
+            name: new_human.name,
+            appears_in: new_human.appears_in,
+            home_planet: new_human.home_planet,
+        })
+    }
+});
+
+    pub type Schema = RootNode<'static, QueryRoot, MutationRoot>;
+
+    pub fn create_schema() -> Schema {
+        Schema::new(QueryRoot {}, MutationRoot {})
+    }
+}
+
+use crate::schema::{create_schema, Schema};
+
+async fn graphiql() -> HttpResponse {
+    let html = graphiql_source("/graphql");
+    HttpResponse::Ok()
+        .content_type("text/html; charset=utf-8")
+        .body(html)
+}
+
+async fn graphql(
+    st: web::Data<Arc<Schema>>,
+    data: web::Json<GraphQLRequest>,
+) -> Result<HttpResponse, Error> {
+    let user = web::block(move || {
+        let res = data.execute(&st, &());
+        Ok::<_, serde_json::error::Error>(serde_json::to_string(&res)?)
+    })
+    .await?;
+    Ok(HttpResponse::Ok()
+        .content_type("application/json")
+        .body(user))
+}
+
+#[actix_rt::main]
+async fn main() -> std::io::Result<()> {
+    std::env::set_var("RUST_LOG", "debug");
+    pretty_env_logger::init();
+
+    // Create Juniper schema
+    let schema = std::sync::Arc::new(create_schema());
+
+    // Start http server
+    HttpServer::new(move || {
+        App::new()
+            .data(schema.clone())
+            .wrap(middleware::Logger::default())
+            .service(web::resource("/graphql").route(web::post().to(graphql)))
+            .service(web::resource("/graphiql").route(web::get().to(graphiql)))
+    })
+    .bind("127.0.0.1:8080")?
+    .run()
+    .await
 }

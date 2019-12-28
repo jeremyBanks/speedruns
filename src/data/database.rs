@@ -125,14 +125,14 @@ const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validat
 
 /// A collection of [Tables] with various generated indexes.
 pub struct Database {
-    tables:                          &'static Tables,
-    runs_by_game_id:                 HashMap<Id64, Vec<&'static Run>>,
-    games_by_slug:                   HashMap<String, &'static Game>,
-    users_by_slug:                   HashMap<String, &'static User>,
+    tables:                           &'static Tables,
+    runs_by_game_id:                  HashMap<Id64, Vec<&'static Run>>,
+    games_by_slug:                    HashMap<String, &'static Game>,
+    users_by_slug:                    HashMap<String, &'static User>,
     // TODO: just index category/level by game, you shouldn't need to index by slug.
-    categories_by_game_id_and_slug:  HashMap<(Id64, String), &'static Category>,
-    levels_by_game_id_and_slug:      HashMap<(Id64, String), &'static Level>,
-    runs_by_category_level_and_slug: HashMap<(Id64, Option<Id64>, String), &'static Run>,
+    categories_by_game_id_and_slug:   HashMap<(Id64, String), &'static Category>,
+    levels_by_game_id_and_slug:       HashMap<(Id64, String), &'static Level>,
+    _runs_by_category_level_and_slug: HashMap<(Id64, Option<Id64>, String), &'static Run>,
 }
 
 impl std::fmt::Debug for Database {
@@ -158,7 +158,7 @@ impl Database {
             HashMap::new();
         let mut levels_by_game_id_and_slug: HashMap<(Id64, String), &'static Level> =
             HashMap::new();
-        let mut runs_by_category_level_and_slug: HashMap<
+        let _runs_by_category_level_and_slug: HashMap<
             (Id64, Option<Id64>, String),
             &'static Run,
         > = HashMap::new();
@@ -212,7 +212,7 @@ impl Database {
             users_by_slug,
             categories_by_game_id_and_slug,
             levels_by_game_id_and_slug,
-            runs_by_category_level_and_slug,
+            _runs_by_category_level_and_slug,
         });
 
         if let Err(mut errors_) = self_.validate() {

@@ -1,5 +1,5 @@
 comment_width = 92
-format_doc_comments = true
+format_code_in_doc_comments = true
 inline_attribute_width = 64
 match_arm_blocks = false
 max_width = 92
