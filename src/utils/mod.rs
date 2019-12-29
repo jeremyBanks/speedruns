@@ -1,3 +1,4 @@
+//! Shared utils.
 use crate::data::types::Id64;
 
 use derive_more::From;

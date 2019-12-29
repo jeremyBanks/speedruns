@@ -1,4 +1,4 @@
-/// https://speedrun.com API
+//! https://speedrun.com API
 pub mod normalize;
 pub mod types;
 

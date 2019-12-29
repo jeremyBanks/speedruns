@@ -15,72 +15,10 @@ use juniper::{
     http::{graphiql::graphiql_source, GraphQLRequest},
     FieldResult,
 };
+use speedruns::data::graphql;
 use std::{convert::Infallible, sync::Arc};
 
 #[allow(unused)] use log::{debug, error, info, trace, warn};
-
-pub mod schema {
-    use juniper::{FieldResult, RootNode};
-
-    #[allow(unused)]
-    use juniper::{
-        graphql_interface, graphql_object, graphql_scalar, graphql_union, graphql_value,
-        object, GraphQLEnum, GraphQLInputObject, GraphQLObject, GraphQLScalarValue,
-        ScalarValue,
-    };
-
-    #[derive(Debug)]
-    pub struct Context {}
-    impl juniper::Context for Context {}
-
-    #[derive(Debug, GraphQLEnum)]
-    enum Episode {
-        NewHope,
-        Empire,
-        Jedi,
-    }
-
-    #[derive(Debug, GraphQLObject)]
-    #[graphql(description = "A user")]
-    pub struct User {
-        id:   String,
-        name: String,
-    }
-
-    #[derive(Debug, Default)]
-    pub struct Query {}
-
-    #[juniper::object(Context = Context)]
-    impl Query {
-        pub fn user(
-            context: &Context,
-            id: Option<String>,
-            name: Option<String>,
-        ) -> FieldResult<User> {
-            Ok(User {
-                id:   id.unwrap_or_else(|| "123".to_string()),
-                name: name.unwrap_or_else(|| "Nom".to_string()),
-            })
-        }
-    }
-
-    #[derive(Debug, Default)]
-    pub struct Mutation {}
-
-    #[juniper::object(Context = Context)]
-    impl Mutation {
-        // workaround for https://git.io/JeNXr
-        pub fn dummy(context: &Context) -> FieldResult<f64> {
-            Ok(0.0)
-        }
-    }
-
-    pub type Schema = RootNode<'static, Query, Mutation>;
-
-    pub fn new() -> Schema {
-        Schema::new(Query {}, Mutation {})
-    }
-}
 
 async fn graphiql() -> actix_web::HttpResponse {
     let html = juniper::http::graphiql::graphiql_source("/graphql");
@@ -90,11 +28,11 @@ async fn graphiql() -> actix_web::HttpResponse {
 }
 
 async fn graphql(
-    schema: web::Data<Arc<schema::Schema>>,
+    schema: web::Data<Arc<graphql::Schema>>,
     query: web::Json<GraphQLRequest>,
 ) -> actix_web::Result<actix_web::HttpResponse> {
     let user = web::block(move || {
-        let res = query.execute(&schema, &schema::Context {});
+        let res = query.execute(&schema, &graphql::Context {});
         Ok::<_, serde_json::error::Error>(serde_json::to_string(&res)?)
     })
     .await?;
@@ -111,7 +49,7 @@ async fn main() -> std::io::Result<()> {
     }
     pretty_env_logger::init();
 
-    let schema = Arc::new(schema::new());
+    let schema = Arc::new(graphql::schema());
 
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
