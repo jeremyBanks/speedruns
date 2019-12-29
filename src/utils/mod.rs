@@ -32,9 +32,27 @@ pub fn slugify(s: &str) -> String {
             'a'..='z' | '0'..='9' => slug.push(c),
             // always escaped
             '%' => slug.push_str("percent"),
-            '+' => slug.push_str("plus"),
-            '&' => slug.push_str("and"),
-            '/' => slug.push_str("or"),
+            '+' => {
+                if !last_was_spacing {
+                    slug.push('-');
+                }
+                slug.push_str("plus-");
+                this_was_spacing = true;
+            }
+            '&' => {
+                if !last_was_spacing {
+                    slug.push('-');
+                }
+                slug.push_str("and-");
+                this_was_spacing = true;
+            }
+            '/' => {
+                if !last_was_spacing {
+                    slug.push('-');
+                }
+                slug.push_str("or-");
+                this_was_spacing = true;
+            }
             // escaped at ends, entirely ignored elsewhere
             '\'' =>
                 if first_or_last {
