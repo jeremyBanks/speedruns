@@ -1,4 +1,4 @@
-use juniper::{FieldResult, RootNode};
+use juniper::{FieldError, FieldResult, RootNode};
 
 #[allow(unused)]
 use juniper::{
@@ -7,6 +7,7 @@ use juniper::{
     ScalarValue,
 };
 
+/// Request context -- nothing, but maybe we'll add one later.
 #[derive(Debug)]
 pub struct Context {}
 impl juniper::Context for Context {}
@@ -30,15 +31,14 @@ pub struct Query {}
 
 #[juniper::object(Context = Context)]
 impl Query {
+    /// Get a user by id or slug. throws an error if none are specified, or no user matches
+    /// all that are specified.
     pub fn user(
         context: &Context,
         id: Option<String>,
-        name: Option<String>,
+        slug: Option<String>,
     ) -> FieldResult<User> {
-        Ok(User {
-            id:   id.unwrap_or_else(|| "123".to_string()),
-            name: name.unwrap_or_else(|| "Nom".to_string()),
-        })
+        Err(FieldError::from("not implemented"))
     }
 }
 
