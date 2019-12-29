@@ -1,17 +1,16 @@
 import React from "react";
-import { useQuery, ApolloProvider } from "@apollo/react-hooks";
-import { GET_TYPE_NAMES, client } from "./apollo";
-import { TypeNames } from "./__generated__/TypeNames";
+import { ApolloProvider } from "@apollo/react-hooks";
+import { client, useTypeNames } from "./apollo";
 
 const ClientContent: React.FC = () => {
-  const { loading, error, data } = useQuery<TypeNames>(GET_TYPE_NAMES);
+  const { loading, error, data } = useTypeNames();
 
   if (!data || loading) {
-    return <div>loading...</div>;
+    return <pre>loading...</pre>;
   } else if (error) {
-    return <div>error: ${JSON.stringify(error)}</div>;
+    return <pre>error: {JSON.stringify(error, null, 2)}</pre>;
   } else {
-    return <div>${JSON.stringify(data)}</div>;
+    return <pre>{JSON.stringify(data, null, 2)}</pre>;
   }
 };
 
