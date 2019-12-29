@@ -1,61 +1,81 @@
-name: Workflow
+name: Actions
 on: [push]
 
 jobs:
-  a-job:
-    name: Job
+  my-job:
+    name: Action
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout sources
+      - name: checkout source
         uses: actions/checkout@v1
 
-      - name: Cache rustup toolchains
+      - name: cache - yarn - preparation
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: cache - yarn
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+              - name: cache - yarn - preparation
+                id: yarn-cache
+                run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: cache - rustup toolchain - preparation
+        id: rustup-cache
+        run: echo "::set-output name=toolchain::$(cat rust-toolchain)"
+
+      - name: cache - rustup toolchain
         uses: actions/cache@v1
         with:
           path: ~/.rustup/toolchains/
-          key: ${{ runner.os }}
+          key:
+            ${{ runner.os }}-rustup-${{ steps.rustup-cache.outputs.toolchain }}
 
-      - name: Cache cargo registry
+      - name: cache - cargo registry
         uses: actions/cache@v1
         with:
           path: ~/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Cache cargo index
+      - name: cache - cargo index
         uses: actions/cache@v1
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Cache cargo build
+      - name: cache - cargo build
         uses: actions/cache@v1
         with:
           path: target
-          key:
-            ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock')}}
+          key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock')}}
 
-      - name: Install toolchain
+      - name: environment - install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly-2019-12-15
+          toolchain: ${{ steps.rustup-cache.outputs.toolchain }}
 
-      - name: Run cargo check
+      - name: run - cargo check
         uses: actions-rs/cargo@v1
         with:
           command: check
 
-      - name: Run cargo test
+      - name: run - cargo test
         uses: actions-rs/cargo@v1
         with:
           command: test
 
-      - name: Run cargo fmt
+      - name: run - cargo fmt
         uses: actions-rs/cargo@v1
         with:
           command: fmt
           args: --all -- --check
 
-      - name: Run cargo clippy
+      - name: run - cargo clippy
         uses: actions-rs/cargo@v1
         with:
           command: clippy
