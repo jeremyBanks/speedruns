@@ -1,10 +1,6 @@
 # speedruns
 
-A few Rust tools for mirroring speedrun.com data.
-
-[![on GitHub](https://img.shields.io/github/last-commit/m/jeremyBanks/speedruns.svg?label=github)](https://github.com/jeremyBanks/speedruns/)
-[![on crates.io](https://img.shields.io/crates/v/speedruns.svg)](https://crates.io/crates/speedruns/)
-[![on docs.rs](https://docs.rs/speedruns/badge.svg)](https://docs.rs/speedruns/)
+Tools for mirroring speedrun.com data.
 
 ## Usage
 

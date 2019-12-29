@@ -7,24 +7,21 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [12.x]
-
     steps:
-      - name: checkout source
+      - name: preparation - checkout source
         uses: actions/checkout@v1
 
-      - name: caching - rustup toolchain - preparation
-        id: rustup-cache
-        run: echo "::set-output name=toolchain::$(cat rust-toolchain)"
+      - name: preparation - reading toolchain versions
+        id: versions
+        run: |
+          echo "::set-output name=rust::$(cat rust-toolchain)"
+          echo "::set-output name=node::$(cat .nvmrc)"
 
       - name: caching - rustup toolchain
         uses: actions/cache@v1
         with:
           path: ~/.rustup/toolchains/
-          key:
-            ${{ runner.os }}-rustup-${{ steps.rustup-cache.outputs.toolchain }}
+          key: ${{ runner.os }}-rustup-${{ steps.versions.outputs.rust }}
           restore-key: ${{ runner.os }}-rustup-
 
       - name: caching - cargo registry
@@ -48,20 +45,22 @@ jobs:
           key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock')}}
           restore-keys: ${{ runner.os }}-cargo-build-
 
-      - name: preparation - install rust toolchain
+      - name:
+          preparation - install rust toolchain ${{ steps.versions.outputs.rust
+          }}
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: ${{ steps.rustup-cache.outputs.toolchain }}
+          toolchain: ${{ steps.versions.outputs.rust }}
 
-      - name: preparation - install node ${{ matrix.node-version }}
+      - name: preparation - install node ${{ steps.versions.outputs.node }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ steps.versions.outputs.node }}
 
       - name: preparation - install yarn
         run: npm install -g yarn
 
-      - name: caching - yarn - preparation
+      - name: preparation - reading yarn cache path
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
@@ -71,6 +70,14 @@ jobs:
           path: ${{ steps.yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
+
+      - name: caching - node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key:
+            ${{ runner.os }}-yarn-node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-node-modules-
 
       - name: run - yarn install
         run: yarn install
