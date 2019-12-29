@@ -9,52 +9,47 @@ jobs:
       - name: checkout source
         uses: actions/checkout@v1
 
-      - name: cache - yarn - preparation
+      - name: caching - yarn - preparation
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - name: cache - yarn
+      - name: caching - yarn
         uses: actions/cache@v1
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          restore-keys: ${{ runner.os }}-yarn-
 
-              - name: cache - yarn - preparation
-                id: yarn-cache
-                run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: cache - rustup toolchain - preparation
+      - name: caching - rustup toolchain - preparation
         id: rustup-cache
         run: echo "::set-output name=toolchain::$(cat rust-toolchain)"
 
-      - name: cache - rustup toolchain
+      - name: caching - rustup toolchain
         uses: actions/cache@v1
         with:
           path: ~/.rustup/toolchains/
           key:
             ${{ runner.os }}-rustup-${{ steps.rustup-cache.outputs.toolchain }}
 
-      - name: cache - cargo registry
+      - name: caching - cargo registry
         uses: actions/cache@v1
         with:
           path: ~/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: cache - cargo index
+      - name: caching - cargo index
         uses: actions/cache@v1
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: cache - cargo build
+      - name: caching - cargo build
         uses: actions/cache@v1
         with:
           path: target
           key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock')}}
 
-      - name: environment - install rust toolchain
+      - name: preparation - install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ steps.rustup-cache.outputs.toolchain }}
@@ -79,4 +74,4 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: -- -D warnings
+          args: -- -W warnings
