@@ -68,7 +68,12 @@ pub mod schema {
     pub struct Mutation {}
 
     #[juniper::object(Context = Context)]
-    impl Mutation {}
+    impl Mutation {
+        // workaround for https://git.io/JeNXr
+        pub fn dummy(context: &Context) -> FieldResult<f64> {
+            Ok(0.0)
+        }
+    }
 
     pub type Schema = RootNode<'static, Query, Mutation>;
 
@@ -85,11 +90,11 @@ async fn graphiql() -> actix_web::HttpResponse {
 }
 
 async fn graphql(
-    st: web::Data<Arc<schema::Schema>>,
-    data: web::Json<GraphQLRequest>,
+    schema: web::Data<Arc<schema::Schema>>,
+    query: web::Json<GraphQLRequest>,
 ) -> actix_web::Result<actix_web::HttpResponse> {
     let user = web::block(move || {
-        let res = data.execute(&st, &schema::Context {});
+        let res = query.execute(&schema, &schema::Context {});
         Ok::<_, serde_json::error::Error>(serde_json::to_string(&res)?)
     })
     .await?;
