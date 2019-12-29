@@ -72,6 +72,9 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
+      - name: run - yarn install
+        run: yarn install
+
       - name: run - cargo check
         uses: actions-rs/cargo@v1
         with:
