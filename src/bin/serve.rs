@@ -7,6 +7,7 @@
 #![warn(missing_debug_implementations)]
 #![deny(unconditional_recursion)]
 
+use actix_cors::{self};
 use actix_web::{self, web};
 use async_std::{self};
 use futures::{self};
@@ -38,6 +39,7 @@ async fn graphql(
     .await?;
     Ok(actix_web::HttpResponse::Ok()
         .content_type("application/json")
+        .header(actix_web::http::header::ACCESS_CONTROL_ALLOW_ORIGIN, "*")
         .body(user))
 }
 
@@ -54,6 +56,7 @@ async fn main() -> std::io::Result<()> {
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
             .data(schema.clone())
+            .wrap(actix_cors::Cors::new().finish())
             .wrap(actix_web::middleware::Logger::default())
             .service(web::resource("/graphql").route(web::post().to(graphql)))
             .service(web::resource("/{_:(graphiql)?}").route(web::get().to(graphiql)))
