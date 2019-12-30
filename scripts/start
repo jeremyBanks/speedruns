@@ -6,4 +6,9 @@ cargo build --bin serve
 cargo run --bin serve &
 trap "kill $!" EXIT
 
+sleep 4
+
+apollo client:codegen --target typescript --globalTypesFile src/client/__generated__/globalTypes.d.ts
+apollo client:download-schema src/client/__generated__/schema.graphql
+
 react-scripts start
