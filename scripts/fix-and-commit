@@ -1,7 +1,7 @@
 #!/bin/bash
 set -veuxo pipefail
 
-if ! [[ -z $(git status -s -uall) ]]; then
+if ! [[ -z "$(git status -s -uall)" ]]; then
     echo "error: index is already dirty"
     exit
 fi
@@ -14,7 +14,7 @@ git add ./src
 bash scripts/generate
 bash scripts/format
 
-if [[ -z $(git status -s -uall) ]]; then    
+if ! [[ -z "$(git status -s -uall)" ]]; then    
     git config user.name "bot"
     git config user.email "bot@jeremy.ca"
     git add .
