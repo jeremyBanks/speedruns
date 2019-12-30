@@ -39,7 +39,7 @@ pub struct Category {
 #[graphql(description = "A level in a category for a game on speedrun.com.")]
 pub struct Level {
     id:          String,
-    name:       String,
+    name:        String,
     category_id: String,
     game_id:     String,
 }
