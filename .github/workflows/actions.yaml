@@ -79,11 +79,11 @@ jobs:
             ${{ runner.os }}-yarn-node-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-node-modules-
 
-      - name: magic - fixes
-        run: yarn fix-and-commit
-
       - name: run - yarn install
         run: yarn install
+
+      - name: magic - fixes
+        run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} yarn fix-and-commit
 
       - name: run - cargo check
         uses: actions-rs/cargo@v1
