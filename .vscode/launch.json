@@ -1,54 +1,44 @@
-
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable: scrape",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=scrape"
-                ],
-                "filter": {
-                    "name": "scrape",
-                    "kind": "bin"
-                }
-            },
-            "args": []
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable: normalize",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=normalize"
-                ],
-                "filter": {
-                    "name": "normalize",
-                    "kind": "bin"
-                }
-            },
-            "args": []
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable: serve",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=serve"
-                ],
-                "filter": {
-                    "name": "serve",
-                    "kind": "bin"
-                }
-            },
-            "args": []
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable: scrape",
+      "cargo": {
+        "args": ["build", "--bin=scrape"],
+        "filter": {
+          "name": "scrape",
+          "kind": "bin"
         }
-    ]
+      },
+      "args": []
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable: normalize",
+      "cargo": {
+        "args": ["build", "--bin=normalize"],
+        "filter": {
+          "name": "normalize",
+          "kind": "bin"
+        }
+      },
+      "args": []
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable: serve",
+      "cargo": {
+        "args": ["build", "--bin=serve"],
+        "filter": {
+          "name": "serve",
+          "kind": "bin"
+        }
+      },
+      "args": []
+    }
+  ]
 }

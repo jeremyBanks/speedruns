@@ -1,6 +1,6 @@
 {
-    "search.exclude": {
-        "**/target": true
-    },
-    "lldb.verboseLogging": true
+  "search.exclude": {
+    "**/target": true
+  },
+  "lldb.verboseLogging": true
 }
