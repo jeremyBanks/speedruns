@@ -5,6 +5,8 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
 import { GetUserById } from "./__generated__/GetUserById";
+import { GetGameBySlug } from "./__generated__/GetGameBySlug";
+import { GetRunById } from "./__generated__/GetRunById";
 
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -20,6 +22,37 @@ export const useGetUserById = (id: String) =>
         user(id: $id) {
           id
           slug
+        }
+      }
+    `,
+    { variables: { id } }
+  );
+
+export const useGetGameBySlug = (slug: String) =>
+  useQuery<GetGameBySlug>(
+    gql`
+      query GetGameBySlug($slug: String) {
+        game(slug: $slug) {
+          id
+          name
+          slug
+        }
+      }
+    `,
+    { variables: { slug } }
+  );
+
+export const useGetRunById = (id: String) =>
+  useQuery<GetRunById>(
+    gql`
+      query GetRunById($id: String) {
+        run(id: $id) {
+          id
+          timings {
+            igt_ms
+            rta_ms
+            rta_nl_ms
+          }
         }
       }
     `,
