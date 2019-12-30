@@ -24,6 +24,9 @@ if ! [[ -z "$(git status -s -uall)" ]]; then
     git push github HEAD:${GITHUB_REF}
 
     git checkout HEAD~
+
+    echo "checks failed, but fixed automatically committed"
+    exit 1
 else
     echo "no changes to commit"
 fi
