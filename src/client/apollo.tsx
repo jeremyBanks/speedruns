@@ -5,6 +5,7 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
 import { TypeNames } from "./__generated__/TypeNames";
+import { GetUserById } from "./__generated__/GetUserById";
 
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -12,6 +13,19 @@ export const client = new ApolloClient({
     uri: "http://localhost:8080/graphql"
   })
 });
+
+export const useGetUserById = (id: String) =>
+  useQuery<GetUserById>(
+    gql`
+      query GetUserById($id: String) {
+        user(id: $id) {
+          id
+          name
+        }
+      }
+    `,
+    { variables: { id } }
+  );
 
 export const useTypeNames = () =>
   useQuery<TypeNames>(gql`
