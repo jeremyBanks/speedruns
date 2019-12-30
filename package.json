@@ -28,6 +28,7 @@
   },
   "scripts": {
     "generate": "scripts/generate",
+    "fix-and-commit": "scripts/fix-and-commit",
     "format": "scripts/format",
     "start": "scripts/start",
     "build": "react-scripts build",
