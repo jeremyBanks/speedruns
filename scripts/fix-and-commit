@@ -20,7 +20,7 @@ if ! [[ -z "$(git status -s -uall)" ]]; then
     export GIT_COMMITTER_NAME="a bot"
     export GIT_COMMITTER_EMAIL="bot@jeremy.ca"
 
-    git commit -m "🛠 automatic fixes for ${GITHUB_SHA}"
+    git commit -m "🛠 code generation and formatting for ${GITHUB_SHA}"
 
     git push github HEAD:${GITHUB_REF}
 fi

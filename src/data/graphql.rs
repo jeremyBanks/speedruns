@@ -16,6 +16,14 @@ impl juniper::Context for Context {}
 #[graphql(description = "A user of speedrun.com.")]
 pub struct User {
     id:   String,
+    slug: String,
+}
+
+#[derive(Debug, GraphQLObject)]
+#[graphql(description = "A game on speedrun.com.")]
+pub struct Game {
+    id:   String,
+    slug: String,
     name: String,
 }
 
@@ -25,14 +33,24 @@ pub struct Query {}
 #[juniper::object(Context = Context)]
 impl Query {
     #[graphql(description = "
-        Get a user by id or slug. Throws an error if none are specified,
-        or no user matches all that are specified.
+        Get a user by id or slug.
     ")]
     pub fn user(
         context: &Context,
         id: Option<String>,
-        name: Option<String>,
+        slug: Option<String>,
     ) -> FieldResult<User> {
+        Err(FieldError::from("not implemented"))
+    }
+
+    #[graphql(description = "
+        Get a game by id or slug.
+    ")]
+    pub fn game(
+        context: &Context,
+        id: Option<String>,
+        slug: Option<String>,
+    ) -> FieldResult<Game> {
         Err(FieldError::from("not implemented"))
     }
 }
@@ -42,7 +60,7 @@ pub struct Mutation {}
 
 #[juniper::object(Context = Context)]
 impl Mutation {
-    #[graphql(description = "workaround for https://git.io/JeNXr")]
+    #[graphql(description = "No-op workaround for https://git.io/JeNXr.")]
     pub fn noop(context: &Context) -> FieldResult<bool> {
         Ok(false)
     }
