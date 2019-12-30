@@ -11,6 +11,9 @@ git pull github ${GITHUB_REF} --ff-only
 
 git add ./src
 
+scripts/generate
+scripts/format
+
 if [[ -z $(git status -s -uall) ]]; then    
     git config user.name "bot"
     git config user.email "bot@jeremy.ca"
