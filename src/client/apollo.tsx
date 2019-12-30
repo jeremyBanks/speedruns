@@ -19,7 +19,7 @@ export const useGetUserById = (id: String) =>
       query GetUserById($id: String) {
         user(id: $id) {
           id
-          name
+          slug
         }
       }
     `,
