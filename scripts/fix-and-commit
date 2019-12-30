@@ -19,7 +19,7 @@ if ! [[ -z "$(git status -s -uall)" ]]; then
     git config user.email "bot@jeremy.ca"
     git add .
 
-    git commit -m "🤖🔧 automatic fixes" --allow-empty-message
+    git commit -m "🤖🔧 automatic fixes"
 
     git push github HEAD:${GITHUB_REF}
 

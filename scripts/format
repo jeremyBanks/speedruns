@@ -1,5 +1,5 @@
 #!/bin/bash
 set -veuxo pipefail
 
-prettier --write **/*.ts **/*.tsx **/*.md **/*.json
+prettier --write **/*.js **/*.ts **/*.tsx **/*.md **/*.json **/*.graphql
 cargo fmt
