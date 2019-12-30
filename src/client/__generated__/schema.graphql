@@ -14,7 +14,9 @@ Export this locally resolved field as a variable to be used in the remainder of 
 https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
 """
 directive @export(
-  """The variable name to export this field as."""
+  """
+  The variable name to export this field as.
+  """
   as: String!
 ) on FIELD
 
@@ -23,7 +25,9 @@ Specify a custom store key for this result. See
 https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
 """
 directive @connection(
-  """Specify the store key."""
+  """
+  Specify the store key.
+  """
   key: String!
 
   """
@@ -38,13 +42,15 @@ type Mutation {
 
 type Query {
   """
-  Get a user by id or slug. throws an error if none are specified, or no user matches
-  all that are specified.
+  Get a user by id or slug. Throws an error if none are specified,
+  or no user matches all that are specified.
   """
-  user(id: String, slug: String): User!
+  user(id: String, name: String): User!
 }
 
-"""A user"""
+"""
+A user
+"""
 type User {
   id: String!
   name: String!

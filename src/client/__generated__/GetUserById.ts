@@ -14,8 +14,8 @@ export interface GetUserById_user {
 
 export interface GetUserById {
   /**
-   * Get a user by id or slug. throws an error if none are specified, or no user matches
-   * all that are specified.
+   * Get a user by id or slug. Throws an error if none are specified,
+   * or no user matches all that are specified.
    */
   user: GetUserById_user;
 }
