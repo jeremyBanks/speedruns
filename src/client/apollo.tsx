@@ -7,7 +7,6 @@ import { useQuery } from "@apollo/react-hooks";
 import { GetUserById } from "./__generated__/GetUserById";
 import { GetGameBySlug } from "./__generated__/GetGameBySlug";
 
-
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
@@ -41,4 +40,3 @@ export const useGetGameBySlug = (slug: String) =>
     `,
     { variables: { slug } }
   );
-
