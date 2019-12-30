@@ -30,37 +30,37 @@ pub struct Game {
 #[derive(Debug, GraphQLObject)]
 #[graphql(description = "A category for a game on speedrun.com.")]
 pub struct Category {
-    id:   String,
-    name: String,
+    id:      String,
+    name:    String,
     game_id: String,
 }
 
 #[derive(Debug, GraphQLObject)]
 #[graphql(description = "A level in a category for a game on speedrun.com.")]
 pub struct Level {
-    id:   String,
-    name: String,
+    id:          String,
+    name:       String,
     category_id: String,
-    game_id: String,
+    game_id:     String,
 }
 
 #[derive(Debug, GraphQLObject)]
 #[graphql(description = "A run of a game on speedrun.com.")]
 pub struct Run {
-    id:   String,
-    owner_id: Option<String>,
-    game_id: String,
+    id:          String,
+    owner_id:    Option<String>,
+    game_id:     String,
     category_id: String,
-    level_id: Option<String>,
-    timings: Timings,
+    level_id:    Option<String>,
+    timings:     Timings,
 }
 
 #[derive(Debug, GraphQLObject)]
 #[graphql(description = "Timings for a run of a game on speedrun.com.")]
 pub struct Timings {
-     igt_ms:    Option<u32>,
-     rta_ms:    Option<u32>,
-    rta_nl_ms: Option<u32>,
+    igt_ms:    Option<i32>,
+    rta_ms:    Option<i32>,
+    rta_nl_ms: Option<i32>,
 }
 
 #[derive(Debug, Default)]
