@@ -1,0 +1,5 @@
+#!/bin/bash
+set -veuxo pipefail
+
+prettier --write **/*.ts **/*.tsx **/*.md **/*.json
+cargo fmt

@@ -20,14 +20,16 @@
     "graphql": "^14.5.8",
     "graphql-cli": "^3.0.14",
     "graphql-tag": "^2.10.1",
+    "prettier": "^1.19.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.3.0",
     "typescript": "^3.7.4"
   },
   "scripts": {
-    "generate": "find . -name __generated__ -type d -exec rm -r {} +; apollo client:codegen --target typescript --globalTypesFile src/client/__generated__/globalTypes.d.ts && apollo client:download-schema src/client/__generated__/schema.graphql",
-    "start": "react-scripts start",
+    "generate": "scripts/generate",
+    "format": "scripts/format",
+    "start": "scripts/start",
     "build": "react-scripts build",
     "test": "react-scripts test"
   },
