@@ -11,8 +11,8 @@ git pull github ${GITHUB_REF} --ff-only
 
 git add ./src
 
-scripts/generate
-scripts/format
+bash scripts/generate
+bash scripts/format
 
 if [[ -z $(git status -s -uall) ]]; then    
     git config user.name "bot"
@@ -22,7 +22,8 @@ if [[ -z $(git status -s -uall) ]]; then
     git commit -m "🤖🔧 automatic fixes" --allow-empty-message
 
     git push github HEAD:${GITHUB_REF}
+
+    git checkout HEAD~
 else
     echo "no changes to commit"
 fi
-0

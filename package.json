@@ -27,10 +27,10 @@
     "typescript": "^3.7.4"
   },
   "scripts": {
-    "generate": "scripts/generate",
-    "fix-and-commit": "scripts/fix-and-commit",
-    "format": "scripts/format",
-    "start": "scripts/start",
+    "generate": "bash scripts/generate",
+    "fix-and-commit": "bash scripts/fix-and-commit",
+    "format": "bash scripts/format",
+    "start": "bash scripts/start",
     "build": "react-scripts build",
     "test": "react-scripts test"
   },
