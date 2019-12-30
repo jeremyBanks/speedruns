@@ -58,9 +58,9 @@ pub struct Run {
 #[derive(Debug, GraphQLObject)]
 #[graphql(description = "Timings for a run of a game on speedrun.com.")]
 pub struct Timings {
-     igt_ms:    Option<u64>,
-     rta_ms:    Option<u64>,
-    rta_nl_ms: Option<u64>,
+     igt_ms:    Option<u32>,
+     rta_ms:    Option<u32>,
+    rta_nl_ms: Option<u32>,
 }
 
 #[derive(Debug, Default)]
