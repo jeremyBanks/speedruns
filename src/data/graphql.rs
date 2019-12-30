@@ -31,12 +31,13 @@ pub struct Query {}
 
 #[juniper::object(Context = Context)]
 impl Query {
-    /// Get a user by id or slug. throws an error if none are specified, or no user matches
-    /// all that are specified.
+    #[graphql( description = "
+        Get a user by id or slug. Throws an error if none are specified,
+        or no user matches all that are specified.")]
     pub fn user(
         context: &Context,
         id: Option<String>,
-        name: Option<String>,
+         name: Option<String>,
     ) -> FieldResult<User> {
         Err(FieldError::from("not implemented"))
     }
