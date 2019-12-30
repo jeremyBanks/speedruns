@@ -1,0 +1,25 @@
+#!/bin/bash
+set -veuxo pipefail
+
+if ! [[ -z $(git status -s -uall) ]]; then
+    echo "error: index is already dirty"
+    exit
+fi
+
+git remote add github "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+git pull github ${GITHUB_REF} --ff-only
+
+git add ./src
+
+if [[ -z $(git status -s -uall) ]]; then    
+    git config user.name "bot"
+    git config user.email "bot@jeremy.ca"
+    git add .
+
+    git commit -m "🤖🔧 automatic fixes" --allow-empty-message
+
+    git push github HEAD:${GITHUB_REF}
+else
+    echo "no changes to commit"
+fi
+0
