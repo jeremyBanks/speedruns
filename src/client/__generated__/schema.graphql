@@ -36,19 +36,32 @@ directive @connection(
   filter: [String!]
 ) on FIELD
 
+"""
+A game on speedrun.com.
+"""
+type Game {
+  id: String!
+  slug: String!
+  name: String!
+}
+
 type Mutation {
   """
-  workaround for https://git.io/JeNXr
+  No-op workaround for https://git.io/JeNXr.
   """
   noop: Boolean!
 }
 
 type Query {
   """
-  Get a user by id or slug. Throws an error if none are specified,
-  or no user matches all that are specified.
+  Get a user by id or slug.
   """
-  user(id: String, name: String): User!
+  user(id: String, slug: String): User!
+
+  """
+  Get a game by id or slug.
+  """
+  game(id: String, slug: String): Game!
 }
 
 """
@@ -56,5 +69,5 @@ A user of speedrun.com.
 """
 type User {
   id: String!
-  name: String!
+  slug: String!
 }

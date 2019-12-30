@@ -9,13 +9,12 @@
 export interface GetUserById_user {
   __typename: "User";
   id: string;
-  name: string;
+  slug: string;
 }
 
 export interface GetUserById {
   /**
-   * Get a user by id or slug. Throws an error if none are specified,
-   * or no user matches all that are specified.
+   * Get a user by id or slug.
    */
   user: GetUserById_user;
 }
