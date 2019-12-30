@@ -17,40 +17,6 @@ jobs:
           echo "::set-output name=rust::$(cat rust-toolchain)"
           echo "::set-output name=node::$(cat .nvmrc)"
 
-      - name: caching - cargo registry
-        uses: actions/cache@v1
-        with:
-          path: /usr/share/rust/.cargo/registry
-          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-          restore-key: ${{ runner.os }}-cargo-registry-
-
-      - name: caching - cargo index
-        uses: actions/cache@v1
-        with:
-          path: /usr/share/rust/.cargo/git
-          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
-          restore-key: ${{ runner.os }}-cargo-index-
-
-      - name: caching - cargo build
-        uses: actions/cache@v1
-        with:
-          path: target/debug
-          key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock')}}
-          restore-keys: ${{ runner.os }}-cargo-build-
-
-      - name: preparation - install rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ steps.versions.outputs.rust }}
-
-      - name: preparation - install node
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ steps.versions.outputs.node }}
-
-      - name: preparation - install yarn
-        run: npm install -g yarn
-
       - name: preparation - reading yarn cache path
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -66,14 +32,30 @@ jobs:
         uses: actions/cache@v1
         with:
           path: node_modules
-          key:
-            ${{ runner.os }}-yarn-node-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-node-modules-
+          key: ${{ runner.os }}-yarn-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-modules-
+
+      - name: caching - cargo registry
+        uses: actions/cache@v1
+        with:
+          path: /usr/share/rust/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+          restore-key: ${{ runner.os }}-cargo-registry-
+
+      - name: preparation - install rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ steps.versions.outputs.rust }}
+
+      - name: preparation - install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ steps.versions.outputs.node }}
 
       - name: run - yarn install
         run: yarn install
 
-      - name: magic - fixes
+      - name: bot - code generation and formatting
         run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} yarn fix-and-commit
 
       - name: run - cargo check
@@ -86,14 +68,5 @@ jobs:
         with:
           command: test
 
-      - name: run - cargo fmt
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
-
-      - name: run - cargo clippy
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: -- -W warnings
+      - name: run - yarn test
+        run: yarn test --passWithNoTests
