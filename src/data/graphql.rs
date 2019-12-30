@@ -36,7 +36,7 @@ impl Query {
     pub fn user(
         context: &Context,
         id: Option<String>,
-        slug: Option<String>,
+        name: Option<String>,
     ) -> FieldResult<User> {
         Err(FieldError::from("not implemented"))
     }
