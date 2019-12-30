@@ -17,7 +17,7 @@ git add .
 if ! [[ -z "$(git status -s -uall)" ]]; then    
     export GIT_AUTHOR_NAME="$(git log -1 --pretty=format:'%an')"
     export GIT_AUTHOR_EMAIL="$(git log -1 --pretty=format:'%ae')"
-    export GIT_COMMITTER_NAME="bot"
+    export GIT_COMMITTER_NAME="a bot"
     export GIT_COMMITTER_EMAIL="bot@jeremy.ca"
 
     git commit -m "🛠 automatic fixes for ${GITHUB_SHA}"

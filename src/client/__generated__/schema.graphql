@@ -37,7 +37,10 @@ directive @connection(
 ) on FIELD
 
 type Mutation {
-  dummy: Float!
+  """
+  workaround for https://git.io/JeNXr
+  """
+  noop: Boolean!
 }
 
 type Query {
@@ -49,7 +52,7 @@ type Query {
 }
 
 """
-A user
+A user of speedrun.com.
 """
 type User {
   id: String!

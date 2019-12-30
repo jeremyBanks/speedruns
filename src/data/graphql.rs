@@ -12,15 +12,8 @@ use juniper::{
 pub struct Context {}
 impl juniper::Context for Context {}
 
-#[derive(Debug, GraphQLEnum)]
-enum Episode {
-    NewHope,
-    Empire,
-    Jedi,
-}
-
 #[derive(Debug, GraphQLObject)]
-#[graphql(description = "A user")]
+#[graphql(description = "A user of speedrun.com.")]
 pub struct User {
     id:   String,
     name: String,
@@ -33,7 +26,8 @@ pub struct Query {}
 impl Query {
     #[graphql(description = "
         Get a user by id or slug. Throws an error if none are specified,
-        or no user matches all that are specified.")]
+        or no user matches all that are specified.
+    ")]
     pub fn user(
         context: &Context,
         id: Option<String>,
@@ -48,9 +42,9 @@ pub struct Mutation {}
 
 #[juniper::object(Context = Context)]
 impl Mutation {
-    // workaround for https://git.io/JeNXr
-    pub fn dummy(context: &Context) -> FieldResult<f64> {
-        Ok(0.0)
+    #[graphql(description = "workaround for https://git.io/JeNXr")]
+    pub fn noop(context: &Context) -> FieldResult<bool> {
+        Ok(false)
     }
 }
 
