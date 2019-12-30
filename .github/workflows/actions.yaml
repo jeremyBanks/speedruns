@@ -17,42 +17,33 @@ jobs:
           echo "::set-output name=rust::$(cat rust-toolchain)"
           echo "::set-output name=node::$(cat .nvmrc)"
 
-      - name: caching - rustup toolchain
-        uses: actions/cache@v1
-        with:
-          path: ~/.rustup/toolchains/
-          key: ${{ runner.os }}-rustup-${{ steps.versions.outputs.rust }}
-          restore-key: ${{ runner.os }}-rustup-
-
       - name: caching - cargo registry
         uses: actions/cache@v1
         with:
-          path: ~/.cargo/registry
+          path: /usr/share/rust/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
           restore-key: ${{ runner.os }}-cargo-registry-
 
       - name: caching - cargo index
         uses: actions/cache@v1
         with:
-          path: ~/.cargo/git
+          path: /usr/share/rust/.cargo/git
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
           restore-key: ${{ runner.os }}-cargo-index-
 
       - name: caching - cargo build
         uses: actions/cache@v1
         with:
-          path: target
+          path: target/debug
           key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock')}}
           restore-keys: ${{ runner.os }}-cargo-build-
 
-      - name:
-          preparation - install rust toolchain ${{ steps.versions.outputs.rust
-          }}
+      - name: preparation - install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ steps.versions.outputs.rust }}
 
-      - name: preparation - install node ${{ steps.versions.outputs.node }}
+      - name: preparation - install node
         uses: actions/setup-node@v1
         with:
           node-version: ${{ steps.versions.outputs.node }}
