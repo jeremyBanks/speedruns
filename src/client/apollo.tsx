@@ -11,6 +11,18 @@ export const client = new ApolloClient({
   })
 });
 
+const MyGameDetails = gql`
+  fragment MyGameDetails on Game {
+    id
+    name
+    slug
+
+    # runs {
+
+    # }
+  }
+`;
+
 export const useGetMyGames = () => {
   return useQuery(
     gql`
@@ -23,15 +35,7 @@ export const useGetMyGames = () => {
         }
       }
 
-      fragment MyGameDetails on Game {
-        id
-        name
-        slug
-
-        # runs {
-
-        # }
-      }
+      ${MyGameDetails}
     `
   );
 };

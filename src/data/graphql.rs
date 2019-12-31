@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{num::NonZeroU64 as Id64, sync::Arc};
 
 use juniper::{FieldError, FieldResult, RootNode};
 
@@ -9,7 +9,10 @@ use juniper::{
     ScalarValue,
 };
 
-use crate::data::database::Database;
+use crate::{
+    data::database::Database,
+    utils::{base36, id64_from_base36},
+};
 
 #[derive(Debug)]
 pub struct Context {
@@ -17,55 +20,28 @@ pub struct Context {
 }
 impl juniper::Context for Context {}
 
-#[derive(Debug, GraphQLObject)]
-#[graphql(description = "A user of speedrun.com.")]
-pub struct User {
-    id:   String,
-    slug: String,
-}
-
-#[derive(Debug, GraphQLObject)]
-#[graphql(description = "A game on speedrun.com.")]
+#[derive(Debug)]
 pub struct Game {
-    id:   String,
-    slug: String,
-    name: String,
+    id: Id64,
 }
 
-#[derive(Debug, GraphQLObject)]
-#[graphql(description = "A category for a game on speedrun.com.")]
-pub struct Category {
-    id:      String,
-    name:    String,
-    game_id: String,
-}
+#[juniper::object(Context = Context)]
+#[graphql(description = "A game on speedrun.com.")]
+impl Game {
+    pub fn id(&self, context: &Context) -> FieldResult<String> {
+        let game = context.database.game_by_id(self.id).unwrap();
+        Ok(base36(game.id))
+    }
 
-#[derive(Debug, GraphQLObject)]
-#[graphql(description = "A level in a category for a game on speedrun.com.")]
-pub struct Level {
-    id:          String,
-    name:        String,
-    category_id: String,
-    game_id:     String,
-}
+    pub fn name(&self, context: &Context) -> FieldResult<String> {
+        let game = context.database.game_by_id(self.id).unwrap();
+        Ok(game.name.to_string())
+    }
 
-#[derive(Debug, GraphQLObject)]
-#[graphql(description = "A run of a game on speedrun.com.")]
-pub struct Run {
-    id:          String,
-    owner_id:    Option<String>,
-    game_id:     String,
-    category_id: String,
-    level_id:    Option<String>,
-    timings:     Timings,
-}
-
-#[derive(Debug, GraphQLObject)]
-#[graphql(description = "Timings for a run of a game on speedrun.com.")]
-pub struct Timings {
-    igt_ms:    Option<i32>,
-    rta_ms:    Option<i32>,
-    rta_nl_ms: Option<i32>,
+    pub fn slug(&self, context: &Context) -> FieldResult<String> {
+        let game = context.database.game_by_id(self.id).unwrap();
+        Ok(game.slug.to_string())
+    }
 }
 
 #[derive(Debug, Default)]
@@ -74,25 +50,13 @@ pub struct Query {}
 #[juniper::object(Context = Context)]
 impl Query {
     #[graphql(description = "
-        Get a user by id or slug.
-    ")]
-    pub fn user(
-        context: &Context,
-        id: Option<String>,
-        slug: Option<String>,
-    ) -> FieldResult<User> {
-        Err(FieldError::from("not implemented"))
-    }
-
-    #[graphql(description = "
         Get a game by id or slug.
     ")]
-    pub fn game(
-        context: &Context,
-        id: Option<String>,
-        slug: Option<String>,
-    ) -> FieldResult<Game> {
-        Err(FieldError::from("not implemented"))
+    pub fn game(context: &Context, slug: String) -> FieldResult<Game> {
+        match context.database.game_by_slug(&slug) {
+            Some(game) => Ok(Game { id: game.id }),
+            None => Err(FieldError::from("not found")),
+        }
     }
 }
 

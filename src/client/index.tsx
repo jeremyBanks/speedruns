@@ -1,9 +1,9 @@
 import React from "react";
 import { ApolloProvider } from "@apollo/react-hooks";
-import { client, useTypeNames } from "./apollo";
+import { client, useGetMyGames } from "./apollo";
 
 const ClientContent: React.FC = () => {
-  const { loading, error, data } = useTypeNames();
+  const { loading, error, data } = useGetMyGames();
 
   if (!data || loading) {
     return <pre>loading...</pre>;

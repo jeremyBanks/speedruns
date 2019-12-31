@@ -53,15 +53,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     info!("Loading API users...");
     for api_user in load_api_type::<api::User>("data/api/users.jsonl.gz")? {
         let user = api_user.normalize().unwrap();
-        users.push(user);
+
+        if user.slug == "banks" {
+            users.push(user);
+        }
     }
 
     info!("Loading API games, with categories and levels...");
     for api_game in load_api_type::<api::Game>("data/api/games.jsonl.gz")? {
         let (game, mut game_categories, mut game_levels) = api_game.normalize().unwrap();
-        games.push(game);
-        categories.append(&mut game_categories);
-        levels.append(&mut game_levels);
+
+        if game.slug.starts_with("wc2") {
+            games.push(game);
+            categories.append(&mut game_categories);
+            levels.append(&mut game_levels);
+        }
     }
 
     info!("Validating and cleaning API data...");
@@ -184,27 +190,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 error!(
                     "{:6} ({:3}%) invalid runs",
                     dead_run_ids.len(),
-                    (dead_run_ids.len() * 100) / runs.len()
+                    (dead_run_ids.len() * 100) / runs.len().max(1)
                 );
                 error!(
                     "{:6} ({:3}%) invalid users",
                     dead_user_ids.len(),
-                    (dead_user_ids.len() * 100) / users.len()
+                    (dead_user_ids.len() * 100) / users.len().max(1)
                 );
                 error!(
                     "{:6} ({:3}%) invalid games",
                     dead_game_ids.len(),
-                    (dead_game_ids.len() * 100) / games.len()
+                    (dead_game_ids.len() * 100) / games.len().max(1)
                 );
                 error!(
                     "{:6} ({:3}%) invalid categories",
                     dead_category_ids.len(),
-                    (dead_category_ids.len() * 100) / categories.len()
+                    (dead_category_ids.len() * 100) / categories.len().max(1)
                 );
                 error!(
                     "{:6} ({:3}%) invalid levels",
                     dead_level_ids.len(),
-                    (dead_level_ids.len() * 100) / levels.len()
+                    (dead_level_ids.len() * 100) / levels.len().max(1)
                 );
 
                 runs.retain(|x| !dead_run_ids.contains(x.id()));

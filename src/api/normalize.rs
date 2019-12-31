@@ -19,8 +19,6 @@ pub enum Error {
     InvalidId(crate::utils::Base36DecodingError),
     #[error(display = "internal error: invalid object created. {:?}", _0)]
     InternalValidationErrors(validator::ValidationErrors),
-    #[error(display = "debugging debugging")]
-    DebugSkip,
 }
 
 pub trait Normalize {
@@ -86,11 +84,6 @@ impl Normalize for api::Game {
             primary_timing: self.ruleset().default_time().normalize()?,
         };
         game.validate()?;
-
-        if !game.slug.contains("war2") {
-            // the whole database is too much
-            return Err(Error::DebugSkip)
-        }
 
         let categories = self
             .categories()
