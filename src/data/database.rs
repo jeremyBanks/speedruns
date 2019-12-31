@@ -528,7 +528,7 @@ impl Linked<Run> {
                         .user_by_id(*user_id)
                         .expect(DATABASE_INTEGRITY),
                 ),
-                RunPlayer::GuestName(name) => None,
+                RunPlayer::GuestName(_name) => None,
             })
             .collect()
     }
