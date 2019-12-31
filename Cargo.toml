@@ -4,6 +4,8 @@ license = "MIT"
 name = "speedruns"
 version = "0.0.5"
 
+default-run = "serve"
+
 [dependencies]
 bincode = "1.2.1"
 derive_more = "0.99.2"

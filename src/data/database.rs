@@ -119,7 +119,7 @@ impl Tables {
 }
 
 /// Panic message used when the database state is invalid but that shouldn't be
-/// possible, because it must have alrady been validated, such as for foreign
+/// possible, because it must have already been validated, such as for foreign
 /// key lookups.
 const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validation?!";
 

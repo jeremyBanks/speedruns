@@ -4,39 +4,34 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
-import { GetUserById } from "./__generated__/GetUserById";
-import { GetGameBySlug } from "./__generated__/GetGameBySlug";
-
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: "http://localhost:8080/graphql"
+    uri: "http://localhost:3001/"
   })
 });
 
-export const useGetUserById = (id: String) =>
-  useQuery<GetUserById>(
+export const useGetMyGames = () => {
+  return useQuery(
     gql`
-      query GetUserById($id: String) {
-        user(id: $id) {
-          id
-          slug
+      query GetMyGames($slug: String) {
+        war2: game(slug: "war2") {]
+          ...MyGameDetails
+        }
+        war2btdp: game(slug: "war2btdp") {
+          ...MyGameDetails
         }
       }
-    `,
-    { variables: { id } }
-  );
 
-export const useGetGameBySlug = (slug: String) =>
-  useQuery<GetGameBySlug>(
-    gql`
-      query GetGameBySlug($slug: String) {
-        game(slug: $slug) {
-          id
-          name
-          slug
-        }
+      fragment MyGameDetails on Game {
+        id
+        name
+        slug
+
+        # runs {
+
+        # }
       }
-    `,
-    { variables: { slug } }
+    `
   );
+};

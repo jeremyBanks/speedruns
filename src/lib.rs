@@ -6,7 +6,7 @@
     label_break_value,
     slice_concat_ext
 )]
-#![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
+#![allow(missing_docs, clippy::useless_attribute)]
 #![warn(missing_debug_implementations)]
 #![deny(unconditional_recursion)]
 
@@ -21,7 +21,3 @@ pub use crate::data::{
     database::Database,
     types::{self, *},
 };
-
-// mod renter;
-// #[macro_use]
-// extern crate rental;
