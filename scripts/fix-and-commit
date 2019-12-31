@@ -22,10 +22,10 @@ if ! [[ -z "$(git status -s -uall)" ]]; then
     export GIT_MESSAGE="$(git log -1 --pretty=%B)"
 
     # but use distinct committer and commit timestamp
-    export GIT_COMMITTER_NAME="a bot"
+    export GIT_COMMITTER_NAME="autofix"
     export GIT_COMMITTER_EMAIL="bot@jeremy.ca"
 
-    git commit -m $"${GIT_MESSAGE}" --allow-empty-message
+    git commit -m $"[autofixed] ${GIT_MESSAGE}" --allow-empty-message
 
     git push github HEAD:${GITHUB_REF}
 fi
