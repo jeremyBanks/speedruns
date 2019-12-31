@@ -49,33 +49,40 @@ jobs:
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
           restore-key: ${{ runner.os }}-cargo-registry-
 
-      - name: preparation - install rust toolchain
+      - name: setup - install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ steps.env.outputs.rust }}
 
-      - name: preparation - install node
+      - name: setup - install node
         uses: actions/setup-node@v1
         with:
           node-version: ${{ steps.env.outputs.node }}
 
-      - name: run - yarn install
+      - name: setup - install node dependencies
         run: yarn install
 
-      - name: bot - code generation and formatting
-        run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} yarn fix-and-commit
-
-      - name: run - cargo check
+      # hoisted since the rust in codegen will fail if we can't build
+      - name: test - cargo check
         uses: actions-rs/cargo@v1
         with:
           command: check
 
-      - name: run - cargo test
+      - name: bot - code generation
+        run: bash scripts/generate.bash
+
+      - name: bot - code formatting
+        run: bash scripts/format.bash
+
+      - name: bot - commit any changes as autofix
+        run: yarn commit-autofix.bash
+
+      - name: test - cargo test
         uses: actions-rs/cargo@v1
         with:
           command: test
 
-      - name: run - yarn test
+      - name: test - yarn test
         run: yarn test --passWithNoTests
         env:
           CI: true
@@ -85,7 +92,4 @@ jobs:
         env:
           GIT_COMMITTER_NAME: automerge
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
-        run: |
-          git checkout stable
-          git merge --no-ff master --log -m "automerge master into stable"
-          git push origin stable
+        run: bash scripts/merge-master-to-stable.bash
