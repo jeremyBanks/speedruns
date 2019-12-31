@@ -28,7 +28,6 @@
   },
   "scripts": {
     "generate": "bash scripts/generate.bash",
-    "fix-and-commit": "bash scripts/commit-autofix.bash",
     "format": "bash scripts/format.bash",
     "start": "bash scripts/start.bash",
     "build": "react-scripts build",
