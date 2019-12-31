@@ -9,6 +9,8 @@ fi
 # bash scripts/generate
 # bash scripts/format
 
+echo $"\n#$(date)" >> src/client/schema.graphql
+
 git add .
 
 if ! [[ -z "$(git status -s -uall)" ]]; then    
