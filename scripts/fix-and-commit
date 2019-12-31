@@ -6,8 +6,7 @@ if ! [[ -z "$(git status -s -uall)" ]]; then
     sleep 4
 fi
 
-git remote add github "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
-git pull github ${GITHUB_REF} --ff-only
+git pull origin ${GITHUB_REF} --ff-only
 
 bash scripts/generate
 bash scripts/format
@@ -25,7 +24,7 @@ if ! [[ -z "$(git status -s -uall)" ]]; then
     export GIT_COMMITTER_NAME="autofix"
     export GIT_COMMITTER_EMAIL="bot@jeremy.ca"
 
-    git commit -m $"[autofixed] ${GIT_MESSAGE}" --allow-empty-message
+    git commit -m $"[autofix] ${GIT_MESSAGE}" --allow-empty-message
 
-    git push github HEAD:${GITHUB_REF}
+    git push origin "HEAD:${GITHUB_REF}"
 fi
