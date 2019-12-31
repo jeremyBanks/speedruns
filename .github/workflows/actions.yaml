@@ -75,13 +75,13 @@ jobs:
           command: check
 
       - name: bot - code generation
-        run: bash scripts/generate.bash
+        run: yarn generate
 
       - name: bot - code formatting
-        run: bash scripts/format.bash
+        run: yarn format
 
       - name: bot - commit any changes as autofix
-        run: yarn commit-autofix.bash
+        run: bash scripts/commit-autofix.bash
 
       - name: test - cargo test
         uses: actions-rs/cargo@v1
@@ -93,7 +93,10 @@ jobs:
         env:
           CI: true
 
-      - name: bot - merge master to stable
+      - name: test - yarn build
+        run: yarn build
+
+      - name: bot - automerge master to stable if we made it this far
         if: github.ref == 'refs/heads/master'
         env:
           GIT_COMMITTER_NAME: automerge
