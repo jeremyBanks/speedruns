@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use juniper::{FieldError, FieldResult, RootNode};
 
 #[allow(unused)]
@@ -7,9 +9,12 @@ use juniper::{
     ScalarValue,
 };
 
-/// Request context -- nothing, but maybe we'll add one later.
+use crate::data::database::Database;
+
 #[derive(Debug)]
-pub struct Context {}
+pub struct Context {
+    pub database: Arc<Database>,
+}
 impl juniper::Context for Context {}
 
 #[derive(Debug, GraphQLObject)]
