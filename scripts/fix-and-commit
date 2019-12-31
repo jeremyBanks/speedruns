@@ -15,10 +15,8 @@ git add .
 
 if ! [[ -z "$(git status -s -uall)" ]]; then    
     # copy message and authorship from current (parent) commit
-    export GIT_AUTHOR_NAME="$(git log -1 --pretty=format:'%an')"
-    export GIT_AUTHOR_EMAIL="$(git log -1 --pretty=format:'%ae')"
     export GIT_AUTHOR_DATE="$(git log -1 --pretty=format:'%ad')"
-    export GIT_MESSAGE="$(git log -1 --pretty=%B)"
+    GIT_MESSAGE="$(git log -1 --pretty=%B)"
 
     # but use distinct committer and commit timestamp
     export GIT_COMMITTER_NAME="autofix"
