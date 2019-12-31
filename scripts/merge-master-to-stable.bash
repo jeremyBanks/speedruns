@@ -1,13 +1,16 @@
 current=master
 target=remotes/origin/stable
 
-#git checkout $target
-#git merge --no-ff $current --log -m "automerge master into stable"
-#git push origin $target
+git checkout $target
 
-# if there's only one new commit, you can fast-forward
-# but if there's a break, you need to create a merge commit.
-# this way the first-parent ancestor line is of green commits
+# We want the first-parent ancestor line of the stable branch to
+# only include green commits.
+if (( "$(git rev-list $target..$current --count)" <= 1 )); then
+  # If we're only adding one commit, we can fast-forward it directly.
+  git merge --ff --no-edit master
+else
+  # Otherwise, we need to create a merge commit.
+  git merge --no-ff master --log -m "automerge $current into $target"
+fi
 
-ff_commits="$(git log --topo-order --format='%H' $current..$target -- | wc -l)"
-echo "Number of fast-forwarding commits: $ff_commits"
+git push origin $target
