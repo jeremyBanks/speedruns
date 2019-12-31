@@ -11,7 +11,7 @@ use juniper::{
 
 use crate::{
     data::database::Database,
-    utils::{base36, id64_from_base36},
+    utils::{base36},
 };
 
 #[derive(Debug)]
