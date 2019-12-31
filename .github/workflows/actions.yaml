@@ -28,57 +28,57 @@ jobs:
           git config user.name "$(git log -1 --pretty=format:'%an')"
           git config user.email "$(git log -1 --pretty=format:'%ae')"
 
-      # - name: caching - yarn
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: ${{ steps.env.outputs.yarn-cache }}
-      #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      #     restore-keys: ${{ runner.os }}-yarn-
+      - name: caching - yarn
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.env.outputs.yarn-cache }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
 
-      # - name: caching - node_modules
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: node_modules
-      #     key: ${{ runner.os }}-yarn-modules-${{ hashFiles('**/yarn.lock') }}
-      #     restore-keys: ${{ runner.os }}-yarn-modules-
+      - name: caching - node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-modules-
 
-      # - name: caching - cargo registry
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: /usr/share/rust/.cargo/registry
-      #     key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-      #     restore-key: ${{ runner.os }}-cargo-registry-
+      - name: caching - cargo registry
+        uses: actions/cache@v1
+        with:
+          path: /usr/share/rust/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+          restore-key: ${{ runner.os }}-cargo-registry-
 
-      # - name: preparation - install rust toolchain
-      #   uses: actions-rs/toolchain@v1
-      #   with:
-      #     toolchain: ${{ steps.env.outputs.rust }}
+      - name: preparation - install rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ steps.env.outputs.rust }}
 
-      # - name: preparation - install node
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: ${{ steps.env.outputs.node }}
+      - name: preparation - install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ steps.env.outputs.node }}
 
-      # - name: run - yarn install
-      #   run: yarn install
+      - name: run - yarn install
+        run: yarn install
 
       - name: bot - code generation and formatting
         run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} yarn fix-and-commit
 
-      # - name: run - cargo check
-      #   uses: actions-rs/cargo@v1
-      #   with:
-      #     command: check
+      - name: run - cargo check
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
 
-      # - name: run - cargo test
-      #   uses: actions-rs/cargo@v1
-      #   with:
-      #     command: test
+      - name: run - cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
 
-      # - name: run - yarn test
-      #   run: yarn test --passWithNoTests
-      #   env:
-      #     CI: true
+      - name: run - yarn test
+        run: yarn test --passWithNoTests
+        env:
+          CI: true
 
       - name: bot - merge master to stable
         if: github.ref == 'refs/heads/master'
@@ -87,5 +87,5 @@ jobs:
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: |
           git checkout stable
-          git merge --no-ff master --no-edit
+          git merge --no-ff master --log -m "automerge master into stable"
           git push origin stable
