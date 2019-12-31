@@ -87,5 +87,5 @@ jobs:
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: |
           git checkout stable
-          git merge --no-ff master --log --edit -m "automerge master into stable"
+          git merge --no-ff master --log -m "automerge master into stable"
           git push origin stable
