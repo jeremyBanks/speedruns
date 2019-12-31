@@ -6,10 +6,8 @@ if ! [[ -z "$(git status -s -uall)" ]]; then
     sleep 4
 fi
 
-# bash scripts/generate
-# bash scripts/format
-
-echo $"\n#$(date)" >> src/client/schema.graphql
+bash scripts/generate
+bash scripts/format
 
 git add .
 
