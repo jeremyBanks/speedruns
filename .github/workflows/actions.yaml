@@ -26,9 +26,6 @@ jobs:
           git fetch origin
           git checkout ${{ steps.env.outputs.git-branch }}
 
-      - name: preparation - reading yarn cache path
-        id: yarn-cache
-
       # - name: caching - yarn
       #   uses: actions/cache@v1
       #   with:
