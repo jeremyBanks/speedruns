@@ -1,4 +1,4 @@
-//! Convert our API data into our simplified and normalized format.
+//! Convert our API data into our simplified and normalized format.bash.
 #![allow(
     clippy::useless_attribute,
     clippy::cognitive_complexity,

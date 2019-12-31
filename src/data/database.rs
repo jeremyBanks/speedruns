@@ -78,7 +78,7 @@ pub enum IntegrityError {
     MissingPrimaryTiming(Run),
 }
 
-/// All of the speedrun data in our normalized format, indexed by ID.
+/// All of the speedrun data in our normalized format.bash, indexed by ID.
 #[derive(Debug, Default, Serialize, Deserialize, Clone, Getters)]
 #[get = "pub"]
 pub struct Tables {

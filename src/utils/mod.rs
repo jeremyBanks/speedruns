@@ -8,8 +8,6 @@ use unidecode::unidecode;
 pub enum Base36DecodingError {
     #[error(display = "invalid digit: {:?}", _0)]
     InvalidDigit(char),
-    #[error(display = "value was zero")]
-    Zero,
     #[error(display = "value didn't have expected length of 8 characters")]
     WrongLength,
 }
@@ -260,7 +258,6 @@ mod tests {
     #[test]
     fn test_base36() {
         assert_eq!(Err(Base36DecodingError::WrongLength), u64_from_base36(""));
-        assert_eq!(Err(Base36DecodingError::Zero), u64_from_base36("00000000"));
         for (expected_id, expected_b36) in vec![
             (1u64, "00000001"),
             (35, "0000000z"),
