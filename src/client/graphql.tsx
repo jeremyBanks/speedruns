@@ -4,6 +4,8 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
+import * as types from "./graphql-types"
+
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
@@ -16,26 +18,22 @@ const MyGameDetails = gql`
     id
     name
     slug
-
-    # runs {
-
-    # }
   }
 `;
 
-export const useGetMyGames = () => {
-  return useQuery(
-    gql`
-      query GetMyGames($slug: String) {
-        war2: game(slug: "war2") {]
-          ...MyGameDetails
-        }
-        war2btdp: game(slug: "war2btdp") {
-          ...MyGameDetails
-        }
-      }
+const GetMyGames = gql`
+  query GetMyGames {
+    war2: game(slug: "wc2") {
+      ...MyGameDetails
+    }
+    war2btdp: game(slug: "wc2btdp") {
+      ...MyGameDetails
+    }
+  }
 
-      ${MyGameDetails}
-    `
-  );
+  ${MyGameDetails}
+`;
+
+export const useGetMyGames = () => {
+  return useQuery<types.GetMyGames>(GetMyGames);
 };

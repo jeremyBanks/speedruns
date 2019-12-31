@@ -9,10 +9,7 @@ use juniper::{
     ScalarValue,
 };
 
-use crate::{
-    data::database::Database,
-    utils::{base36},
-};
+use crate::{data::database::Database, utils::base36};
 
 #[derive(Debug)]
 pub struct Context {

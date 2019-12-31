@@ -1,6 +1,6 @@
 import React from "react";
 import { ApolloProvider } from "@apollo/react-hooks";
-import { client, useGetMyGames } from "./apollo";
+import { client, useGetMyGames } from "./graphql";
 
 const ClientContent: React.FC = () => {
   const { loading, error, data } = useGetMyGames();

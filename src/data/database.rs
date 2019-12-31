@@ -182,7 +182,7 @@ impl Database {
             }
 
             for category in tables.categories().values() {
-                // BUG: this collides full-game and individual-level categories
+                // TODO: BUG: this collides full-game and individual-level categories
                 categories_by_game_id_and_slug
                     .insert((*category.game_id(), category.slug().to_string()), category);
             }
@@ -528,7 +528,7 @@ impl Linked<Run> {
                         .user_by_id(*user_id)
                         .expect(DATABASE_INTEGRITY),
                 ),
-                RunPlayer::GuestName(_) => None,
+                RunPlayer::GuestName(name) => None,
             })
             .collect()
     }
