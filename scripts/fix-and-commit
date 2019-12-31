@@ -26,5 +26,5 @@ if ! [[ -z "$(git status -s -uall)" ]]; then
 
     git commit -m $"[autofix] ${GIT_MESSAGE}" --allow-empty-message
 
-    git push origin ${GITHUB_REF}
+    git push
 fi
