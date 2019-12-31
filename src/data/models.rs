@@ -1,5 +1,5 @@
 //! Dynamic types for our core data models.
-use std::{convert::TryFrom, fmt::Debug, hash::Hash, num::NonZeroU64 as Id64};
+use std::{convert::TryFrom, fmt::Debug, hash::Hash};
 
 use chrono::{DateTime, Utc};
 use derive_more::{From, TryInto};
@@ -22,7 +22,7 @@ pub trait Model:
     + Ord
     + Eq
 {
-    fn id(&self) -> Id64;
+    fn id(&self) -> u64;
     fn created(&self) -> Option<DateTime<Utc>>;
 }
 
@@ -71,7 +71,7 @@ pub enum AnyModelVec {
 }
 
 impl Model for AnyModel {
-    fn id(&self) -> Id64 {
+    fn id(&self) -> u64 {
         match self {
             AnyModel::Run(run) => Model::id(run),
             AnyModel::User(user) => Model::id(user),
@@ -93,7 +93,7 @@ impl Model for AnyModel {
 }
 
 impl Model for Run {
-    fn id(&self) -> Id64 {
+    fn id(&self) -> u64 {
         *Run::id(self)
     }
 
@@ -103,7 +103,7 @@ impl Model for Run {
 }
 
 impl Model for User {
-    fn id(&self) -> Id64 {
+    fn id(&self) -> u64 {
         *User::id(self)
     }
 
@@ -113,7 +113,7 @@ impl Model for User {
 }
 
 impl Model for Game {
-    fn id(&self) -> Id64 {
+    fn id(&self) -> u64 {
         *Game::id(self)
     }
 
@@ -123,7 +123,7 @@ impl Model for Game {
 }
 
 impl Model for Category {
-    fn id(&self) -> Id64 {
+    fn id(&self) -> u64 {
         *Category::id(self)
     }
 
@@ -133,7 +133,7 @@ impl Model for Category {
 }
 
 impl Model for Level {
-    fn id(&self) -> Id64 {
+    fn id(&self) -> u64 {
         *Level::id(self)
     }
 
