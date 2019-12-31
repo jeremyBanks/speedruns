@@ -1,11 +1,9 @@
 //! Shared utils.
-use crate::data::types::Id64;
-
 use derive_more::From;
 use err_derive::Error;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 use unidecode::unidecode;
-/// Errors for [id64_from_base36].
+/// Errors for [u64_from_base36].
 #[derive(Debug, Error, From, PartialEq)]
 pub enum Base36DecodingError {
     #[error(display = "invalid digit: {:?}", _0)]
@@ -166,8 +164,8 @@ pub fn src_slugify(s: &str) -> String {
     src_slug
 }
 
-/// Decodes a nonzero lowercase base 36 string to an [Id64].
-pub fn id64_from_base36(digits: &str) -> Result<Id64, Base36DecodingError> {
+/// Decodes a nonzero lowercase base 36 string to an [u64].
+pub fn u64_from_base36(digits: &str) -> Result<u64, Base36DecodingError> {
     let mut value = 0;
 
     if digits.len() != 8 {
@@ -185,9 +183,7 @@ pub fn id64_from_base36(digits: &str) -> Result<Id64, Base36DecodingError> {
         value += u64::from(digit_value);
     }
 
-    Id64::new(value)
-        .map(Ok)
-        .unwrap_or(Err(Base36DecodingError::Zero))
+    Ok(value)
 }
 
 /// Encodes a u64 value to a lowercase base 36 string.
@@ -263,15 +259,15 @@ mod tests {
 
     #[test]
     fn test_base36() {
-        assert_eq!(Err(Base36DecodingError::WrongLength), id64_from_base36(""));
-        assert_eq!(Err(Base36DecodingError::Zero), id64_from_base36("00000000"));
+        assert_eq!(Err(Base36DecodingError::WrongLength), u64_from_base36(""));
+        assert_eq!(Err(Base36DecodingError::Zero), u64_from_base36("00000000"));
         for (expected_id, expected_b36) in vec![
             (1u64, "00000001"),
             (35, "0000000z"),
             (35 * 36 * 36, "00000z00"),
             (36 * 36 * 36 * 36 * 36 * 36 * 36 * 36 - 1, "zzzzzzzz"),
         ] {
-            let actual_id = u64::from(id64_from_base36(expected_b36).unwrap());
+            let actual_id = u64_from_base36(expected_b36).unwrap();
             let actual_b36 = base36(expected_id);
             assert_eq!(expected_id, actual_id);
             assert_eq!(expected_b36, actual_b36);
