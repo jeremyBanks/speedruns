@@ -11,11 +11,12 @@ jobs:
       - name: preparation - checkout source
         uses: actions/checkout@v1
 
-      - name: preparation - reading toolchain versions
+      - name: preparation - reading environment
         id: versions
         run: |
           echo "::set-output name=rust::$(cat rust-toolchain)"
           echo "::set-output name=node::$(cat .nvmrc)"
+          echo "::set-output name=git::$(echo ${GITHUB_REF#refs/heads/})"
 
       - name: preparation - reading yarn cache path
         id: yarn-cache
@@ -72,3 +73,13 @@ jobs:
         run: yarn test --passWithNoTests
         env:
           CI: true
+
+      - name: bot - merge master to stable
+        if: github.event_name == 'push' && github.ref == 'master'
+        env:
+          GIT_COMMITTER_NAME: automerge
+          GIT_COMMITTER_EMAIL: bot@jeremy.ca
+        run: |
+          git checkout stable
+          git merge --no-ff master --no-edit
+          git push origin stable
