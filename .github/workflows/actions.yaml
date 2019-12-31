@@ -18,6 +18,12 @@ jobs:
           echo "::set-output name=node::$(cat .nvmrc)"
           echo "::set-output name=git::$(echo ${GITHUB_REF#refs/heads/})"
 
+      - name: preparation - configure git write access
+        run: |
+          git remote rm origin
+          git remote add github "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+          git checkout ${{ steps.versions.outputs.git }}
+
       - name: preparation - reading yarn cache path
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
