@@ -22,7 +22,7 @@ jobs:
         run: |
           git remote rm origin
           git remote add origin "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
-          get fetch origin
+          git fetch origin
           git checkout ${{ steps.versions.outputs.git-branch }}
 
       - name: preparation - reading yarn cache path
