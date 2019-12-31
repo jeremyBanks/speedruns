@@ -1,4 +1,9 @@
-#![allow(missing_docs, clippy::useless_attribute, unused_imports)]
+#![allow(
+    missing_docs,
+    clippy::useless_attribute,
+    clippy::useless_vec,
+    unused_imports
+)]
 #![warn(missing_debug_implementations)]
 #![deny(unconditional_recursion)]
 

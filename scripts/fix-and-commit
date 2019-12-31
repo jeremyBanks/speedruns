@@ -15,12 +15,17 @@ bash scripts/format
 git add .
 
 if ! [[ -z "$(git status -s -uall)" ]]; then    
+    # copy message and authorship from current (parent) commit
     export GIT_AUTHOR_NAME="$(git log -1 --pretty=format:'%an')"
     export GIT_AUTHOR_EMAIL="$(git log -1 --pretty=format:'%ae')"
+    export GIT_AUTHOR_DATE="$(git log -1 --pretty=format:'%ad')"
+    export GIT_MESSAGE="$(git log -1 --pretty=%B)"
+
+    # but use distinct committer and commit timestamp
     export GIT_COMMITTER_NAME="a bot"
     export GIT_COMMITTER_EMAIL="bot@jeremy.ca"
 
-    git commit -m "👾 automatic code generation and/or formatting"
+    git commit -m $"${GIT_MESSAGE}" --allow-empty-message
 
     git push github HEAD:${GITHUB_REF}
 fi
