@@ -1,0 +1,6 @@
+*.jsonl
+*.gz
+*.xz
+*.js
+*.ts
+*.graphql

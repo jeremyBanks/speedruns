@@ -1,0 +1,109 @@
+name: Actions
+on: [push]
+
+jobs:
+  my-job:
+    name: Action
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: preparation - checkout source
+        uses: actions/checkout@v1
+
+      - name: preparation - reading environment
+        id: env
+        run: |
+          echo "::set-output name=rust::$(cat rust-toolchain)"
+          echo "::set-output name=node::$(cat .nvmrc)"
+          echo "::set-output name=git-branch::$(echo ${GITHUB_REF#refs/heads/})"
+          echo "::set-output name=yarn-cache::$(yarn cache dir)"
+
+      - name: preparation - configure git write access
+        run: |
+          git remote rm origin
+          git remote add origin "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
+          git fetch origin
+          git checkout ${{ steps.env.outputs.git-branch }}
+          git config user.name "$(git log -1 --pretty=format:'%an')"
+          git config user.email "$(git log -1 --pretty=format:'%ae')"
+
+      - name: caching - yarn
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.env.outputs.yarn-cache }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+
+      - name: caching - node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-modules-
+
+      - name: caching - rust build
+        uses: actions/cache@v1
+        with:
+          path: target
+          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: caching - cargo registry
+        uses: actions/cache@v1
+        with:
+          path: /usr/share/rust/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+          restore-key: ${{ runner.os }}-cargo-registry-
+
+      - name: setup - install rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ steps.env.outputs.rust }}
+
+      - name: setup - install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ steps.env.outputs.node }}
+
+      - name: setup - install node dependencies
+        run: yarn install
+
+      # hoisted since the rust in codegen will fail if we can't build
+      - name: test - cargo build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --workspace
+
+      - name: bot - code generation
+        run: yarn generate
+
+      - name: bot - code formatting
+        run: yarn format
+
+      - name: bot - commit any changes as autofix
+        env:
+          GIT_COMMITTER_NAME: autofix
+          GIT_COMMITTER_EMAIL: bot@jeremy.ca
+        run: bash scripts/commit-autofix.bash
+
+      - name: test - cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args:  --workspace
+
+      - name: test - yarn test
+        run: yarn test --passWithNoTests
+        env:
+          CI: true
+
+      - name: test - yarn build
+        run: yarn build
+
+      - name: bot - automerge master to stable if we made it this far
+        if: github.ref == 'refs/heads/master'
+        env:
+          GIT_COMMITTER_NAME: autofix
+          GIT_COMMITTER_EMAIL: bot@jeremy.ca
+        run: bash scripts/merge-master-to-stable.bash
