@@ -56,7 +56,6 @@ type Query {
   """
   game(slug: String!): Game!
 }
-
 type Run {
   id: String!
 }
