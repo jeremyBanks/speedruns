@@ -5,4 +5,4 @@ prettier --write "**/*.js" "**/*.ts" "**/*.tsx" "**/*.md" "**/*.json" "**/*.grap
 
 cargo fix --workspace --allow-dirty --allow-staged -Z unstable-options --clippy
 
-cargo fmt --workspace
+cargo fmt --all
