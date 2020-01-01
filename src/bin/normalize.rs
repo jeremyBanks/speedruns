@@ -16,7 +16,6 @@ use itertools::Itertools;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use tempfile::NamedTempFile;
-use xz2::write::XzEncoder;
 
 use speedruns::{
     api::{self, normalize::Normalize},
@@ -263,17 +262,6 @@ fn dump_table<T: Serialize + Ord>(
         }
     }
     file.persist(format!("{}.jsonl", path))?;
-
-    let mut file = NamedTempFile::new_in("data")?;
-    {
-        let buffer = BufWriter::new(&mut file);
-        let mut compressor = XzEncoder::new(buffer, 6);
-        for data in table.iter().sorted() {
-            bincode::serialize_into(&mut compressor, &data)?;
-        }
-        compressor.finish()?;
-    }
-    file.persist(format!("{}.bin.xz", path))?;
 
     Ok(())
 }

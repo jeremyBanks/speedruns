@@ -40,15 +40,6 @@ that the data has changed unless you run `cargo clean` after this step.)
     - `users.jsonl`
     - `runs.jsonl`
 
-    We also save them in a LZMA-compressed unstable internal format only useful
-    for bundling into the `serve` binary.
-
-    - `games.bin.xz`
-    - `categories.bin.xz`
-    - `levels.bin.xz`
-    - `users.bin.xz`
-    - `runs.bin.xz`
-
 ## Legal
 
 ### Disclosure
