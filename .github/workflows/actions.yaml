@@ -82,6 +82,9 @@ jobs:
         run: yarn format
 
       - name: bot - commit any changes as autofix
+        env:
+          GIT_COMMITTER_NAME: autofix
+          GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: bash scripts/commit-autofix.bash
 
       - name: test - cargo test

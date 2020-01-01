@@ -5,14 +5,9 @@ if ! [[ -z "$(git status -s -uall)" ]]; then
     git add .
 
     # copy message and authorship from current (parent) commit
-    export GIT_AUTHOR_DATE="$(git log -1 --pretty=format.bash:'%ad')"
-    GIT_MESSAGE="$(git log -1 --pretty=%B)"
-
     # but use distinct committer and commit timestamp
-    export GIT_COMMITTER_NAME="autofix"
-    export GIT_COMMITTER_EMAIL="bot@jeremy.ca"
-
-    git commit -m $"[autofix] ${GIT_MESSAGE}" --allow-empty-message
+    GIT_AUTHOR_DATE="$(git log -1 --pretty=format.bash:'%ad')" \
+      git commit -m $"[autofix] $(git log -1 --pretty=%B)" --allow-empty-message
 
     git push
 fi
