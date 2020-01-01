@@ -16,7 +16,6 @@ use itertools::Itertools;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use tempfile::NamedTempFile;
-use xz2::write::XzEncoder;
 
 use speedruns::{
     api::{self, normalize::Normalize},

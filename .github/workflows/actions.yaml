@@ -42,7 +42,7 @@ jobs:
           key: ${{ runner.os }}-yarn-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-modules-
 
-      - name: cache - rust build
+      - name: caching - rust build
         uses: actions/cache@v1
         with:
           path: target
