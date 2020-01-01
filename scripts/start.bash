@@ -11,4 +11,4 @@ sleep 2
 apollo client:codegen --target typescript --outputFlat src/client/graphql-types.ts
 apollo client:download-schema src/client/schema.graphql
 
-react-scripts start
+react-scripts start.bash

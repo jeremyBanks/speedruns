@@ -14,12 +14,11 @@ use validator_derive::Validate;
 
 use crate::utils::{base36, src_slugify};
 
-/// We currently represent all ids as NonZeroU64s for efficiency.
-/// You can use [crate::utils] to convert to and from speedrun.com's
-/// API IDs. (This isn't the same conversion as speedrun.com uses,
-/// so the ordering of these IDs doesn't align with insertion time
-/// or anything like that.)
-pub type Id64 = std::num::NonZeroU64;
+// We currently represent all ids as u64s for efficiency.
+// You can use [crate::utils] to convert to and from speedrun.com's
+// API IDs. (This isn't the same conversion as speedrun.com uses,
+// so the ordering of these IDs doesn't align with insertion time
+// or anything like that.)
 
 #[derive(
     Debug,
@@ -37,12 +36,12 @@ pub type Id64 = std::num::NonZeroU64;
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Category {
-    pub game_id: Id64,
+    pub game_id: u64,
     #[validate(length(min = 1))]
     pub slug:    String,
     #[validate(length(min = 1))]
     pub name:    String,
-    pub id:      Id64,
+    pub id:      u64,
     pub per:     CategoryType,
     pub rules:   String,
 }
@@ -87,7 +86,7 @@ pub struct User {
     pub slug:    String,
     #[validate(length(min = 1))]
     pub name:    String,
-    pub id:      Id64,
+    pub id:      u64,
 }
 
 impl User {
@@ -118,7 +117,7 @@ impl User {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Game {
-    pub id:             Id64,
+    pub id:             u64,
     pub created:        Option<DateTime<Utc>>,
     #[validate(length(min = 1))]
     pub slug:           String,
@@ -161,8 +160,8 @@ pub enum TimingMethod {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Level {
-    pub game_id: Id64,
-    pub id:      Id64,
+    pub game_id: u64,
+    pub id:      u64,
     #[validate(length(min = 1))]
     pub slug:    String,
     #[validate(length(min = 1))]
@@ -198,10 +197,10 @@ impl Level {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Run {
-    pub game_id:     Id64,
-    pub category_id: Id64,
-    pub level_id:    Option<Id64>,
-    pub id:          Id64,
+    pub game_id:     u64,
+    pub category_id: u64,
+    pub level_id:    Option<u64>,
+    pub id:          u64,
     pub created:     Option<DateTime<Utc>>,
     pub date:        Option<NaiveDate>,
     #[validate]
@@ -252,7 +251,7 @@ impl Validate for RunTimesMs {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Hash, PartialOrd, Ord, Eq)]
 #[serde(deny_unknown_fields)]
 pub enum RunPlayer {
-    UserId(Id64),
+    UserId(u64),
     GuestName(String),
 }
 

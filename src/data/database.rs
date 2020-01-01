@@ -2,7 +2,6 @@
 use std::{
     collections::{BTreeMap, HashMap},
     fmt::{Debug, Display},
-    num::NonZeroU64 as Id64,
     ops::Deref,
     sync::Arc,
 };
@@ -61,7 +60,7 @@ pub enum IntegrityError {
     )]
     ForeignKeyMissing {
         target_type:       &'static str,
-        target_id:         Id64,
+        target_id:         u64,
         foreign_key_field: &'static str,
         source:            AnyModel,
     },
@@ -79,15 +78,15 @@ pub enum IntegrityError {
     MissingPrimaryTiming(Run),
 }
 
-/// All of the speedrun data in our normalized format, indexed by ID.
+/// All of the speedrun data in our normalized format.bash, indexed by ID.
 #[derive(Debug, Default, Serialize, Deserialize, Clone, Getters)]
 #[get = "pub"]
 pub struct Tables {
-    runs:       BTreeMap<Id64, Run>,
-    users:      BTreeMap<Id64, User>,
-    games:      BTreeMap<Id64, Game>,
-    categories: BTreeMap<Id64, Category>,
-    levels:     BTreeMap<Id64, Level>,
+    runs:       BTreeMap<u64, Run>,
+    users:      BTreeMap<u64, User>,
+    games:      BTreeMap<u64, Game>,
+    categories: BTreeMap<u64, Category>,
+    levels:     BTreeMap<u64, Level>,
 }
 
 impl Tables {
@@ -126,13 +125,13 @@ const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validat
 /// A collection of [Tables] with various generated indexes.
 pub struct Database {
     tables:                           &'static Tables,
-    runs_by_game_id:                  HashMap<Id64, Vec<&'static Run>>,
+    runs_by_game_id:                  HashMap<u64, Vec<&'static Run>>,
     games_by_slug:                    HashMap<String, &'static Game>,
     users_by_slug:                    HashMap<String, &'static User>,
     // TODO: just index category/level by game, you shouldn't need to index by slug.
-    categories_by_game_id_and_slug:   HashMap<(Id64, String), &'static Category>,
-    levels_by_game_id_and_slug:       HashMap<(Id64, String), &'static Level>,
-    _runs_by_category_level_and_slug: HashMap<(Id64, Option<Id64>, String), &'static Run>,
+    categories_by_game_id_and_slug:   HashMap<(u64, String), &'static Category>,
+    levels_by_game_id_and_slug:       HashMap<(u64, String), &'static Level>,
+    _runs_by_category_level_and_slug: HashMap<(u64, Option<u64>, String), &'static Run>,
 }
 
 impl std::fmt::Debug for Database {
@@ -151,15 +150,15 @@ impl Database {
 
     /// Creates a new Database indexing a collection of static tables.
     pub fn new(tables: &'static Tables) -> Result<Arc<Self>, IntegrityErrors> {
-        let mut runs_by_game_id: HashMap<Id64, Vec<&'static Run>> = HashMap::new();
+        let mut runs_by_game_id: HashMap<u64, Vec<&'static Run>> = HashMap::new();
         let mut games_by_slug: HashMap<String, &'static Game> = HashMap::new();
         let mut users_by_slug: HashMap<String, &'static User> = HashMap::new();
-        let mut categories_by_game_id_and_slug: HashMap<(Id64, String), &'static Category> =
+        let mut categories_by_game_id_and_slug: HashMap<(u64, String), &'static Category> =
             HashMap::new();
-        let mut levels_by_game_id_and_slug: HashMap<(Id64, String), &'static Level> =
+        let mut levels_by_game_id_and_slug: HashMap<(u64, String), &'static Level> =
             HashMap::new();
         let _runs_by_category_level_and_slug: HashMap<
-            (Id64, Option<Id64>, String),
+            (u64, Option<u64>, String),
             &'static Run,
         > = HashMap::new();
 
@@ -333,13 +332,13 @@ impl Database {
     }
 
     /// Finds a Linked<Run> by id.
-    pub fn run_by_id(self: &Arc<Self>, id: Id64) -> Option<Linked<Run>> {
+    pub fn run_by_id(self: &Arc<Self>, id: u64) -> Option<Linked<Run>> {
         self.tables.runs().get(&id).map(|run| self.link(run))
     }
 
     /// Returns a Vec of Linked<Run> for a given game ID, sorted by category,
     /// level, and then primary time (ascending).
-    pub fn runs_by_game_id(self: &Arc<Self>, game_id: Id64) -> Option<Vec<Linked<Run>>> {
+    pub fn runs_by_game_id(self: &Arc<Self>, game_id: u64) -> Option<Vec<Linked<Run>>> {
         self.runs_by_game_id
             .get(&game_id)
             .map(|ref runs| runs.iter().map(|run| self.link(*run)).collect())
@@ -355,7 +354,7 @@ impl Database {
     }
 
     /// Finds a Linked<Run> by id.
-    pub fn user_by_id(self: &Arc<Self>, id: Id64) -> Option<Linked<User>> {
+    pub fn user_by_id(self: &Arc<Self>, id: u64) -> Option<Linked<User>> {
         self.tables.users().get(&id).map(|user| self.link(user))
     }
 
@@ -375,7 +374,7 @@ impl Database {
     }
 
     /// Finds a Game<Run> by id.
-    pub fn game_by_id(self: &Arc<Self>, id: Id64) -> Option<Linked<Game>> {
+    pub fn game_by_id(self: &Arc<Self>, id: u64) -> Option<Linked<Game>> {
         self.tables.games().get(&id).map(|game| self.link(game))
     }
 
@@ -387,7 +386,7 @@ impl Database {
     /// Finds a level with the given name and game ID.
     pub fn level_by_game_id_and_slug(
         self: &Arc<Self>,
-        game_id: Id64,
+        game_id: u64,
         slug: &str,
     ) -> Option<Linked<Level>> {
         self.levels_by_game_id_and_slug
@@ -405,12 +404,12 @@ impl Database {
     }
 
     /// Finds a Level<Run> by id.
-    pub fn level_by_id(self: &Arc<Self>, id: Id64) -> Option<Linked<Level>> {
+    pub fn level_by_id(self: &Arc<Self>, id: u64) -> Option<Linked<Level>> {
         self.tables.levels().get(&id).map(|level| self.link(level))
     }
 
     /// An iterator over all Linked<Category>s.
-    pub fn category_by_id(self: &Arc<Self>, id: Id64) -> Option<Linked<Category>> {
+    pub fn category_by_id(self: &Arc<Self>, id: u64) -> Option<Linked<Category>> {
         self.tables
             .categories()
             .get(&id)
@@ -420,7 +419,7 @@ impl Database {
     /// Finds a category with the given slug and game ID.
     pub fn category_by_game_id_and_slug(
         self: &Arc<Self>,
-        game_id: Id64,
+        game_id: u64,
         slug: &str,
     ) -> Option<Linked<Category>> {
         self.categories_by_game_id_and_slug

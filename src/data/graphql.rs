@@ -1,4 +1,4 @@
-use std::{num::NonZeroU64 as Id64, sync::Arc};
+use std::sync::Arc;
 
 use juniper::{FieldError, FieldResult, RootNode};
 
@@ -19,7 +19,7 @@ impl juniper::Context for Context {}
 
 #[derive(Debug)]
 pub struct Game {
-    id: Id64,
+    id: u64,
 }
 
 #[juniper::object(Context = Context)]
