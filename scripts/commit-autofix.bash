@@ -9,5 +9,5 @@ if ! [[ -z "$(git status -s -uall)" ]]; then
     GIT_AUTHOR_DATE="$(git log -1 --pretty=format.bash:'%ad')" \
       git commit -m $"[autofix] $(git log -1 --pretty=%B)" --allow-empty-message
 
-    git push
+    git push || echo "WARNING: Failed to push."
 fi

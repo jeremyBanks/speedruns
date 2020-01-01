@@ -20,4 +20,4 @@ fi
 git checkout $current
 git merge --ff $target
 
-git push origin $target $current
+git push origin $target $current || echo "WARNING: Failed to push!"
