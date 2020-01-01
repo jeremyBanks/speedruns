@@ -14,9 +14,7 @@ Export this locally resolved field as a variable to be used in the remainder of 
 https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
 """
 directive @export(
-  """
-  The variable name to export this field as.
-  """
+  """The variable name to export this field as."""
   as: String!
 ) on FIELD
 
@@ -25,9 +23,7 @@ Specify a custom store key for this result. See
 https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
 """
 directive @connection(
-  """
-  Specify the store key.
-  """
+  """Specify the store key."""
   key: String!
 
   """
@@ -43,15 +39,11 @@ type Game {
 }
 
 type Mutation {
-  """
-  No-op workaround for https://git.io/JeNXr.
-  """
+  """No-op workaround for https://git.io/JeNXr."""
   noop: Boolean!
 }
 
 type Query {
-  """
-  Get a game by id or slug.
-  """
+  """Get a game by id or slug."""
   game(slug: String!): Game!
 }

@@ -99,11 +99,11 @@ async fn main() -> std::io::Result<()> {
 fn unpack_bundled_tables() -> Tables {
     trace!("Unpacking bundled database...");
 
-    let runs = read_table("data/normalized/runs.bin.jsonl").expect("run data corrupt");
-    let users = read_table("data/normalized/users.bin.jsonl").expect("user data corrupt");
-    let games = read_table("data/normalized/games.bin.jsonl").expect("game data corrupt");
-    let categories = read_table("data/normalized/categories.bin.jsonl").expect("category data corrupt");
-    let levels = read_table("data/normalized/levels.bin.jsonl").expect("level data corrupt");
+    let runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
+    let users = read_table("data/normalized/users.jsonl").expect("user data corrupt");
+    let games = read_table("data/normalized/games.jsonl").expect("game data corrupt");
+    let categories = read_table("data/normalized/categories.jsonl").expect("category data corrupt");
+    let levels = read_table("data/normalized/levels.jsonl").expect("level data corrupt");
 
     Tables::new(runs, users, games, categories, levels)
 }
@@ -113,8 +113,7 @@ pub fn read_table<T: DeserializeOwned>(
 ) -> Result<Vec<T>, Box<dyn std::error::Error>> {
     let file = File::open(path)?;
     let buffer = BufReader::new(&file);
-    let decompressor = GzDecoder::new(buffer);
-    let deserializer = JsonDeserializer::from_reader(decompressor);
+    let deserializer = JsonDeserializer::from_reader(buffer);
     let json_results = deserializer.into_iter::<JsonValue>();
     Ok(json_results
         .map(Result::unwrap)
