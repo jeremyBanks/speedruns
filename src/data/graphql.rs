@@ -26,8 +26,7 @@ pub struct Game {
 #[graphql(description = "A game on speedrun.com.")]
 impl Game {
     pub fn id(&self, context: &Context) -> FieldResult<String> {
-        let game = context.database.game_by_id(self.id).unwrap();
-        Ok(base36(game.id))
+        Ok(base36(self.id))
     }
 
     pub fn name(&self, context: &Context) -> FieldResult<String> {
@@ -38,6 +37,24 @@ impl Game {
     pub fn slug(&self, context: &Context) -> FieldResult<String> {
         let game = context.database.game_by_id(self.id).unwrap();
         Ok(game.slug.to_string())
+    }
+
+    pub fn runs(&self, context: &Context) -> FieldResult<Vec<Run>> {
+        let runs = context.database.runs_by_game_id(self.id).unwrap();
+        Ok(runs.iter().map(|run| Run { id: run.id }).collect())
+    }
+}
+
+#[derive(Debug)]
+pub struct Run {
+    id: u64,
+}
+
+#[juniper::object(Context = Context)]
+#[graphql(description = "A run of a game on speedrun.com.")]
+impl Run {
+    pub fn id(&self, context: &Context) -> FieldResult<String> {
+        Ok(base36(self.id))
     }
 }
 

@@ -18,6 +18,9 @@ const MyGameDetails = gql`
     id
     name
     slug
+    runs {
+      id
+    }
   }
 `;
 
