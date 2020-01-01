@@ -6,11 +6,22 @@
 // GraphQL query operation: GetMyGames
 // ====================================================
 
+export interface GetMyGames_war2_runs {
+  __typename: "Run";
+  id: string;
+}
+
 export interface GetMyGames_war2 {
   __typename: "Game";
   id: string;
   name: string;
   slug: string;
+  runs: GetMyGames_war2_runs[];
+}
+
+export interface GetMyGames_war2btdp_runs {
+  __typename: "Run";
+  id: string;
 }
 
 export interface GetMyGames_war2btdp {
@@ -18,6 +29,7 @@ export interface GetMyGames_war2btdp {
   id: string;
   name: string;
   slug: string;
+  runs: GetMyGames_war2btdp_runs[];
 }
 
 export interface GetMyGames {
@@ -39,11 +51,17 @@ export interface GetMyGames {
 // GraphQL fragment: MyGameDetails
 // ====================================================
 
+export interface MyGameDetails_runs {
+  __typename: "Run";
+  id: string;
+}
+
 export interface MyGameDetails {
   __typename: "Game";
   id: string;
   name: string;
   slug: string;
+  runs: MyGameDetails_runs[];
 }
 
 /* tslint:disable */

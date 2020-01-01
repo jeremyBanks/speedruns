@@ -2,21 +2,12 @@
 #![warn(missing_debug_implementations)]
 #![deny(unconditional_recursion)]
 
-use std::{
-    collections::HashSet,
-    fs::File,
-    io::{prelude::*, BufReader, BufWriter},
-    sync::Arc,
-};
+use std::{fs::File, io::BufReader, sync::Arc};
 
 use actix_cors::{self};
 use actix_web::{self, web};
 
-use juniper::{
-    self,
-    http::{graphiql::graphiql_source, GraphQLRequest},
-    FieldResult,
-};
+use juniper::{self, http::GraphQLRequest};
 use lazy_static::lazy_static;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 

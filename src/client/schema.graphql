@@ -40,6 +40,7 @@ type Game {
   id: String!
   name: String!
   slug: String!
+  runs: [Run!]!
 }
 
 type Mutation {
@@ -54,4 +55,8 @@ type Query {
   Get a game by id or slug.
   """
   game(slug: String!): Game!
+}
+
+type Run {
+  id: String!
 }
