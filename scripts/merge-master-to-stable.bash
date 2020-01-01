@@ -15,6 +15,6 @@ fi
 
 # fast-forward master to match
 git checkout $current
-git merge --ff target
+git merge --ff $target
 
 git push origin $target $current
