@@ -21,7 +21,7 @@ export interface GetMyGames_war2 {
    */
   id: string;
   /**
-   * The game's name, international/english preferred.
+   * The game's name, in English if possible.
    */
   name: string;
   /**
@@ -49,7 +49,7 @@ export interface GetMyGames_war2btdp {
    */
   id: string;
   /**
-   * The game's name, international/english preferred.
+   * The game's name, in English if possible.
    */
   name: string;
   /**
@@ -96,7 +96,7 @@ export interface MyGameDetails {
    */
   id: string;
   /**
-   * The game's name, international/english preferred.
+   * The game's name, in English if possible.
    */
   name: string;
   /**

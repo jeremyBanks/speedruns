@@ -43,7 +43,7 @@ type Game {
   id: String!
 
   """
-  The game's name, international/english preferred.
+  The game's name, in English if possible.
   """
   name: String!
 
