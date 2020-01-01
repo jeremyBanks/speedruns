@@ -69,10 +69,11 @@ jobs:
         run: yarn install
 
       # hoisted since the rust in codegen will fail if we can't build
-      - name: test - cargo check
+      - name: test - cargo build
         uses: actions-rs/cargo@v1
         with:
-          command: check
+          command: build
+          args: --workspace
 
       - name: bot - code generation
         run: yarn generate
@@ -87,6 +88,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
+          args:  --workspace
 
       - name: test - yarn test
         run: yarn test --passWithNoTests
