@@ -8,7 +8,7 @@ use validator::Validate;
 use crate::{
     api,
     types::*,
-    utils::{id64_from_base36, slugify},
+    utils::{slugify, u64_from_base36},
 };
 
 #[derive(Debug, Error, From)]
@@ -36,7 +36,7 @@ impl Normalize for api::User {
             .unwrap_or_else(|_| format!("Corrupt User {}", self.id()));
         let slug = slugify(&name);
         let user = User {
-            id: id64_from_base36(self.id())?,
+            id: u64_from_base36(self.id())?,
             created: *self.signup(),
             name,
             slug,
@@ -76,7 +76,7 @@ impl Normalize for api::Game {
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         let game = Game {
-            id:             id64_from_base36(self.id())?,
+            id:             u64_from_base36(self.id())?,
             name:           self.names().normalize()?,
             slug:           slugify(self.abbreviation()),
             src_slug:       self.abbreviation().to_string(),
@@ -90,8 +90,8 @@ impl Normalize for api::Game {
             .iter()
             .map(|api_category| -> Result<Category, Error> {
                 let category = Category {
-                    game_id: id64_from_base36(self.id())?,
-                    id:      id64_from_base36(api_category.id())?,
+                    game_id: u64_from_base36(self.id())?,
+                    id:      u64_from_base36(api_category.id())?,
                     slug:    slugify(api_category.name()),
                     name:    api_category.name().to_string(),
                     rules:   api_category.rules().clone().unwrap_or_else(String::new),
@@ -109,8 +109,8 @@ impl Normalize for api::Game {
             .iter()
             .map(|api_level| -> Result<Level, Error> {
                 let level = Level {
-                    game_id: id64_from_base36(self.id())?,
-                    id:      id64_from_base36(api_level.id())?,
+                    game_id: u64_from_base36(self.id())?,
+                    id:      u64_from_base36(api_level.id())?,
                     slug:    slugify(api_level.name()),
                     name:    api_level.name().to_string(),
                     rules:   api_level.rules().clone().unwrap_or_default(),
@@ -134,14 +134,14 @@ impl Normalize for api::Run {
         match self.status() {
             api::RunStatus::Verified { .. } => {
                 let run = Run {
-                    game_id:     id64_from_base36(self.game())?,
-                    id:          id64_from_base36(self.id())?,
+                    game_id:     u64_from_base36(self.game())?,
+                    id:          u64_from_base36(self.id())?,
                     created:     *self.submitted(),
                     date:        *self.date(),
-                    category_id: id64_from_base36(self.category())?,
+                    category_id: u64_from_base36(self.category())?,
                     level_id:    match self.level() {
                         None => None,
-                        Some(level_id) => Some(id64_from_base36(level_id)?),
+                        Some(level_id) => Some(u64_from_base36(level_id)?),
                     },
                     times_ms:    self.times().normalize()?,
                     players:     self
@@ -165,7 +165,7 @@ impl Normalize for api::RunPlayer {
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         Ok(match self {
             api::RunPlayer::Guest { name, .. } => RunPlayer::GuestName(name.to_string()),
-            api::RunPlayer::User { id, .. } => RunPlayer::UserId(id64_from_base36(id)?),
+            api::RunPlayer::User { id, .. } => RunPlayer::UserId(u64_from_base36(id)?),
         })
     }
 }

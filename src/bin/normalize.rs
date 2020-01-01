@@ -1,4 +1,4 @@
-//! Convert our API data into our simplified and normalized format.
+//! Convert our API data into our simplified and normalized format.bash.
 #![allow(
     clippy::useless_attribute,
     clippy::cognitive_complexity,
@@ -23,7 +23,6 @@ use speedruns::{
     data::{
         database::{Database, IntegrityError, Tables},
         models::{AnyModel, AnyModelVec},
-        types::Id64,
     },
 };
 
@@ -87,11 +86,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
             Err(errors) => {
                 error!("Database validation failed: {}", errors);
-                let mut dead_run_ids = HashSet::<Id64>::new();
-                let mut dead_game_ids = HashSet::<Id64>::new();
-                let mut dead_user_ids = HashSet::<Id64>::new();
-                let mut dead_level_ids = HashSet::<Id64>::new();
-                let mut dead_category_ids = HashSet::<Id64>::new();
+                let mut dead_run_ids = HashSet::<u64>::new();
+                let mut dead_game_ids = HashSet::<u64>::new();
+                let mut dead_user_ids = HashSet::<u64>::new();
+                let mut dead_level_ids = HashSet::<u64>::new();
+                let mut dead_category_ids = HashSet::<u64>::new();
 
                 for error in errors.errors {
                     match error {
