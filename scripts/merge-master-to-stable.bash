@@ -13,7 +13,7 @@ if (( "$(git rev-list $target..$current --count)" <= 1 )); then
   git merge --ff --no-edit master
 else
   # Otherwise, we need to create a merge commit.
-  git merge --no-ff master --log -m "automerge $current and $target"
+  git merge --no-ff master --log -m ""
 fi
 
 # fast-forward master to match
