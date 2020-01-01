@@ -1,6 +1,6 @@
 {
   "name": "speedruns",
-  "version": "0.0.5",
+  "version": "0.20.20",
   "author": "Jeremy Banks <_@jeremy.ca>",
   "license": "MIT",
   "private": true,
@@ -30,6 +30,7 @@
     "generate": "bash scripts/generate.bash",
     "format": "bash scripts/format.bash",
     "start": "bash scripts/start.bash",
+    "precommit": "yarn generate && yarn format",
     "build": "react-scripts build",
     "test": "react-scripts test"
   },
