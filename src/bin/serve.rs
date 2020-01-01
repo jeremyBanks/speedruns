@@ -1,22 +1,17 @@
-#![allow(
-    missing_docs,
-    clippy::useless_attribute,
-    clippy::useless_vec,
-)]
+#![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
 #![warn(missing_debug_implementations)]
 #![deny(unconditional_recursion)]
 
-use std::{convert::Infallible, sync::Arc};
 use std::{
     collections::HashSet,
     fs::File,
     io::{prelude::*, BufReader, BufWriter},
+    sync::Arc,
 };
 
 use actix_cors::{self};
 use actix_web::{self, web};
-use async_std::{self};
-use futures::{self};
+
 use juniper::{
     self,
     http::{graphiql::graphiql_source, GraphQLRequest},
@@ -24,11 +19,9 @@ use juniper::{
 };
 use lazy_static::lazy_static;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
-use flate2::read::GzDecoder;
-use itertools::Itertools;
-use serde::{de::DeserializeOwned, Serialize};
+
+use serde::de::DeserializeOwned;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
-use tempfile::NamedTempFile;
 
 use speedruns::data::{
     database::{Database, Tables},
@@ -102,7 +95,8 @@ fn unpack_bundled_tables() -> Tables {
     let runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
     let users = read_table("data/normalized/users.jsonl").expect("user data corrupt");
     let games = read_table("data/normalized/games.jsonl").expect("game data corrupt");
-    let categories = read_table("data/normalized/categories.jsonl").expect("category data corrupt");
+    let categories =
+        read_table("data/normalized/categories.jsonl").expect("category data corrupt");
     let levels = read_table("data/normalized/levels.jsonl").expect("level data corrupt");
 
     Tables::new(runs, users, games, categories, levels)
