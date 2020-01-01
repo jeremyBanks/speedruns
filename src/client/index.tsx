@@ -1,6 +1,8 @@
 import React from "react";
 import { ApolloProvider } from "@apollo/react-hooks";
+
 import { client, useGetMyGames } from "./graphql";
+import { MyGameDetails } from "./graphql-types";
 
 const ClientContent: React.FC = () => {
   const { loading, error, data } = useGetMyGames();
@@ -10,7 +12,23 @@ const ClientContent: React.FC = () => {
   } else if (error) {
     return <pre>error: {JSON.stringify(error, null, 2)}</pre>;
   } else {
-    return <pre>{JSON.stringify(data, null, 2)}</pre>;
+    let games: Array<MyGameDetails> = [data.war2, data.war2btdp];
+
+    return (
+      <>
+        {games.map(game => (
+          <>
+            <h2>{game.name}</h2>
+
+            <ul>
+              {game.runs.map(run => (
+                <li>Run {run.id}</li>
+              ))}
+            </ul>
+          </>
+        ))}
+      </>
+    );
   }
 };
 
