@@ -30,6 +30,10 @@ const MyGameDetails = gql`
 
 const GetMyGames = gql`
   query GetMyGames {
+    banks: user(slug: "banks") {
+      id
+      slug
+    }
     war2: game(slug: "wc2") {
       ...MyGameDetails
     }
