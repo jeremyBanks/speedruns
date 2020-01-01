@@ -1,5 +1,5 @@
 current=master
-target=remotes/origin/stable
+target=stable
 
 git checkout $target
 
