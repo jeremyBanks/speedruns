@@ -37,11 +37,12 @@ impl Display for IntegrityErrors {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         writeln!(f, "{} IntegrityErrors:", self.errors.len())?;
         for (i, error) in self.errors.iter().enumerate() {
-            writeln!(f, "{:4}. {}", i + 1, error)?;
             if i >= 16 {
                 writeln!(f, "     ...and more!")?;
                 break
             }
+
+            writeln!(f, "{:4}. {}", i + 1, error)?;
         }
         Ok(())
     }
