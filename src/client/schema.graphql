@@ -37,9 +37,24 @@ directive @connection(
 ) on FIELD
 
 type Game {
+  """
+  The game's base36 ID from speedrun.com.
+  """
   id: String!
+
+  """
+  The game's name, international/english preferred.
+  """
   name: String!
+
+  """
+  The game's URL slug/abbreviation.
+  """
   slug: String!
+
+  """
+  All of the runs submitted for this game.
+  """
   runs: [Run!]!
 }
 
@@ -58,5 +73,8 @@ type Query {
 }
 
 type Run {
+  """
+  The run's base36 ID from speedrun.com.
+  """
   id: String!
 }
