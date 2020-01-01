@@ -4,6 +4,8 @@ Tools for mirroring speedrun.com data.
 
 ## Usage
 
+Assumes `rustup install .` and `nvm use .` and that you have `yarn` installed.
+
 Optionally, download archived copies of `{runs,users,games}.jsonl.gz` from
 https://archive.org/download/speedrun.com-2019-04-27 and put them in `data/api`.
 If you skip this, you'll need to spend about a day download everything from the
@@ -16,6 +18,8 @@ Run `cargo run --release --bin normalize` to normalize the data, including only
 essential fields and records (no rejected or pending runs), and discarding
 anything that fails validation or integrity checking. (Cargo might not detect
 that the data has changed unless you run `cargo clean` after this step.)
+
+Run `yarn start` to start the dev server.
 
 ## Data
 

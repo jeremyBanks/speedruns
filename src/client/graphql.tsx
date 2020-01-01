@@ -13,6 +13,10 @@ export const client = new ApolloClient({
   })
 });
 
+export const useGetMyGames = () => {
+  return useQuery<types.GetMyGames>(GetMyGames);
+};
+
 const MyGameDetails = gql`
   fragment MyGameDetails on Game {
     id
@@ -36,7 +40,3 @@ const GetMyGames = gql`
 
   ${MyGameDetails}
 `;
-
-export const useGetMyGames = () => {
-  return useQuery<types.GetMyGames>(GetMyGames);
-};
