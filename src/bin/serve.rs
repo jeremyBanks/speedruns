@@ -3,9 +3,8 @@
 #![deny(unconditional_recursion)]
 
 use std::{
-    collections::HashSet,
     fs::File,
-    io::{prelude::*, BufReader, BufWriter},
+    io::BufReader,
     sync::Arc,
 };
 
@@ -14,8 +13,7 @@ use actix_web::{self, web};
 
 use juniper::{
     self,
-    http::{graphiql::graphiql_source, GraphQLRequest},
-    FieldResult,
+    http::GraphQLRequest,
 };
 use lazy_static::lazy_static;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
