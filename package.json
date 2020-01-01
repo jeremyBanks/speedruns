@@ -43,8 +43,7 @@
       "last 1 edge version",
       "last 1 ios version",
       "last 1 android version",
-      "last 1 chrome version",
-      "last 1 node version"
+      "last 1 chrome version"
     ],
     "development": [
       "last 1 firefox version",
