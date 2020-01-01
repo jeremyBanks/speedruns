@@ -264,16 +264,5 @@ fn dump_table<T: Serialize + Ord>(
     }
     file.persist(format!("{}.jsonl", path))?;
 
-    let mut file = NamedTempFile::new_in("data")?;
-    {
-        let buffer = BufWriter::new(&mut file);
-        let mut compressor = XzEncoder::new(buffer, 6);
-        for data in table.iter().sorted() {
-            bincode::serialize_into(&mut compressor, &data)?;
-        }
-        compressor.finish()?;
-    }
-    file.persist(format!("{}.bin.xz", path))?;
-
     Ok(())
 }

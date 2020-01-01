@@ -2,12 +2,16 @@
     missing_docs,
     clippy::useless_attribute,
     clippy::useless_vec,
-    unused_imports
 )]
 #![warn(missing_debug_implementations)]
 #![deny(unconditional_recursion)]
 
 use std::{convert::Infallible, sync::Arc};
+use std::{
+    collections::HashSet,
+    fs::File,
+    io::{prelude::*, BufReader, BufWriter},
+};
 
 use actix_cors::{self};
 use actix_web::{self, web};
@@ -20,8 +24,11 @@ use juniper::{
 };
 use lazy_static::lazy_static;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
-use serde::de::DeserializeOwned;
-use xz2::read::XzDecoder;
+use flate2::read::GzDecoder;
+use itertools::Itertools;
+use serde::{de::DeserializeOwned, Serialize};
+use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
+use tempfile::NamedTempFile;
 
 use speedruns::data::{
     database::{Database, Tables},
@@ -92,57 +99,26 @@ async fn main() -> std::io::Result<()> {
 fn unpack_bundled_tables() -> Tables {
     trace!("Unpacking bundled database...");
 
-    let runs = unpack_table(
-        &mut include_bytes!(concat!(env!("OUT_DIR"), "/data/normalized/runs.bin.xz"))
-            .as_ref(),
-    )
-    .expect("run data corrupt");
-
-    let users = unpack_table(
-        &mut include_bytes!(concat!(env!("OUT_DIR"), "/data/normalized/users.bin.xz"))
-            .as_ref(),
-    )
-    .expect("user data corrupt");
-
-    let games = unpack_table(
-        &mut include_bytes!(concat!(env!("OUT_DIR"), "/data/normalized/games.bin.xz"))
-            .as_ref(),
-    )
-    .expect("game data corrupt");
-
-    let categories = unpack_table(
-        &mut include_bytes!(concat!(
-            env!("OUT_DIR"),
-            "/data/normalized/categories.bin.xz"
-        ))
-        .as_ref(),
-    )
-    .expect("category data corrupt");
-
-    let levels = unpack_table(
-        &mut include_bytes!(concat!(env!("OUT_DIR"), "/data/normalized/levels.bin.xz"))
-            .as_ref(),
-    )
-    .expect("level data corrupt");
+    let runs = read_table("data/normalized/runs.bin.jsonl").expect("run data corrupt");
+    let users = read_table("data/normalized/users.bin.jsonl").expect("user data corrupt");
+    let games = read_table("data/normalized/games.bin.jsonl").expect("game data corrupt");
+    let categories = read_table("data/normalized/categories.bin.jsonl").expect("category data corrupt");
+    let levels = read_table("data/normalized/levels.bin.jsonl").expect("level data corrupt");
 
     Tables::new(runs, users, games, categories, levels)
 }
 
-fn unpack_table<T: DeserializeOwned>(
-    reader: &mut &[u8],
+pub fn read_table<T: DeserializeOwned>(
+    path: &str,
 ) -> Result<Vec<T>, Box<dyn std::error::Error>> {
-    let mut items = vec![];
-    let mut decompressor = XzDecoder::new(reader);
-    loop {
-        // We have left no way to detect the last item except for EOF.
-        let item = bincode::deserialize_from::<_, T>(&mut decompressor);
-        if let Err(ref error) = item {
-            if let bincode::ErrorKind::Io(ref error) = **error {
-                trace!("Assuming IO error is end of data EOF: {:?}", error);
-                break
-            }
-        }
-        items.push(item?);
-    }
-    Ok(items)
+    let file = File::open(path)?;
+    let buffer = BufReader::new(&file);
+    let decompressor = GzDecoder::new(buffer);
+    let deserializer = JsonDeserializer::from_reader(decompressor);
+    let json_results = deserializer.into_iter::<JsonValue>();
+    Ok(json_results
+        .map(Result::unwrap)
+        .map(T::deserialize)
+        .map(Result::unwrap)
+        .collect())
 }
