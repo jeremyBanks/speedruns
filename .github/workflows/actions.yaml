@@ -104,6 +104,6 @@ jobs:
       - name: bot - automerge master to stable if we made it this far
         if: github.ref == 'refs/heads/master'
         env:
-          GIT_COMMITTER_NAME: autofix
+          GIT_COMMITTER_NAME: automerge
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: bash scripts/merge-master-to-stable.bash
