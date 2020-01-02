@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{convert::TryFrom, sync::Arc};
 
 use juniper::{FieldError, FieldResult, RootNode};
 
@@ -12,7 +12,7 @@ use juniper::{
 use crate::{
     data::{
         database::{Database, Linked as DbLinked},
-        types as db,
+        leaderboard, types as db,
     },
     utils::base36,
 };
@@ -58,9 +58,9 @@ pub struct Mutation {}
 #[juniper::object(Context = Context)]
 #[graphql(description = "Read-write operation root.")]
 impl Mutation {
-    #[graphql(description = "No-op workaround for https://git.io/JeNXr.")]
-    pub fn noop(context: &Context) -> FieldResult<bool> {
-        Ok(false)
+    #[graphql(description = "There are no read-write operations. This is a hack.")]
+    pub fn noop(context: &Context) -> FieldResult<RankedRun> {
+        Err(FieldError::from("don't call this"))
     }
 }
 
@@ -90,6 +90,16 @@ impl Game {
         let runs = context.database.runs_by_game_id(self.0.id).unwrap();
         Ok(runs.iter().map(|run| Run(run.clone())).collect())
     }
+
+    #[graphql(description = "All of the categories for this game.")]
+    pub fn categories(&self, context: &Context) -> FieldResult<Vec<Category>> {
+        Err(FieldError::from("not implemented"))
+    }
+
+    #[graphql(description = "All of the levels for this game.")]
+    pub fn levels(&self, context: &Context) -> FieldResult<Vec<Level>> {
+        Err(FieldError::from("not implemented"))
+    }
 }
 
 #[derive(Debug)]
@@ -101,6 +111,32 @@ impl Run {
     #[graphql(description = "The run's base36 ID from speedrun.com.")]
     pub fn id(&self, context: &Context) -> FieldResult<String> {
         Ok(base36(self.0.id))
+    }
+}
+
+#[derive(Debug)]
+pub struct RankedRun(leaderboard::RankedRun);
+
+#[juniper::object(Context = Context)]
+impl RankedRun {
+    pub fn rank(&self, context: &Context) -> FieldResult<i32> {
+        Ok(i32::try_from(*self.0.rank()).unwrap())
+    }
+
+    pub fn time_ms(&self, context: &Context) -> FieldResult<i32> {
+        Ok(i32::try_from(*self.0.time_ms()).unwrap())
+    }
+
+    pub fn is_tied(&self, context: &Context) -> FieldResult<bool> {
+        Ok(*self.0.is_tied())
+    }
+
+    pub fn tied_rank(&self, context: &Context) -> FieldResult<i32> {
+        Ok(i32::try_from(*self.0.tied_rank()).unwrap())
+    }
+
+    pub fn run(&self, context: &Context) -> FieldResult<Run> {
+        Ok(Run(self.0.run().clone()))
     }
 }
 

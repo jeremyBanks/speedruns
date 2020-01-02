@@ -32,6 +32,11 @@ directive @connection(
   filter: [String!]
 ) on FIELD
 
+type Category {
+  """The category's base36 ID from speedrun.com."""
+  id: String!
+}
+
 type Game {
   """The game's base36 ID from speedrun.com."""
   id: String!
@@ -44,11 +49,22 @@ type Game {
 
   """All of the runs submitted for this game."""
   runs: [Run!]!
+
+  """All of the categories for this game."""
+  categories: [Category!]!
+
+  """All of the levels for this game."""
+  levels: [Level!]!
+}
+
+type Level {
+  """The level's base36 ID from speedrun.com."""
+  id: String!
 }
 
 type Mutation {
-  """No-op workaround for https://git.io/JeNXr."""
-  noop: Boolean!
+  """There are no read-write operations. This is a hack."""
+  noop: RankedRun!
 }
 
 type Query {
@@ -57,6 +73,14 @@ type Query {
 
   """Get a user."""
   user(slug: String!): User!
+}
+
+type RankedRun {
+  rank: Int!
+  timeMs: Int!
+  isTied: Boolean!
+  tiedRank: Int!
+  run: Run!
 }
 
 type Run {
