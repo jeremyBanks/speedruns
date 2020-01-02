@@ -42,11 +42,12 @@ jobs:
           key: ${{ runner.os }}-yarn-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-modules-
 
-      - name: caching - rust build
-        uses: actions/cache@v1
-        with:
-          path: target
-          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+      # disabled because the folder is > the 400MB github cache maximum so this just wastes time
+      # - name: caching - rust build
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: target
+      #     key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
 
       - name: caching - cargo registry
         uses: actions/cache@v1
