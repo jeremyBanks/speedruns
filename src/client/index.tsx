@@ -24,11 +24,21 @@ const ClientContent: React.FC = () => {
 
         {games.map(game => (
           <>
-            <h2>{game.name}</h2>
+            <h2>
+              {game.id} {game.name}
+            </h2>
 
             <ul>
               {game.runs.map(run => (
-                <li>Run {run.id}</li>
+                <li>
+                  Run {run.id} in {run.category.id} {run.category.slug}{" "}
+                  {run.category.name}{" "}
+                  {run.level && (
+                    <>
+                      {run.level.id} {run.level.slug} {run.level.name}
+                    </>
+                  )}
+                </li>
               ))}
             </ul>
           </>

@@ -1,13 +1,10 @@
 //! Leaderboard logic.
-use std::{collections::HashSet, sync::Arc};
+use std::{collections::HashSet, convert::TryFrom};
 
 use getset::Getters;
 use serde::Serialize;
 
-use crate::data::{
-    database::{Database, Linked},
-    types::*,
-};
+use crate::data::{database::Linked, types::*};
 
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
@@ -22,7 +19,7 @@ pub struct RankedRun {
 /// Ranks a set of runs (all for the same game/category/level) using the
 /// timing specified for the game rules, then by run date, then by
 /// submission datetime, discarding lower-ranked runs by the same runner.
-pub fn rank_runs(_database: Arc<Database>, runs: &[Linked<Run>]) -> Vec<RankedRun> {
+pub fn rank_runs(runs: &[Linked<Run>]) -> Vec<RankedRun> {
     let mut runs: Vec<Linked<Run>> = runs.to_vec();
 
     if runs.is_empty() {
@@ -57,7 +54,7 @@ pub fn rank_runs(_database: Arc<Database>, runs: &[Linked<Run>]) -> Vec<RankedRu
             .times_ms()
             .get(game.primary_timing())
             .expect("run missing primary timing");
-        let rank = n as u64;
+        let rank = u64::try_from(n).unwrap();
         let mut tied_rank = rank;
         let mut is_tied = false;
 

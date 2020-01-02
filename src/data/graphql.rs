@@ -33,9 +33,9 @@ pub fn schema() -> Schema {
 pub struct Query {}
 
 #[juniper::object(Context = Context)]
-#[graphql(description = "Read-only operation root.")]
+/// Read-only operation root.
 impl Query {
-    #[graphql(description = "Get a game.")]
+    /// Get a game.
     pub fn game(context: &Context, slug: String) -> FieldResult<Game> {
         match context.database.game_by_slug(&slug) {
             Some(game) => Ok(Game(game)),
@@ -43,7 +43,7 @@ impl Query {
         }
     }
 
-    #[graphql(description = "Get a user.")]
+    /// Get a user.
     pub fn user(context: &Context, slug: String) -> FieldResult<User> {
         match context.database.user_by_slug(&slug) {
             Some(user) => Ok(User(user)),
@@ -56,9 +56,9 @@ impl Query {
 pub struct Mutation {}
 
 #[juniper::object(Context = Context)]
-#[graphql(description = "Read-write operation root.")]
+/// Read-write operation root.
 impl Mutation {
-    #[graphql(description = "There are no read-write operations. This is a hack.")]
+    /// There are no read-write operations. This is a hack.
     pub fn noop(context: &Context) -> FieldResult<RankedRun> {
         Err(FieldError::from("don't call this"))
     }
@@ -68,37 +68,41 @@ impl Mutation {
 pub struct Game(DbLinked<db::Game>);
 
 #[juniper::object(Context = Context)]
-#[graphql(description = "A game on speedrun.com.")]
+/// A game on speedrun.com.
 impl Game {
-    #[graphql(description = "The game's base36 ID from speedrun.com.")]
+    /// The game's base36 ID from speedrun.com.
     pub fn id(&self, context: &Context) -> FieldResult<String> {
         Ok(base36(self.0.id))
     }
 
-    #[graphql(description = "The game's name, in English if possible.")]
+    /// The game's name, in English if possible.
     pub fn name(&self, context: &Context) -> FieldResult<String> {
         Ok(self.0.name.to_string())
     }
 
-    #[graphql(description = "The game's URL slug/abbreviation.")]
+    /// The game's URL slug/abbreviation.
     pub fn slug(&self, context: &Context) -> FieldResult<String> {
         Ok(self.0.slug.to_string())
     }
 
-    #[graphql(description = "All of the runs submitted for this game.")]
+    /// All of the runs submitted for this game.
     pub fn runs(&self, context: &Context) -> FieldResult<Vec<Run>> {
         let runs = context.database.runs_by_game_id(self.0.id).unwrap();
         Ok(runs.iter().map(|run| Run(run.clone())).collect())
     }
 
-    #[graphql(description = "All of the categories for this game.")]
-    pub fn categories(&self, context: &Context) -> FieldResult<Vec<Category>> {
-        Err(FieldError::from("not implemented"))
-    }
+    /// Returns the ordered ranked runs for a run in a category and optionally level.
+    pub fn leaderboard(
+        &self,
+        context: &Context,
+        category_slug: String,
+        level_slug: Option<String>,
+    ) -> FieldResult<Vec<RankedRun>> {
+        let runs = context.database.runs_by_game_id(self.0.id).unwrap();
 
-    #[graphql(description = "All of the levels for this game.")]
-    pub fn levels(&self, context: &Context) -> FieldResult<Vec<Level>> {
-        Err(FieldError::from("not implemented"))
+        let ranked = leaderboard::rank_runs(&runs);
+
+        Ok(ranked.iter().map(|r| RankedRun(r.clone())).collect())
     }
 }
 
@@ -106,11 +110,21 @@ impl Game {
 pub struct Run(DbLinked<db::Run>);
 
 #[juniper::object(Context = Context)]
-#[graphql(description = "A run of a game on speedrun.com.")]
+/// A run of a game on speedrun.com.
 impl Run {
-    #[graphql(description = "The run's base36 ID from speedrun.com.")]
+    /// The run's base36 ID from speedrun.com.
     pub fn id(&self, context: &Context) -> FieldResult<String> {
         Ok(base36(self.0.id))
+    }
+
+    /// The category associated with this run.
+    pub fn category(&self, context: &Context) -> FieldResult<Category> {
+        Ok(Category(self.0.category()))
+    }
+
+    /// The level associated with this run, or null.
+    pub fn level(&self, context: &Context) -> FieldResult<Option<Level>> {
+        Ok(self.0.level().map(Level))
     }
 }
 
@@ -119,22 +133,27 @@ pub struct RankedRun(leaderboard::RankedRun);
 
 #[juniper::object(Context = Context)]
 impl RankedRun {
+    /// This run's rank, with ties broken by date.
     pub fn rank(&self, context: &Context) -> FieldResult<i32> {
         Ok(i32::try_from(*self.0.rank()).unwrap())
     }
 
+    /// The time of this run, as measured by this leaderboard's rules, in miliseconds.
     pub fn time_ms(&self, context: &Context) -> FieldResult<i32> {
         Ok(i32::try_from(*self.0.time_ms()).unwrap())
     }
 
+    /// Whether this run is tied for this rank.
     pub fn is_tied(&self, context: &Context) -> FieldResult<bool> {
         Ok(*self.0.is_tied())
     }
 
+    /// This run's rank, with ties unbroken.
     pub fn tied_rank(&self, context: &Context) -> FieldResult<i32> {
         Ok(i32::try_from(*self.0.tied_rank()).unwrap())
     }
 
+    /// The run.
     pub fn run(&self, context: &Context) -> FieldResult<Run> {
         Ok(Run(self.0.run().clone()))
     }
@@ -144,11 +163,21 @@ impl RankedRun {
 pub struct Category(DbLinked<db::Category>);
 
 #[juniper::object(Context = Context)]
-#[graphql(description = "A category for runs of a game on speedrun.com.")]
+/// A category for runs of a game on speedrun.com.
 impl Category {
-    #[graphql(description = "The category's base36 ID from speedrun.com.")]
+    /// The category's base36 ID from speedrun.com.
     pub fn id(&self, context: &Context) -> FieldResult<String> {
         Ok(base36(self.0.id))
+    }
+
+    /// The category's name.
+    pub fn name(&self, context: &Context) -> FieldResult<String> {
+        Ok(self.0.name.clone())
+    }
+
+    /// The category's slug.
+    pub fn slug(&self, context: &Context) -> FieldResult<String> {
+        Ok(self.0.slug.clone())
     }
 }
 
@@ -156,16 +185,16 @@ impl Category {
 pub struct User(DbLinked<db::User>);
 
 #[juniper::object(Context = Context)]
-#[graphql(description = "A user of speedrun.com.")]
+/// A user of speedrun.com.
 impl User {
-    #[graphql(description = "The users's base36 ID from speedrun.com.")]
+    /// The users's base36 ID from speedrun.com.
     pub fn id(&self, context: &Context) -> FieldResult<String> {
         Ok(base36(self.0.id))
     }
 
-    #[graphql(description = "The user's URL slug/abbreviation.")]
+    /// The user's URL slug/abbreviation.
     pub fn slug(&self, context: &Context) -> FieldResult<String> {
-        Ok(self.0.slug.to_string())
+        Ok(self.0.slug.clone())
     }
 }
 
@@ -173,10 +202,20 @@ impl User {
 pub struct Level(DbLinked<db::Level>);
 
 #[juniper::object(Context = Context)]
-#[graphql(description = "A level of a game on speedrun.com.")]
+/// A level of a game on speedrun.com.
 impl Level {
-    #[graphql(description = "The level's base36 ID from speedrun.com.")]
+    /// The level's base36 ID from speedrun.com.
     pub fn id(&self, context: &Context) -> FieldResult<String> {
         Ok(base36(self.0.id))
+    }
+
+    /// The level's name.
+    pub fn name(&self, context: &Context) -> FieldResult<String> {
+        Ok(self.0.name.clone())
+    }
+
+    /// The level's slug.
+    pub fn slug(&self, context: &Context) -> FieldResult<String> {
+        Ok(self.0.slug.clone())
     }
 }
