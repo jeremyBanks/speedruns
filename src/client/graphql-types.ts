@@ -18,12 +18,52 @@ export interface GetMyGames_banks {
   slug: string;
 }
 
+export interface GetMyGames_war2_runs_category {
+  __typename: "Category";
+  /**
+   * The category's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The category's slug.
+   */
+  slug: string;
+  /**
+   * The category's name.
+   */
+  name: string;
+}
+
+export interface GetMyGames_war2_runs_level {
+  __typename: "Level";
+  /**
+   * The level's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The level's slug.
+   */
+  slug: string;
+  /**
+   * The level's name.
+   */
+  name: string;
+}
+
 export interface GetMyGames_war2_runs {
   __typename: "Run";
   /**
    * The run's base36 ID from speedrun.com.
    */
   id: string;
+  /**
+   * The category associated with this run.
+   */
+  category: GetMyGames_war2_runs_category;
+  /**
+   * The level associated with this run, or null.
+   */
+  level: GetMyGames_war2_runs_level | null;
 }
 
 export interface GetMyGames_war2 {
@@ -46,12 +86,52 @@ export interface GetMyGames_war2 {
   runs: GetMyGames_war2_runs[];
 }
 
+export interface GetMyGames_war2btdp_runs_category {
+  __typename: "Category";
+  /**
+   * The category's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The category's slug.
+   */
+  slug: string;
+  /**
+   * The category's name.
+   */
+  name: string;
+}
+
+export interface GetMyGames_war2btdp_runs_level {
+  __typename: "Level";
+  /**
+   * The level's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The level's slug.
+   */
+  slug: string;
+  /**
+   * The level's name.
+   */
+  name: string;
+}
+
 export interface GetMyGames_war2btdp_runs {
   __typename: "Run";
   /**
    * The run's base36 ID from speedrun.com.
    */
   id: string;
+  /**
+   * The category associated with this run.
+   */
+  category: GetMyGames_war2btdp_runs_category;
+  /**
+   * The level associated with this run, or null.
+   */
+  level: GetMyGames_war2btdp_runs_level | null;
 }
 
 export interface GetMyGames_war2btdp {
@@ -97,12 +177,52 @@ export interface GetMyGames {
 // GraphQL fragment: MyGameDetails
 // ====================================================
 
+export interface MyGameDetails_runs_category {
+  __typename: "Category";
+  /**
+   * The category's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The category's slug.
+   */
+  slug: string;
+  /**
+   * The category's name.
+   */
+  name: string;
+}
+
+export interface MyGameDetails_runs_level {
+  __typename: "Level";
+  /**
+   * The level's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The level's slug.
+   */
+  slug: string;
+  /**
+   * The level's name.
+   */
+  name: string;
+}
+
 export interface MyGameDetails_runs {
   __typename: "Run";
   /**
    * The run's base36 ID from speedrun.com.
    */
   id: string;
+  /**
+   * The category associated with this run.
+   */
+  category: MyGameDetails_runs_category;
+  /**
+   * The level associated with this run, or null.
+   */
+  level: MyGameDetails_runs_level | null;
 }
 
 export interface MyGameDetails {

@@ -24,6 +24,16 @@ const MyGameDetails = gql`
     slug
     runs {
       id
+      category {
+        id
+        slug
+        name
+      }
+      level {
+        id
+        slug
+        name
+      }
     }
   }
 `;
