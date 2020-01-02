@@ -35,13 +35,19 @@ pub struct Query {}
 #[juniper::object(Context = Context)]
 #[graphql(description = "Read-only operation root.")]
 impl Query {
-    #[graphql(description = "
-        Get a game by id or slug.
-    ")]
+    #[graphql(description = "Get a game.")]
     pub fn game(context: &Context, slug: String) -> FieldResult<Game> {
         match context.database.game_by_slug(&slug) {
             Some(game) => Ok(Game(game)),
-            None => Err(FieldError::from("not found")),
+            None => Err(FieldError::from("game not found")),
+        }
+    }
+
+    #[graphql(description = "Get a user.")]
+    pub fn user(context: &Context, slug: String) -> FieldResult<User> {
+        match context.database.user_by_slug(&slug) {
+            Some(user) => Ok(User(user)),
+            None => Err(FieldError::from("user not found")),
         }
     }
 }
@@ -93,6 +99,47 @@ pub struct Run(DbLinked<db::Run>);
 #[graphql(description = "A run of a game on speedrun.com.")]
 impl Run {
     #[graphql(description = "The run's base36 ID from speedrun.com.")]
+    pub fn id(&self, context: &Context) -> FieldResult<String> {
+        Ok(base36(self.0.id))
+    }
+}
+
+#[derive(Debug)]
+pub struct Category(DbLinked<db::Category>);
+
+#[juniper::object(Context = Context)]
+#[graphql(description = "A category for runs of a game on speedrun.com.")]
+impl Category {
+    #[graphql(description = "The category's base36 ID from speedrun.com.")]
+    pub fn id(&self, context: &Context) -> FieldResult<String> {
+        Ok(base36(self.0.id))
+    }
+}
+
+#[derive(Debug)]
+pub struct User(DbLinked<db::User>);
+
+#[juniper::object(Context = Context)]
+#[graphql(description = "A user of speedrun.com.")]
+impl User {
+    #[graphql(description = "The users's base36 ID from speedrun.com.")]
+    pub fn id(&self, context: &Context) -> FieldResult<String> {
+        Ok(base36(self.0.id))
+    }
+
+    #[graphql(description = "The user's URL slug/abbreviation.")]
+    pub fn slug(&self, context: &Context) -> FieldResult<String> {
+        Ok(self.0.slug.to_string())
+    }
+}
+
+#[derive(Debug)]
+pub struct Level(DbLinked<db::Level>);
+
+#[juniper::object(Context = Context)]
+#[graphql(description = "A level of a game on speedrun.com.")]
+impl Level {
+    #[graphql(description = "The level's base36 ID from speedrun.com.")]
     pub fn id(&self, context: &Context) -> FieldResult<String> {
         Ok(base36(self.0.id))
     }

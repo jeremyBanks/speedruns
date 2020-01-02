@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/react-hooks";
 
 import { client, useGetMyGames } from "./graphql";
@@ -12,10 +13,15 @@ const ClientContent: React.FC = () => {
   } else if (error) {
     return <pre>error: {JSON.stringify(error, null, 2)}</pre>;
   } else {
+    let me = data.banks;
     let games: Array<MyGameDetails> = [data.war2, data.war2btdp];
 
     return (
       <>
+        <h2>
+          {me.id} {me.slug}
+        </h2>
+
         {games.map(game => (
           <>
             <h2>{game.name}</h2>
@@ -32,10 +38,10 @@ const ClientContent: React.FC = () => {
   }
 };
 
-export const Client: React.FC = () => (
+const Client: React.FC = () => (
   <ApolloProvider client={client}>
     <ClientContent />
   </ApolloProvider>
 );
 
-export default Client;
+ReactDOM.render(<Client />, document.querySelector("main"));

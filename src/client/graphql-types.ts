@@ -6,6 +6,18 @@
 // GraphQL query operation: GetMyGames
 // ====================================================
 
+export interface GetMyGames_banks {
+  __typename: "User";
+  /**
+   * The users's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The user's URL slug/abbreviation.
+   */
+  slug: string;
+}
+
 export interface GetMyGames_war2_runs {
   __typename: "Run";
   /**
@@ -64,11 +76,15 @@ export interface GetMyGames_war2btdp {
 
 export interface GetMyGames {
   /**
-   * Get a game by id or slug.
+   * Get a user.
+   */
+  banks: GetMyGames_banks;
+  /**
+   * Get a game.
    */
   war2: GetMyGames_war2;
   /**
-   * Get a game by id or slug.
+   * Get a game.
    */
   war2btdp: GetMyGames_war2btdp;
 }

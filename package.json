@@ -30,7 +30,7 @@
     "generate": "bash scripts/generate.bash",
     "format": "bash scripts/format.bash",
     "start": "bash scripts/start.bash",
-    "precommit": "yarn generate && yarn format",
+    "precommit": "yarn generate && yarn format && echo 'grep -q precommit package.json && (yarn precommit && git add .) || echo' > .git/hooks/yarn-precommit && chmod +x .git/hooks/yarn-precommit",
     "build": "react-scripts build",
     "test": "react-scripts test"
   },
