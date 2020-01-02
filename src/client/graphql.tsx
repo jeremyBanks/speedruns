@@ -22,6 +22,15 @@ const MyGameDetails = gql`
     id
     name
     slug
+    leaderboard(categorySlug: "all-campaigns") {
+      rank
+      tiedRank
+      isTied
+      timeMs
+      run {
+        id
+      }
+    }
     runs {
       id
       category {
