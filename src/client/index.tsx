@@ -18,17 +18,39 @@ const ClientContent: React.FC = () => {
 
     return (
       <>
-        <h2>
+        <h1>
           {me.id} {me.slug}
-        </h2>
+        </h1>
 
         {games.map(game => (
           <>
-            <h2>{game.name}</h2>
+            <h1>
+              {game.id} {game.name}
+            </h1>
+
+            <h2>Leaderboard</h2>
+
+            <ol>
+              {game.leaderboard.map(rank => (
+                <li value={rank.tiedRank}>
+                  {rank.timeMs} {rank.run.id}
+                </li>
+              ))}
+            </ol>
+
+            <h2>All Runs</h2>
 
             <ul>
               {game.runs.map(run => (
-                <li>Run {run.id}</li>
+                <li>
+                  Run {run.id} in {run.category.id} {run.category.slug}{" "}
+                  {run.category.name}{" "}
+                  {run.level && (
+                    <>
+                      {run.level.id} {run.level.slug} {run.level.name}
+                    </>
+                  )}
+                </li>
               ))}
             </ul>
           </>
