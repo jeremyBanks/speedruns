@@ -32,11 +32,19 @@ directive @connection(
   filter: [String!]
 ) on FIELD
 
+"""A category for runs of a game on speedrun.com."""
 type Category {
   """The category's base36 ID from speedrun.com."""
   id: String!
+
+  """The category's name."""
+  name: String!
+
+  """The category's slug."""
+  slug: String!
 }
 
+"""A game on speedrun.com."""
 type Game {
   """The game's base36 ID from speedrun.com."""
   id: String!
@@ -50,23 +58,31 @@ type Game {
   """All of the runs submitted for this game."""
   runs: [Run!]!
 
-  """All of the categories for this game."""
-  categories: [Category!]!
-
-  """All of the levels for this game."""
-  levels: [Level!]!
+  """
+  Returns the ordered ranked runs for a run in a category and optionally level.
+  """
+  leaderboard(categorySlug: String!, levelSlug: String): [RankedRun!]!
 }
 
+"""A level of a game on speedrun.com."""
 type Level {
   """The level's base36 ID from speedrun.com."""
   id: String!
+
+  """The level's name."""
+  name: String!
+
+  """The level's slug."""
+  slug: String!
 }
 
+"""Read-write operation root."""
 type Mutation {
   """There are no read-write operations. This is a hack."""
   noop: RankedRun!
 }
 
+"""Read-only operation root."""
 type Query {
   """Get a game."""
   game(slug: String!): Game!
@@ -76,18 +92,37 @@ type Query {
 }
 
 type RankedRun {
+  """This run's rank, with ties broken by date."""
   rank: Int!
+
+  """
+  The time of this run, as measured by this leaderboard's rules, in miliseconds.
+  """
   timeMs: Int!
+
+  """Whether this run is tied for this rank."""
   isTied: Boolean!
+
+  """This run's rank, with ties unbroken."""
   tiedRank: Int!
+
+  """The run."""
   run: Run!
 }
 
+"""A run of a game on speedrun.com."""
 type Run {
   """The run's base36 ID from speedrun.com."""
   id: String!
+
+  """The category associated with this run."""
+  category: Category!
+
+  """The level associated with this run, or null."""
+  level: Level
 }
 
+"""A user of speedrun.com."""
 type User {
   """The users's base36 ID from speedrun.com."""
   id: String!
