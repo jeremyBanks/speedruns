@@ -18,6 +18,38 @@ export interface GetMyGames_banks {
   slug: string;
 }
 
+export interface GetMyGames_war2_leaderboard_run {
+  __typename: "Run";
+  /**
+   * The run's base36 ID from speedrun.com.
+   */
+  id: string;
+}
+
+export interface GetMyGames_war2_leaderboard {
+  __typename: "RankedRun";
+  /**
+   * This run's rank, with ties broken by date.
+   */
+  rank: number;
+  /**
+   * This run's rank, with ties unbroken.
+   */
+  tiedRank: number;
+  /**
+   * Whether this run is tied for this rank.
+   */
+  isTied: boolean;
+  /**
+   * The time of this run, as measured by this leaderboard's rules, in miliseconds.
+   */
+  timeMs: number;
+  /**
+   * The run.
+   */
+  run: GetMyGames_war2_leaderboard_run;
+}
+
 export interface GetMyGames_war2_runs_category {
   __typename: "Category";
   /**
@@ -81,9 +113,45 @@ export interface GetMyGames_war2 {
    */
   slug: string;
   /**
+   * Returns the ordered ranked runs for a run in a category and optionally level.
+   */
+  leaderboard: GetMyGames_war2_leaderboard[];
+  /**
    * All of the runs submitted for this game.
    */
   runs: GetMyGames_war2_runs[];
+}
+
+export interface GetMyGames_war2btdp_leaderboard_run {
+  __typename: "Run";
+  /**
+   * The run's base36 ID from speedrun.com.
+   */
+  id: string;
+}
+
+export interface GetMyGames_war2btdp_leaderboard {
+  __typename: "RankedRun";
+  /**
+   * This run's rank, with ties broken by date.
+   */
+  rank: number;
+  /**
+   * This run's rank, with ties unbroken.
+   */
+  tiedRank: number;
+  /**
+   * Whether this run is tied for this rank.
+   */
+  isTied: boolean;
+  /**
+   * The time of this run, as measured by this leaderboard's rules, in miliseconds.
+   */
+  timeMs: number;
+  /**
+   * The run.
+   */
+  run: GetMyGames_war2btdp_leaderboard_run;
 }
 
 export interface GetMyGames_war2btdp_runs_category {
@@ -149,6 +217,10 @@ export interface GetMyGames_war2btdp {
    */
   slug: string;
   /**
+   * Returns the ordered ranked runs for a run in a category and optionally level.
+   */
+  leaderboard: GetMyGames_war2btdp_leaderboard[];
+  /**
    * All of the runs submitted for this game.
    */
   runs: GetMyGames_war2btdp_runs[];
@@ -176,6 +248,38 @@ export interface GetMyGames {
 // ====================================================
 // GraphQL fragment: MyGameDetails
 // ====================================================
+
+export interface MyGameDetails_leaderboard_run {
+  __typename: "Run";
+  /**
+   * The run's base36 ID from speedrun.com.
+   */
+  id: string;
+}
+
+export interface MyGameDetails_leaderboard {
+  __typename: "RankedRun";
+  /**
+   * This run's rank, with ties broken by date.
+   */
+  rank: number;
+  /**
+   * This run's rank, with ties unbroken.
+   */
+  tiedRank: number;
+  /**
+   * Whether this run is tied for this rank.
+   */
+  isTied: boolean;
+  /**
+   * The time of this run, as measured by this leaderboard's rules, in miliseconds.
+   */
+  timeMs: number;
+  /**
+   * The run.
+   */
+  run: MyGameDetails_leaderboard_run;
+}
 
 export interface MyGameDetails_runs_category {
   __typename: "Category";
@@ -239,6 +343,10 @@ export interface MyGameDetails {
    * The game's URL slug/abbreviation.
    */
   slug: string;
+  /**
+   * Returns the ordered ranked runs for a run in a category and optionally level.
+   */
+  leaderboard: MyGameDetails_leaderboard[];
   /**
    * All of the runs submitted for this game.
    */
