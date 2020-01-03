@@ -59,7 +59,7 @@ pub struct Mutation {}
 /// Read-write operation root.
 impl Mutation {
     /// There are no read-write operations. This is a hack.
-    pub fn noop(context: &Context) -> FieldResult<RankedRun> {
+    pub fn noop(context: &Context) -> FieldResult<i32> {
         Err(FieldError::from("don't call this"))
     }
 }

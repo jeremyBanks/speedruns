@@ -79,7 +79,7 @@ type Level {
 """Read-write operation root."""
 type Mutation {
   """There are no read-write operations. This is a hack."""
-  noop: RankedRun!
+  noop: Int!
 }
 
 """Read-only operation root."""
