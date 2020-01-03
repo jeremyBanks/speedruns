@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
 import * as graphql from "./graphql";
-import styles from "./my-games.module.css";
+import styles from "./my-games.module.scss";
 
 export const MyGamesPage: React.FC = () => {
   const { loading, error, data } = useQuery<graphql.GetMyGames>(GetMyGames);
@@ -17,52 +17,68 @@ export const MyGamesPage: React.FC = () => {
   }
 };
 
+const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
+  <>
+    <h2>Leaderboard</h2>
+
+    <ol>
+      {game.leaderboard.map(rank => (
+        <li value={rank.tiedRank}>
+          {rank.timeMs} {rank.run.id}
+        </li>
+      ))}
+    </ol>
+
+    <h2>All Runs</h2>
+
+    <ul>
+      {game.runs.map(run => (
+        <li>
+          Run {run.id} in {run.category.id} {run.category.slug}{" "}
+          {run.category.name}{" "}
+          {run.level && (
+            <>
+              {run.level.id} {run.level.slug} {run.level.name}
+            </>
+          )}
+        </li>
+      ))}
+    </ul>
+  </>
+);
+
 export const MyGames: React.FC<{ data: graphql.GetMyGames }> = ({ data }) => {
-  let me = data.banks;
-  let games: graphql.MyGameDetails[] = [data.war2, data.war2btdp];
+  let games: graphql.MyGameDetails[] = [data.war2, data.war2x];
 
   return (
-    <div className={styles.content}>
-      <h1>
-        {me.id} {me.slug}
-      </h1>
+    <div className={styles.myGames}>
+      <h1>WarCraft II Speedruns</h1>
 
-      {games.map(game => (
-        <>
-          <h1>
-            {game.id} {game.name}
-          </h1>
-
-          <h2>Leaderboard</h2>
-
-          <ol>
-            {game.leaderboard.map(rank => (
-              <li value={rank.tiedRank}>
-                {rank.timeMs} {rank.run.id}
-              </li>
-            ))}
-          </ol>
-
-          <h2>All Runs</h2>
-
-          <ul>
-            {game.runs.map(run => (
-              <li>
-                Run {run.id} in {run.category.id} {run.category.slug}{" "}
-                {run.category.name}{" "}
-                {run.level && (
-                  <>
-                    {run.level.id} {run.level.slug} {run.level.name}
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
-        </>
-      ))}
+      <div className={styles.games}>
+        <section className={styles.war2}>
+          <h1>Tides of Darkness</h1>
+          <GamePane game={data.war2} />
+        </section>
+        <section className={styles.war2x}>
+          <h1>Beyond the Dark Portal</h1>
+          <GamePane game={data.war2x} />
+        </section>
+      </div>
     </div>
   );
 };
+
+const MyRankedRun = gql`
+  fragment MyRankedRun on RankedRun {
+    rank
+    tiedRank
+    isTied
+    timeMs
+    run {
+      id
+    }
+  }
+`;
 
 const MyGameDetails = gql`
   fragment MyGameDetails on Game {
@@ -70,13 +86,7 @@ const MyGameDetails = gql`
     name
     slug
     leaderboard(categorySlug: "all-campaigns") {
-      rank
-      tiedRank
-      isTied
-      timeMs
-      run {
-        id
-      }
+      ...MyRankedRun
     }
     runs {
       id
@@ -89,21 +99,22 @@ const MyGameDetails = gql`
         id
         slug
         name
+        #        leaderboard {
+        #          ...MyRankedRun
+        #        }
       }
     }
   }
+
+  ${MyRankedRun}
 `;
 
 const GetMyGames = gql`
   query GetMyGames {
-    banks: user(slug: "banks") {
-      id
-      slug
-    }
     war2: game(slug: "wc2") {
       ...MyGameDetails
     }
-    war2btdp: game(slug: "wc2btdp") {
+    war2x: game(slug: "wc2btdp") {
       ...MyGameDetails
     }
   }

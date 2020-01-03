@@ -6,18 +6,6 @@
 // GraphQL query operation: GetMyGames
 // ====================================================
 
-export interface GetMyGames_banks {
-  __typename: "User";
-  /**
-   * The users's base36 ID from speedrun.com.
-   */
-  id: string;
-  /**
-   * The user's URL slug/abbreviation.
-   */
-  slug: string;
-}
-
 export interface GetMyGames_war2_leaderboard_run {
   __typename: "Run";
   /**
@@ -122,7 +110,7 @@ export interface GetMyGames_war2 {
   runs: GetMyGames_war2_runs[];
 }
 
-export interface GetMyGames_war2btdp_leaderboard_run {
+export interface GetMyGames_war2x_leaderboard_run {
   __typename: "Run";
   /**
    * The run's base36 ID from speedrun.com.
@@ -130,7 +118,7 @@ export interface GetMyGames_war2btdp_leaderboard_run {
   id: string;
 }
 
-export interface GetMyGames_war2btdp_leaderboard {
+export interface GetMyGames_war2x_leaderboard {
   __typename: "RankedRun";
   /**
    * This run's rank, with ties broken by date.
@@ -151,10 +139,10 @@ export interface GetMyGames_war2btdp_leaderboard {
   /**
    * The run.
    */
-  run: GetMyGames_war2btdp_leaderboard_run;
+  run: GetMyGames_war2x_leaderboard_run;
 }
 
-export interface GetMyGames_war2btdp_runs_category {
+export interface GetMyGames_war2x_runs_category {
   __typename: "Category";
   /**
    * The category's base36 ID from speedrun.com.
@@ -170,7 +158,7 @@ export interface GetMyGames_war2btdp_runs_category {
   name: string;
 }
 
-export interface GetMyGames_war2btdp_runs_level {
+export interface GetMyGames_war2x_runs_level {
   __typename: "Level";
   /**
    * The level's base36 ID from speedrun.com.
@@ -186,7 +174,7 @@ export interface GetMyGames_war2btdp_runs_level {
   name: string;
 }
 
-export interface GetMyGames_war2btdp_runs {
+export interface GetMyGames_war2x_runs {
   __typename: "Run";
   /**
    * The run's base36 ID from speedrun.com.
@@ -195,14 +183,14 @@ export interface GetMyGames_war2btdp_runs {
   /**
    * The category associated with this run.
    */
-  category: GetMyGames_war2btdp_runs_category;
+  category: GetMyGames_war2x_runs_category;
   /**
    * The level associated with this run, or null.
    */
-  level: GetMyGames_war2btdp_runs_level | null;
+  level: GetMyGames_war2x_runs_level | null;
 }
 
-export interface GetMyGames_war2btdp {
+export interface GetMyGames_war2x {
   __typename: "Game";
   /**
    * The game's base36 ID from speedrun.com.
@@ -219,18 +207,14 @@ export interface GetMyGames_war2btdp {
   /**
    * Returns the ordered ranked runs for a run in a category and optionally level.
    */
-  leaderboard: GetMyGames_war2btdp_leaderboard[];
+  leaderboard: GetMyGames_war2x_leaderboard[];
   /**
    * All of the runs submitted for this game.
    */
-  runs: GetMyGames_war2btdp_runs[];
+  runs: GetMyGames_war2x_runs[];
 }
 
 export interface GetMyGames {
-  /**
-   * Get a user.
-   */
-  banks: GetMyGames_banks;
   /**
    * Get a game.
    */
@@ -238,7 +222,47 @@ export interface GetMyGames {
   /**
    * Get a game.
    */
-  war2btdp: GetMyGames_war2btdp;
+  war2x: GetMyGames_war2x;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: MyRankedRun
+// ====================================================
+
+export interface MyRankedRun_run {
+  __typename: "Run";
+  /**
+   * The run's base36 ID from speedrun.com.
+   */
+  id: string;
+}
+
+export interface MyRankedRun {
+  __typename: "RankedRun";
+  /**
+   * This run's rank, with ties broken by date.
+   */
+  rank: number;
+  /**
+   * This run's rank, with ties unbroken.
+   */
+  tiedRank: number;
+  /**
+   * Whether this run is tied for this rank.
+   */
+  isTied: boolean;
+  /**
+   * The time of this run, as measured by this leaderboard's rules, in miliseconds.
+   */
+  timeMs: number;
+  /**
+   * The run.
+   */
+  run: MyRankedRun_run;
 }
 
 /* tslint:disable */
