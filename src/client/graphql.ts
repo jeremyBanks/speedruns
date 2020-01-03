@@ -54,22 +54,6 @@ export interface GetMyGames_war2_runs_category {
   name: string;
 }
 
-export interface GetMyGames_war2_runs_level {
-  __typename: "Level";
-  /**
-   * The level's base36 ID from speedrun.com.
-   */
-  id: string;
-  /**
-   * The level's slug.
-   */
-  slug: string;
-  /**
-   * The level's name.
-   */
-  name: string;
-}
-
 export interface GetMyGames_war2_runs {
   __typename: "Run";
   /**
@@ -80,10 +64,6 @@ export interface GetMyGames_war2_runs {
    * The category associated with this run.
    */
   category: GetMyGames_war2_runs_category;
-  /**
-   * The level associated with this run, or null.
-   */
-  level: GetMyGames_war2_runs_level | null;
 }
 
 export interface GetMyGames_war2 {
@@ -158,22 +138,6 @@ export interface GetMyGames_war2x_runs_category {
   name: string;
 }
 
-export interface GetMyGames_war2x_runs_level {
-  __typename: "Level";
-  /**
-   * The level's base36 ID from speedrun.com.
-   */
-  id: string;
-  /**
-   * The level's slug.
-   */
-  slug: string;
-  /**
-   * The level's name.
-   */
-  name: string;
-}
-
 export interface GetMyGames_war2x_runs {
   __typename: "Run";
   /**
@@ -184,10 +148,6 @@ export interface GetMyGames_war2x_runs {
    * The category associated with this run.
    */
   category: GetMyGames_war2x_runs_category;
-  /**
-   * The level associated with this run, or null.
-   */
-  level: GetMyGames_war2x_runs_level | null;
 }
 
 export interface GetMyGames_war2x {
@@ -321,22 +281,6 @@ export interface MyGameDetails_runs_category {
   name: string;
 }
 
-export interface MyGameDetails_runs_level {
-  __typename: "Level";
-  /**
-   * The level's base36 ID from speedrun.com.
-   */
-  id: string;
-  /**
-   * The level's slug.
-   */
-  slug: string;
-  /**
-   * The level's name.
-   */
-  name: string;
-}
-
 export interface MyGameDetails_runs {
   __typename: "Run";
   /**
@@ -347,10 +291,6 @@ export interface MyGameDetails_runs {
    * The category associated with this run.
    */
   category: MyGameDetails_runs_category;
-  /**
-   * The level associated with this run, or null.
-   */
-  level: MyGameDetails_runs_level | null;
 }
 
 export interface MyGameDetails {

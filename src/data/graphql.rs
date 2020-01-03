@@ -87,18 +87,26 @@ impl Game {
 
     /// All of the runs submitted for this game.
     pub fn runs(&self, context: &Context) -> FieldResult<Vec<Run>> {
-        let runs = context.database.runs_by_game_id(self.0.id).unwrap();
-        Ok(runs.iter().map(|run| Run(run.clone())).collect())
+        Ok(self.0.runs().iter().map(|run| Run(run.clone())).collect())
     }
 
     /// Returns the ordered ranked runs for a run in a category and optionally level.
     pub fn leaderboard(
         &self,
         context: &Context,
-        category_slug: String,
-        level_slug: Option<String>,
+        category: String,
+        level: Option<String>,
     ) -> FieldResult<Vec<RankedRun>> {
-        let runs = context.database.runs_by_game_id(self.0.id).unwrap();
+        let level_id = level.map(|level| self.0.level_by_slug(&level).unwrap().id);
+        let category_id = self.0.category_by_slug(&category).unwrap().id;
+
+        let runs: Vec<DbLinked<db::Run>> = self
+            .0
+            .runs()
+            .iter()
+            .filter(|run| run.level_id == level_id && run.category_id == category_id)
+            .cloned()
+            .collect();
 
         let ranked = leaderboard::rank_runs(&runs);
 
@@ -217,5 +225,32 @@ impl Level {
     /// The level's slug.
     pub fn slug(&self, context: &Context) -> FieldResult<String> {
         Ok(self.0.slug.clone())
+    }
+
+    /// The associated game.
+    pub fn game(&self, context: &Context) -> FieldResult<Game> {
+        Ok(Game(self.0.game()))
+    }
+
+    /// Returns ordered ranked runs.
+    pub fn leaderboard(
+        &self,
+        context: &Context,
+        category: String,
+    ) -> FieldResult<Vec<RankedRun>> {
+        let game = self.0.game();
+
+        let category_id = game.category_by_slug(&category).unwrap().id;
+
+        let runs: Vec<DbLinked<db::Run>> = game
+            .runs()
+            .iter()
+            .filter(|run| run.level_id == Some(self.0.id) && run.category_id == category_id)
+            .cloned()
+            .collect();
+
+        let ranked = leaderboard::rank_runs(&runs);
+
+        Ok(ranked.iter().map(|r| RankedRun(r.clone())).collect())
     }
 }
