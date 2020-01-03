@@ -16,8 +16,7 @@ include changes or deletions of existing items.
 
 Run `cargo run --release --bin normalize` to normalize the data, including only
 essential fields and records (no rejected or pending runs), and discarding
-anything that fails validation or integrity checking. (Cargo might not detect
-that the data has changed unless you run `cargo clean` after this step.)
+anything that fails validation or integrity checking.
 
 Run `yarn start` to start the dev server.
 
