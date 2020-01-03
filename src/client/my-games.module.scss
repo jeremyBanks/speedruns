@@ -1,18 +1,23 @@
 .myGames {
+  max-width: 720px;
   font: 16px Georgia;
   margin: 32px auto;
-  max-width: 600px;
-  padding: 16px;
   box-sizing: border-box;
   background: rgb(250, 250, 250);
 
   > h1 {
+    padding-top: 32px;
+    font-size: 40px;
+  }
+
+  h1,
+  h2,
+  h3 {
     text-align: center;
   }
 
   > .games {
     display: flex;
-    text-align: center;
 
     > section {
       flex: 1;

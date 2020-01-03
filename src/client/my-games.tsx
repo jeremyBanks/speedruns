@@ -19,7 +19,7 @@ export const MyGamesPage: React.FC = () => {
 
 const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
   <>
-    <h2>Leaderboard</h2>
+    <h2>Full Game</h2>
 
     <ol>
       {game.leaderboard.map(rank => (
@@ -29,7 +29,7 @@ const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
       ))}
     </ol>
 
-    <h2>All Runs</h2>
+    <h2>Levels</h2>
 
     <ul>
       {game.runs.map(run => (
