@@ -3,7 +3,8 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
 import * as graphql from "./graphql";
-import styles from "./my-games.module.scss";
+import styles from "./styles.module.scss";
+import { Duration } from "./duration";
 
 export const MyGamesPage: React.FC = () => {
   const { loading, error, data } = useQuery<graphql.GetMyGames>(GetMyGames);
@@ -24,32 +25,14 @@ const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
     <ol>
       {game.leaderboard.map(rank => (
         <li value={rank.tiedRank}>
-          {rank.timeMs} {rank.run.id}
+          <Duration ms={rank.timeMs} /> {rank.run.id}
         </li>
       ))}
     </ol>
-
-    <h2>Levels</h2>
-
-    <ul>
-      {game.runs.map(run => (
-        <li>
-          Run {run.id} in {run.category.id} {run.category.slug}{" "}
-          {run.category.name}{" "}
-          {run.level && (
-            <>
-              {run.level.id} {run.level.slug} {run.level.name}
-            </>
-          )}
-        </li>
-      ))}
-    </ul>
   </>
 );
 
 export const MyGames: React.FC<{ data: graphql.GetMyGames }> = ({ data }) => {
-  let games: graphql.MyGameDetails[] = [data.war2, data.war2x];
-
   return (
     <div className={styles.myGames}>
       <h1>WarCraft II Speedruns</h1>
@@ -59,6 +42,7 @@ export const MyGames: React.FC<{ data: graphql.GetMyGames }> = ({ data }) => {
           <h1>Tides of Darkness</h1>
           <GamePane game={data.war2} />
         </section>
+
         <section className={styles.war2x}>
           <h1>Beyond the Dark Portal</h1>
           <GamePane game={data.war2x} />
@@ -76,6 +60,9 @@ const MyRankedRun = gql`
     timeMs
     run {
       id
+      # date
+      # created
+      # players
     }
   }
 `;
@@ -85,23 +72,25 @@ const MyGameDetails = gql`
     id
     name
     slug
-    leaderboard(categorySlug: "all-campaigns") {
+    leaderboard(category: "all-campaigns") {
       ...MyRankedRun
     }
+
+    #    levels {
+    #      id
+    #      slug
+    #      name
+    #      leaderboard(category: "mission") {
+    #        ...MyRankedRun
+    #      }
+    #    }
+
     runs {
       id
       category {
         id
         slug
         name
-      }
-      level {
-        id
-        slug
-        name
-        #        leaderboard {
-        #          ...MyRankedRun
-        #        }
       }
     }
   }
