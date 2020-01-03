@@ -61,7 +61,7 @@ type Game {
   """
   Returns the ordered ranked runs for a run in a category and optionally level.
   """
-  leaderboard(categorySlug: String!, levelSlug: String): [RankedRun!]!
+  leaderboard(category: String!, level: String): [RankedRun!]!
 }
 
 """A level of a game on speedrun.com."""
@@ -74,6 +74,12 @@ type Level {
 
   """The level's slug."""
   slug: String!
+
+  """The associated game."""
+  game: Game!
+
+  """Returns ordered ranked runs."""
+  leaderboard(category: String!): [RankedRun!]!
 }
 
 """Read-write operation root."""
