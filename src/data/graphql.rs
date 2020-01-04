@@ -148,7 +148,10 @@ impl Run {
     // The date of the run, as a unix timestamp.
     pub fn date(&self, context: &Context) -> FieldResult<Option<f64>> {
         // not sure if this cast is potentially lossy in practice
-        Ok(self.0.created().map(|c| c.timestamp() as f64))
+        Ok(self
+            .0
+            .date()
+            .map(|c| c.and_hms(12, 8, 4).timestamp() as f64))
     }
 
     pub fn players(&self, context: &Context) -> FieldResult<Vec<Player>> {
