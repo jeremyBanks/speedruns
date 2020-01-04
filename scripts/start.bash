@@ -1,6 +1,7 @@
 #!/bin/bash
 set -veuxo pipefail
 
-./generate.bash
+# source it to keep the rust server alive out here
+source ./scripts/generate.bash
 
 next dev
