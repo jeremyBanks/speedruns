@@ -21,20 +21,17 @@
     "apollo-link-http": "^1.5.16",
     "apollo-link-retry": "^2.2.15",
     "apollo-link-schema": "^1.2.4",
-    "css-loader": "^3.4.1",
     "graphql": "^14.5.8",
     "graphql-cli": "^3.0.14",
     "graphql-tag": "^2.10.1",
     "install": "^0.13.0",
+    "isomorphic-unfetch": "^3.0.0",
     "next": "^9.1.7",
-    "node-fetch": "^2.6.0",
     "node-sass": "^4.13.0",
     "npm": "^6.13.4",
     "prettier": "^1.19.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "sass-loader": "^8.0.0",
-    "style-loader": "^1.1.2",
     "typescript": "^3.7.4"
   },
   "scripts": {
@@ -43,7 +40,8 @@
     "start": "bash scripts/start.bash",
     "precommit": "yarn install && yarn generate && yarn format && echo 'grep -q precommit package.json && (yarn precommit && git add .) || echo' > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit",
     "dev": "next",
-    "build": "next build"
+    "build": "next build",
+    "export": "next export"
   },
   "eslintConfig": {
     "extends": "react-app"
