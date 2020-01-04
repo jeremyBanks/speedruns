@@ -90,6 +90,16 @@ impl Game {
         Ok(self.0.runs().iter().map(|run| Run(run.clone())).collect())
     }
 
+    pub fn levels(&self, context: &Context) -> FieldResult<Vec<Level>> {
+        // XXX: full table scan
+        Ok(context
+            .database
+            .levels()
+            .filter(|level| level.game_id == self.0.id)
+            .map(Level)
+            .collect())
+    }
+
     /// Returns the ordered ranked runs for a run in a category and optionally level.
     pub fn leaderboard(
         &self,
@@ -133,6 +143,12 @@ impl Run {
     /// The level associated with this run, or null.
     pub fn level(&self, context: &Context) -> FieldResult<Option<Level>> {
         Ok(self.0.level().map(Level))
+    }
+
+    // The date of the run, as a unix timestamp.
+    pub fn date(&self, context: &Context) -> FieldResult<Option<f64>> {
+        // not sure if this cast is potentially lossy in practice
+        Ok(self.0.created().map(|c| c.timestamp() as f64))
     }
 }
 
