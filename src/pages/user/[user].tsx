@@ -2,10 +2,10 @@ import React from "react";
 import { useRouter } from "next/router";
 import { NextPage } from "next";
 
-const GamePage: NextPage = () => {
+const UserPage: NextPage = () => {
   const router = useRouter();
 
-  return <p>game: {router.query.game}</p>;
+  return <p>user: {router.query.user}</p>;
 };
 
-export default GamePage;
+export default UserPage;
