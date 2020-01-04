@@ -11,7 +11,7 @@ import { getDataFromTree } from "@apollo/react-ssr";
 import { MyGamesPage } from "../components/my-games";
 import "../components/styles.scss";
 
-const Client: NextPage<{
+const HomePage: NextPage<{
   apolloClient?: ApolloClient<NormalizedCacheObject>;
   apolloCache?: NormalizedCacheObject;
 }> = ({ apolloClient, apolloCache }) => {
@@ -32,9 +32,9 @@ const Client: NextPage<{
   );
 };
 
-export default Client;
+export default HomePage;
 
-Client.getInitialProps = async (context: NextPageContext) => {
+HomePage.getInitialProps = async (context: NextPageContext) => {
   const { AppTree } = context;
 
   const onServer = typeof window === "undefined";
