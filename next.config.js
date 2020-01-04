@@ -8,8 +8,8 @@ module.exports = [
   exportPathMap: function() {
     return {
       "/": { page: "/" },
-      "/wc2": { page: "/[game]/", query: { game: "wc2" } },
-      "/wc2btdp": { page: "/[game]/", query: { game: "wc2btdp" } }
+      "/wc2": { page: "/[game]", query: { game: "wc2" } },
+      "/wc2btdp": { page: "/[game]", query: { game: "wc2btdp" } }
     };
   }
 });
