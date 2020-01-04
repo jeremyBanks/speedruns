@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import { NextPage } from "next";
 
-import "../../components/styles.scss";
+import "../../pages-lib/styles.scss";
 
 const GamePage: NextPage = () => {
   const router = useRouter();
