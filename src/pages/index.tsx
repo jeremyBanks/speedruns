@@ -10,7 +10,8 @@ import { HttpLink } from "apollo-link-http";
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: "http://localhost:3001/"
+    uri: "http://localhost:3001/",
+    fetch: typeof fetch === "function" ? fetch : require("node-fetch")
   })
 });
 
@@ -20,4 +21,4 @@ const Client: React.FC = () => (
   </ApolloProvider>
 );
 
-ReactDOM.render(<Client />, document.querySelector("main"));
+export default Client;

@@ -2,6 +2,7 @@
 **/*.rs.bk
 .atomicwrite.*
 .DS_Store
+.next
 
 # dependencies
 /node_modules
