@@ -46,7 +46,7 @@ const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
 
           <ol>
             {level.leaderboard.map(rankedRun => (
-              <RunLi rankedRun={rankedRun} />
+              <RunLi key={rankedRun.run.id} rankedRun={rankedRun} />
             ))}
           </ol>
         </div>

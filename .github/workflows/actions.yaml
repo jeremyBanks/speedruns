@@ -92,15 +92,19 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args:  --workspace
+          args: --workspace
 
       - name: test - yarn test
         run: yarn test --passWithNoTests
         env:
           CI: true
 
-      - name: test - yarn build
+      # TODO: add move this to a script and run server like with generate
+      - name: test - next build
         run: yarn build
+
+      - name: test - next export to static HTML
+        run: yarn export
 
       - name: bot - automerge master to stable if we made it this far
         if: github.ref == 'refs/heads/master'

@@ -14,7 +14,9 @@ Export this locally resolved field as a variable to be used in the remainder of 
 https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
 """
 directive @export(
-  """The variable name to export this field as."""
+  """
+  The variable name to export this field as.
+  """
   as: String!
 ) on FIELD
 
@@ -23,7 +25,9 @@ Specify a custom store key for this result. See
 https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
 """
 directive @connection(
-  """Specify the store key."""
+  """
+  Specify the store key.
+  """
   key: String!
 
   """
@@ -32,30 +36,48 @@ directive @connection(
   filter: [String!]
 ) on FIELD
 
-"""A category for runs of a game on speedrun.com."""
+"""
+A category for runs of a game on speedrun.com.
+"""
 type Category {
-  """The category's base36 ID from speedrun.com."""
+  """
+  The category's base36 ID from speedrun.com.
+  """
   id: String!
 
-  """The category's name."""
+  """
+  The category's name.
+  """
   name: String!
 
-  """The category's slug."""
+  """
+  The category's slug.
+  """
   slug: String!
 }
 
-"""A game on speedrun.com."""
+"""
+A game on speedrun.com.
+"""
 type Game {
-  """The game's base36 ID from speedrun.com."""
+  """
+  The game's base36 ID from speedrun.com.
+  """
   id: String!
 
-  """The game's name, in English if possible."""
+  """
+  The game's name, in English if possible.
+  """
   name: String!
 
-  """The game's URL slug/abbreviation."""
+  """
+  The game's URL slug/abbreviation.
+  """
   slug: String!
 
-  """All of the runs submitted for this game."""
+  """
+  All of the runs submitted for this game.
+  """
   runs: [Run!]!
   levels: [Level!]!
 
@@ -65,27 +87,43 @@ type Game {
   leaderboard(category: String!, level: String): [RankedRun!]!
 }
 
-"""A level of a game on speedrun.com."""
+"""
+A level of a game on speedrun.com.
+"""
 type Level {
-  """The level's base36 ID from speedrun.com."""
+  """
+  The level's base36 ID from speedrun.com.
+  """
   id: String!
 
-  """The level's name."""
+  """
+  The level's name.
+  """
   name: String!
 
-  """The level's slug."""
+  """
+  The level's slug.
+  """
   slug: String!
 
-  """The associated game."""
+  """
+  The associated game.
+  """
   game: Game!
 
-  """Returns ordered ranked runs."""
+  """
+  Returns ordered ranked runs.
+  """
   leaderboard(category: String!): [RankedRun!]!
 }
 
-"""Read-write operation root."""
+"""
+Read-write operation root.
+"""
 type Mutation {
-  """There are no read-write operations. This is a hack."""
+  """
+  There are no read-write operations. This is a hack.
+  """
   noop: Int!
 }
 
@@ -96,24 +134,36 @@ type Player {
   """
   name: String!
 
-  """The associated user, if this is a user."""
+  """
+  The associated user, if this is a user.
+  """
   user: User
 
-  """Whether this player is a guest instead of a user."""
+  """
+  Whether this player is a guest instead of a user.
+  """
   isGuest: Boolean!
 }
 
-"""Read-only operation root."""
+"""
+Read-only operation root.
+"""
 type Query {
-  """Get a game."""
+  """
+  Get a game.
+  """
   game(slug: String!): Game!
 
-  """Get a user."""
+  """
+  Get a user.
+  """
   user(slug: String!): User!
 }
 
 type RankedRun {
-  """This run's rank, with ties broken by date."""
+  """
+  This run's rank, with ties broken by date.
+  """
   rank: Int!
 
   """
@@ -121,35 +171,55 @@ type RankedRun {
   """
   timeMs: Int!
 
-  """Whether this run is tied for this rank."""
+  """
+  Whether this run is tied for this rank.
+  """
   isTied: Boolean!
 
-  """This run's rank, with ties unbroken."""
+  """
+  This run's rank, with ties unbroken.
+  """
   tiedRank: Int!
 
-  """The run."""
+  """
+  The run.
+  """
   run: Run!
 }
 
-"""A run of a game on speedrun.com."""
+"""
+A run of a game on speedrun.com.
+"""
 type Run {
-  """The run's base36 ID from speedrun.com."""
+  """
+  The run's base36 ID from speedrun.com.
+  """
   id: String!
 
-  """The category associated with this run."""
+  """
+  The category associated with this run.
+  """
   category: Category!
 
-  """The level associated with this run, or null."""
+  """
+  The level associated with this run, or null.
+  """
   level: Level
   date: Float
   players: [Player!]!
 }
 
-"""A user of speedrun.com."""
+"""
+A user of speedrun.com.
+"""
 type User {
-  """The users's base36 ID from speedrun.com."""
+  """
+  The users's base36 ID from speedrun.com.
+  """
   id: String!
 
-  """The user's URL slug/abbreviation."""
+  """
+  The user's URL slug/abbreviation.
+  """
   slug: String!
 }
