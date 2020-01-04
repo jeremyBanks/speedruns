@@ -60,12 +60,15 @@ const RunLi: React.FC<{ rankedRun: graphql.MyRankedRun }> = ({ rankedRun }) => {
   return (
     <li value={rankedRun.tiedRank}>
       <Duration ms={rankedRun.timeMs} />
-
+      {" by "}
       <span>
         {rankedRun.run.players.map(player => player.name).join(" and ")}
       </span>
-
-      <span hidden>{date && new Date(date * 1000).toISOString()}</span>
+      {" on "}
+      <span>
+        {date &&
+          new Date(date * 1000).toISOString().slice(0, "YYYY-MM-DD".length)}
+      </span>
     </li>
   );
 };
@@ -101,12 +104,19 @@ const MyRankedRun = gql`
       date
       players {
         name
+        isGuest
+        user {
+          id
+          slug
+        }
       }
     }
   }
 `;
 
 const MyGameDetails = gql`
+  ${MyRankedRun}
+
   fragment MyGameDetails on Game {
     id
     name
@@ -114,7 +124,6 @@ const MyGameDetails = gql`
     leaderboard(category: "all-campaigns") {
       ...MyRankedRun
     }
-
     levels {
       id
       slug
@@ -124,11 +133,11 @@ const MyGameDetails = gql`
       }
     }
   }
-
-  ${MyRankedRun}
 `;
 
 const GetMyGames = gql`
+  ${MyGameDetails}
+
   query GetMyGames {
     war2: game(slug: "wc2") {
       ...MyGameDetails
@@ -137,6 +146,4 @@ const GetMyGames = gql`
       ...MyGameDetails
     }
   }
-
-  ${MyGameDetails}
 `;
