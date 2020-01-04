@@ -1,8 +1,12 @@
 module.exports = [
   require("@zeit/next-css"),
   require("@zeit/next-source-maps"),
-  require("@zeit/next-sass")
+  require("@zeit/next-sass"),
+  require("next-spa").withSPA
 ].reduce((config, plugin) => plugin(config), {
+  nextSPA: {
+    exportDynamicPages: true
+  },
   cssModules: true,
   exportTrailingSlash: true,
   exportPathMap: function() {

@@ -1,3 +1,5 @@
+import { withSPARouter } from "next-spa/router";
+
 import "../pages-lib/global.scss";
 
 // XXX: using `any` because I'm just importing some styles and don't
@@ -6,4 +8,4 @@ const MyApp = ({ Component, pageProps }: any) => {
   return <Component {...pageProps} />;
 };
 
-export default MyApp;
+export default withSPARouter(MyApp);
