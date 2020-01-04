@@ -57,6 +57,7 @@ type Game {
 
   """All of the runs submitted for this game."""
   runs: [Run!]!
+  levels: [Level!]!
 
   """
   Returns the ordered ranked runs for a run in a category and optionally level.
@@ -126,6 +127,7 @@ type Run {
 
   """The level associated with this run, or null."""
   level: Level
+  date: Float
 }
 
 """A user of speedrun.com."""
