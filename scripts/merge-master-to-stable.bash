@@ -20,6 +20,4 @@ fi
 git checkout $current
 git merge --ff $target
 
-# Not an error because it probably just means another non-generated commit has been
-# pushed, which is fine and shouldn't affect the exit status of this check.
-git push origin $target $current $current:✔️ || echo "WARNING: Failed to push!"
+git push -f origin $target $current $current:✔️
