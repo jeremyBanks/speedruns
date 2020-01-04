@@ -92,15 +92,10 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args:  --workspace
+          args: --workspace
 
-      - name: test - yarn test
-        run: yarn test --passWithNoTests
-        env:
-          CI: true
-
-      - name: test - yarn build
-        run: yarn build
+      - name: test - yarn build and export
+        run: yarn export
 
       - name: bot - automerge master to stable if we made it this far
         if: github.ref == 'refs/heads/master'
@@ -108,3 +103,11 @@ jobs:
           GIT_COMMITTER_NAME: autofix
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: bash scripts/merge-master-to-stable.bash
+
+      - name: deploy - static export to github pages
+        if: github.ref == 'refs/heads/master'
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: out

@@ -6,6 +6,18 @@
 // GraphQL query operation: GetMyGames
 // ====================================================
 
+export interface GetMyGames_war2_leaderboard_run_players_user {
+  __typename: "User";
+  /**
+   * The users's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The user's URL slug/abbreviation.
+   */
+  slug: string;
+}
+
 export interface GetMyGames_war2_leaderboard_run_players {
   __typename: "Player";
   /**
@@ -13,6 +25,14 @@ export interface GetMyGames_war2_leaderboard_run_players {
    * nickname.
    */
   name: string;
+  /**
+   * Whether this player is a guest instead of a user.
+   */
+  isGuest: boolean;
+  /**
+   * The associated user, if this is a user.
+   */
+  user: GetMyGames_war2_leaderboard_run_players_user | null;
 }
 
 export interface GetMyGames_war2_leaderboard_run {
@@ -49,6 +69,18 @@ export interface GetMyGames_war2_leaderboard {
   run: GetMyGames_war2_leaderboard_run;
 }
 
+export interface GetMyGames_war2_levels_leaderboard_run_players_user {
+  __typename: "User";
+  /**
+   * The users's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The user's URL slug/abbreviation.
+   */
+  slug: string;
+}
+
 export interface GetMyGames_war2_levels_leaderboard_run_players {
   __typename: "Player";
   /**
@@ -56,6 +88,14 @@ export interface GetMyGames_war2_levels_leaderboard_run_players {
    * nickname.
    */
   name: string;
+  /**
+   * Whether this player is a guest instead of a user.
+   */
+  isGuest: boolean;
+  /**
+   * The associated user, if this is a user.
+   */
+  user: GetMyGames_war2_levels_leaderboard_run_players_user | null;
 }
 
 export interface GetMyGames_war2_levels_leaderboard_run {
@@ -133,6 +173,18 @@ export interface GetMyGames_war2 {
   levels: GetMyGames_war2_levels[];
 }
 
+export interface GetMyGames_war2x_leaderboard_run_players_user {
+  __typename: "User";
+  /**
+   * The users's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The user's URL slug/abbreviation.
+   */
+  slug: string;
+}
+
 export interface GetMyGames_war2x_leaderboard_run_players {
   __typename: "Player";
   /**
@@ -140,6 +192,14 @@ export interface GetMyGames_war2x_leaderboard_run_players {
    * nickname.
    */
   name: string;
+  /**
+   * Whether this player is a guest instead of a user.
+   */
+  isGuest: boolean;
+  /**
+   * The associated user, if this is a user.
+   */
+  user: GetMyGames_war2x_leaderboard_run_players_user | null;
 }
 
 export interface GetMyGames_war2x_leaderboard_run {
@@ -176,6 +236,18 @@ export interface GetMyGames_war2x_leaderboard {
   run: GetMyGames_war2x_leaderboard_run;
 }
 
+export interface GetMyGames_war2x_levels_leaderboard_run_players_user {
+  __typename: "User";
+  /**
+   * The users's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The user's URL slug/abbreviation.
+   */
+  slug: string;
+}
+
 export interface GetMyGames_war2x_levels_leaderboard_run_players {
   __typename: "Player";
   /**
@@ -183,6 +255,14 @@ export interface GetMyGames_war2x_levels_leaderboard_run_players {
    * nickname.
    */
   name: string;
+  /**
+   * Whether this player is a guest instead of a user.
+   */
+  isGuest: boolean;
+  /**
+   * The associated user, if this is a user.
+   */
+  user: GetMyGames_war2x_levels_leaderboard_run_players_user | null;
 }
 
 export interface GetMyGames_war2x_levels_leaderboard_run {
@@ -279,6 +359,18 @@ export interface GetMyGames {
 // GraphQL fragment: MyRankedRun
 // ====================================================
 
+export interface MyRankedRun_run_players_user {
+  __typename: "User";
+  /**
+   * The users's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The user's URL slug/abbreviation.
+   */
+  slug: string;
+}
+
 export interface MyRankedRun_run_players {
   __typename: "Player";
   /**
@@ -286,6 +378,14 @@ export interface MyRankedRun_run_players {
    * nickname.
    */
   name: string;
+  /**
+   * Whether this player is a guest instead of a user.
+   */
+  isGuest: boolean;
+  /**
+   * The associated user, if this is a user.
+   */
+  user: MyRankedRun_run_players_user | null;
 }
 
 export interface MyRankedRun_run {
@@ -330,6 +430,18 @@ export interface MyRankedRun {
 // GraphQL fragment: MyGameDetails
 // ====================================================
 
+export interface MyGameDetails_leaderboard_run_players_user {
+  __typename: "User";
+  /**
+   * The users's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The user's URL slug/abbreviation.
+   */
+  slug: string;
+}
+
 export interface MyGameDetails_leaderboard_run_players {
   __typename: "Player";
   /**
@@ -337,6 +449,14 @@ export interface MyGameDetails_leaderboard_run_players {
    * nickname.
    */
   name: string;
+  /**
+   * Whether this player is a guest instead of a user.
+   */
+  isGuest: boolean;
+  /**
+   * The associated user, if this is a user.
+   */
+  user: MyGameDetails_leaderboard_run_players_user | null;
 }
 
 export interface MyGameDetails_leaderboard_run {
@@ -373,6 +493,18 @@ export interface MyGameDetails_leaderboard {
   run: MyGameDetails_leaderboard_run;
 }
 
+export interface MyGameDetails_levels_leaderboard_run_players_user {
+  __typename: "User";
+  /**
+   * The users's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The user's URL slug/abbreviation.
+   */
+  slug: string;
+}
+
 export interface MyGameDetails_levels_leaderboard_run_players {
   __typename: "Player";
   /**
@@ -380,6 +512,14 @@ export interface MyGameDetails_levels_leaderboard_run_players {
    * nickname.
    */
   name: string;
+  /**
+   * Whether this player is a guest instead of a user.
+   */
+  isGuest: boolean;
+  /**
+   * The associated user, if this is a user.
+   */
+  user: MyGameDetails_levels_leaderboard_run_players_user | null;
 }
 
 export interface MyGameDetails_levels_leaderboard_run {

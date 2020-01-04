@@ -3,11 +3,8 @@
   font: 16px Georgia;
   margin: 32px auto;
   box-sizing: border-box;
-  background: rgb(250, 250, 250);
-  border: 1px solid rgb(240, 240, 240);
 
   > h1 {
-    padding-top: 32px;
     font-size: 40px;
   }
 
@@ -24,11 +21,24 @@
     > section {
       flex: 1;
       min-width: 300px;
+
+      border: 2px solid var(--color);
+
+      &.war2 {
+        --color: rgb(45, 45, 75);
+        border-right-width: 1px;
+        background: rgb(245, 245, 255);
+      }
+
+      &.war2x {
+        --color: rgb(45, 75, 45);
+        border-left-width: 1px;
+        background: rgb(245, 255, 245);
+      }
     }
   }
 }
 
 .duration {
   font-family: consolas, monospace;
-  white-space: pre-wrap;
 }
