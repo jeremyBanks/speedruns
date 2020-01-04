@@ -4,10 +4,12 @@ module.exports = [
   require("@zeit/next-sass")
 ].reduce((config, plugin) => plugin(config), {
   cssModules: true,
-  exportTrailingSlash: true,
+  exportTrailingSlash: false,
   exportPathMap: function() {
     return {
-      "/": { page: "/" }
+      "/": { page: "/" },
+      "/wc2": { page: "/[game]", query: { game: "wc2" } },
+      "/wc2btdp": { page: "/[game]", query: { game: "wc2btdp" } }
     };
   }
 });
