@@ -32,29 +32,34 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.env.outputs.yarn-cache }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-
+          key: yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: yarn-
 
       - name: caching - node_modules
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-modules-
+          key: yarn-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: yarn-modules-
 
-      # disabled because the folder is > the 400MB github cache maximum so this just wastes time
-      # - name: caching - rust build
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: target
-      #     key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+      - name: caching - next state
+        uses: actions/cache@v1
+        with:
+          path: .next
+          key: next-cache-${{ hashFiles('**/yarn.lock') }}
+
+      - name: caching - next build
+        uses: actions/cache@v1
+        with:
+          path: out
+          key: next-state-${{ hashFiles('**/yarn.lock') }}
 
       - name: caching - cargo registry
         uses: actions/cache@v1
         with:
           path: /usr/share/rust/.cargo/registry
-          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-          restore-key: ${{ runner.os }}-cargo-registry-
+          key: cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+          restore-key: cargo-registry-
 
       - name: setup - install rust toolchain
         uses: actions-rs/toolchain@v1
