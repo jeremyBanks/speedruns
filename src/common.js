@@ -28,7 +28,7 @@ export class Header extends Component {
   
   get headerTextInnerStyle() {
     return style({
-      position: 'relative',
+      position: 'relative', 
       top: '7px'
     });
   }
