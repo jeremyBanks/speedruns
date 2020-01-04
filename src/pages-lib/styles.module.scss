@@ -1,44 +1,31 @@
-.myGames {
-  max-width: 800px;
-  font: 16px Georgia;
-  margin: 32px auto;
-  box-sizing: border-box;
+.header {
+  text-align: left;
 
-  > h1 {
-    font-size: 40px;
-  }
+  .text {
+    display: inline;
+    border-bottom: 2px solid #000;
+    border-bottom-left-radius: 10px 6px;
+    border-bottom-right-radius: 32px 2px;
+    position: relative;
+    top: -7px;
+    padding-right: 4px;
 
-  h1,
-  h2,
-  h3 {
-    text-align: center;
-  }
-
-  > .games {
-    display: flex;
-    flex-wrap: wrap;
-
-    > section {
-      flex: 1;
-      min-width: 300px;
-
-      border: 2px solid var(--color);
-
-      &.war2 {
-        --color: rgb(45, 45, 75);
-        border-right-width: 1px;
-        background: rgb(245, 245, 255);
-      }
-
-      &.war2x {
-        --color: rgb(45, 75, 45);
-        border-left-width: 1px;
-        background: rgb(245, 255, 245);
-      }
+    .inner {
+      position: relative;
+      top: 7px;
     }
   }
 }
 
 .duration {
   font-family: consolas, monospace;
+}
+
+.footer {
+  font-size: 0.75em;
+  margin-top: 128px;
+
+  a {
+    text-decoration: underline;
+  }
 }
