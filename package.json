@@ -38,10 +38,8 @@
     "generate": "bash scripts/generate.bash",
     "format": "bash scripts/format.bash",
     "start": "bash scripts/start.bash",
-    "precommit": "yarn install && yarn generate && yarn format && echo 'grep -q precommit package.json && (yarn precommit && git add .) || echo' > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit",
-    "dev": "next",
-    "build": "next build",
-    "export": "next export"
+    "export": "bash scripts/export.bash",
+    "precommit": "yarn install && yarn generate && yarn format && echo 'grep -q precommit package.json && (yarn precommit && git add .) || echo' > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit"
   },
   "eslintConfig": {
     "extends": "react-app"
