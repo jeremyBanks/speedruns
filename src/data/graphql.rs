@@ -96,7 +96,7 @@ impl Game {
             .database
             .levels()
             .filter(|level| level.game_id == self.0.id)
-            .map(|level| Level(level))
+            .map(Level)
             .collect())
     }
 
@@ -144,6 +144,12 @@ impl Run {
     pub fn level(&self, context: &Context) -> FieldResult<Option<Level>> {
         Ok(self.0.level().map(Level))
     }
+
+    // The date of the run, as a unix timestamp.
+    pub fn date(&self, context: &Context) -> FieldResult<Option<f64>> {
+        // not sure if this cast is potentially lossy in practice
+        Ok(self.0.created().map(|c| c.timestamp() as f64))
+    }
 }
 
 #[derive(Debug)]
@@ -174,16 +180,6 @@ impl RankedRun {
     /// The run.
     pub fn run(&self, context: &Context) -> FieldResult<Run> {
         Ok(Run(self.0.run().clone()))
-    }
-
-    // The date of the run, as a unix timestamp.
-    pub fn date(&self, context: &Context) -> FieldResult<f64> {
-        0.0;
-    }
-
-    // The date of the run, as a unix timestamp.
-    pub fn date(&self, context: &Context) -> FieldResult<Player> {
-        0.0;
     }
 }
 
@@ -225,52 +221,6 @@ impl User {
         Ok(self.0.slug.clone())
     }
 }
-
-#[derive(Debug)]
-pub struct Guest(String);
-
-
-#[juniper::object(Context = Context)]
-impl Guest {
-    pub fn name(&self) -> FieldResult<String> {
-        Ok(self.0.clone())
-    }
-}
-
-pub trait Player {
-    fn name(&self) -> String;
-    fn as_user(&self) -> Option<&User> { None }
-    fn as_guest(&self) -> Option<&Guest> { None }
-}
-
-impl Player for User {
-    fn name(&self) -> String {
-        self.0.name.clone()
-    }
-
-    fn as_user(&self) -> Option<&User> {
-        Some(self)
-    }
-}
-
-impl Player for Guest {
-    fn name(&self) -> String {
-        self.0.clone()
-    }
-
-    fn as_guest(&self) -> Option<&Guest> {
-        Some(self)
-    }
-}
-
-graphql_interface!(<'a> &'a Player: () as "Player" where Scalar = <S> |&self| {
-    field name() -> String { self.name() }
-
-    instance_resolvers: |_| {
-        &User => self.as_user(),
-        &Player => self.as_player(),
-    }
-});
 
 #[derive(Debug)]
 pub struct Level(DbLinked<db::Level>);
