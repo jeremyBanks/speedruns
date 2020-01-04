@@ -60,7 +60,12 @@ const RunLi: React.FC<{ rankedRun: graphql.MyRankedRun }> = ({ rankedRun }) => {
   return (
     <li value={rankedRun.tiedRank}>
       <Duration ms={rankedRun.timeMs} />
-      {date && new Date(date * 1000).toISOString()}
+
+      <span>
+        {rankedRun.run.players.map(player => player.name).join(" and ")}
+      </span>
+
+      <span hidden>{date && new Date(date * 1000).toISOString()}</span>
     </li>
   );
 };
@@ -94,6 +99,9 @@ const MyRankedRun = gql`
     run {
       id
       date
+      players {
+        name
+      }
     }
   }
 `;
@@ -113,15 +121,6 @@ const MyGameDetails = gql`
       name
       leaderboard(category: "mission") {
         ...MyRankedRun
-      }
-    }
-
-    runs {
-      id
-      category {
-        id
-        slug
-        name
       }
     }
   }

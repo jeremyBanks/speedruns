@@ -89,6 +89,20 @@ type Mutation {
   noop: Int!
 }
 
+type Player {
+  """
+  The player's name, which may be a distinct username or a non-distinct guest
+  nickname.
+  """
+  name: String!
+
+  """The associated user, if this is a user."""
+  user: User
+
+  """Whether this player is a guest instead of a user."""
+  isGuest: Boolean!
+}
+
 """Read-only operation root."""
 type Query {
   """Get a game."""
@@ -128,6 +142,7 @@ type Run {
   """The level associated with this run, or null."""
   level: Level
   date: Float
+  players: [Player!]!
 }
 
 """A user of speedrun.com."""
