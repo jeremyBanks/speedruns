@@ -28,6 +28,15 @@ class MyDocument extends Document {
           <main>
             <Main />
             <NextScript />
+            <footer>
+              <div className="legal">
+                All data is from speedrun.com contributors, and is used and
+                distributed under the Creative Commons Attribution-NonCommercial
+                4.0 International license. See{" "}
+                <a href="https://www.speedrun.com/legal">speedrun.com/legal</a>{" "}
+                for details.
+              </div>
+            </footer>
           </main>
         </body>
       </Html>
