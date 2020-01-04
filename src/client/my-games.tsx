@@ -60,9 +60,8 @@ const MyRankedRun = gql`
     timeMs
     run {
       id
-      # date
-      # created
-      # players
+      date
+      players
     }
   }
 `;
@@ -76,14 +75,14 @@ const MyGameDetails = gql`
       ...MyRankedRun
     }
 
-    #    levels {
-    #      id
-    #      slug
-    #      name
-    #      leaderboard(category: "mission") {
-    #        ...MyRankedRun
-    #      }
-    #    }
+    levels {
+      id
+      slug
+      name
+      leaderboard(category: "mission") {
+        ...MyRankedRun
+      }
+    }
 
     runs {
       id

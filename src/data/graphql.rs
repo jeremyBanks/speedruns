@@ -90,6 +90,16 @@ impl Game {
         Ok(self.0.runs().iter().map(|run| Run(run.clone())).collect())
     }
 
+    pub fn levels(&self, context: &Context) -> FieldResult<Vec<Level>> {
+        // XXX: full table scan
+        Ok(context
+            .database
+            .levels()
+            .filter(|level| level.game_id == self.0.id)
+            .map(|level| Level(level))
+            .collect())
+    }
+
     /// Returns the ordered ranked runs for a run in a category and optionally level.
     pub fn leaderboard(
         &self,
@@ -165,6 +175,16 @@ impl RankedRun {
     pub fn run(&self, context: &Context) -> FieldResult<Run> {
         Ok(Run(self.0.run().clone()))
     }
+
+    // The date of the run, as a unix timestamp.
+    pub fn date(&self, context: &Context) -> FieldResult<f64> {
+        0.0;
+    }
+
+    // The date of the run, as a unix timestamp.
+    pub fn date(&self, context: &Context) -> FieldResult<Player> {
+        0.0;
+    }
 }
 
 #[derive(Debug)]
@@ -205,6 +225,52 @@ impl User {
         Ok(self.0.slug.clone())
     }
 }
+
+#[derive(Debug)]
+pub struct Guest(String);
+
+
+#[juniper::object(Context = Context)]
+impl Guest {
+    pub fn name(&self) -> FieldResult<String> {
+        Ok(self.0.clone())
+    }
+}
+
+pub trait Player {
+    fn name(&self) -> String;
+    fn as_user(&self) -> Option<&User> { None }
+    fn as_guest(&self) -> Option<&Guest> { None }
+}
+
+impl Player for User {
+    fn name(&self) -> String {
+        self.0.name.clone()
+    }
+
+    fn as_user(&self) -> Option<&User> {
+        Some(self)
+    }
+}
+
+impl Player for Guest {
+    fn name(&self) -> String {
+        self.0.clone()
+    }
+
+    fn as_guest(&self) -> Option<&Guest> {
+        Some(self)
+    }
+}
+
+graphql_interface!(<'a> &'a Player: () as "Player" where Scalar = <S> |&self| {
+    field name() -> String { self.name() }
+
+    instance_resolvers: |_| {
+        &User => self.as_user(),
+        &Player => self.as_player(),
+    }
+});
 
 #[derive(Debug)]
 pub struct Level(DbLinked<db::Level>);
