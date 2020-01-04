@@ -10,14 +10,16 @@ git checkout $target
 # only include green commits.
 if (( "$(git rev-list $target..$current --count)" <= 1 )); then
   # If we're only adding one commit, we can fast-forward it directly.
-  git merge --ff --no-edit master
+  git merge --ff --no-edit $current
 else
   # Otherwise, we need to create a merge commit.
-  git merge --no-ff master -m "$(git log stable..master --format="format:%B%n")"
+  git merge --no-ff $current -m "$(git log stable..$current --format="format:%B%n")"
 fi
 
 # fast-forward master to match
 git checkout $current
 git merge --ff $target
 
-git push -f origin $target $current $current:✔️
+if git push origin $current; then
+  git push -f origin $target $target:✔️;
+fi
