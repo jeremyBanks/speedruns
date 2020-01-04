@@ -1,6 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
+import Link from "next/link";
 
 import * as graphql from "./graphql";
 import styles from "./styles.module.scss";
@@ -24,11 +25,11 @@ const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
 
     <ol>
       {game.leaderboard.map(rankedRun => (
-        <RunLi key={rankedRun.run.id} rankedRun={rankedRun} />
+        <RunLi key={rankedRun.run.id} game={game} rankedRun={rankedRun} />
       ))}
     </ol>
 
-    <h2>Levels</h2>
+    <h2>Individual Levels</h2>
 
     {game.levels
       .sort((a, b) => {
@@ -45,30 +46,43 @@ const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
           <h3>{level.name}</h3>
 
           <ol>
-            {level.leaderboard.map(rankedRun => (
-              <RunLi key={rankedRun.run.id} rankedRun={rankedRun} />
-            ))}
+            {level.leaderboard
+              .map(rankedRun => (
+                <RunLi
+                  key={rankedRun.run.id}
+                  game={game}
+                  rankedRun={rankedRun}
+                />
+              ))
+              .slice(0, 3)}
           </ol>
         </div>
       ))}
   </>
 );
 
-const RunLi: React.FC<{ rankedRun: graphql.MyRankedRun }> = ({ rankedRun }) => {
+const RunLi: React.FC<{
+  rankedRun: graphql.MyRankedRun;
+  game: graphql.MyGameDetails;
+}> = ({ rankedRun, game }) => {
   const date = rankedRun.run.date;
 
   return (
     <li value={rankedRun.tiedRank}>
-      <Duration ms={rankedRun.timeMs} />
-      {" by "}
-      <span>
-        {rankedRun.run.players.map(player => player.name).join(" and ")}
-      </span>
-      {" on "}
-      <span>
-        {date &&
-          new Date(date * 1000).toISOString().slice(0, "YYYY-MM-DD".length)}
-      </span>
+      <Link href={`/${game.slug}/${rankedRun.run.id}`}>
+        <a>
+          <Duration ms={rankedRun.timeMs} />
+          {" by "}
+          <span>
+            {rankedRun.run.players.map(player => player.name).join(" and ")}
+          </span>
+          {" on "}
+          <span>
+            {date &&
+              new Date(date * 1000).toISOString().slice(0, "YYYY-MM-DD".length)}
+          </span>
+        </a>
+      </Link>
     </li>
   );
 };
@@ -80,12 +94,20 @@ export const MyGames: React.FC<{ data: graphql.GetMyGames }> = ({ data }) => {
 
       <div className={styles.games}>
         <section className={styles.war2}>
-          <h1>Tides of Darkness</h1>
+          <h1>
+            <Link href={`/${data.war2.slug}`}>
+              <a>Tides of Darkness</a>
+            </Link>
+          </h1>
           <GamePane game={data.war2} />
         </section>
 
         <section className={styles.war2x}>
-          <h1>Beyond the Dark Portal</h1>
+          <h1>
+            <Link href={`/${data.war2x.slug}`}>
+              <a>Beyond the Dark Portal</a>
+            </Link>
+          </h1>
           <GamePane game={data.war2x} />
         </section>
       </div>
