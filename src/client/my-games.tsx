@@ -23,14 +23,47 @@ const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
     <h2>Full Game</h2>
 
     <ol>
-      {game.leaderboard.map(rank => (
-        <li value={rank.tiedRank}>
-          <Duration ms={rank.timeMs} /> {rank.run.id}
-        </li>
+      {game.leaderboard.map(rankedRun => (
+        <RunLi rankedRun={rankedRun} />
       ))}
     </ol>
+
+    <h2>Levels</h2>
+
+    {game.levels
+      .sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        } else if (a.name > b.name) {
+          return +1;
+        } else {
+          return 0;
+        }
+      })
+      .map(level => (
+        <div>
+          <h3>{level.name}</h3>
+
+          <ol>
+            {level.leaderboard.map(rankedRun => (
+              <RunLi rankedRun={rankedRun} />
+            ))}
+          </ol>
+        </div>
+      ))}
   </>
 );
+
+const RunLi: React.FC<{ rankedRun: graphql.MyRankedRun }> = ({ rankedRun }) => {
+  const date = rankedRun.run.date;
+
+  return (
+    <li value={rankedRun.tiedRank}>
+      <Duration ms={rankedRun.timeMs} />
+      {date && new Date(date * 1000).toISOString()}
+    </li>
+  );
+};
 
 export const MyGames: React.FC<{ data: graphql.GetMyGames }> = ({ data }) => {
   return (
@@ -60,9 +93,7 @@ const MyRankedRun = gql`
     timeMs
     run {
       id
-      # date
-      # created
-      # players
+      date
     }
   }
 `;
@@ -76,21 +107,12 @@ const MyGameDetails = gql`
       ...MyRankedRun
     }
 
-    #    levels {
-    #      id
-    #      slug
-    #      name
-    #      leaderboard(category: "mission") {
-    #        ...MyRankedRun
-    #      }
-    #    }
-
-    runs {
+    levels {
       id
-      category {
-        id
-        slug
-        name
+      slug
+      name
+      leaderboard(category: "mission") {
+        ...MyRankedRun
       }
     }
   }
