@@ -115,15 +115,6 @@ const MyGameDetails = gql`
         ...MyRankedRun
       }
     }
-
-    runs {
-      id
-      category {
-        id
-        slug
-        name
-      }
-    }
   }
 
   ${MyRankedRun}

@@ -92,34 +92,6 @@ export interface GetMyGames_war2_levels {
   leaderboard: GetMyGames_war2_levels_leaderboard[];
 }
 
-export interface GetMyGames_war2_runs_category {
-  __typename: "Category";
-  /**
-   * The category's base36 ID from speedrun.com.
-   */
-  id: string;
-  /**
-   * The category's slug.
-   */
-  slug: string;
-  /**
-   * The category's name.
-   */
-  name: string;
-}
-
-export interface GetMyGames_war2_runs {
-  __typename: "Run";
-  /**
-   * The run's base36 ID from speedrun.com.
-   */
-  id: string;
-  /**
-   * The category associated with this run.
-   */
-  category: GetMyGames_war2_runs_category;
-}
-
 export interface GetMyGames_war2 {
   __typename: "Game";
   /**
@@ -139,10 +111,6 @@ export interface GetMyGames_war2 {
    */
   leaderboard: GetMyGames_war2_leaderboard[];
   levels: GetMyGames_war2_levels[];
-  /**
-   * All of the runs submitted for this game.
-   */
-  runs: GetMyGames_war2_runs[];
 }
 
 export interface GetMyGames_war2x_leaderboard_run {
@@ -231,34 +199,6 @@ export interface GetMyGames_war2x_levels {
   leaderboard: GetMyGames_war2x_levels_leaderboard[];
 }
 
-export interface GetMyGames_war2x_runs_category {
-  __typename: "Category";
-  /**
-   * The category's base36 ID from speedrun.com.
-   */
-  id: string;
-  /**
-   * The category's slug.
-   */
-  slug: string;
-  /**
-   * The category's name.
-   */
-  name: string;
-}
-
-export interface GetMyGames_war2x_runs {
-  __typename: "Run";
-  /**
-   * The run's base36 ID from speedrun.com.
-   */
-  id: string;
-  /**
-   * The category associated with this run.
-   */
-  category: GetMyGames_war2x_runs_category;
-}
-
 export interface GetMyGames_war2x {
   __typename: "Game";
   /**
@@ -278,10 +218,6 @@ export interface GetMyGames_war2x {
    */
   leaderboard: GetMyGames_war2x_leaderboard[];
   levels: GetMyGames_war2x_levels[];
-  /**
-   * All of the runs submitted for this game.
-   */
-  runs: GetMyGames_war2x_runs[];
 }
 
 export interface GetMyGames {
@@ -430,34 +366,6 @@ export interface MyGameDetails_levels {
   leaderboard: MyGameDetails_levels_leaderboard[];
 }
 
-export interface MyGameDetails_runs_category {
-  __typename: "Category";
-  /**
-   * The category's base36 ID from speedrun.com.
-   */
-  id: string;
-  /**
-   * The category's slug.
-   */
-  slug: string;
-  /**
-   * The category's name.
-   */
-  name: string;
-}
-
-export interface MyGameDetails_runs {
-  __typename: "Run";
-  /**
-   * The run's base36 ID from speedrun.com.
-   */
-  id: string;
-  /**
-   * The category associated with this run.
-   */
-  category: MyGameDetails_runs_category;
-}
-
 export interface MyGameDetails {
   __typename: "Game";
   /**
@@ -477,10 +385,6 @@ export interface MyGameDetails {
    */
   leaderboard: MyGameDetails_leaderboard[];
   levels: MyGameDetails_levels[];
-  /**
-   * All of the runs submitted for this game.
-   */
-  runs: MyGameDetails_runs[];
 }
 
 /* tslint:disable */
