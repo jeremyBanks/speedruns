@@ -9,7 +9,6 @@ import fetch from "isomorphic-unfetch";
 import { getDataFromTree } from "@apollo/react-ssr";
 
 import { MyGamesPage } from "../pages-lib/my-games";
-import "../pages-lib/styles.scss";
 
 const HomePage: NextPage<{
   apolloClient?: ApolloClient<NormalizedCacheObject>;
