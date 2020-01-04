@@ -21,6 +21,10 @@ export const MyGamesPage: React.FC = () => {
 
 const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
   <>
+    <p>
+      This site compares personal and world record speed run progress over time.
+    </p>
+
     <h2>Full Campaign</h2>
 
     <ol>
