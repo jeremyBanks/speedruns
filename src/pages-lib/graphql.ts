@@ -3,10 +3,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: GetMyGames
+// GraphQL query operation: GetHome
 // ====================================================
 
-export interface GetMyGames_war2_leaderboard_run_players_user {
+export interface GetHome_war2_leaderboard_run_players_user {
   __typename: "User";
   /**
    * The users's base36 ID from speedrun.com.
@@ -18,7 +18,7 @@ export interface GetMyGames_war2_leaderboard_run_players_user {
   slug: string;
 }
 
-export interface GetMyGames_war2_leaderboard_run_players {
+export interface GetHome_war2_leaderboard_run_players {
   __typename: "Player";
   /**
    * The player's name, which may be a distinct username or a non-distinct guest
@@ -32,20 +32,20 @@ export interface GetMyGames_war2_leaderboard_run_players {
   /**
    * The associated user, if this is a user.
    */
-  user: GetMyGames_war2_leaderboard_run_players_user | null;
+  user: GetHome_war2_leaderboard_run_players_user | null;
 }
 
-export interface GetMyGames_war2_leaderboard_run {
+export interface GetHome_war2_leaderboard_run {
   __typename: "Run";
   /**
    * The run's base36 ID from speedrun.com.
    */
   id: string;
   date: number | null;
-  players: GetMyGames_war2_leaderboard_run_players[];
+  players: GetHome_war2_leaderboard_run_players[];
 }
 
-export interface GetMyGames_war2_leaderboard {
+export interface GetHome_war2_leaderboard {
   __typename: "RankedRun";
   /**
    * This run's rank, with ties broken by date.
@@ -66,10 +66,10 @@ export interface GetMyGames_war2_leaderboard {
   /**
    * The run.
    */
-  run: GetMyGames_war2_leaderboard_run;
+  run: GetHome_war2_leaderboard_run;
 }
 
-export interface GetMyGames_war2_levels_leaderboard_run_players_user {
+export interface GetHome_war2_levels_leaderboard_run_players_user {
   __typename: "User";
   /**
    * The users's base36 ID from speedrun.com.
@@ -81,7 +81,7 @@ export interface GetMyGames_war2_levels_leaderboard_run_players_user {
   slug: string;
 }
 
-export interface GetMyGames_war2_levels_leaderboard_run_players {
+export interface GetHome_war2_levels_leaderboard_run_players {
   __typename: "Player";
   /**
    * The player's name, which may be a distinct username or a non-distinct guest
@@ -95,20 +95,20 @@ export interface GetMyGames_war2_levels_leaderboard_run_players {
   /**
    * The associated user, if this is a user.
    */
-  user: GetMyGames_war2_levels_leaderboard_run_players_user | null;
+  user: GetHome_war2_levels_leaderboard_run_players_user | null;
 }
 
-export interface GetMyGames_war2_levels_leaderboard_run {
+export interface GetHome_war2_levels_leaderboard_run {
   __typename: "Run";
   /**
    * The run's base36 ID from speedrun.com.
    */
   id: string;
   date: number | null;
-  players: GetMyGames_war2_levels_leaderboard_run_players[];
+  players: GetHome_war2_levels_leaderboard_run_players[];
 }
 
-export interface GetMyGames_war2_levels_leaderboard {
+export interface GetHome_war2_levels_leaderboard {
   __typename: "RankedRun";
   /**
    * This run's rank, with ties broken by date.
@@ -129,10 +129,10 @@ export interface GetMyGames_war2_levels_leaderboard {
   /**
    * The run.
    */
-  run: GetMyGames_war2_levels_leaderboard_run;
+  run: GetHome_war2_levels_leaderboard_run;
 }
 
-export interface GetMyGames_war2_levels {
+export interface GetHome_war2_levels {
   __typename: "Level";
   /**
    * The level's base36 ID from speedrun.com.
@@ -149,10 +149,10 @@ export interface GetMyGames_war2_levels {
   /**
    * Returns ordered ranked runs.
    */
-  leaderboard: GetMyGames_war2_levels_leaderboard[];
+  leaderboard: GetHome_war2_levels_leaderboard[];
 }
 
-export interface GetMyGames_war2 {
+export interface GetHome_war2 {
   __typename: "Game";
   /**
    * The game's base36 ID from speedrun.com.
@@ -169,11 +169,11 @@ export interface GetMyGames_war2 {
   /**
    * Returns the ordered ranked runs for a run in a category and optionally level.
    */
-  leaderboard: GetMyGames_war2_leaderboard[];
-  levels: GetMyGames_war2_levels[];
+  leaderboard: GetHome_war2_leaderboard[];
+  levels: GetHome_war2_levels[];
 }
 
-export interface GetMyGames_war2x_leaderboard_run_players_user {
+export interface GetHome_war2x_leaderboard_run_players_user {
   __typename: "User";
   /**
    * The users's base36 ID from speedrun.com.
@@ -185,7 +185,7 @@ export interface GetMyGames_war2x_leaderboard_run_players_user {
   slug: string;
 }
 
-export interface GetMyGames_war2x_leaderboard_run_players {
+export interface GetHome_war2x_leaderboard_run_players {
   __typename: "Player";
   /**
    * The player's name, which may be a distinct username or a non-distinct guest
@@ -199,20 +199,20 @@ export interface GetMyGames_war2x_leaderboard_run_players {
   /**
    * The associated user, if this is a user.
    */
-  user: GetMyGames_war2x_leaderboard_run_players_user | null;
+  user: GetHome_war2x_leaderboard_run_players_user | null;
 }
 
-export interface GetMyGames_war2x_leaderboard_run {
+export interface GetHome_war2x_leaderboard_run {
   __typename: "Run";
   /**
    * The run's base36 ID from speedrun.com.
    */
   id: string;
   date: number | null;
-  players: GetMyGames_war2x_leaderboard_run_players[];
+  players: GetHome_war2x_leaderboard_run_players[];
 }
 
-export interface GetMyGames_war2x_leaderboard {
+export interface GetHome_war2x_leaderboard {
   __typename: "RankedRun";
   /**
    * This run's rank, with ties broken by date.
@@ -233,10 +233,10 @@ export interface GetMyGames_war2x_leaderboard {
   /**
    * The run.
    */
-  run: GetMyGames_war2x_leaderboard_run;
+  run: GetHome_war2x_leaderboard_run;
 }
 
-export interface GetMyGames_war2x_levels_leaderboard_run_players_user {
+export interface GetHome_war2x_levels_leaderboard_run_players_user {
   __typename: "User";
   /**
    * The users's base36 ID from speedrun.com.
@@ -248,7 +248,7 @@ export interface GetMyGames_war2x_levels_leaderboard_run_players_user {
   slug: string;
 }
 
-export interface GetMyGames_war2x_levels_leaderboard_run_players {
+export interface GetHome_war2x_levels_leaderboard_run_players {
   __typename: "Player";
   /**
    * The player's name, which may be a distinct username or a non-distinct guest
@@ -262,20 +262,20 @@ export interface GetMyGames_war2x_levels_leaderboard_run_players {
   /**
    * The associated user, if this is a user.
    */
-  user: GetMyGames_war2x_levels_leaderboard_run_players_user | null;
+  user: GetHome_war2x_levels_leaderboard_run_players_user | null;
 }
 
-export interface GetMyGames_war2x_levels_leaderboard_run {
+export interface GetHome_war2x_levels_leaderboard_run {
   __typename: "Run";
   /**
    * The run's base36 ID from speedrun.com.
    */
   id: string;
   date: number | null;
-  players: GetMyGames_war2x_levels_leaderboard_run_players[];
+  players: GetHome_war2x_levels_leaderboard_run_players[];
 }
 
-export interface GetMyGames_war2x_levels_leaderboard {
+export interface GetHome_war2x_levels_leaderboard {
   __typename: "RankedRun";
   /**
    * This run's rank, with ties broken by date.
@@ -296,10 +296,10 @@ export interface GetMyGames_war2x_levels_leaderboard {
   /**
    * The run.
    */
-  run: GetMyGames_war2x_levels_leaderboard_run;
+  run: GetHome_war2x_levels_leaderboard_run;
 }
 
-export interface GetMyGames_war2x_levels {
+export interface GetHome_war2x_levels {
   __typename: "Level";
   /**
    * The level's base36 ID from speedrun.com.
@@ -316,10 +316,10 @@ export interface GetMyGames_war2x_levels {
   /**
    * Returns ordered ranked runs.
    */
-  leaderboard: GetMyGames_war2x_levels_leaderboard[];
+  leaderboard: GetHome_war2x_levels_leaderboard[];
 }
 
-export interface GetMyGames_war2x {
+export interface GetHome_war2x {
   __typename: "Game";
   /**
    * The game's base36 ID from speedrun.com.
@@ -336,19 +336,19 @@ export interface GetMyGames_war2x {
   /**
    * Returns the ordered ranked runs for a run in a category and optionally level.
    */
-  leaderboard: GetMyGames_war2x_leaderboard[];
-  levels: GetMyGames_war2x_levels[];
+  leaderboard: GetHome_war2x_leaderboard[];
+  levels: GetHome_war2x_levels[];
 }
 
-export interface GetMyGames {
+export interface GetHome {
   /**
    * Get a game.
    */
-  war2: GetMyGames_war2;
+  war2: GetHome_war2;
   /**
    * Get a game.
    */
-  war2x: GetMyGames_war2x;
+  war2x: GetHome_war2x;
 }
 
 /* tslint:disable */
@@ -356,10 +356,10 @@ export interface GetMyGames {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: MyRankedRun
+// GraphQL fragment: HomeRankedRun
 // ====================================================
 
-export interface MyRankedRun_run_players_user {
+export interface HomeRankedRun_run_players_user {
   __typename: "User";
   /**
    * The users's base36 ID from speedrun.com.
@@ -371,7 +371,7 @@ export interface MyRankedRun_run_players_user {
   slug: string;
 }
 
-export interface MyRankedRun_run_players {
+export interface HomeRankedRun_run_players {
   __typename: "Player";
   /**
    * The player's name, which may be a distinct username or a non-distinct guest
@@ -385,20 +385,20 @@ export interface MyRankedRun_run_players {
   /**
    * The associated user, if this is a user.
    */
-  user: MyRankedRun_run_players_user | null;
+  user: HomeRankedRun_run_players_user | null;
 }
 
-export interface MyRankedRun_run {
+export interface HomeRankedRun_run {
   __typename: "Run";
   /**
    * The run's base36 ID from speedrun.com.
    */
   id: string;
   date: number | null;
-  players: MyRankedRun_run_players[];
+  players: HomeRankedRun_run_players[];
 }
 
-export interface MyRankedRun {
+export interface HomeRankedRun {
   __typename: "RankedRun";
   /**
    * This run's rank, with ties broken by date.
@@ -419,7 +419,7 @@ export interface MyRankedRun {
   /**
    * The run.
    */
-  run: MyRankedRun_run;
+  run: HomeRankedRun_run;
 }
 
 /* tslint:disable */
@@ -427,10 +427,10 @@ export interface MyRankedRun {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: MyGameDetails
+// GraphQL fragment: HomeDetails
 // ====================================================
 
-export interface MyGameDetails_leaderboard_run_players_user {
+export interface HomeDetails_leaderboard_run_players_user {
   __typename: "User";
   /**
    * The users's base36 ID from speedrun.com.
@@ -442,7 +442,7 @@ export interface MyGameDetails_leaderboard_run_players_user {
   slug: string;
 }
 
-export interface MyGameDetails_leaderboard_run_players {
+export interface HomeDetails_leaderboard_run_players {
   __typename: "Player";
   /**
    * The player's name, which may be a distinct username or a non-distinct guest
@@ -456,20 +456,20 @@ export interface MyGameDetails_leaderboard_run_players {
   /**
    * The associated user, if this is a user.
    */
-  user: MyGameDetails_leaderboard_run_players_user | null;
+  user: HomeDetails_leaderboard_run_players_user | null;
 }
 
-export interface MyGameDetails_leaderboard_run {
+export interface HomeDetails_leaderboard_run {
   __typename: "Run";
   /**
    * The run's base36 ID from speedrun.com.
    */
   id: string;
   date: number | null;
-  players: MyGameDetails_leaderboard_run_players[];
+  players: HomeDetails_leaderboard_run_players[];
 }
 
-export interface MyGameDetails_leaderboard {
+export interface HomeDetails_leaderboard {
   __typename: "RankedRun";
   /**
    * This run's rank, with ties broken by date.
@@ -490,10 +490,10 @@ export interface MyGameDetails_leaderboard {
   /**
    * The run.
    */
-  run: MyGameDetails_leaderboard_run;
+  run: HomeDetails_leaderboard_run;
 }
 
-export interface MyGameDetails_levels_leaderboard_run_players_user {
+export interface HomeDetails_levels_leaderboard_run_players_user {
   __typename: "User";
   /**
    * The users's base36 ID from speedrun.com.
@@ -505,7 +505,7 @@ export interface MyGameDetails_levels_leaderboard_run_players_user {
   slug: string;
 }
 
-export interface MyGameDetails_levels_leaderboard_run_players {
+export interface HomeDetails_levels_leaderboard_run_players {
   __typename: "Player";
   /**
    * The player's name, which may be a distinct username or a non-distinct guest
@@ -519,20 +519,20 @@ export interface MyGameDetails_levels_leaderboard_run_players {
   /**
    * The associated user, if this is a user.
    */
-  user: MyGameDetails_levels_leaderboard_run_players_user | null;
+  user: HomeDetails_levels_leaderboard_run_players_user | null;
 }
 
-export interface MyGameDetails_levels_leaderboard_run {
+export interface HomeDetails_levels_leaderboard_run {
   __typename: "Run";
   /**
    * The run's base36 ID from speedrun.com.
    */
   id: string;
   date: number | null;
-  players: MyGameDetails_levels_leaderboard_run_players[];
+  players: HomeDetails_levels_leaderboard_run_players[];
 }
 
-export interface MyGameDetails_levels_leaderboard {
+export interface HomeDetails_levels_leaderboard {
   __typename: "RankedRun";
   /**
    * This run's rank, with ties broken by date.
@@ -553,10 +553,10 @@ export interface MyGameDetails_levels_leaderboard {
   /**
    * The run.
    */
-  run: MyGameDetails_levels_leaderboard_run;
+  run: HomeDetails_levels_leaderboard_run;
 }
 
-export interface MyGameDetails_levels {
+export interface HomeDetails_levels {
   __typename: "Level";
   /**
    * The level's base36 ID from speedrun.com.
@@ -573,10 +573,10 @@ export interface MyGameDetails_levels {
   /**
    * Returns ordered ranked runs.
    */
-  leaderboard: MyGameDetails_levels_leaderboard[];
+  leaderboard: HomeDetails_levels_leaderboard[];
 }
 
-export interface MyGameDetails {
+export interface HomeDetails {
   __typename: "Game";
   /**
    * The game's base36 ID from speedrun.com.
@@ -593,8 +593,8 @@ export interface MyGameDetails {
   /**
    * Returns the ordered ranked runs for a run in a category and optionally level.
    */
-  leaderboard: MyGameDetails_leaderboard[];
-  levels: MyGameDetails_levels[];
+  leaderboard: HomeDetails_leaderboard[];
+  levels: HomeDetails_levels[];
 }
 
 /* tslint:disable */
