@@ -8,4 +8,5 @@ trap "kill $!" EXIT
 
 sleep 2
 
+yarn next build
 yarn next export
