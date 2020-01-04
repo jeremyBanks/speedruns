@@ -6,6 +6,15 @@
 // GraphQL query operation: GetMyGames
 // ====================================================
 
+export interface GetMyGames_war2_leaderboard_run_players {
+  __typename: "Player";
+  /**
+   * The player's name, which may be a distinct username or a non-distinct guest
+   * nickname.
+   */
+  name: string;
+}
+
 export interface GetMyGames_war2_leaderboard_run {
   __typename: "Run";
   /**
@@ -13,6 +22,7 @@ export interface GetMyGames_war2_leaderboard_run {
    */
   id: string;
   date: number | null;
+  players: GetMyGames_war2_leaderboard_run_players[];
 }
 
 export interface GetMyGames_war2_leaderboard {
@@ -39,6 +49,15 @@ export interface GetMyGames_war2_leaderboard {
   run: GetMyGames_war2_leaderboard_run;
 }
 
+export interface GetMyGames_war2_levels_leaderboard_run_players {
+  __typename: "Player";
+  /**
+   * The player's name, which may be a distinct username or a non-distinct guest
+   * nickname.
+   */
+  name: string;
+}
+
 export interface GetMyGames_war2_levels_leaderboard_run {
   __typename: "Run";
   /**
@@ -46,6 +65,7 @@ export interface GetMyGames_war2_levels_leaderboard_run {
    */
   id: string;
   date: number | null;
+  players: GetMyGames_war2_levels_leaderboard_run_players[];
 }
 
 export interface GetMyGames_war2_levels_leaderboard {
@@ -113,6 +133,15 @@ export interface GetMyGames_war2 {
   levels: GetMyGames_war2_levels[];
 }
 
+export interface GetMyGames_war2x_leaderboard_run_players {
+  __typename: "Player";
+  /**
+   * The player's name, which may be a distinct username or a non-distinct guest
+   * nickname.
+   */
+  name: string;
+}
+
 export interface GetMyGames_war2x_leaderboard_run {
   __typename: "Run";
   /**
@@ -120,6 +149,7 @@ export interface GetMyGames_war2x_leaderboard_run {
    */
   id: string;
   date: number | null;
+  players: GetMyGames_war2x_leaderboard_run_players[];
 }
 
 export interface GetMyGames_war2x_leaderboard {
@@ -146,6 +176,15 @@ export interface GetMyGames_war2x_leaderboard {
   run: GetMyGames_war2x_leaderboard_run;
 }
 
+export interface GetMyGames_war2x_levels_leaderboard_run_players {
+  __typename: "Player";
+  /**
+   * The player's name, which may be a distinct username or a non-distinct guest
+   * nickname.
+   */
+  name: string;
+}
+
 export interface GetMyGames_war2x_levels_leaderboard_run {
   __typename: "Run";
   /**
@@ -153,6 +192,7 @@ export interface GetMyGames_war2x_levels_leaderboard_run {
    */
   id: string;
   date: number | null;
+  players: GetMyGames_war2x_levels_leaderboard_run_players[];
 }
 
 export interface GetMyGames_war2x_levels_leaderboard {
@@ -239,6 +279,15 @@ export interface GetMyGames {
 // GraphQL fragment: MyRankedRun
 // ====================================================
 
+export interface MyRankedRun_run_players {
+  __typename: "Player";
+  /**
+   * The player's name, which may be a distinct username or a non-distinct guest
+   * nickname.
+   */
+  name: string;
+}
+
 export interface MyRankedRun_run {
   __typename: "Run";
   /**
@@ -246,6 +295,7 @@ export interface MyRankedRun_run {
    */
   id: string;
   date: number | null;
+  players: MyRankedRun_run_players[];
 }
 
 export interface MyRankedRun {
@@ -280,6 +330,15 @@ export interface MyRankedRun {
 // GraphQL fragment: MyGameDetails
 // ====================================================
 
+export interface MyGameDetails_leaderboard_run_players {
+  __typename: "Player";
+  /**
+   * The player's name, which may be a distinct username or a non-distinct guest
+   * nickname.
+   */
+  name: string;
+}
+
 export interface MyGameDetails_leaderboard_run {
   __typename: "Run";
   /**
@@ -287,6 +346,7 @@ export interface MyGameDetails_leaderboard_run {
    */
   id: string;
   date: number | null;
+  players: MyGameDetails_leaderboard_run_players[];
 }
 
 export interface MyGameDetails_leaderboard {
@@ -313,6 +373,15 @@ export interface MyGameDetails_leaderboard {
   run: MyGameDetails_leaderboard_run;
 }
 
+export interface MyGameDetails_levels_leaderboard_run_players {
+  __typename: "Player";
+  /**
+   * The player's name, which may be a distinct username or a non-distinct guest
+   * nickname.
+   */
+  name: string;
+}
+
 export interface MyGameDetails_levels_leaderboard_run {
   __typename: "Run";
   /**
@@ -320,6 +389,7 @@ export interface MyGameDetails_levels_leaderboard_run {
    */
   id: string;
   date: number | null;
+  players: MyGameDetails_levels_leaderboard_run_players[];
 }
 
 export interface MyGameDetails_levels_leaderboard {

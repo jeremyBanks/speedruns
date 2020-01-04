@@ -17,7 +17,7 @@ use crate::{
     utils::base36,
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Context {
     pub database: Arc<Database>,
 }
@@ -64,7 +64,7 @@ impl Mutation {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Game(DbLinked<db::Game>);
 
 #[juniper::object(Context = Context)]
@@ -124,7 +124,7 @@ impl Game {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Run(DbLinked<db::Run>);
 
 #[juniper::object(Context = Context)]
@@ -150,9 +150,24 @@ impl Run {
         // not sure if this cast is potentially lossy in practice
         Ok(self.0.created().map(|c| c.timestamp() as f64))
     }
+
+    pub fn players(&self, context: &Context) -> FieldResult<Vec<Player>> {
+        Ok(self
+            .0
+            .players()
+            .iter()
+            .map(|run_player| match run_player {
+                db::RunPlayer::UserId(user_id) => {
+                    let user = context.database.user_by_id(*user_id).unwrap();
+                    Player::User(User(user))
+                }
+                db::RunPlayer::GuestName(name) => Player::Guest(name.clone()),
+            })
+            .collect())
+    }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct RankedRun(leaderboard::RankedRun);
 
 #[juniper::object(Context = Context)]
@@ -183,7 +198,7 @@ impl RankedRun {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Category(DbLinked<db::Category>);
 
 #[juniper::object(Context = Context)]
@@ -205,7 +220,7 @@ impl Category {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct User(DbLinked<db::User>);
 
 #[juniper::object(Context = Context)]
@@ -222,7 +237,41 @@ impl User {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
+pub enum Player {
+    User(User),
+    Guest(String),
+}
+
+#[juniper::object(Context = Context)]
+impl Player {
+    /// The player's name, which may be a distinct username or a non-distinct guest
+    /// nickname.
+    pub fn name(&self, context: &Context) -> FieldResult<String> {
+        Ok(match self {
+            Player::User(user) => user.0.name.clone(),
+            Player::Guest(name) => name.clone(),
+        })
+    }
+
+    /// The associated user, if this is a user.
+    pub fn user(&self, context: &Context) -> FieldResult<Option<User>> {
+        Ok(match self {
+            Player::User(user) => Some(user.clone()),
+            Player::Guest(_name) => None,
+        })
+    }
+
+    /// Whether this player is a guest instead of a user.
+    pub fn is_guest(&self, context: &Context) -> FieldResult<bool> {
+        Ok(match self {
+            Player::User(_user) => false,
+            Player::Guest(_name) => true,
+        })
+    }
+}
+
+#[derive(Debug, Clone)]
 pub struct Level(DbLinked<db::Level>);
 
 #[juniper::object(Context = Context)]
