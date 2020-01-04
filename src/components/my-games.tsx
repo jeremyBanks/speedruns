@@ -20,11 +20,11 @@ export const MyGamesPage: React.FC = () => {
 
 const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
   <>
-    <h2>Full Game</h2>
+    <h2>Full Campaign</h2>
 
     <ol>
       {game.leaderboard.map(rankedRun => (
-        <RunLi rankedRun={rankedRun} />
+        <RunLi key={rankedRun.run.id} rankedRun={rankedRun} />
       ))}
     </ol>
 
@@ -41,7 +41,7 @@ const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
         }
       })
       .map(level => (
-        <div>
+        <div key={level.id}>
           <h3>{level.name}</h3>
 
           <ol>
