@@ -17,8 +17,11 @@ let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 const getApolloClient = (
   initialState?: NormalizedCacheObject
 ): ApolloClient<NormalizedCacheObject> => {
-  if (onServer || !globalApolloClient) {
-    const uri = "http://graphql-v0.speedrun.ca:3001/";
+  if (
+    (onServer && !"testing if this changes SSR behaviour") ||
+    !globalApolloClient
+  ) {
+    const uri = "http://localhost:3001/";
     const cache = new InMemoryCache();
     if (initialState) {
       cache.restore(initialState);
