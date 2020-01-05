@@ -14,7 +14,7 @@ const SpaRedirectPage: NextPage<{}> = () => {
     if (path === "/spa-redirect") {
       path = "/";
     }
-    router.replace(path);
+    router.push(path);
   }
 
   return (
