@@ -10,17 +10,14 @@ import { getDataFromTree } from "@apollo/react-ssr";
 
 // based on https://git.io/JepyG
 
-const onServer = typeof window === "undefined";
+const onNode = typeof window === "undefined";
 
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 const getApolloClient = (
   initialState?: NormalizedCacheObject
 ): ApolloClient<NormalizedCacheObject> => {
-  if (
-    (onServer && !"testing if this changes SSR behaviour") ||
-    !globalApolloClient
-  ) {
+  if (onNode || !globalApolloClient) {
     const uri = "http://localhost:3001/";
     const cache = new InMemoryCache();
     if (initialState) {
@@ -29,7 +26,7 @@ const getApolloClient = (
     globalApolloClient = new ApolloClient({
       cache,
       link: new HttpLink({ uri, fetch }),
-      ssrMode: onServer
+      ssrMode: onNode
     });
   }
 
@@ -47,7 +44,7 @@ export const withApollo = (Page: NextPage<{}>): ApolloNextPage => {
       apolloClient = getApolloClient(apolloCache);
     }
     return (
-      <ApolloProvider client={getApolloClient()}>
+      <ApolloProvider client={apolloClient}>
         <Page />
       </ApolloProvider>
     );
@@ -58,11 +55,11 @@ export const withApollo = (Page: NextPage<{}>): ApolloNextPage => {
 
     const apolloClient = getApolloClient();
 
-    if (onServer && context.res && context.res.finished) {
+    if (onNode && context.res && context.res.finished) {
       return { apolloClient };
     }
 
-    if (onServer) {
+    if (onNode) {
       try {
         await getDataFromTree(<AppTree pageProps={{ apolloClient }} />);
       } catch (error) {
