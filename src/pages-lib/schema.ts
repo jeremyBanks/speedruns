@@ -356,6 +356,37 @@ export interface GetHome {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: GetUser
+// ====================================================
+
+export interface GetUser_user {
+  __typename: "User";
+  /**
+   * The users's base36 ID from speedrun.com.
+   */
+  id: string;
+  /**
+   * The user's URL slug/abbreviation.
+   */
+  slug: string;
+}
+
+export interface GetUser {
+  /**
+   * Get a user.
+   */
+  user: GetUser_user;
+}
+
+export interface GetUserVariables {
+  slug: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: HomeRankedRun
 // ====================================================
 
