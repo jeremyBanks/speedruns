@@ -8,7 +8,7 @@ import { HttpLink } from "apollo-link-http";
 import fetch from "isomorphic-unfetch";
 import { getDataFromTree } from "@apollo/react-ssr";
 
-import { MyGamesPage } from "../pages-lib/my-games";
+import HomeContent from "../pages-lib/home";
 
 const HomePage: NextPage<{
   apolloClient?: ApolloClient<NormalizedCacheObject>;
@@ -26,7 +26,7 @@ const HomePage: NextPage<{
 
   return (
     <ApolloProvider client={apolloClient}>
-      <MyGamesPage />
+      <HomeContent />
     </ApolloProvider>
   );
 };

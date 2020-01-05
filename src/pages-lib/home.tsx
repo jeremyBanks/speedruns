@@ -7,19 +7,21 @@ import * as graphql from "./graphql";
 import styles from "./styles.module.scss";
 import { Duration } from "./duration";
 
-export const MyGamesPage: React.FC = () => {
-  const { loading, error, data } = useQuery<graphql.GetMyGames>(GetMyGames);
+export const HomeContent: React.FC = () => {
+  const { loading, error, data } = useQuery<graphql.GetHome>(GetHome);
 
   if (!data || loading) {
     return <pre>loading...</pre>;
   } else if (error) {
     return <pre>error: {JSON.stringify(error, null, 2)}</pre>;
   } else {
-    return <MyGames data={data} />;
+    return <Home data={data} />;
   }
 };
 
-const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
+export default HomeContent;
+
+const GamePane: React.FC<{ game: graphql.HomeDetails }> = ({ game }) => (
   <>
     <p>
       This site compares personal and world record speed run progress over time.
@@ -66,8 +68,8 @@ const GamePane: React.FC<{ game: graphql.MyGameDetails }> = ({ game }) => (
 );
 
 const RunLi: React.FC<{
-  rankedRun: graphql.MyRankedRun;
-  game: graphql.MyGameDetails;
+  rankedRun: graphql.HomeRankedRun;
+  game: graphql.HomeDetails;
 }> = ({ rankedRun, game }) => {
   const date = rankedRun.run.date;
 
@@ -91,9 +93,9 @@ const RunLi: React.FC<{
   );
 };
 
-export const MyGames: React.FC<{ data: graphql.GetMyGames }> = ({ data }) => {
+export const Home: React.FC<{ data: graphql.GetHome }> = ({ data }) => {
   return (
-    <div className={styles.myGames}>
+    <div className={styles.home}>
       <h1>WarCraft II Speedruns</h1>
 
       <div className={styles.games}>
@@ -119,8 +121,8 @@ export const MyGames: React.FC<{ data: graphql.GetMyGames }> = ({ data }) => {
   );
 };
 
-const MyRankedRun = gql`
-  fragment MyRankedRun on RankedRun {
+const HomeRankedRun = gql`
+  fragment HomeRankedRun on RankedRun {
     rank
     tiedRank
     isTied
@@ -140,36 +142,36 @@ const MyRankedRun = gql`
   }
 `;
 
-const MyGameDetails = gql`
-  ${MyRankedRun}
+const HomeDetails = gql`
+  ${HomeRankedRun}
 
-  fragment MyGameDetails on Game {
+  fragment HomeDetails on Game {
     id
     name
     slug
     leaderboard(category: "all-campaigns") {
-      ...MyRankedRun
+      ...HomeRankedRun
     }
     levels {
       id
       slug
       name
       leaderboard(category: "mission") {
-        ...MyRankedRun
+        ...HomeRankedRun
       }
     }
   }
 `;
 
-const GetMyGames = gql`
-  ${MyGameDetails}
+const GetHome = gql`
+  ${HomeDetails}
 
-  query GetMyGames {
+  query GetHome {
     war2: game(slug: "wc2") {
-      ...MyGameDetails
+      ...HomeDetails
     }
     war2x: game(slug: "wc2btdp") {
-      ...MyGameDetails
+      ...HomeDetails
     }
   }
 `;
