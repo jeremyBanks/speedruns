@@ -3,12 +3,12 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import Link from "next/link";
 
-import * as graphql from "./graphql";
+import * as schema from "./schema";
 import styles from "./styles.module.scss";
 import { Duration } from "./duration";
 
 export const HomeContent: React.FC = () => {
-  const { loading, error, data } = useQuery<graphql.GetHome>(GetHome);
+  const { loading, error, data } = useQuery<schema.GetHome>(GetHome);
 
   if (!data || loading) {
     return <pre>loading...</pre>;
@@ -21,7 +21,7 @@ export const HomeContent: React.FC = () => {
 
 export default HomeContent;
 
-const GamePane: React.FC<{ game: graphql.HomeDetails }> = ({ game }) => (
+const GamePane: React.FC<{ game: schema.HomeDetails }> = ({ game }) => (
   <>
     <p>
       This site compares personal and world record speed run progress over time.
@@ -68,8 +68,8 @@ const GamePane: React.FC<{ game: graphql.HomeDetails }> = ({ game }) => (
 );
 
 const RunLi: React.FC<{
-  rankedRun: graphql.HomeRankedRun;
-  game: graphql.HomeDetails;
+  rankedRun: schema.HomeRankedRun;
+  game: schema.HomeDetails;
 }> = ({ rankedRun, game }) => {
   const date = rankedRun.run.date;
 
@@ -93,7 +93,7 @@ const RunLi: React.FC<{
   );
 };
 
-export const Home: React.FC<{ data: graphql.GetHome }> = ({ data }) => {
+export const Home: React.FC<{ data: schema.GetHome }> = ({ data }) => {
   return (
     <div className={styles.home}>
       <h1>WarCraft II Speedruns</h1>
