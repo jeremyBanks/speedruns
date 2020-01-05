@@ -75,7 +75,10 @@ const RunLi: React.FC<{
 
   return (
     <li value={rankedRun.tiedRank}>
-      <Link href={`/${game.slug}/${rankedRun.run.id}`}>
+      <Link
+        href="/[game]/run/[run]"
+        as={`/${game.slug}/run/${rankedRun.run.id}`}
+      >
         <a>
           <Duration ms={rankedRun.timeMs} />
           {" by "}
@@ -101,7 +104,7 @@ export const Home: React.FC<{ data: schema.GetHome }> = ({ data }) => {
       <div className={styles.games}>
         <section className={styles.war2}>
           <h1>
-            <Link href={`/${data.war2.slug}/`}>
+            <Link href="/[game]" as={`/${data.war2.slug}/`}>
               <a>Tides of Darkness</a>
             </Link>
           </h1>
@@ -110,7 +113,7 @@ export const Home: React.FC<{ data: schema.GetHome }> = ({ data }) => {
 
         <section className={styles.war2x}>
           <h1>
-            <Link href={`/${data.war2x.slug}/`}>
+            <Link href="/[game]" as={`/${data.war2x.slug}/`}>
               <a>Beyond the Dark Portal</a>
             </Link>
           </h1>
