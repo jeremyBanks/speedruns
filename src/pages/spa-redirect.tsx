@@ -9,11 +9,14 @@ const SpaRedirectPage: NextPage<{}> = () => {
   let path;
   if (typeof window === "undefined") {
     path = "/";
-    router.push("/");
   } else {
     path = window.location.pathname;
+    if (path === "/spa-redirect") {
+      path = "/";
+    }
     router.replace(path);
   }
+
   return (
     <Link href={path}>
       <a>redirect</a>

@@ -8,6 +8,7 @@ module.exports = [
   exportPathMap() {
     return {
       "/": { page: "/" },
+      "/spa-redirect": { page: "/spa-redirect" },
       "/wc2": { page: "/[game]", query: { game: "wc2" } },
       "/celeste": { page: "/[game]", query: { game: "celeste" } },
       "/wc2btdp": { page: "/[game]", query: { game: "wc2btdp" } },
