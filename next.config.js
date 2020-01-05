@@ -5,7 +5,7 @@ module.exports = [
 ].reduce((config, plugin) => plugin(config), {
   cssModules: true,
   exportTrailingSlash: true,
-  exportPathMap: function() {
+  exportPathMap() {
     return {
       "/": { page: "/" },
       "/wc2": { page: "/[game]", query: { game: "wc2" } },
