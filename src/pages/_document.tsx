@@ -1,17 +1,10 @@
-import Document, {
-  Html,
-  Head,
-  Main,
-  NextScript,
-  DocumentContext
-} from "next/document";
+import Document, { Html, Head, Main, NextScript } from "next/document";
+
+import styles from "./styles.module.scss";
+import Header from "../pages-lib/header";
+import Footer from "../pages-lib/footer";
 
 class MyDocument extends Document {
-  static async getInitialProps(context: DocumentContext) {
-    const initialProps = await Document.getInitialProps(context);
-    return { ...initialProps };
-  }
-
   render() {
     return (
       <Html>
@@ -26,8 +19,10 @@ class MyDocument extends Document {
         </Head>
         <body>
           <main>
+            <Header />
             <Main />
             <NextScript />
+            <Footer />
           </main>
         </body>
       </Html>
