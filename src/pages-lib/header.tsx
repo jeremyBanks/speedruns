@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 import styles from "./styles.module.scss";
 
@@ -7,8 +8,10 @@ export const Header: React.FC = () => {
     <header className={styles.header}>
       <h1 className={styles.text}>
         <span className={styles.inner}>
-          <img src="/contest.png" />
-          <a href="/">speedrun.ca</a>
+          <img src="/contest.png" />{" "}
+          <Link href="/" as="/">
+            <a>speedrun.ca</a>
+          </Link>
         </span>
       </h1>
     </header>
