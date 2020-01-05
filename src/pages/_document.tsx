@@ -1,6 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
-import styles from "./styles.module.scss";
 import Header from "../pages-lib/header";
 import Footer from "../pages-lib/footer";
 
@@ -11,8 +10,8 @@ class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           <meta
-            httpEquiv="Content-Security-Policy"
-            defaultValue="default-src 'self'; img-src *"
+            httpEquiv="Content-Security-Policy-Report-Only"
+            content="default-src 'self'; img-src *"
           />
           <meta name="viewport" content="width=682, initial-scale=0" />
           <link rel="icon" href="/contest.png" />
