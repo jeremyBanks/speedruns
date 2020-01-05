@@ -70,6 +70,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "unstoppablephoenix",
             "burnout-psychos",
             "bo98",
+            "s6kana",
+            "freezard",
+            "bioice",
+            "tei",
         ]
         .contains(&&*user.slug)
         {
@@ -82,13 +86,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let (game, mut game_categories, mut game_levels) = api_game.normalize().unwrap();
 
         if [
+            "wc1",
             "wc2",
             "wc2btdp",
             "bparadise",
             "bpr",
             "celeste",
             "sc1",
-            "scbr",
+            "scbw",
         ]
         .contains(&&*game.slug)
         {
