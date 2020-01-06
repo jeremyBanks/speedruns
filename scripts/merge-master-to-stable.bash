@@ -2,7 +2,7 @@
 set -veuxo pipefail
 
 current=master
-target=stable
+target=✔️
 
 git checkout $target
 
@@ -13,7 +13,7 @@ if (( "$(git rev-list $target..$current --count)" <= 1 )); then
   git merge --ff --no-edit $current
 else
   # Otherwise, we need to create a merge commit.
-  git merge --no-ff $current -m "$(git log stable..$current --format="format:%B%n")"
+  git merge --no-ff $current -m "$(git log ✔️..$current --format="format:%B%n")"
 fi
 
 # fast-forward master to match
@@ -21,5 +21,5 @@ git checkout $current
 git merge --ff $target
 
 if git push origin $current; then
-  git push -f origin $target $target:✔️;
+  git push -f origin $target
 fi

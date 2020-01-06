@@ -102,7 +102,7 @@ jobs:
       - name: test - yarn build and export
         run: yarn export
 
-      - name: bot - automerge master to stable if we made it this far
+      - name: bot - add master to ✔️ first-parent chain if we made it this far
         if: github.ref == 'refs/heads/master'
         env:
           GIT_COMMITTER_NAME: autofix
