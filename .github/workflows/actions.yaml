@@ -87,6 +87,9 @@ jobs:
       - name: bot - code formatting
         run: yarn format
 
+      - name: test - yarn build and export
+        run: yarn export
+
       - name: bot - commit any changes as autofix
         env:
           GIT_COMMITTER_NAME: autofix
@@ -98,9 +101,6 @@ jobs:
         with:
           command: test
           args: --workspace
-
-      - name: test - yarn build and export
-        run: yarn export
 
       - name: bot - add master to ✔️ first-parent chain if we made it this far
         if: github.ref == 'refs/heads/master'
