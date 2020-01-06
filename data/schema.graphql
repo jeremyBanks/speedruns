@@ -158,6 +158,11 @@ type Query {
   Get a user.
   """
   user(slug: String!): User!
+
+  """
+  Get a run.
+  """
+  run(id: String!): Run!
 }
 
 type RankedRun {
