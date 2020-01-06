@@ -9,5 +9,4 @@ trap "kill $!" EXIT
 sleep 2
 
 apollo client:codegen --target typescript --outputFlat src/pages-lib/schema.ts
-apollo client:download-schema public/schema.graphql
-graphql-docs-gen http://localhost:3001/ public/schema.html
+apollo client:download-schema public/graphql/schema.graphql

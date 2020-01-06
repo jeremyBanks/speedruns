@@ -17,5 +17,18 @@ module.exports = [
       "/user/banks": { page: "/user/[user]", query: { user: "banks" } },
       "/user/szwagier": { page: "/user/[user]", query: { user: "szwagier" } }
     };
+  },
+  webpack(config) {
+    config.module.rules.push(
+      {
+        test: /\.(png|svg|jpg|gif|jpeg)$/,
+        use: ["file-loader"]
+      },
+      {
+        test: /\.toml$/,
+        use: ["@lcdev/toml-loader"]
+      }
+    );
+    return config;
   }
 });
