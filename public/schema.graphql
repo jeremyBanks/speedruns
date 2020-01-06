@@ -80,11 +80,17 @@ type Game {
   """
   runs: [Run!]!
   levels: [Level!]!
+  categories: [Category!]!
 
   """
   Returns the ordered ranked runs for a run in a category and optionally level.
   """
   leaderboard(category: String!, level: String): [RankedRun!]!
+
+  """
+  Get a Run on this game by id, or null if not found.
+  """
+  run(id: String!): Run
 }
 
 """
@@ -110,6 +116,7 @@ type Level {
   The associated game.
   """
   game: Game!
+  categories: [Category!]!
 
   """
   Returns ordered ranked runs.
@@ -117,14 +124,8 @@ type Level {
   leaderboard(category: String!): [RankedRun!]!
 }
 
-"""
-Read-write operation root.
-"""
 type Mutation {
-  """
-  There are no read-write operations. This is a hack.
-  """
-  noop: Int!
+  query: Query
 }
 
 type Player {
@@ -145,24 +146,25 @@ type Player {
   isGuest: Boolean!
 }
 
-"""
-Read-only operation root.
-"""
 type Query {
   """
-  Get a game.
+  Get a Game by id or slug, or null if not found.
+
+  Throws an error if both are specified but don't both match the same game.
   """
-  game(slug: String!): Game!
+  game(slug: String, id: String): Game
 
   """
-  Get a user.
+  Get a User by id or slug, or null if not found.
+
+  Throws an error if both are specified but don't both match the same game.
   """
-  user(slug: String!): User!
+  user(slug: String, id: String): User
 
   """
-  Get a run.
+  Get a Run by id, or null if not found.
   """
-  run(id: String!): Run!
+  run(id: String!): Run
 }
 
 type RankedRun {
@@ -200,6 +202,11 @@ type Run {
   The run's base36 ID from speedrun.com.
   """
   id: String!
+
+  """
+  The game associated with this run.
+  """
+  game: Game!
 
   """
   The category associated with this run.
