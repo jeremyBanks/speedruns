@@ -33,7 +33,6 @@ pub fn schema() -> Schema {
 pub struct Query {}
 
 #[juniper::object(Context = Context)]
-/// Read-only operation root.
 impl Query {
     /// Get a Game by id or slug, or null if not found.
     ///
