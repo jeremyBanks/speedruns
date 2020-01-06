@@ -21,10 +21,6 @@ export default HomeContent;
 
 const GamePane: React.FC<{ game: schema.HomeDetails }> = ({ game }) => (
   <>
-    <p>
-      This site compares personal and world record speed run progress over time.
-    </p>
-
     <h2>Full Campaign</h2>
 
     <ol>
@@ -97,6 +93,16 @@ const RunLi: React.FC<{
 export const Home: React.FC<{ data: schema.GetHome }> = ({ data }) => {
   return (
     <div className={styles.home}>
+      <p>
+        WARNING: this is currently using a test dataset; the leadboards are not
+        accurate or complete.
+      </p>
+
+      <p>
+        This site compares personal and world record speed run progress over
+        time.
+      </p>
+
       <h1>WarCraft II Speedruns</h1>
 
       <div className={styles.games}>
