@@ -9,10 +9,6 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <meta charSet="utf-8" />
-          <meta
-            httpEquiv="Content-Security-Policy-Report-Only"
-            content="default-src 'self'; img-src *"
-          />
           <meta name="viewport" content="width=682, initial-scale=0" />
           <link rel="icon" href="/contest.png" />
         </Head>

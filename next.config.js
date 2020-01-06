@@ -8,11 +8,13 @@ module.exports = [
   exportPathMap() {
     return {
       "/": { page: "/" },
+      "/sc1": { page: "/[game]", query: { game: "sc1" } },
+      "/scbw": { page: "/[game]", query: { game: "scbw" } },
       "/wc2": { page: "/[game]", query: { game: "wc2" } },
-      "/celeste": { page: "/[game]", query: { game: "celeste" } },
       "/wc2btdp": { page: "/[game]", query: { game: "wc2btdp" } },
-      "/user/banks": { page: "/user/[user]", query: { user: "banks" } },
+      "/celeste": { page: "/[game]", query: { game: "celeste" } },
       "/user/zpr": { page: "/user/[user]", query: { user: "zpr" } },
+      "/user/banks": { page: "/user/[user]", query: { user: "banks" } },
       "/user/szwagier": { page: "/user/[user]", query: { user: "szwagier" } }
     };
   }
