@@ -3116,6 +3116,26 @@
                         deprecationReason: null
                       },
                       {
+                        name: "categories",
+                        description: null,
+                        args: [],
+                        type: {
+                          kind: "NON_NULL",
+                          name: null,
+                          ofType: {
+                            kind: "LIST",
+                            name: null,
+                            ofType: {
+                              kind: "NON_NULL",
+                              name: null,
+                              ofType: { kind: "OBJECT", name: "Category" }
+                            }
+                          }
+                        },
+                        isDeprecated: false,
+                        deprecationReason: null
+                      },
+                      {
                         name: "leaderboard",
                         description: "Returns ordered ranked runs.",
                         args: [
@@ -3159,18 +3179,13 @@
                   {
                     kind: "OBJECT",
                     name: "Mutation",
-                    description: "Read-write operation root.",
+                    description: null,
                     fields: [
                       {
-                        name: "noop",
-                        description:
-                          "There are no read-write operations. This is a hack.",
+                        name: "hack",
+                        description: null,
                         args: [],
-                        type: {
-                          kind: "NON_NULL",
-                          name: null,
-                          ofType: { kind: "SCALAR", name: "Int", ofType: null }
-                        },
+                        type: { kind: "SCALAR", name: "Boolean", ofType: null },
                         isDeprecated: false,
                         deprecationReason: null
                       }
@@ -3267,6 +3282,26 @@
                               kind: "NON_NULL",
                               name: null,
                               ofType: { kind: "OBJECT", name: "Level" }
+                            }
+                          }
+                        },
+                        isDeprecated: false,
+                        deprecationReason: null
+                      },
+                      {
+                        name: "categories",
+                        description: null,
+                        args: [],
+                        type: {
+                          kind: "NON_NULL",
+                          name: null,
+                          ofType: {
+                            kind: "LIST",
+                            name: null,
+                            ofType: {
+                              kind: "NON_NULL",
+                              name: null,
+                              ofType: { kind: "OBJECT", name: "Category" }
                             }
                           }
                         },
@@ -3965,61 +4000,67 @@
                     fields: [
                       {
                         name: "game",
-                        description: "Get a game.",
+                        description:
+                          "Get a Game by id or slug, or null if not found.\n\nThrows an error if both are specified but don't both match the same game.",
                         args: [
                           {
                             name: "slug",
                             description: null,
                             type: {
-                              kind: "NON_NULL",
-                              name: null,
-                              ofType: {
-                                kind: "SCALAR",
-                                name: "String",
-                                ofType: null
-                              }
+                              kind: "SCALAR",
+                              name: "String",
+                              ofType: null
+                            },
+                            defaultValue: null
+                          },
+                          {
+                            name: "id",
+                            description: null,
+                            type: {
+                              kind: "SCALAR",
+                              name: "String",
+                              ofType: null
                             },
                             defaultValue: null
                           }
                         ],
-                        type: {
-                          kind: "NON_NULL",
-                          name: null,
-                          ofType: { kind: "OBJECT", name: "Game", ofType: null }
-                        },
+                        type: { kind: "OBJECT", name: "Game", ofType: null },
                         isDeprecated: false,
                         deprecationReason: null
                       },
                       {
                         name: "user",
-                        description: "Get a user.",
+                        description:
+                          "Get a User by id or slug, or null if not found.\n\nThrows an error if both are specified but don't both match the same game.",
                         args: [
                           {
                             name: "slug",
                             description: null,
                             type: {
-                              kind: "NON_NULL",
-                              name: null,
-                              ofType: {
-                                kind: "SCALAR",
-                                name: "String",
-                                ofType: null
-                              }
+                              kind: "SCALAR",
+                              name: "String",
+                              ofType: null
+                            },
+                            defaultValue: null
+                          },
+                          {
+                            name: "id",
+                            description: null,
+                            type: {
+                              kind: "SCALAR",
+                              name: "String",
+                              ofType: null
                             },
                             defaultValue: null
                           }
                         ],
-                        type: {
-                          kind: "NON_NULL",
-                          name: null,
-                          ofType: { kind: "OBJECT", name: "User", ofType: null }
-                        },
+                        type: { kind: "OBJECT", name: "User", ofType: null },
                         isDeprecated: false,
                         deprecationReason: null
                       },
                       {
                         name: "run",
-                        description: "Get a run.",
+                        description: "Get a Run by id, or null if not found.",
                         args: [
                           {
                             name: "id",
@@ -4036,11 +4077,7 @@
                             defaultValue: null
                           }
                         ],
-                        type: {
-                          kind: "NON_NULL",
-                          name: null,
-                          ofType: { kind: "OBJECT", name: "Run", ofType: null }
-                        },
+                        type: { kind: "OBJECT", name: "Run", ofType: null },
                         isDeprecated: false,
                         deprecationReason: null
                       }
