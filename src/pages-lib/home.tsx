@@ -10,7 +10,7 @@ import { Duration } from "./duration";
 export const HomeContent: React.FC = () => {
   const { loading, error, data } = useQuery<schema.GetHome>(GetHome);
 
-  if (data) {
+  if (data && !error) {
     return <Home data={data} />;
   } else {
     return <pre>loading: {JSON.stringify(loading || error, null, 2)}</pre>;

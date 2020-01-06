@@ -14,7 +14,7 @@ use crate::{
         database::{Database, Linked as DbLinked},
         leaderboard, types as db,
     },
-    utils::base36,
+    utils::{base36, u64_from_base36},
 };
 
 #[derive(Debug, Clone)]
@@ -48,6 +48,15 @@ impl Query {
         match context.database.user_by_slug(&slug) {
             Some(user) => Ok(User(user)),
             None => Err(FieldError::from("user not found")),
+        }
+    }
+
+    /// Get a run.
+    pub fn run(context: &Context, id: String) -> FieldResult<Run> {
+        let id = u64_from_base36(&id).unwrap();
+        match context.database.run_by_id(id) {
+            Some(run) => Ok(Run(run)),
+            None => Err(FieldError::from("run not found")),
         }
     }
 }

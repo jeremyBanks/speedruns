@@ -13,7 +13,7 @@ const UserPage: NextPage<{}> = () => {
     variables: { slug: router.query.user }
   });
 
-  if (data) {
+  if (data && !error) {
     return <p>{JSON.stringify(data)}</p>;
   } else {
     return <p>loading: {String(loading || error)}</p>;

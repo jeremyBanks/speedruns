@@ -356,6 +356,33 @@ export interface GetHome {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: GetRun
+// ====================================================
+
+export interface GetRun_run {
+  __typename: "Run";
+  /**
+   * The run's base36 ID from speedrun.com.
+   */
+  id: string;
+}
+
+export interface GetRun {
+  /**
+   * Get a run.
+   */
+  run: GetRun_run;
+}
+
+export interface GetRunVariables {
+  id: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: GetUser
 // ====================================================
 
