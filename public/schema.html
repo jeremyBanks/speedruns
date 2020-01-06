@@ -3182,10 +3182,10 @@
                     description: null,
                     fields: [
                       {
-                        name: "hack",
+                        name: "query",
                         description: null,
                         args: [],
-                        type: { kind: "SCALAR", name: "Boolean", ofType: null },
+                        type: { kind: "OBJECT", name: "Query", ofType: null },
                         isDeprecated: false,
                         deprecationReason: null
                       }
@@ -3351,6 +3351,30 @@
                             }
                           }
                         },
+                        isDeprecated: false,
+                        deprecationReason: null
+                      },
+                      {
+                        name: "run",
+                        description:
+                          "Get a Run on this game by id, or null if not found.",
+                        args: [
+                          {
+                            name: "id",
+                            description: null,
+                            type: {
+                              kind: "NON_NULL",
+                              name: null,
+                              ofType: {
+                                kind: "SCALAR",
+                                name: "String",
+                                ofType: null
+                              }
+                            },
+                            defaultValue: null
+                          }
+                        ],
+                        type: { kind: "OBJECT", name: "Run", ofType: null },
                         isDeprecated: false,
                         deprecationReason: null
                       }
@@ -3837,6 +3861,18 @@
                             name: "String",
                             ofType: null
                           }
+                        },
+                        isDeprecated: false,
+                        deprecationReason: null
+                      },
+                      {
+                        name: "game",
+                        description: "The game associated with this run.",
+                        args: [],
+                        type: {
+                          kind: "NON_NULL",
+                          name: null,
+                          ofType: { kind: "OBJECT", name: "Game", ofType: null }
                         },
                         isDeprecated: false,
                         deprecationReason: null
