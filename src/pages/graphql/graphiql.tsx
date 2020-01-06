@@ -8,7 +8,7 @@ const GraphiQLPage: NextPage = () => {
   >();
 
   useEffect(() => {
-    import("graphiql").then(({ GraphiQL }) => setGraphiQL(GraphiQL));
+    import("graphiql").then(({ GraphiQL }) => setGraphiQL(() => GraphiQL));
   }, []);
 
   if (typeof window === "undefined") {

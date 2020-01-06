@@ -1,19 +1,19 @@
 import React from "react";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
 import Link from "next/link";
 
 import * as schema from "./schema";
 import styles from "./styles.module.scss";
 import { Duration } from "./duration";
+import useQueryWithStatus from "./use-query-with-status";
 
 export const HomeContent: React.FC = () => {
-  const { loading, error, data } = useQuery<schema.GetHome>(GetHome);
+  const result = useQueryWithStatus<schema.GetHome>(GetHome);
 
-  if (data && !error) {
-    return <Home data={data} />;
+  if (result.data) {
+    return <Home data={result.data} />;
   } else {
-    return <pre>loading: {JSON.stringify(loading || error, null, 2)}</pre>;
+    return result.status;
   }
 };
 

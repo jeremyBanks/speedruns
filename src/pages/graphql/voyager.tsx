@@ -8,7 +8,7 @@ const VoyagerPage: NextPage = () => {
   >();
 
   useEffect(() => {
-    import("graphql-voyager").then(({ Voyager }) => setVoyager(Voyager));
+    import("graphql-voyager").then(({ Voyager }) => setVoyager(() => Voyager));
   }, []);
 
   if (typeof window === "undefined") {
