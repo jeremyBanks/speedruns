@@ -45,7 +45,8 @@
     "format": "bash scripts/format.bash",
     "start": "bash scripts/start.bash",
     "export": "bash scripts/export.bash",
-    "precommit": "yarn install && yarn generate && yarn format && echo 'grep -q precommit package.json && (yarn precommit && git add .) || echo' > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit"
+    "precommit": "yarn install && yarn generate && yarn format && echo 'grep -q precommit package.json && (yarn precommit && git add .) || echo' > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit",
+    "gl": "git fetch --all; git log --decorate --graph --first-parent --all --name-status -m"
   },
   "eslintConfig": {
     "extends": "react-app"
