@@ -9,3 +9,8 @@ declare module "graphiql" {
   }>;
   export default GraphiQL;
 }
+declare module "graphql-docs" {
+  export const GraphQLDocs: React.FC<{
+    fetcher: (query: unknown) => Promise<any>;
+  }>;
+}
