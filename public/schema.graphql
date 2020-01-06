@@ -80,7 +80,6 @@ type Game {
   """
   runs: [Run!]!
   levels: [Level!]!
-  categories: [Category!]!
 
   """
   Returns the ordered ranked runs for a run in a category and optionally level.
@@ -111,7 +110,6 @@ type Level {
   The associated game.
   """
   game: Game!
-  categories: [Category!]!
 
   """
   Returns ordered ranked runs.
@@ -119,8 +117,14 @@ type Level {
   leaderboard(category: String!): [RankedRun!]!
 }
 
+"""
+Read-write operation root.
+"""
 type Mutation {
-  hack: Boolean
+  """
+  There are no read-write operations. This is a hack.
+  """
+  noop: Int!
 }
 
 type Player {
@@ -141,25 +145,24 @@ type Player {
   isGuest: Boolean!
 }
 
+"""
+Read-only operation root.
+"""
 type Query {
   """
-  Get a Game by id or slug, or null if not found.
-
-  Throws an error if both are specified but don't both match the same game.
+  Get a game.
   """
-  game(slug: String, id: String): Game
+  game(slug: String!): Game!
 
   """
-  Get a User by id or slug, or null if not found.
-
-  Throws an error if both are specified but don't both match the same game.
+  Get a user.
   """
-  user(slug: String, id: String): User
+  user(slug: String!): User!
 
   """
-  Get a Run by id, or null if not found.
+  Get a run.
   """
-  run(id: String!): Run
+  run(id: String!): Run!
 }
 
 type RankedRun {
