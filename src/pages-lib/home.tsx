@@ -108,20 +108,20 @@ export const Home: React.FC<{ data: schema.GetHome }> = ({ data }) => {
       <div className={styles.games}>
         <section className={styles.war2}>
           <h1>
-            <Link href="/[game]" as={`/${data.war2.slug}/`}>
+            <Link href="/[game]" as={`/${data.war2!.slug}/`}>
               <a>Tides of Darkness</a>
             </Link>
           </h1>
-          <GamePane game={data.war2} />
+          <GamePane game={data.war2!} />
         </section>
 
         <section className={styles.war2x}>
           <h1>
-            <Link href="/[game]" as={`/${data.war2x.slug}/`}>
+            <Link href="/[game]" as={`/${data.war2x!.slug}/`}>
               <a>Beyond the Dark Portal</a>
             </Link>
           </h1>
-          <GamePane game={data.war2x} />
+          <GamePane game={data.war2x!} />
         </section>
       </div>
     </div>

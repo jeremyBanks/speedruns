@@ -342,17 +342,13 @@ export interface GetHome_war2x {
 
 export interface GetHome {
   /**
-   * Get a Game by id or slug, or null if not found.
-   *
-   * Throws an error if both are specified but don't both match the same game.
+   * Get a game.
    */
-  war2: GetHome_war2 | null;
+  war2: GetHome_war2;
   /**
-   * Get a Game by id or slug, or null if not found.
-   *
-   * Throws an error if both are specified but don't both match the same game.
+   * Get a game.
    */
-  war2x: GetHome_war2x | null;
+  war2x: GetHome_war2x;
 }
 
 /* tslint:disable */
@@ -373,9 +369,9 @@ export interface GetRun_run {
 
 export interface GetRun {
   /**
-   * Get a Run by id, or null if not found.
+   * Get a run.
    */
-  run: GetRun_run | null;
+  run: GetRun_run;
 }
 
 export interface GetRunVariables {
@@ -404,11 +400,9 @@ export interface GetUser_user {
 
 export interface GetUser {
   /**
-   * Get a User by id or slug, or null if not found.
-   *
-   * Throws an error if both are specified but don't both match the same game.
+   * Get a user.
    */
-  user: GetUser_user | null;
+  user: GetUser_user;
 }
 
 export interface GetUserVariables {
