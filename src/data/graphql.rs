@@ -1,6 +1,6 @@
 use std::{convert::TryFrom, sync::Arc};
 
-use juniper::{FieldError, FieldResult, RootNode};
+use juniper::{FieldResult, RootNode};
 
 #[allow(unused)]
 use juniper::{
@@ -81,8 +81,8 @@ pub struct Mutation {}
 
 #[juniper::object(Context = Context)]
 impl Mutation {
-    pub fn hack(context: &Context) -> FieldResult<Option<bool>> {
-        Err(FieldError::from("don't hack me"))
+    pub fn query(context: &Context) -> FieldResult<Option<Query>> {
+        Ok(None)
     }
 }
 
@@ -157,6 +157,20 @@ impl Game {
 
         Ok(ranked.iter().map(|r| RankedRun(r.clone())).collect())
     }
+
+    /// Get a Run on this game by id, or null if not found.
+    pub fn run(context: &Context, id: String) -> FieldResult<Option<Run>> {
+        let id = u64_from_base36(&id).unwrap();
+        match context.database.run_by_id(id) {
+            Some(run) =>
+                if run.game_id == self.0.id {
+                    Ok(Some(Run(run)))
+                } else {
+                    Ok(None)
+                },
+            None => Ok(None),
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -168,6 +182,11 @@ impl Run {
     /// The run's base36 ID from speedrun.com.
     pub fn id(&self, context: &Context) -> FieldResult<String> {
         Ok(base36(self.0.id))
+    }
+
+    /// The game associated with this run.
+    pub fn game(&self, context: &Context) -> FieldResult<Game> {
+        Ok(Game(self.0.game()))
     }
 
     /// The category associated with this run.

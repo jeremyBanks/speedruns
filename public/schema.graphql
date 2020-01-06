@@ -86,6 +86,11 @@ type Game {
   Returns the ordered ranked runs for a run in a category and optionally level.
   """
   leaderboard(category: String!, level: String): [RankedRun!]!
+
+  """
+  Get a Run on this game by id, or null if not found.
+  """
+  run(id: String!): Run
 }
 
 """
@@ -120,7 +125,7 @@ type Level {
 }
 
 type Mutation {
-  hack: Boolean
+  query: Query
 }
 
 type Player {
@@ -197,6 +202,11 @@ type Run {
   The run's base36 ID from speedrun.com.
   """
   id: String!
+
+  """
+  The game associated with this run.
+  """
+  game: Game!
 
   """
   The category associated with this run.
