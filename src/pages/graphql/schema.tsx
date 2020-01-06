@@ -2,23 +2,25 @@ import fetch from "isomorphic-unfetch";
 import { NextPage } from "next";
 import { useState, useEffect } from "react";
 
-const GraphiQLPage: NextPage = () => {
-  const [GraphiQL, setGraphiQL] = useState<
-    typeof import("graphiql").GraphiQL
+const GraphQLDocsPage: NextPage = () => {
+  const [GraphQLDocs, setGraphQLDocs] = useState<
+    typeof import("graphql-docs").GraphQLDocs
   >();
 
   useEffect(() => {
-    import("graphiql").then(({ GraphiQL }) => setGraphiQL(GraphiQL));
+    import("graphql-docs").then(({ GraphQLDocs }) =>
+      setGraphQLDocs(() => GraphQLDocs)
+    );
   }, []);
 
   if (typeof window === "undefined") {
     return <div>javascript required</div>;
   } else {
-    if (!GraphiQL) {
+    if (!GraphQLDocs) {
       return <div>loading</div>;
     } else {
       return (
-        <GraphiQL
+        <GraphQLDocs
           fetcher={(query: unknown) =>
             fetch("http://localhost:3001/", {
               method: "post",
@@ -32,4 +34,4 @@ const GraphiQLPage: NextPage = () => {
   }
 };
 
-export default GraphiQLPage;
+export default GraphQLDocsPage;
