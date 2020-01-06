@@ -5,11 +5,11 @@ import { useState, useEffect } from "react";
 
 const PlaygroundPage: NextPage = () => {
   const [playground, setPlayground] = useState<
-    typeof import("graphql-playground-react")
+    typeof import("@apollographql/graphql-playground-react")
   >();
 
   useEffect(() => {
-    import("graphql-playground-react").then(playground =>
+    import("@apollographql/graphql-playground-react").then(playground =>
       setPlayground(playground)
     );
   }, []);

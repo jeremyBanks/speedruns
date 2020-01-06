@@ -21,6 +21,10 @@ module.exports = [
   webpack(config) {
     config.module.rules.push(
       {
+        test: /\.(flow)$/,
+        use: ["file-loader"]
+      },
+      {
         test: /\.(png|svg|jpg|gif|jpeg)$/,
         use: ["file-loader"]
       },
