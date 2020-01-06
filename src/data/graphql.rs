@@ -35,28 +35,44 @@ pub struct Query {}
 #[juniper::object(Context = Context)]
 /// Read-only operation root.
 impl Query {
-    /// Get a game.
-    pub fn game(context: &Context, slug: String) -> FieldResult<Game> {
+    /// Get a Game by id or slug, or null if not found.
+    ///
+    /// Throws an error if both are specified but don't both match the same game.
+    pub fn game(
+        context: &Context,
+        slug: Option<String>,
+        id: Option<String>,
+    ) -> FieldResult<Option<Game>> {
+        let _todo = id;
+        let slug = slug.unwrap();
         match context.database.game_by_slug(&slug) {
-            Some(game) => Ok(Game(game)),
-            None => Err(FieldError::from("game not found")),
+            Some(game) => Ok(Some(Game(game))),
+            None => Ok(None),
         }
     }
 
-    /// Get a user.
-    pub fn user(context: &Context, slug: String) -> FieldResult<User> {
+    /// Get a User by id or slug, or null if not found.
+    ///
+    /// Throws an error if both are specified but don't both match the same game.
+    pub fn user(
+        context: &Context,
+        slug: Option<String>,
+        id: Option<String>,
+    ) -> FieldResult<Option<User>> {
+        let _todo = id;
+        let slug = slug.unwrap();
         match context.database.user_by_slug(&slug) {
-            Some(user) => Ok(User(user)),
-            None => Err(FieldError::from("user not found")),
+            Some(user) => Ok(Some(User(user))),
+            None => Ok(None),
         }
     }
 
-    /// Get a run.
-    pub fn run(context: &Context, id: String) -> FieldResult<Run> {
+    /// Get a Run by id, or null if not found.
+    pub fn run(context: &Context, id: String) -> FieldResult<Option<Run>> {
         let id = u64_from_base36(&id).unwrap();
         match context.database.run_by_id(id) {
-            Some(run) => Ok(Run(run)),
-            None => Err(FieldError::from("run not found")),
+            Some(run) => Ok(Some(Run(run))),
+            None => Ok(None),
         }
     }
 }
@@ -65,11 +81,9 @@ impl Query {
 pub struct Mutation {}
 
 #[juniper::object(Context = Context)]
-/// Read-write operation root.
 impl Mutation {
-    /// There are no read-write operations. This is a hack.
-    pub fn noop(context: &Context) -> FieldResult<i32> {
-        Err(FieldError::from("don't call this"))
+    pub fn hack(context: &Context) -> FieldResult<Option<bool>> {
+        Err(FieldError::from("don't hack me"))
     }
 }
 
@@ -106,6 +120,19 @@ impl Game {
             .levels()
             .filter(|level| level.game_id == self.0.id)
             .map(Level)
+            .collect())
+    }
+
+    // Full-game run categories.
+    pub fn categories(&self, context: &Context) -> FieldResult<Vec<Category>> {
+        // XXX: full table scan
+        Ok(context
+            .database
+            .categories()
+            .filter(|category| {
+                category.game_id == self.0.id && category.per == db::CategoryType::PerGame
+            })
+            .map(Category)
             .collect())
     }
 
@@ -307,6 +334,19 @@ impl Level {
     /// The associated game.
     pub fn game(&self, context: &Context) -> FieldResult<Game> {
         Ok(Game(self.0.game()))
+    }
+
+    // Individual level run categories.
+    pub fn categories(&self, context: &Context) -> FieldResult<Vec<Category>> {
+        // XXX: full table scan
+        Ok(context
+            .database
+            .categories()
+            .filter(|category| {
+                category.game_id == self.0.id && category.per == db::CategoryType::PerLevel
+            })
+            .map(Category)
+            .collect())
     }
 
     /// Returns ordered ranked runs.
