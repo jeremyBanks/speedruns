@@ -6,27 +6,45 @@ import { NextPage, NextPageContext } from "next";
 import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import fetch from "isomorphic-unfetch";
+import { persistCache } from "apollo-cache-persist";
 import { getDataFromTree } from "@apollo/react-ssr";
 
 // based on https://git.io/JepyG
 
 const onNode = typeof window === "undefined";
 
+// We use a client instance *even on the server* because there's
+// no user context or complicated caching to deal with.
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 const getApolloClient = (
   initialState?: NormalizedCacheObject
 ): ApolloClient<NormalizedCacheObject> => {
-  if (onNode || !globalApolloClient) {
+  if (!globalApolloClient) {
     const uri = "http://localhost:3001/";
     const cache = new InMemoryCache();
     if (initialState) {
       cache.restore(initialState);
     }
+    if (!onNode) {
+      // XXX: this is supposed to be awaited but we're not async. maybe it'll still help?
+      persistCache({
+        cache,
+        storage: window.localStorage as any
+      });
+    }
     globalApolloClient = new ApolloClient({
       cache,
       link: new HttpLink({ uri, fetch }),
-      ssrMode: onNode
+      ssrMode: onNode,
+      defaultOptions: {
+        watchQuery: {
+          fetchPolicy: "cache-and-network"
+        },
+        query: {
+          fetchPolicy: "cache-and-network" as any
+        }
+      }
     });
   }
 
