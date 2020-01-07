@@ -84,11 +84,11 @@ jobs:
       - name: bot - code generation
         run: yarn generate
 
-      - name: bot - code formatting
-        run: yarn format
-
       - name: test - yarn build and export
         run: yarn export
+
+      - name: bot - code formatting
+        run: yarn format
 
       - name: bot - commit any changes as autofix
         env:
