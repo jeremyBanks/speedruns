@@ -90,17 +90,17 @@ jobs:
       - name: bot - code formatting
         run: yarn format
 
-      - name: bot - commit any changes as autofix
-        env:
-          GIT_COMMITTER_NAME: autofix
-          GIT_COMMITTER_EMAIL: bot@jeremy.ca
-        run: bash scripts/commit-autofix.bash
-
       - name: test - cargo test
         uses: actions-rs/cargo@v1
         with:
           command: test
           args: --workspace
+
+      - name: bot - commit any changes as autofix
+        env:
+          GIT_COMMITTER_NAME: autofix
+          GIT_COMMITTER_EMAIL: bot@jeremy.ca
+        run: bash scripts/commit-autofix.bash
 
       - name: bot - add master to ✔️ first-parent chain if we made it this far
         if: github.ref == 'refs/heads/master'
@@ -108,6 +108,12 @@ jobs:
           GIT_COMMITTER_NAME: autofix
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: bash scripts/merge-master-to-stable.bash
+
+      - name: deploy - publish to github package manager
+        if: github.ref == 'refs/heads/master'
+        run: |
+          npm login --registry=https://npm.pkg.github.com/
+          npm publish
 
       - name: deploy - static build to s3
         if: github.ref == 'refs/heads/master'
