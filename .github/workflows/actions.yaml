@@ -102,18 +102,18 @@ jobs:
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: bash scripts/commit-autofix.bash
 
-      - name: bot - add master to ✔️ first-parent chain if we made it this far
+      - name: deploy - publish to github package manager
         if: github.ref == 'refs/heads/master'
+        run: |
+          yarn login --registry=https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@npm.pkg.github.com/
+          yarn publish --emoji true --patch --non-interactive
+
+      - name: bot - add master to ✔️ first-parent chain if we made it this far
+        if: github.ref == 'refs/heads/master' && success() || failure()
         env:
           GIT_COMMITTER_NAME: autofix
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: bash scripts/merge-master-to-stable.bash
-
-      - name: deploy - publish to github package manager
-        if: github.ref == 'refs/heads/master'
-        run: |
-          npm login --registry=https://npm.pkg.github.com/
-          npm publish
 
       - name: deploy - static build to s3
         if: github.ref == 'refs/heads/master'
