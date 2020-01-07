@@ -6,6 +6,7 @@ import { NextPage, NextPageContext } from "next";
 import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import fetch from "isomorphic-unfetch";
+import { persistCache } from "apollo-cache-persist";
 import { getDataFromTree } from "@apollo/react-ssr";
 
 // based on https://git.io/JepyG
@@ -24,6 +25,13 @@ const getApolloClient = (
     const cache = new InMemoryCache();
     if (initialState) {
       cache.restore(initialState);
+    }
+    if (!onNode) {
+      // XXX: this is supposed to be awaited but we're not async. maybe it'll still help?
+      persistCache({
+        cache,
+        storage: window.localStorage as any
+      });
     }
     globalApolloClient = new ApolloClient({
       cache,
