@@ -33,16 +33,21 @@ const getApolloClient = (
         storage: window.localStorage as any
       });
     }
+
+    // can't use cache-and-network on client that might not have access to graphql
+    // because of https://github.com/apollographql/apollo-client/issues/3755
+    const policy = onNode ? "cache-and-network" : "cache-first";
+
     globalApolloClient = new ApolloClient({
       cache,
       link: new HttpLink({ uri, fetch }),
       ssrMode: onNode,
       defaultOptions: {
         watchQuery: {
-          fetchPolicy: "cache-and-network"
+          fetchPolicy: policy
         },
         query: {
-          fetchPolicy: "cache-and-network" as any
+          fetchPolicy: policy as any
         }
       }
     });
