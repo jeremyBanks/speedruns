@@ -74,7 +74,6 @@ jobs:
       - name: setup - install node dependencies
         run: yarn install
 
-      # hoisted since the rust in codegen will fail if we can't build
       - name: test - cargo build
         uses: actions-rs/cargo@v1
         with:
