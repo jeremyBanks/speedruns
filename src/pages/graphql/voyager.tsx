@@ -26,7 +26,7 @@ const VoyagerPage: NextPage<{ introspectionData: object }> = () => {
             introspection={async () => ({
               data: introspection
             })}
-            workerURI="/public/graphql/voyager.worker.js"
+            workerURI="/graphql/voyager.worker.js"
           />
         </div>
       );
