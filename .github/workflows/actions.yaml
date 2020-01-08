@@ -102,13 +102,6 @@ jobs:
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: bash scripts/commit-autofix.bash
 
-      - name: deploy - publish to github package manager
-        if: github.ref == 'refs/heads/master'
-        run: |
-          echo -e "$GITHUB_ACTOR\n_@jeremy.ca\n${{ secrets.GITHUB_TOKEN }}" | npm login --registry=https://npm.pkg.github.com/
-          npm publish
-          npm version patch
-
       - name: bot - add master to ✔️ first-parent chain if we made it this far
         if: github.ref == 'refs/heads/master' && success() || failure()
         env:
