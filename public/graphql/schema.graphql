@@ -1,21 +1,26 @@
-"""
-A category for runs of a game on speedrun.com.
-"""
-type Category {
+type Query {
   """
-  The category's base36 ID from speedrun.com.
+  Get a Game by id or slug, or null if not found.
+
+  Throws an error if both are specified but don't both match the same game.
   """
-  id: String!
+  game(slug: String, id: String): Game @juniper(ownership: "owned")
 
   """
-  The category's name.
+  Get a User by id or slug, or null if not found.
+
+  Throws an error if both are specified but don't both match the same game.
   """
-  name: String!
+  user(slug: String, id: String): User @juniper(ownership: "owned")
 
   """
-  The category's slug.
+  Get a Run by id, or null if not found.
   """
-  slug: String!
+  run(id: String!): Run @juniper(ownership: "owned", infallible: true)
+}
+
+type Mutation {
+  query: Boolean @juniper(ownership: "owned", infallible: true)
 }
 
 """
@@ -25,162 +30,35 @@ type Game {
   """
   The game's base36 ID from speedrun.com.
   """
-  id: String!
+  id: String! @juniper(ownership: "owned", infallible: true)
 
   """
   The game's name, in English if possible.
   """
-  name: String!
+  name: String! @juniper(ownership: "owned", infallible: true)
 
   """
   The game's URL slug/abbreviation.
   """
-  slug: String!
+  slug: String! @juniper(ownership: "owned", infallible: true)
 
   """
   All of the runs submitted for this game.
   """
-  runs: [Run!]!
-  levels: [Level!]!
-  categories: [Category!]!
+  runs: [Run!]! @juniper(ownership: "owned", infallible: true)
+  levels: [Level!]! @juniper(ownership: "owned", infallible: true)
+  categories: [Category!]! @juniper(ownership: "owned", infallible: true)
 
   """
   Returns the ordered ranked runs for a run in a category and optionally level.
   """
   leaderboard(category: String!, level: String): [RankedRun!]!
+    @juniper(ownership: "owned", infallible: true)
 
   """
   Get a Run on this game by id, or null if not found.
   """
-  run(id: String!): Run
-}
-
-"""
-A level of a game on speedrun.com.
-"""
-type Level {
-  """
-  The level's base36 ID from speedrun.com.
-  """
-  id: String!
-
-  """
-  The level's name.
-  """
-  name: String!
-
-  """
-  The level's slug.
-  """
-  slug: String!
-
-  """
-  The associated game.
-  """
-  game: Game!
-  categories: [Category!]!
-
-  """
-  Returns ordered ranked runs.
-  """
-  leaderboard(category: String!): [RankedRun!]!
-}
-
-type Mutation {
-  query: Query
-}
-
-type Player {
-  """
-  The player's name, which may be a distinct username or a non-distinct guest
-  nickname.
-  """
-  name: String!
-
-  """
-  The associated user, if this is a user.
-  """
-  user: User
-
-  """
-  Whether this player is a guest instead of a user.
-  """
-  isGuest: Boolean!
-}
-
-type Query {
-  """
-  Get a Game by id or slug, or null if not found.
-
-  Throws an error if both are specified but don't both match the same game.
-  """
-  game(slug: String, id: String): Game
-
-  """
-  Get a User by id or slug, or null if not found.
-
-  Throws an error if both are specified but don't both match the same game.
-  """
-  user(slug: String, id: String): User
-
-  """
-  Get a Run by id, or null if not found.
-  """
-  run(id: String!): Run
-}
-
-type RankedRun {
-  """
-  This run's rank, with ties broken by date.
-  """
-  rank: Int!
-
-  """
-  The time of this run, as measured by this leaderboard's rules, in miliseconds.
-  """
-  timeMs: Int!
-
-  """
-  Whether this run is tied for this rank.
-  """
-  isTied: Boolean!
-
-  """
-  This run's rank, with ties unbroken.
-  """
-  tiedRank: Int!
-
-  """
-  The run.
-  """
-  run: Run!
-}
-
-"""
-A run of a game on speedrun.com.
-"""
-type Run {
-  """
-  The run's base36 ID from speedrun.com.
-  """
-  id: String!
-
-  """
-  The game associated with this run.
-  """
-  game: Game!
-
-  """
-  The category associated with this run.
-  """
-  category: Category!
-
-  """
-  The level associated with this run, or null.
-  """
-  level: Level
-  date: Float
-  players: [Player!]!
+  run(id: String!): Run @juniper(ownership: "owned", infallible: true)
 }
 
 """
@@ -190,10 +68,136 @@ type User {
   """
   The users's base36 ID from speedrun.com.
   """
-  id: String!
+  id: String! @juniper(ownership: "owned", infallible: true)
 
   """
   The user's URL slug/abbreviation.
   """
-  slug: String!
+  slug: String! @juniper(ownership: "owned", infallible: true)
+}
+
+"""
+A category for runs of a game on speedrun.com.
+"""
+type Category {
+  """
+  The category's base36 ID from speedrun.com.
+  """
+  id: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The category's name.
+  """
+  name: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The category's slug.
+  """
+  slug: String! @juniper(ownership: "owned", infallible: true)
+}
+
+"""
+A level of a game on speedrun.com.
+"""
+type Level {
+  """
+  The level's base36 ID from speedrun.com.
+  """
+  id: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The level's name.
+  """
+  name: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The level's slug.
+  """
+  slug: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The associated game.
+  """
+  game: Game! @juniper(ownership: "owned", infallible: true)
+  categories: [Category!]! @juniper(ownership: "owned", infallible: true)
+
+  """
+  Returns ordered ranked runs.
+  """
+  leaderboard(category: String!): [RankedRun!]!
+    @juniper(ownership: "owned", infallible: true)
+}
+
+type Player {
+  """
+  The player's name, which may be a distinct username or a non-distinct guest
+  nickname.
+  """
+  name: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The associated user, if this is a user.
+  """
+  user: User @juniper(ownership: "owned", infallible: true)
+
+  """
+  Whether this player is a guest instead of a user.
+  """
+  isGuest: Boolean! @juniper(ownership: "owned", infallible: true)
+}
+
+type RankedRun {
+  """
+  This run's rank, with ties broken by date.
+  """
+  rank: Int! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The time of this run, as measured by this leaderboard's rules, in miliseconds.
+  """
+  timeMs: Int! @juniper(ownership: "owned", infallible: true)
+
+  """
+  Whether this run is tied for this rank.
+  """
+  isTied: Boolean! @juniper(ownership: "owned", infallible: true)
+
+  """
+  This run's rank, with ties unbroken.
+  """
+  tiedRank: Int! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The run.
+  """
+  run: Run! @juniper(ownership: "owned", infallible: true)
+}
+
+"""
+A run of a game on speedrun.com.
+"""
+type Run {
+  """
+  The run's base36 ID from speedrun.com.
+  """
+  id: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The game associated with this run.
+  """
+  game: Game! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The category associated with this run.
+  """
+  category: Category! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The level associated with this run, or null.
+  """
+  level: Level @juniper(ownership: "owned", infallible: true)
+
+  date: Float @juniper(ownership: "owned", infallible: true)
+
+  players: [Player!]! @juniper(ownership: "owned", infallible: true)
 }
