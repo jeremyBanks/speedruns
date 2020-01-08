@@ -1,8 +1,10 @@
-import fetch from "isomorphic-unfetch";
-import { NextPage } from "next";
 import { useState, useEffect } from "react";
+import { NextPage } from "next";
 
-const VoyagerPage: NextPage = () => {
+import styles from "../../pages-lib/styles.module.scss";
+import introspection from "../../../public/graphql/schema.json";
+
+const VoyagerPage: NextPage<{ introspectionData: object }> = () => {
   const [Voyager, setVoyager] = useState<
     typeof import("graphql-voyager").Voyager
   >();
@@ -18,15 +20,14 @@ const VoyagerPage: NextPage = () => {
       return <div>loading</div>;
     } else {
       return (
-        <Voyager
-          introspection={(query: unknown) =>
-            fetch("http://localhost:3001/", {
-              method: "post",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ query })
-            }).then(response => response.json())
-          }
-        />
+        <div className={styles.voyagerFrame}>
+          <link rel="stylesheet" href="/graphql/voyager.css" />
+          <Voyager
+            introspection={async () => ({
+              data: introspection
+            })}
+          />
+        </div>
       );
     }
   }
