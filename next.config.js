@@ -8,6 +8,7 @@ module.exports = [
   exportPathMap() {
     return {
       "/": { page: "/" },
+      "/graphql/voyager": { page: "/graphql/voyager" },
       "/sc1": { page: "/[game]", query: { game: "sc1" } },
       "/scbw": { page: "/[game]", query: { game: "scbw" } },
       "/wc2": { page: "/[game]", query: { game: "wc2" } },
