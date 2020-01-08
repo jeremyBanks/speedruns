@@ -6,7 +6,7 @@ use juniper::{FieldResult, RootNode};
 use juniper::{
     graphql_interface, graphql_object, graphql_scalar, graphql_union, graphql_value,
     object, GraphQLEnum, GraphQLInputObject, GraphQLObject, GraphQLScalarValue,
-    ScalarValue,
+    ScalarValue, ID,
 };
 
 use crate::{
@@ -32,8 +32,29 @@ pub fn schema() -> Schema {
 #[derive(Debug, Default)]
 pub struct Query {}
 
+/// <https://graphql.org/learn/global-object-identification/>
+trait Node {
+    fn id(&self) -> &ID;
+}
+
+#[allow(bare_trait_objects)]
+graphql_interface!(<'a> &'a Node: Context as "Node" |&self| {
+    field id() -> &ID {
+        self.id()
+    }
+
+    instance_resolvers: |_| {
+
+    }
+});
+
 #[juniper::object(Context = Context)]
 impl Query {
+    /// <https://graphql.org/learn/global-object-identification/>
+    pub fn node(context: &Context, id: ID) -> FieldResult<Node> {
+        unimplemented!()
+    }
+
     /// Get a Game by id or slug, or null if not found.
     ///
     /// Throws an error if both are specified but don't both match the same game.

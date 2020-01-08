@@ -4,6 +4,10 @@ import { NextPage } from "next";
 import styles from "../../pages-lib/styles.module.scss";
 import introspection from "../../../public/graphql/schema.json";
 
+const introspectionResult = Promise.resolve({
+  data: introspection
+});
+
 const VoyagerPage: NextPage<{ introspectionData: object }> = () => {
   const [Voyager, setVoyager] = useState<
     typeof import("graphql-voyager").Voyager
@@ -22,11 +26,7 @@ const VoyagerPage: NextPage<{ introspectionData: object }> = () => {
       return (
         <div className={styles.voyagerFrame}>
           <link rel="stylesheet" href="/graphql/voyager.css" />
-          <Voyager
-            introspection={async () => ({
-              data: introspection
-            })}
-          />
+          <Voyager introspection={() => introspectionResult} />
         </div>
       );
     }
