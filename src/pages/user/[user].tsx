@@ -11,7 +11,7 @@ const UserPage: NextPage<{}> = () => {
   const router = useRouter();
 
   const result = useQueryWithStatus<schema.GetUser>(GetUser, {
-    id: router.query.user
+    slug: router.query.user
   });
 
   if (result.data) {

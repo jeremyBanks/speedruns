@@ -1,13 +1,13 @@
 use std::{convert::TryFrom, sync::Arc};
 
-use juniper::{FieldResult, RootNode};
-
 #[allow(unused)]
 use juniper::{
     graphql_interface, graphql_object, graphql_scalar, graphql_union, graphql_value,
     object, GraphQLEnum, GraphQLInputObject, GraphQLObject, GraphQLScalarValue,
     ScalarValue,
 };
+use juniper::{Executor, FieldResult, RootNode};
+use juniper_from_schema::graphql_schema_from_file;
 
 use crate::{
     data::{
@@ -17,11 +17,7 @@ use crate::{
     utils::{base36, u64_from_base36},
 };
 
-#[derive(Debug, Clone)]
-pub struct Context {
-    pub database: Arc<Database>,
-}
-impl juniper::Context for Context {}
+graphql_schema_from_file!("public/graphql/schema.graphql");
 
 pub type Schema = RootNode<'static, Query, Mutation>;
 
@@ -29,103 +25,138 @@ pub fn schema() -> Schema {
     Schema::new(Query {}, Mutation {})
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Clone)]
+pub struct Context {
+    pub database: Arc<Database>,
+}
+
+impl juniper::Context for Context {}
+
+#[derive(Debug)]
 pub struct Query {}
 
-#[juniper::object(Context = Context)]
-impl Query {
-    /// Get a Game by id or slug, or null if not found.
-    ///
-    /// Throws an error if both are specified but don't both match the same game.
-    pub fn game(
-        context: &Context,
+#[derive(Debug)]
+pub struct Mutation {}
+
+#[derive(Debug, Clone)]
+pub struct Game(DbLinked<db::Game>);
+
+#[derive(Debug, Clone)]
+pub struct Run(DbLinked<db::Run>);
+
+#[derive(Debug, Clone)]
+pub struct RankedRun(leaderboard::RankedRun);
+
+#[derive(Debug, Clone)]
+pub struct Category(DbLinked<db::Category>);
+
+#[derive(Debug, Clone)]
+pub struct User(DbLinked<db::User>);
+
+#[derive(Debug, Clone)]
+pub enum Player {
+    User(User),
+    Guest(String),
+}
+
+#[derive(Debug, Clone)]
+pub struct Level(DbLinked<db::Level>);
+impl QueryFields for Query {
+    fn field_game(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Game, Walked>,
         slug: Option<String>,
         id: Option<String>,
     ) -> FieldResult<Option<Game>> {
         let _todo = id;
         let slug = slug.unwrap();
-        match context.database.game_by_slug(&slug) {
+        match executor.context().database.game_by_slug(&slug) {
             Some(game) => Ok(Some(Game(game))),
             None => Ok(None),
         }
     }
 
-    /// Get a User by id or slug, or null if not found.
-    ///
-    /// Throws an error if both are specified but don't both match the same game.
-    pub fn user(
-        context: &Context,
+    fn field_user(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, User, Walked>,
         slug: Option<String>,
         id: Option<String>,
     ) -> FieldResult<Option<User>> {
         let _todo = id;
         let slug = slug.unwrap();
-        match context.database.user_by_slug(&slug) {
+        match executor.context().database.user_by_slug(&slug) {
             Some(user) => Ok(Some(User(user))),
             None => Ok(None),
         }
     }
 
-    /// Get a Run by id, or null if not found.
-    pub fn run(context: &Context, id: String) -> FieldResult<Option<Run>> {
+    fn field_run(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Run, Walked>,
+        id: String,
+    ) -> Option<Run> {
         let id = u64_from_base36(&id).unwrap();
-        match context.database.run_by_id(id) {
-            Some(run) => Ok(Some(Run(run))),
-            None => Ok(None),
+        match executor.context().database.run_by_id(id) {
+            Some(run) => (Some(Run(run))),
+            None => (None),
         }
     }
 }
 
-#[derive(Debug, Default)]
-pub struct Mutation {}
-
-#[juniper::object(Context = Context)]
-impl Mutation {
-    pub fn query(context: &Context) -> FieldResult<Option<Query>> {
-        Ok(None)
+impl MutationFields for Mutation {
+    fn field_query(&self, _executor: &Executor<'_, Context>) -> Option<bool> {
+        None
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct Game(DbLinked<db::Game>);
-
-#[juniper::object(Context = Context)]
-/// A game on speedrun.com.
-impl Game {
-    /// The game's base36 ID from speedrun.com.
-    pub fn id(&self, context: &Context) -> FieldResult<String> {
-        Ok(base36(self.0.id))
+impl GameFields for Game {
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> String {
+        base36(self.0.id)
     }
 
-    /// The game's name, in English if possible.
-    pub fn name(&self, context: &Context) -> FieldResult<String> {
-        Ok(self.0.name.to_string())
+    fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
+        self.0.name.to_string()
     }
 
-    /// The game's URL slug/abbreviation.
-    pub fn slug(&self, context: &Context) -> FieldResult<String> {
-        Ok(self.0.slug.to_string())
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        (self.0.slug.to_string())
     }
 
-    /// All of the runs submitted for this game.
-    pub fn runs(&self, context: &Context) -> FieldResult<Vec<Run>> {
-        Ok(self.0.runs().iter().map(|run| Run(run.clone())).collect())
+    fn field_runs(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Run, Walked>,
+    ) -> Vec<Run> {
+        (self.0.runs().iter().map(|run| Run(run.clone())).collect())
     }
 
-    pub fn levels(&self, context: &Context) -> FieldResult<Vec<Level>> {
+    fn field_levels(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Level, Walked>,
+    ) -> Vec<Level> {
         // XXX: full table scan
-        Ok(context
+        executor
+            .context()
             .database
             .levels()
             .filter(|level| level.game_id == self.0.id)
             .map(Level)
-            .collect())
+            .collect()
     }
 
     // Full-game run categories.
-    pub fn categories(&self, context: &Context) -> FieldResult<Vec<Category>> {
+    fn field_categories(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Category, Walked>,
+    ) -> Vec<Category> {
         // XXX: full table scan
-        Ok(context
+        (executor
+            .context()
             .database
             .categories()
             .filter(|category| {
@@ -135,13 +166,13 @@ impl Game {
             .collect())
     }
 
-    /// Returns the ordered ranked runs for a run in a category and optionally level.
-    pub fn leaderboard(
+    fn field_leaderboard(
         &self,
-        context: &Context,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, RankedRun, Walked>,
         category: String,
         level: Option<String>,
-    ) -> FieldResult<Vec<RankedRun>> {
+    ) -> Vec<RankedRun> {
         let level_id = level.map(|level| self.0.level_by_slug(&level).unwrap().id);
         let category_id = self.0.category_by_slug(&category).unwrap().id;
 
@@ -155,209 +186,206 @@ impl Game {
 
         let ranked = leaderboard::rank_runs(&runs);
 
-        Ok(ranked.iter().map(|r| RankedRun(r.clone())).collect())
+        (ranked.iter().map(|r| RankedRun(r.clone())).collect())
     }
 
-    /// Get a Run on this game by id, or null if not found.
-    pub fn run(context: &Context, id: String) -> FieldResult<Option<Run>> {
+    fn field_run(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Run, Walked>,
+        id: String,
+    ) -> Option<Run> {
         let id = u64_from_base36(&id).unwrap();
-        match context.database.run_by_id(id) {
+        match executor.context().database.run_by_id(id) {
             Some(run) =>
                 if run.game_id == self.0.id {
-                    Ok(Some(Run(run)))
+                    Some(Run(run))
                 } else {
-                    Ok(None)
+                    None
                 },
-            None => Ok(None),
+            None => None,
         }
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct Run(DbLinked<db::Run>);
-
-#[juniper::object(Context = Context)]
-/// A run of a game on speedrun.com.
-impl Run {
-    /// The run's base36 ID from speedrun.com.
-    pub fn id(&self, context: &Context) -> FieldResult<String> {
-        Ok(base36(self.0.id))
+impl RunFields for Run {
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> String {
+        base36(self.0.id)
     }
 
-    /// The game associated with this run.
-    pub fn game(&self, context: &Context) -> FieldResult<Game> {
-        Ok(Game(self.0.game()))
+    fn field_game(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Game, Walked>,
+    ) -> Game {
+        Game(self.0.game())
     }
 
-    /// The category associated with this run.
-    pub fn category(&self, context: &Context) -> FieldResult<Category> {
-        Ok(Category(self.0.category()))
+    fn field_category(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Category, Walked>,
+    ) -> Category {
+        Category(self.0.category())
     }
 
-    /// The level associated with this run, or null.
-    pub fn level(&self, context: &Context) -> FieldResult<Option<Level>> {
-        Ok(self.0.level().map(Level))
+    fn field_level(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Level, Walked>,
+    ) -> Option<Level> {
+        self.0.level().map(Level)
     }
 
-    // The date of the run, as a unix timestamp.
-    pub fn date(&self, context: &Context) -> FieldResult<Option<f64>> {
+    fn field_date(&self, _executor: &Executor<'_, Context>) -> Option<f64> {
         // not sure if this cast is potentially lossy in practice
-        Ok(self
-            .0
+        self.0
             .date()
-            .map(|c| c.and_hms(12, 8, 4).timestamp() as f64))
+            .map(|c| c.and_hms(12, 8, 4).timestamp() as f64)
     }
 
-    pub fn players(&self, context: &Context) -> FieldResult<Vec<Player>> {
-        Ok(self
-            .0
+    fn field_players(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Player, Walked>,
+    ) -> Vec<Player> {
+        self.0
             .players()
             .iter()
             .map(|run_player| match run_player {
                 db::RunPlayer::UserId(user_id) => {
-                    let user = context.database.user_by_id(*user_id).unwrap();
+                    let user = executor.context().database.user_by_id(*user_id).unwrap();
                     Player::User(User(user))
                 }
                 db::RunPlayer::GuestName(name) => Player::Guest(name.clone()),
             })
-            .collect())
+            .collect()
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct RankedRun(leaderboard::RankedRun);
-
-#[juniper::object(Context = Context)]
-impl RankedRun {
+impl RankedRunFields for RankedRun {
     /// This run's rank, with ties broken by date.
-    pub fn rank(&self, context: &Context) -> FieldResult<i32> {
-        Ok(i32::try_from(*self.0.rank()).unwrap())
+    fn field_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
+        (i32::try_from(*self.0.rank()).unwrap())
     }
 
     /// The time of this run, as measured by this leaderboard's rules, in miliseconds.
-    pub fn time_ms(&self, context: &Context) -> FieldResult<i32> {
-        Ok(i32::try_from(*self.0.time_ms()).unwrap())
+    fn field_time_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
+        (i32::try_from(*self.0.time_ms()).unwrap())
     }
 
     /// Whether this run is tied for this rank.
-    pub fn is_tied(&self, context: &Context) -> FieldResult<bool> {
-        Ok(*self.0.is_tied())
+    fn field_is_tied(&self, _executor: &Executor<'_, Context>) -> bool {
+        (*self.0.is_tied())
     }
 
     /// This run's rank, with ties unbroken.
-    pub fn tied_rank(&self, context: &Context) -> FieldResult<i32> {
-        Ok(i32::try_from(*self.0.tied_rank()).unwrap())
+    fn field_tied_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
+        (i32::try_from(*self.0.tied_rank()).unwrap())
     }
 
     /// The run.
-    pub fn run(&self, context: &Context) -> FieldResult<Run> {
-        Ok(Run(self.0.run().clone()))
+    fn field_run(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Run, Walked>,
+    ) -> Run {
+        (Run(self.0.run().clone()))
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct Category(DbLinked<db::Category>);
-
-#[juniper::object(Context = Context)]
-/// A category for runs of a game on speedrun.com.
-impl Category {
+impl CategoryFields for Category {
     /// The category's base36 ID from speedrun.com.
-    pub fn id(&self, context: &Context) -> FieldResult<String> {
-        Ok(base36(self.0.id))
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> String {
+        (base36(self.0.id))
     }
 
     /// The category's name.
-    pub fn name(&self, context: &Context) -> FieldResult<String> {
-        Ok(self.0.name.clone())
+    fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
+        (self.0.name.clone())
     }
 
     /// The category's slug.
-    pub fn slug(&self, context: &Context) -> FieldResult<String> {
-        Ok(self.0.slug.clone())
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        (self.0.slug.clone())
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct User(DbLinked<db::User>);
-
-#[juniper::object(Context = Context)]
-/// A user of speedrun.com.
-impl User {
-    /// The users's base36 ID from speedrun.com.
-    pub fn id(&self, context: &Context) -> FieldResult<String> {
-        Ok(base36(self.0.id))
+impl UserFields for User {
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> String {
+        (base36(self.0.id))
     }
 
-    /// The user's URL slug/abbreviation.
-    pub fn slug(&self, context: &Context) -> FieldResult<String> {
-        Ok(self.0.slug.clone())
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        (self.0.slug.clone())
     }
 }
 
-#[derive(Debug, Clone)]
-pub enum Player {
-    User(User),
-    Guest(String),
-}
-
-#[juniper::object(Context = Context)]
-impl Player {
+impl PlayerFields for Player {
     /// The player's name, which may be a distinct username or a non-distinct guest
     /// nickname.
-    pub fn name(&self, context: &Context) -> FieldResult<String> {
-        Ok(match self {
+    fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
+        (match self {
             Player::User(user) => user.0.name.clone(),
             Player::Guest(name) => name.clone(),
         })
     }
 
     /// The associated user, if this is a user.
-    pub fn user(&self, context: &Context) -> FieldResult<Option<User>> {
-        Ok(match self {
+    fn field_user(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, User, Walked>,
+    ) -> Option<User> {
+        (match self {
             Player::User(user) => Some(user.clone()),
             Player::Guest(_name) => None,
         })
     }
 
     /// Whether this player is a guest instead of a user.
-    pub fn is_guest(&self, context: &Context) -> FieldResult<bool> {
-        Ok(match self {
+    fn field_is_guest(&self, _executor: &Executor<'_, Context>) -> bool {
+        (match self {
             Player::User(_user) => false,
             Player::Guest(_name) => true,
         })
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct Level(DbLinked<db::Level>);
-
-#[juniper::object(Context = Context)]
-/// A level of a game on speedrun.com.
-impl Level {
+impl LevelFields for Level {
     /// The level's base36 ID from speedrun.com.
-    pub fn id(&self, context: &Context) -> FieldResult<String> {
-        Ok(base36(self.0.id))
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> String {
+        (base36(self.0.id))
     }
 
     /// The level's name.
-    pub fn name(&self, context: &Context) -> FieldResult<String> {
-        Ok(self.0.name.clone())
+    fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
+        (self.0.name.clone())
     }
 
     /// The level's slug.
-    pub fn slug(&self, context: &Context) -> FieldResult<String> {
-        Ok(self.0.slug.clone())
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        (self.0.slug.clone())
     }
 
     /// The associated game.
-    pub fn game(&self, context: &Context) -> FieldResult<Game> {
-        Ok(Game(self.0.game()))
+    fn field_game(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Game, Walked>,
+    ) -> Game {
+        (Game(self.0.game()))
     }
 
     // Individual level run categories.
-    pub fn categories(&self, context: &Context) -> FieldResult<Vec<Category>> {
+    fn field_categories(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Category, Walked>,
+    ) -> Vec<Category> {
         // XXX: full table scan
-        Ok(context
+        (executor
+            .context()
             .database
             .categories()
             .filter(|category| {
@@ -368,11 +396,12 @@ impl Level {
     }
 
     /// Returns ordered ranked runs.
-    pub fn leaderboard(
+    fn field_leaderboard(
         &self,
-        context: &Context,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, RankedRun, Walked>,
         category: String,
-    ) -> FieldResult<Vec<RankedRun>> {
+    ) -> Vec<RankedRun> {
         let game = self.0.game();
 
         let category_id = game.category_by_slug(&category).unwrap().id;
@@ -386,6 +415,6 @@ impl Level {
 
         let ranked = leaderboard::rank_runs(&runs);
 
-        Ok(ranked.iter().map(|r| RankedRun(r.clone())).collect())
+        (ranked.iter().map(|r| RankedRun(r.clone())).collect())
     }
 }

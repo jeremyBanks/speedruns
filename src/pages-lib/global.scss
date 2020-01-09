@@ -36,17 +36,8 @@ main {
   width: 100%;
   max-width: 640px;
   min-width: 596px;
-  position: relative;
 
   transition: 0.1s filter;
-}
-
-body.unloaded main,
-body.loading main {
-  cursor: progress;
-  pointer-events: none;
-  user-select: none;
-  filter: brightness(0.75) blur(1px);
 }
 
 main > * {
@@ -81,29 +72,6 @@ a:not(:hover) {
 ::selection {
   color: black;
   background: rgb(200, 225, 255);
-}
-
-#error-message {
-  border: 1px solid red;
-  color: red;
-  position: fixed;
-  right: 4px;
-  bottom: 4px;
-  z-index: 512;
-  background: rgba(0, 0, 0, 0.9375);
-  width: auto;
-  padding: 2em;
-  max-width: 600px;
-  user-select: all;
-}
-
-body.loading #error-message,
-body.loaded #error-message {
-  display: none;
-}
-
-body.errored #error-message {
-  display: block;
 }
 
 pre {
