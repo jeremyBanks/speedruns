@@ -1,13 +1,8 @@
-#![feature(custom_attribute)]
 #![feature(try_blocks)]
-#![feature(try_from)]
-#![feature(slice_concat_ext)]
 
-#[macro_use]
-extern crate log;
+#[macro_use] extern crate log;
 use env_logger;
-#[macro_use]
-extern crate serde_derive;
+#[macro_use] extern crate serde_derive;
 use chrono::{Duration, Utc};
 use itertools::Itertools;
 use std::{collections::BTreeMap, error::Error};
@@ -95,7 +90,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
                 None => {
                     debug!("  no runs for {:?}", level);
                     records_by_level_id.insert(level.level_id.clone(), Vec::new());
-                    continue;
+                    continue
                 }
             };
 
@@ -167,8 +162,10 @@ pub fn main() -> Result<(), Box<dyn Error>> {
 
             sum = sum - record.improvement;
 
-            if Utc::today().naive_utc() - record.run.performed > Duration::days(max_age_days) {
-                continue;
+            if Utc::today().naive_utc() - record.run.performed
+                > Duration::days(max_age_days)
+            {
+                continue
             }
 
             let term_bg_black = "\x1b[40m";
@@ -208,7 +205,9 @@ pub fn main() -> Result<(), Box<dyn Error>> {
                     &color_with_hash(&record.run.performed.to_string()),
                     " ",
                     // runner
-                    &color_with_hash(&format!("{:<12}", record.run.player.to_string())[..12]),
+                    &color_with_hash(
+                        &format!("{:<12}", record.run.player.to_string())[..12]
+                    ),
                     "  ",
                     // level
                     &color_with_hash(&format!("{:<16}", level.name.to_string())[..16]),
@@ -262,6 +261,6 @@ fn fmt_duration(duration: Duration) -> String {
 
 #[derive(Debug, Clone)]
 struct Record<'a> {
-    pub run: &'a Run,
+    pub run:         &'a Run,
     pub improvement: Duration,
 }
