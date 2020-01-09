@@ -5,28 +5,35 @@ schema {
 
 type Speedruns {
   """
-  Get a Game by id or slug, or null if not found.
+  Gets a Game by global API ID, speedrun.com ID, or slug.
 
-  Throws an error if both are specified but don't both match the same game.
+  Throws an error if multiple are specified but don't match the same game.
   """
-  game(slug: String, id: String): Game @juniper(ownership: "owned")
-
-  """
-  Get a User by id or slug, or null if not found.
-
-  Throws an error if both are specified but don't both match the same game.
-  """
-  user(slug: String, id: String): User @juniper(ownership: "owned")
+  game(id: ID, srcId: String, slug: String): Game @juniper(ownership: "owned")
 
   """
-  Get a Run by id, or null if not found.
+  Gets a User by global API ID, speedrun.com ID, or slug.
+
+  Throws an error if multiple are specified but don't match the same user.
   """
-  run(id: String!): Run @juniper(ownership: "owned", infallible: true)
+  user(id: ID, srcId: String, slug: String): User @juniper(ownership: "owned")
 
   """
-  Gets any Node by its global ID.
+  Gets a run by global API ID or speedrun.com ID.
+
+  Throws an error if multiple are specified but don't match the same run.
+  """
+  run(id: ID, srcId: String): Run @juniper(ownership: "owned")
+
+  """
+  Gets any type of Node by global API ID.
   """
   node(id: ID!): Node @juniper(ownership: "owned", infallible: true)
+
+  """
+  Gets any number of Nodes of any types by global API IDs.
+  """
+  nodes(ids: [ID!]!): [Node]! @juniper(ownership: "owned", infallible: true)
 }
 
 """
@@ -44,12 +51,12 @@ A game on speedrun.com.
 """
 type Game implements Node {
   """
-  The user's global base64 ID.
+  The game's global API ID.
   """
   id: ID! @juniper(ownership: "owned", infallible: true)
 
   """
-  The user's base36 ID on speedrun.com.
+  The game's speedrun.com ID.
   """
   srcId: String! @juniper(ownership: "owned", infallible: true)
 
@@ -67,64 +74,117 @@ type Game implements Node {
   All of the runs submitted for this game.
   """
   runs: [Run!]! @juniper(ownership: "owned", infallible: true)
-  levels: [Level!]! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The categories for full runs of this game.
+  """
   categories: [Category!]! @juniper(ownership: "owned", infallible: true)
 
   """
-  Returns the ordered ranked runs for a run in a category and optionally level.
+  The individual levels in this game.
   """
-  leaderboard(category: String!, level: String): [RankedRun!]!
-    @juniper(ownership: "owned", infallible: true)
+  levels: [Level!]! @juniper(ownership: "owned", infallible: true)
 
   """
-  Get a Run on this game by id, or null if not found.
+  The categories for individual level runs of this game.
   """
-  run(id: String!): Run @juniper(ownership: "owned", infallible: true)
+  levelCategories: [Category!]! @juniper(ownership: "owned", infallible: true)
+
+  """
+  Get a Run of this game by ID, or null if not found.
+  """
+  run(id: ID, srcId: String!): Run @juniper(ownership: "owned")
 }
 
 """
 A user of speedrun.com.
 """
-type User {
+type User implements Node {
   """
-  The users's base36 ID from speedrun.com.
+  The user's global API ID.
   """
-  id: String! @juniper(ownership: "owned", infallible: true)
+  id: ID! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The user's speedrun.com ID.
+  """
+  srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
   The user's URL slug/abbreviation.
   """
   slug: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  Runs submitted by this user, optionally limited to a set of games, categories, or levels.
+
+  May return an error if a specified game, category, or level does not exist.
+  """
+  runs(
+    game_slugs: [String!]
+    category_slugs: [String!]
+    level_slugs: [String!]
+  ): [Run!]! @juniper(ownership: "owned")
 }
 
 """
-A category for runs of a game on speedrun.com.
+Whether a category is for a full-game runs or individual-level runs.
 """
-type Category {
+enum CategoryType {
+  FULL_GAME
+  INDIVIDUAL_LEVEL
+}
+
+"""
+A category for runs of a game of speedrun.com.
+"""
+type Category implements Node {
   """
-  The category's base36 ID from speedrun.com.
+  The category's global API ID.
   """
-  id: String! @juniper(ownership: "owned", infallible: true)
+  id: ID! @juniper(ownership: "owned", infallible: true)
 
   """
-  The category's name.
+  The category's speedrun.com ID.
   """
-  name: String! @juniper(ownership: "owned", infallible: true)
+  srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
-  The category's slug.
+  Whether this category is for a full-game runs or individual-level runs.
+  """
+  type: CategoryType! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The category's URL slug/abbreviation.
   """
   slug: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  Returns a leaderboard of runs in this category ranked.
+  Level slug must be provided iff type is INDIVIDUAL_LEVEL.
+  """
+  leaderboard(levelSlug: String): [RankedRun!]!
+    @juniper(ownership: "owned", infallible: true)
+
+  """
+  The game associated with this level.
+  """
+  game: Game! @juniper(ownership: "owned", infallible: true)
 }
 
 """
 A level of a game on speedrun.com.
 """
-type Level {
+type Level implements Node {
   """
-  The level's base36 ID from speedrun.com.
+  The level's global API ID.
   """
-  id: String! @juniper(ownership: "owned", infallible: true)
+  id: ID! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The level's speedrun.com ID.
+  """
+  srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
   The level's name.
@@ -137,16 +197,9 @@ type Level {
   slug: String! @juniper(ownership: "owned", infallible: true)
 
   """
-  The associated game.
+  The game associated with this level.
   """
   game: Game! @juniper(ownership: "owned", infallible: true)
-  categories: [Category!]! @juniper(ownership: "owned", infallible: true)
-
-  """
-  Returns ordered ranked runs.
-  """
-  leaderboard(category: String!): [RankedRun!]!
-    @juniper(ownership: "owned", infallible: true)
 }
 
 type Player {
@@ -167,6 +220,9 @@ type Player {
   isGuest: Boolean! @juniper(ownership: "owned", infallible: true)
 }
 
+"""
+A run as ranked on a leaderboard of speedrun.com.
+"""
 type RankedRun {
   """
   This run's rank, with ties broken by date.
@@ -197,11 +253,16 @@ type RankedRun {
 """
 A run of a game on speedrun.com.
 """
-type Run {
+type Run implements Node {
   """
-  The run's base36 ID from speedrun.com.
+  The run's global API ID.
   """
-  id: String! @juniper(ownership: "owned", infallible: true)
+  id: ID! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The run's speedrun.com ID.
+  """
+  srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
   The game associated with this run.
@@ -218,7 +279,13 @@ type Run {
   """
   level: Level @juniper(ownership: "owned", infallible: true)
 
+  """
+  The date on which this run was performed.
+  """
   date: Float @juniper(ownership: "owned", infallible: true)
 
+  """
+  The players participating in this run.
+  """
   players: [Player!]! @juniper(ownership: "owned", infallible: true)
 }
