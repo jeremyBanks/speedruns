@@ -207,10 +207,6 @@ pub fn main() -> Result<(), Box<dyn Error>> {
                     // date
                     &color_with_hash(&record.run.performed.to_string()),
                     " ",
-                    // flag
-                    fg_white,
-                    &record.run.player.flag().unwrap_or(" ".to_string()),
-                    " ",
                     // runner
                     &color_with_hash(&format!("{:<12}", record.run.player.to_string())[..12]),
                     "  ",
