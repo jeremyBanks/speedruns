@@ -6,7 +6,7 @@ use juniper::{
     object, GraphQLEnum, GraphQLInputObject, GraphQLObject, GraphQLScalarValue,
     ScalarValue,
 };
-use juniper::{Executor, FieldResult, GraphQLType, ID};
+use juniper::{Executor, FieldResult, ID};
 use juniper_from_schema::graphql_schema_from_file;
 
 use crate::{
@@ -32,9 +32,6 @@ impl juniper::Context for Context {}
 
 #[derive(Debug)]
 pub struct Speedruns {}
-
-#[derive(Debug)]
-pub struct Node {}
 
 #[derive(Debug, Clone)]
 pub struct Game(DbLinked<db::Game>);
@@ -113,27 +110,12 @@ impl SpeedrunsFields for Speedruns {
     }
 }
 
-impl GraphQLType for Node {
-    type Context = Context;
-    type TypeInfo = ();
-
-    fn name(_: &()) -> Option<&'static str> {
-        Some("Node")
-    }
-
-    fn meta<'r>(_: &(), registry: &mut juniper::Registry<'r>) -> juniper::meta::MetaType<'r>
-    where
-        juniper::DefaultScalarValue: 'r,
-    {
-        let fields = &[registry.field::<ID>("id", &())];
-        registry
-            .build_interface_type::<Node>(&(), fields)
-            .into_meta()
-    }
-}
-
 impl GameFields for Game {
-    fn field_id(&self, _executor: &Executor<'_, Context>) -> String {
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
+        ID::from(base36(self.0.id))
+    }
+
+    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
         base36(self.0.id)
     }
 
