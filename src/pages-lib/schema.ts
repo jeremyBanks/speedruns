@@ -155,7 +155,7 @@ export interface GetHome_war2_levels {
 export interface GetHome_war2 {
   __typename: "Game";
   /**
-   * The game's base36 ID from speedrun.com.
+   * The user's global base64 ID.
    */
   id: string;
   /**
@@ -322,7 +322,7 @@ export interface GetHome_war2x_levels {
 export interface GetHome_war2x {
   __typename: "Game";
   /**
-   * The game's base36 ID from speedrun.com.
+   * The user's global base64 ID.
    */
   id: string;
   /**
@@ -643,7 +643,7 @@ export interface HomeDetails_levels {
 export interface HomeDetails {
   __typename: "Game";
   /**
-   * The game's base36 ID from speedrun.com.
+   * The user's global base64 ID.
    */
   id: string;
   /**

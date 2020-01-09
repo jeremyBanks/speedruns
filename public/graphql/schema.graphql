@@ -24,7 +24,7 @@ type Speedruns {
   run(id: String!): Run @juniper(ownership: "owned", infallible: true)
 
   """
-  <https://graphql.org/learn/global-object-identification/>
+  Gets any Node by its global ID.
   """
   node(id: ID!): Node @juniper(ownership: "owned", infallible: true)
 }
@@ -33,17 +33,25 @@ type Speedruns {
 <https://graphql.org/learn/global-object-identification/>
 """
 interface Node {
+  """
+  This node's global base64 ID.
+  """
   id: ID! @juniper(ownership: "owned", infallible: true)
 }
 
 """
 A game on speedrun.com.
 """
-type Game {
+type Game implements Node {
   """
-  The game's base36 ID from speedrun.com.
+  The user's global base64 ID.
   """
-  id: String! @juniper(ownership: "owned", infallible: true)
+  id: ID! @juniper(ownership: "owned", infallible: true)
+
+  """
+  The user's base36 ID on speedrun.com.
+  """
+  srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
   The game's name, in English if possible.
