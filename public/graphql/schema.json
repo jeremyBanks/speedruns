@@ -1,16 +1,16 @@
 {
   "__schema": {
     "queryType": {
-      "name": "Query"
+      "name": "Speedruns"
     },
     "mutationType": {
-      "name": "Mutation"
+      "name": "Speedruns"
     },
     "subscriptionType": null,
     "types": [
       {
         "kind": "OBJECT",
-        "name": "Query",
+        "name": "Speedruns",
         "description": null,
         "fields": [
           {
@@ -915,29 +915,6 @@
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "Mutation",
-        "description": null,
-        "fields": [
-          {
-            "name": "noop",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
       },
       {
         "kind": "OBJECT",
