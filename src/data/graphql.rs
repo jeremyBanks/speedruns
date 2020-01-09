@@ -6,7 +6,7 @@ use juniper::{
     object, GraphQLEnum, GraphQLInputObject, GraphQLObject, GraphQLScalarValue,
     ScalarValue,
 };
-use juniper::{Executor, FieldResult, RootNode};
+use juniper::{Executor, FieldResult, GraphQLType, RootNode, ID};
 use juniper_from_schema::graphql_schema_from_file;
 
 use crate::{
@@ -37,6 +37,28 @@ pub struct Query {}
 
 #[derive(Debug)]
 pub struct Mutation {}
+
+#[derive(Debug)]
+pub struct Node {}
+
+impl GraphQLType for Node {
+    type Context = Context;
+    type TypeInfo = ();
+
+    fn name(_: &()) -> Option<&'static str> {
+        Some("Node")
+    }
+
+    fn meta<'r>(_: &(), registry: &mut juniper::Registry<'r>) -> juniper::meta::MetaType<'r>
+    where
+        juniper::DefaultScalarValue: 'r,
+    {
+        let fields = &[registry.field::<ID>("id", &())];
+        registry
+            .build_interface_type::<Node>(&(), fields)
+            .into_meta()
+    }
+}
 
 #[derive(Debug, Clone)]
 pub struct Game(DbLinked<db::Game>);
@@ -104,10 +126,19 @@ impl QueryFields for Query {
             None => (None),
         }
     }
+
+    fn field_node(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Node, Walked>,
+        _id: ID,
+    ) -> Option<Node> {
+        None
+    }
 }
 
 impl MutationFields for Mutation {
-    fn field_query(&self, _executor: &Executor<'_, Context>) -> Option<bool> {
+    fn field_noop(&self, _executor: &Executor<'_, Context>) -> Option<bool> {
         None
     }
 }
