@@ -17,10 +17,22 @@ type Query {
   Get a Run by id, or null if not found.
   """
   run(id: String!): Run @juniper(ownership: "owned", infallible: true)
+
+  """
+  <https://graphql.org/learn/global-object-identification/>
+  """
+  node(id: ID!): Node @juniper(ownership: "owned", infallible: true)
 }
 
 type Mutation {
-  query: Boolean @juniper(ownership: "owned", infallible: true)
+  noop: Boolean @juniper(ownership: "owned", infallible: true)
+}
+
+"""
+<https://graphql.org/learn/global-object-identification/>
+"""
+interface Node {
+  id: ID! @juniper(ownership: "owned", infallible: true)
 }
 
 """
