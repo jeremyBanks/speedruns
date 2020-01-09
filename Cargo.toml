@@ -34,6 +34,7 @@ actix-web = "2.0.0"
 actix = "0.9.0"
 actix-rt = "1.0.0"
 actix-cors = "0.2.0"
+juniper-from-schema = "0.5.1"
 
 [dependencies.futures]
 version = "0.3.1"

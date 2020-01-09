@@ -74,7 +74,6 @@ jobs:
       - name: setup - install node dependencies
         run: yarn install
 
-      # hoisted since the rust in codegen will fail if we can't build
       - name: test - cargo build
         uses: actions-rs/cargo@v1
         with:
@@ -90,20 +89,20 @@ jobs:
       - name: bot - code formatting
         run: yarn format
 
-      - name: bot - commit any changes as autofix
-        env:
-          GIT_COMMITTER_NAME: autofix
-          GIT_COMMITTER_EMAIL: bot@jeremy.ca
-        run: bash scripts/commit-autofix.bash
-
       - name: test - cargo test
         uses: actions-rs/cargo@v1
         with:
           command: test
           args: --workspace
 
+      - name: bot - commit any changes as autofix
+        env:
+          GIT_COMMITTER_NAME: autofix
+          GIT_COMMITTER_EMAIL: bot@jeremy.ca
+        run: bash scripts/commit-autofix.bash
+
       - name: bot - add master to ✔️ first-parent chain if we made it this far
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && success() || failure()
         env:
           GIT_COMMITTER_NAME: autofix
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
