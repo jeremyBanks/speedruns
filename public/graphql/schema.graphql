@@ -1,4 +1,9 @@
-type Query {
+schema {
+  query: Speedruns
+  mutation: Speedruns
+}
+
+type Speedruns {
   """
   Get a Game by id or slug, or null if not found.
 
@@ -22,10 +27,6 @@ type Query {
   <https://graphql.org/learn/global-object-identification/>
   """
   node(id: ID!): Node @juniper(ownership: "owned", infallible: true)
-}
-
-type Mutation {
-  noop: Boolean @juniper(ownership: "owned", infallible: true)
 }
 
 """

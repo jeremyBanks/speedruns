@@ -6,7 +6,7 @@ use juniper::{
     object, GraphQLEnum, GraphQLInputObject, GraphQLObject, GraphQLScalarValue,
     ScalarValue,
 };
-use juniper::{Executor, FieldResult, GraphQLType, RootNode, ID};
+use juniper::{Executor, FieldResult, GraphQLType, ID};
 use juniper_from_schema::graphql_schema_from_file;
 
 use crate::{
@@ -19,10 +19,8 @@ use crate::{
 
 graphql_schema_from_file!("public/graphql/schema.graphql");
 
-pub type Schema = RootNode<'static, Query, Mutation>;
-
 pub fn schema() -> Schema {
-    Schema::new(Query {}, Mutation {})
+    Schema::new(Speedruns {}, Speedruns {})
 }
 
 #[derive(Debug, Clone)]
@@ -33,32 +31,10 @@ pub struct Context {
 impl juniper::Context for Context {}
 
 #[derive(Debug)]
-pub struct Query {}
-
-#[derive(Debug)]
-pub struct Mutation {}
+pub struct Speedruns {}
 
 #[derive(Debug)]
 pub struct Node {}
-
-impl GraphQLType for Node {
-    type Context = Context;
-    type TypeInfo = ();
-
-    fn name(_: &()) -> Option<&'static str> {
-        Some("Node")
-    }
-
-    fn meta<'r>(_: &(), registry: &mut juniper::Registry<'r>) -> juniper::meta::MetaType<'r>
-    where
-        juniper::DefaultScalarValue: 'r,
-    {
-        let fields = &[registry.field::<ID>("id", &())];
-        registry
-            .build_interface_type::<Node>(&(), fields)
-            .into_meta()
-    }
-}
 
 #[derive(Debug, Clone)]
 pub struct Game(DbLinked<db::Game>);
@@ -83,7 +59,7 @@ pub enum Player {
 
 #[derive(Debug, Clone)]
 pub struct Level(DbLinked<db::Level>);
-impl QueryFields for Query {
+impl SpeedrunsFields for Speedruns {
     fn field_game(
         &self,
         executor: &Executor<'_, Context>,
@@ -137,9 +113,22 @@ impl QueryFields for Query {
     }
 }
 
-impl MutationFields for Mutation {
-    fn field_noop(&self, _executor: &Executor<'_, Context>) -> Option<bool> {
-        None
+impl GraphQLType for Node {
+    type Context = Context;
+    type TypeInfo = ();
+
+    fn name(_: &()) -> Option<&'static str> {
+        Some("Node")
+    }
+
+    fn meta<'r>(_: &(), registry: &mut juniper::Registry<'r>) -> juniper::meta::MetaType<'r>
+    where
+        juniper::DefaultScalarValue: 'r,
+    {
+        let fields = &[registry.field::<ID>("id", &())];
+        registry
+            .build_interface_type::<Node>(&(), fields)
+            .into_meta()
     }
 }
 
