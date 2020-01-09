@@ -27,6 +27,10 @@ const VoyagerPage: NextPage<{ introspectionData: object }> = () => {
               data: introspection
             })}
             workerURI="/graphql/voyager.worker.js"
+            displayOptions={{
+              skipRelay: false
+            }}
+            hideSettings={true}
           />
         </div>
       );
