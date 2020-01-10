@@ -6,43 +6,60 @@ version = "0.20.20"
 
 default-run = "serve"
 
+[[bin]]
+name = "normalize"
+
+[[bin]]
+name = "scrape"
+
+[[bin]]
+name = "serve"
+
+[[bin]]
+name = "flamerun"
+path = "src/flamerun/main.rs"
+
 [dependencies]
+actix = "0.9.0"
+actix-cors = "0.2.0"
+actix-rt = "1.0.0"
+actix-web = "2.0.0"
+async-std = "1.4.0"
+clap = "2.32.0"
 derive_more = "0.99.2"
 env_logger = "0.7.1"
 err-derive = "0.1.5"
 flate2 = "1.0.13"
+fs2 = "0.4.0"
 getset = "0.0.9"
 itertools = "0.8.2"
+juniper = "0.14.2"
+juniper-from-schema = "0.5.1"
+juniper_hyper = "0.5.2"
 lazy_static = "1.4.0"
 log = "0.4.8"
 no-panic = "0.1.12"
 percent-encoding = "2.1.0"
+pretty_env_logger = "0.3.1"
 regex = "1.3.1"
 remain = "0.2.0"
 reqwest = "0.9.24"
+serde_derive = "1.0.0"
 serde_json = "1.0.44"
+sha2 = "0.8.0"
 tempfile = "3.1.0"
 unidecode = "0.3.0"
 url_serde = "0.2.0"
 validator = "0.10.0"
 validator_derive = "0.10.0"
-async-std = "1.4.0"
-juniper = "0.14.2"
-juniper_hyper = "0.5.2"
-pretty_env_logger = "0.3.1"
-actix-web = "2.0.0"
-actix = "0.9.0"
-actix-rt = "1.0.0"
-actix-cors = "0.2.0"
-juniper-from-schema = "0.5.1"
-
-[dependencies.futures]
-version = "0.3.1"
-features = ["compat"]
 
 [dependencies.chrono]
 features = ["serde"]
 version = "0.4.10"
+
+[dependencies.futures]
+version = "0.3.1"
+features = ["compat"]
 
 [dependencies.serde]
 features = ["derive"]
