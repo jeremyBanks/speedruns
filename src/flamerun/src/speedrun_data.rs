@@ -1,4 +1,4 @@
-use super::{persistent::Persistent, texty};
+use super::persistent::Persistent;
 use chrono::{DateTime, Duration, NaiveDate, Utc};
 use core::str::FromStr;
 use reqwest;
@@ -79,9 +79,9 @@ impl SpeedRunComData {
         if !game_response.status().is_success() {
             return Err(NonSuccessResponseStatus {
                 status: game_response.status(),
-                url: game_url.to_string(),
+                url:    game_url.to_string(),
             }
-            .into());
+            .into())
         }
         let game_json = game_response.text()?;
         let games_data: speedruncom_api::game::Response = serde_json::from_str(&game_json)?;
@@ -91,9 +91,9 @@ impl SpeedRunComData {
         self.data.get_mut().games.insert(
             game.id.clone(),
             Game {
-                game_id: game.id,
-                name: game.names.international,
-                run_categories: game
+                game_id:              game.id,
+                name:                 game.names.international,
+                run_categories:       game
                     .categories
                     .data
                     .iter()
@@ -102,16 +102,16 @@ impl SpeedRunComData {
                     })
                     .map(|category_data| FullRunCategory {
                         category_id: category_data.id.clone(),
-                        name: category_data.name.clone(),
+                        name:        category_data.name.clone(),
                     })
                     .collect(),
-                levels: game
+                levels:               game
                     .levels
                     .data
                     .iter()
                     .map(|level_data| Level {
                         level_id: level_data.id.clone(),
-                        name: level_data.name.clone(),
+                        name:     level_data.name.clone(),
                     })
                     .collect(),
                 level_run_categories: game
@@ -123,7 +123,7 @@ impl SpeedRunComData {
                     })
                     .map(|category_data| LevelRunCategory {
                         category_id: category_data.id.clone(),
-                        name: category_data.name.clone(),
+                        name:        category_data.name.clone(),
                     })
                     .collect(),
             },
@@ -142,9 +142,9 @@ impl SpeedRunComData {
             if !runs_response.status().is_success() {
                 return Err(NonSuccessResponseStatus {
                     status: runs_response.status(),
-                    url: runs_url.to_string(),
+                    url:    runs_url.to_string(),
                 }
-                .into());
+                .into())
             }
             let json = runs_response.text()?;
             let runs_data: speedruncom_api::runs::Response = serde_json::from_str(&json)?;
@@ -156,19 +156,21 @@ impl SpeedRunComData {
                 runs.insert(
                     run.id.clone(),
                     Run {
-                        run_id: run.id,
-                        status: run.status.into(),
-                        player: run.players.into(),
-                        game_id: run.game,
-                        level_id: run.level,
+                        run_id:      run.id,
+                        status:      run.status.into(),
+                        player:      run.players.into(),
+                        game_id:     run.game,
+                        level_id:    run.level,
                         category_id: run.category,
-                        performed: NaiveDate::from_str(
+                        performed:   NaiveDate::from_str(
                             &run.date.unwrap_or("1970-01-01".to_string()),
                         )?,
-                        submitted: DateTime::<Utc>::from_str(
+                        submitted:   DateTime::<Utc>::from_str(
                             &run.submitted.unwrap_or("1970-01-01T00:00:00Z".to_string()),
                         )?,
-                        duration: Duration::milliseconds((run.times.primary_t * 1000.0) as i64),
+                        duration:    Duration::milliseconds(
+                            (run.times.primary_t * 1000.0) as i64,
+                        ),
                     },
                 );
             }
@@ -181,7 +183,7 @@ impl SpeedRunComData {
 #[derive(Debug)]
 struct NonSuccessResponseStatus {
     status: reqwest::StatusCode,
-    url: String,
+    url:    String,
 }
 impl Error for NonSuccessResponseStatus {}
 impl Display for NonSuccessResponseStatus {
@@ -194,17 +196,17 @@ impl Display for NonSuccessResponseStatus {
 #[serde(deny_unknown_fields)]
 struct Data {
     last_refreshed: Option<DateTime<Utc>>,
-    games: BTreeMap<String, Game>,
-    runs: BTreeMap<String, Run>,
+    games:          BTreeMap<String, Game>,
+    runs:           BTreeMap<String, Run>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Game {
-    pub game_id: String,
-    pub name: String,
-    pub run_categories: Vec<FullRunCategory>,
-    pub levels: Vec<Level>,
+    pub game_id:              String,
+    pub name:                 String,
+    pub run_categories:       Vec<FullRunCategory>,
+    pub levels:               Vec<Level>,
     pub level_run_categories: Vec<LevelRunCategory>,
 }
 
@@ -212,37 +214,37 @@ pub struct Game {
 #[serde(deny_unknown_fields)]
 pub struct Level {
     pub level_id: String,
-    pub name: String,
+    pub name:     String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct FullRunCategory {
     pub category_id: String,
-    pub name: String,
+    pub name:        String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct LevelRunCategory {
     pub category_id: String,
-    pub name: String,
+    pub name:        String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Run {
-    pub run_id: String,
-    pub game_id: String,
+    pub run_id:      String,
+    pub game_id:     String,
     pub category_id: String,
-    pub level_id: Option<String>,
-    pub status: RunStatus,
-    pub player: Player,
-    pub performed: NaiveDate,
-    pub submitted: DateTime<Utc>,
+    pub level_id:    Option<String>,
+    pub status:      RunStatus,
+    pub player:      Player,
+    pub performed:   NaiveDate,
+    pub submitted:   DateTime<Utc>,
     #[serde(serialize_with = "serialize_duration")]
     #[serde(deserialize_with = "deserialize_duration")]
-    pub duration: Duration,
+    pub duration:    Duration,
 }
 
 fn serialize_duration<S>(x: &Duration, s: S) -> Result<S::Ok, S::Error>
@@ -264,8 +266,8 @@ where
 #[serde(deny_unknown_fields)]
 pub enum Player {
     User {
-        user_id: String,
-        name: String,
+        user_id:      String,
+        name:         String,
         country_code: Option<String>,
     },
     Guest {
@@ -273,26 +275,6 @@ pub enum Player {
     },
     MultiplePlayers,
 }
-
-impl Player {
-    pub fn flag(&self) -> Option<String> {
-        match self {
-            Player::User {
-                user_id: _,
-                name: _,
-                country_code,
-            } => {
-                if let Some(country_code) = country_code {
-                    Some(texty::country_flag(country_code))
-                } else {
-                    None
-                }
-            }
-            _ => None,
-        }
-    }
-}
-
 impl Display for Player {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -329,11 +311,11 @@ mod speedruncom_api {
 
         #[derive(Deserialize, Debug)]
         pub struct Game {
-            pub id: String,
-            pub names: Names,
+            pub id:           String,
+            pub names:        Names,
             pub abbreviation: String,
-            pub levels: Levels,
-            pub categories: Categories,
+            pub levels:       Levels,
+            pub categories:   Categories,
         }
 
         #[derive(Deserialize, Debug)]
@@ -348,7 +330,7 @@ mod speedruncom_api {
 
         #[derive(Deserialize, Debug)]
         pub struct Level {
-            pub id: String,
+            pub id:   String,
             pub name: String,
         }
 
@@ -359,8 +341,8 @@ mod speedruncom_api {
 
         #[derive(Deserialize, Debug)]
         pub struct Category {
-            pub id: String,
-            pub name: String,
+            pub id:    String,
+            pub name:  String,
             #[serde(rename = "type")]
             pub type_: CategoryType,
         }
@@ -376,7 +358,7 @@ mod speedruncom_api {
     pub mod runs {
         #[derive(Deserialize, Debug)]
         pub struct Response {
-            pub data: Vec<Run>,
+            pub data:       Vec<Run>,
             pub pagination: Pagination,
         }
 
@@ -384,10 +366,10 @@ mod speedruncom_api {
             pub fn next_page_url(&self) -> Option<String> {
                 for link in self.pagination.links.iter() {
                     if let PaginationLink::Next { uri } = link {
-                        return Some(uri.clone());
+                        return Some(uri.clone())
                     }
                 }
-                return None;
+                return None
             }
         }
 
@@ -406,15 +388,15 @@ mod speedruncom_api {
 
         #[derive(Deserialize, Debug)]
         pub struct Run {
-            pub id: String,
-            pub status: RunStatus,
-            pub game: String,
-            pub level: Option<String>,
-            pub category: String,
-            pub players: PlayersData,
-            pub date: Option<String>,
+            pub id:        String,
+            pub status:    RunStatus,
+            pub game:      String,
+            pub level:     Option<String>,
+            pub category:  String,
+            pub players:   PlayersData,
+            pub date:      Option<String>,
             pub submitted: Option<String>,
-            pub times: Times,
+            pub times:     Times,
         }
 
         #[derive(Deserialize, Debug)]
@@ -452,16 +434,15 @@ mod speedruncom_api {
                             ref names,
                             ref location,
                         } => super::super::Player::User {
-                            user_id: id.clone(),
-                            name: names.international.clone(),
+                            user_id:      id.clone(),
+                            name:         names.international.clone(),
                             country_code: match location {
                                 None => None,
                                 Some(location) => Some(location.country.code.clone()),
                             },
                         },
-                        Player::Guest { ref name } => {
-                            super::super::Player::Guest { name: name.clone() }
-                        }
+                        Player::Guest { ref name } =>
+                            super::super::Player::Guest { name: name.clone() },
                     }
                 }
             }
@@ -477,8 +458,8 @@ mod speedruncom_api {
         #[serde(rename_all = "kebab-case")]
         pub enum Player {
             User {
-                id: String,
-                names: UserNames,
+                id:       String,
+                names:    UserNames,
                 location: Option<Location>,
             },
             Guest {

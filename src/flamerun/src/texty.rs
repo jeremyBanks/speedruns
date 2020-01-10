@@ -1,5 +1,4 @@
 use sha2::Digest;
-use std::{convert::TryFrom, slice::SliceConcatExt};
 
 type Hash = sha2::Sha512Trunc256;
 
@@ -43,17 +42,4 @@ pub fn color_with_hash(string: &str) -> String {
     let fg = TERM_FG_COLORS[u % TERM_FG_COLORS.len()];
 
     [fg, string].join("")
-}
-
-pub fn country_flag(country_code: &str) -> String {
-    country_code
-        .chars()
-        .filter(|c| c.is_ascii_alphabetic())
-        .take(2)
-        .map(|letter| {
-            let letter_scalar: u32 = letter.to_ascii_uppercase().into();
-            let flag_sclar = 0x1F1A5 + letter_scalar;
-            char::try_from(flag_sclar).expect("this must be a valid code point")
-        })
-        .collect()
 }

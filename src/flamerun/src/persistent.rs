@@ -13,8 +13,8 @@ pub struct Persistent<Data>
 where
     Data: Serialize + DeserializeOwned + Clone + Default + Sized,
 {
-    file: File,
-    data: Data,
+    file:  File,
+    data:  Data,
     dirty: bool,
 }
 
@@ -107,15 +107,15 @@ mod speedruncom_api {
 
         #[derive(Deserialize)]
         pub struct Data {
-            pub id: String,
-            pub weblink: String,
-            pub game: String,
-            pub level: Option<String>,
-            pub category: Option<String>,
-            pub players: Vec<Player>,
-            pub date: Option<String>,
+            pub id:        String,
+            pub weblink:   String,
+            pub game:      String,
+            pub level:     Option<String>,
+            pub category:  Option<String>,
+            pub players:   Vec<Player>,
+            pub date:      Option<String>,
             pub submitted: Option<String>,
-            pub times: Times,
+            pub times:     Times,
         }
 
         #[derive(Deserialize)]
