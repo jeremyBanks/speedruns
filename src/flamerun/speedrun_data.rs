@@ -79,7 +79,7 @@ impl SpeedRunComData {
         if !game_response.status().is_success() {
             return Err(NonSuccessResponseStatus {
                 status: game_response.status(),
-                url:    game_url.to_string(),
+                url:    game_url,
             }
             .into())
         }
@@ -142,7 +142,7 @@ impl SpeedRunComData {
             if !runs_response.status().is_success() {
                 return Err(NonSuccessResponseStatus {
                     status: runs_response.status(),
-                    url:    runs_url.to_string(),
+                    url:    runs_url,
                 }
                 .into())
             }
@@ -369,7 +369,7 @@ mod speedruncom_api {
                         return Some(uri.clone())
                     }
                 }
-                return None
+                None
             }
         }
 
