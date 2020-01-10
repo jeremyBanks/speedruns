@@ -68,7 +68,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
         .parse()
         .expect("days must be a number");
 
-    let data = SpeedRunComData::open("data.json", refresh);
+    let data = SpeedRunComData::open("data/flamerun.json", refresh);
 
     let runs_by_level = data
         .runs()
@@ -130,7 +130,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
             .levels
             .iter()
             .map(|l| &records_by_level_id[&l.level_id])
-            .filter(|records| records.len() > 0)
+            .filter(|records| !records.is_empty())
             .map(|records| records.first().unwrap().run.duration)
             .fold(Duration::zero(), |a, b| a + b);
 
@@ -138,7 +138,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
             .levels
             .iter()
             .map(|l| &records_by_level_id[&l.level_id])
-            .filter(|records| records.len() > 0)
+            .filter(|records| !records.is_empty())
             .map(|records| records.last().unwrap().run.duration)
             .fold(Duration::zero(), |a, b| a + b);
 
@@ -255,7 +255,7 @@ fn fmt_duration(duration: Duration) -> String {
     } else if ms_part > 0 {
         format!("{}0.{:03}", sign, ms_part)
     } else {
-        format!("0")
+        "0".to_string()
     }
 }
 
