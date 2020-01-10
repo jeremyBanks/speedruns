@@ -1,0 +1,10 @@
+#!/bin/bash
+set -euo pipefail;
+export RUST_BACKTRACE='1';
+export RUST_LOG='flamerun=debug,reqwest=info';
+clear && printf '\e[3J';
+cargo +nightly fmt;
+cargo +nightly build;
+target/debug/flamerun --help;
+clear;
+target/debug/flamerun "$@";
