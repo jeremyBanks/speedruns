@@ -52,30 +52,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for api_user in load_api_type::<api::User>("data/api/users.jsonl.gz")? {
         let user = api_user.normalize().unwrap();
 
-        if [
-            "banks",
-            "zpr",
-            "greenmixtape",
-            "edwardss44",
-            "szwagier",
-            "stu",
-            "karmikkoala",
-            "bjw",
-            "fralor",
-            "burninrubber0",
-            "aixpenta",
-            "nimputs",
-            "themorgue",
-            "notspeedrunner",
-            "unstoppablephoenix",
-            "burnout-psychos",
-            "bo98",
-            "s6kana",
-            "freezard",
-            "bioice",
-            "tei",
-        ]
-        .contains(&&*user.slug)
+        if std::env::var("SPEEDRUNS_ALL") == Ok("ALL".to_string())
+            || [
+                "banks",
+                "zpr",
+                "greenmixtape",
+                "edwardss44",
+                "szwagier",
+                "stu",
+                "karmikkoala",
+                "bjw",
+                "fralor",
+                "burninrubber0",
+                "aixpenta",
+                "nimputs",
+                "themorgue",
+                "notspeedrunner",
+                "unstoppablephoenix",
+                "burnout-psychos",
+                "bo98",
+                "s6kana",
+                "freezard",
+                "bioice",
+                "tei",
+            ]
+            .contains(&&*user.slug)
         {
             users.push(user);
         }
@@ -85,17 +86,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for api_game in load_api_type::<api::Game>("data/api/games.jsonl.gz")? {
         let (game, mut game_categories, mut game_levels) = api_game.normalize().unwrap();
 
-        if [
-            "wc1",
-            "wc2",
-            "wc2btdp",
-            "bparadise",
-            "bpr",
-            "celeste",
-            "sc1",
-            "scbw",
-        ]
-        .contains(&&*game.slug)
+        if std::env::var("SPEEDRUNS_ALL") == Ok("ALL".to_string())
+            || [
+                "wc1",
+                "wc2",
+                "wc2btdp",
+                "bparadise",
+                "bpr",
+                "celeste",
+                "sc1",
+                "scbw",
+            ]
+            .contains(&&*game.slug)
         {
             games.push(game);
             categories.append(&mut game_categories);

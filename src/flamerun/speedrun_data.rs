@@ -52,7 +52,7 @@ impl SpeedRunComData {
     fn refresh(&mut self) -> Result<(), ()> {
         let last_refreshed = Utc::now();
 
-        let game_ids = vec!["wc2", "wc2btdp", "sc1", "scbw"];
+        let game_ids = vec!["wc2", "wc2btdp", "sc1", "scbw", "braid"];
 
         for game_id in game_ids {
             if let Err(error) = self.refresh_game(game_id) {
