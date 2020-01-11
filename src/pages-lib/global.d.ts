@@ -14,3 +14,15 @@ declare module "graphql-docs" {
     fetcher: (query: unknown) => Promise<any>;
   }>;
 }
+
+declare module "color-space" {
+  const space: {
+    lab: {
+      rgb(lab: [number, number, number]): [number, number, number];
+    };
+    rgb: {
+      lab(rgb: [number, number, number]): [number, number, number];
+    };
+  };
+  export default space;
+}
