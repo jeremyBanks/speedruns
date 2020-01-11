@@ -17,6 +17,8 @@ use crate::{
     utils::{base36, u64_from_base36},
 };
 
+mod global_id;
+
 graphql_schema_from_file!("public/graphql/schema.graphql");
 
 pub fn schema() -> Schema {
