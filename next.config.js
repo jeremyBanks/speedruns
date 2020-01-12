@@ -1,7 +1,7 @@
 module.exports = [
   require("@zeit/next-css"),
   require("@zeit/next-source-maps"),
-  require("@zeit/next-sass")
+  require("@zeit/next-sass"),
 ].reduce((config, plugin) => plugin(config), {
   cssModules: true,
   exportTrailingSlash: true,
@@ -16,24 +16,24 @@ module.exports = [
       "/celeste": { page: "/[game]", query: { game: "celeste" } },
       "/user/zpr": { page: "/user/[user]", query: { user: "zpr" } },
       "/user/banks": { page: "/user/[user]", query: { user: "banks" } },
-      "/user/szwagier": { page: "/user/[user]", query: { user: "szwagier" } }
+      "/user/szwagier": { page: "/user/[user]", query: { user: "szwagier" } },
     };
   },
   webpack(config) {
     config.module.rules.push(
       {
         test: /\.(flow)$/,
-        use: ["file-loader"]
+        use: ["file-loader"],
       },
       {
         test: /\.(png|svg|jpg|gif|jpeg)$/,
-        use: ["file-loader"]
+        use: ["file-loader"],
       },
       {
         test: /\.toml$/,
-        use: ["@lcdev/toml-loader"]
-      }
+        use: ["@lcdev/toml-loader"],
+      },
     );
     return config;
-  }
+  },
 });
