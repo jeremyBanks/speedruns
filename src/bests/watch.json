@@ -1,9 +1,0 @@
-{
-  "throttle": 200,
-  "restart": {
-    "include": ["\\.js$", "\\.json"]
-  },
-  "install": {
-    "include": ["^package\\.json$", "^\\.env$"]
-  }
-}
