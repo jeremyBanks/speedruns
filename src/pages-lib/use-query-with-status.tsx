@@ -5,13 +5,13 @@ import { DocumentNode } from "graphql";
 /// partial errors), or else return a loading/error status component.
 const useQueryWithStatus = <TData extends any = unknown>(
   query: DocumentNode,
-  variables: { [key: string]: any } = {}
+  variables: { [key: string]: any } = {},
 ): { data: TData | undefined; status: JSX.Element } => {
   const { data, loading, error } = useQuery<TData>(query, { variables });
 
   return {
     data,
-    status: <div>loading: {JSON.stringify(loading || error, null, 2)}</div>
+    status: <div>loading: {JSON.stringify(loading || error, null, 2)}</div>,
   };
 };
 

@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Provider } from "react-redux";
 import { NextPage } from "next";
-import { useState, useEffect } from "react";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import { Provider } from "react-redux";
 
 const PlaygroundPage: NextPage = () => {
   const [playground, setPlayground] = useState<
@@ -10,7 +10,7 @@ const PlaygroundPage: NextPage = () => {
 
   useEffect(() => {
     import("@apollographql/graphql-playground-react").then(playground =>
-      setPlayground(playground)
+      setPlayground(playground),
     );
   }, []);
 

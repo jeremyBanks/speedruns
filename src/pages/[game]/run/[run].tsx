@@ -1,17 +1,17 @@
-import React from "react";
-import { useRouter } from "next/router";
-import { NextPage } from "next";
 import gql from "graphql-tag";
+import { NextPage } from "next";
+import { useRouter } from "next/router";
+import React from "react";
 
-import { withApollo } from "../../../pages-lib/with-apollo";
 import * as schema from "../../../pages-lib/schema";
 import useQueryWithStatus from "../../../pages-lib/use-query-with-status";
+import { withApollo } from "../../../pages-lib/with-apollo";
 
 const RunPage: NextPage<{}> = () => {
   const router = useRouter();
 
   const result = useQueryWithStatus<schema.GetRun>(GetRun, {
-    id: router.query.run
+    id: router.query.run,
   });
 
   if (result.data) {

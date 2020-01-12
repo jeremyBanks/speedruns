@@ -1,6 +1,6 @@
 import fetch from "isomorphic-unfetch";
 import { NextPage } from "next";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const GraphiQLPage: NextPage = () => {
   const [GraphiQL, setGraphiQL] = useState<
@@ -23,7 +23,7 @@ const GraphiQLPage: NextPage = () => {
             fetch("http://localhost:3001/", {
               method: "post",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ query })
+              body: JSON.stringify({ query }),
             }).then(response => response.json())
           }
         />
