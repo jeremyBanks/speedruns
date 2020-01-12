@@ -1,6 +1,6 @@
-import React from "react";
-import { useRouter } from "next/router";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
+import React from "react";
 import { withApollo } from "../../pages-lib/with-apollo";
 
 const GamePage: NextPage = () => {
