@@ -55,7 +55,7 @@ const GamePane: React.FC<{ game: schema.HomeDetails }> = ({ game }) => (
                   rankedRun={rankedRun}
                 />
               ))
-              .slice(0, 3)}
+              .slice(0, 10)}
           </ol>
         </div>
       ))}
