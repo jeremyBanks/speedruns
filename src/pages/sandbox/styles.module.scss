@@ -1,0 +1,89 @@
+.sandbox {
+  table {
+    &,
+    * {
+      box-sizing: border-box;
+    }
+
+    text-align: left;
+    border-collapse: collapse;
+    margin: auto;
+
+    th {
+      font: 10px sans-serif;
+      color: grey;
+      padding: 0 10px;
+    }
+
+    tbody tr {
+      height: 20px;
+    }
+
+    td {
+      padding: 6px;
+    }
+
+    .rank {
+      text-align: center;
+      width: 35px;
+    }
+
+    .player {
+      text-align: center;
+      width: 180px;
+    }
+
+    td.player {
+      font-weight: bold;
+    }
+
+    tr:hover:nth-child(n) {
+      background: #fffff0;
+    }
+
+    tr:nth-child(odd) {
+      background: #f8f8f8;
+    }
+
+    .time {
+      text-align: center;
+      width: 80px;
+    }
+
+    .date {
+      text-align: center;
+      width: 140px;
+    }
+
+    td.rank {
+      color: grey;
+    }
+
+    tr[data-rank="1"] td:first-child {
+      color: black;
+      font-weight: bold;
+      background: rgb(255, 210, 110);
+      border: 4px solid white;
+    }
+
+    tr[data-rank="2"] td:first-child {
+      font-weight: bold;
+      color: black;
+      background: rgb(210, 230, 255);
+      border: 4px solid white;
+    }
+
+    tr[data-rank="3"] td:first-child {
+      font-weight: bold;
+      color: black;
+      background: rgb(255, 175, 125);
+      border: 4px solid white;
+    }
+  }
+
+  table.history {
+  }
+
+  table.leaderboard {
+  }
+}
