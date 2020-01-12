@@ -6,7 +6,7 @@ import * as schema from "./schema";
 import styles from "./styles.module.scss";
 import { Duration } from "./duration";
 import useQueryWithStatus from "./use-query-with-status";
-import HashColored from "./hash-colored-text";
+import AutoColor from "./auto-color";
 
 export const HomeContent: React.FC = () => {
   const result = useQueryWithStatus<schema.GetHome>(GetHome);
@@ -31,9 +31,7 @@ const GamePane: React.FC<{ game: schema.HomeDetails }> = ({ game }) => (
     </ol>
 
     <h2>
-      <b>
-        <HashColored>Individual Levels</HashColored>
-      </b>
+      <AutoColor>Individual Levels</AutoColor>
     </h2>
 
     {game.levels
@@ -48,11 +46,7 @@ const GamePane: React.FC<{ game: schema.HomeDetails }> = ({ game }) => (
       })
       .map(level => (
         <div key={level.id}>
-          <h3>
-            <b>
-              <HashColored>{level.name}</HashColored>
-            </b>
-          </h3>
+          <h3>{level.name}</h3>
 
           <ol>
             {level.leaderboard
@@ -87,25 +81,20 @@ const RunLi: React.FC<{
           {" by "}
           <span>
             <b>
-              <HashColored>
+              <AutoColor>
                 {rankedRun.run.players.map(player => player.name).join(" and ")}
-              </HashColored>
-              />
+              </AutoColor>
             </b>
           </span>
           {" on "}
           <span>
-            <b>
-              <HashColored>
-                {String(
-                  (date &&
-                    new Date(date * 1000)
-                      .toISOString()
-                      .slice(0, "YYYY-MM-DD".length)) ||
-                    ""
-                )}
-              </HashColored>
-            </b>
+            {String(
+              (date &&
+                new Date(date * 1000)
+                  .toISOString()
+                  .slice(0, "YYYY-MM-DD".length)) ||
+                ""
+            )}
           </span>
         </a>
       </Link>

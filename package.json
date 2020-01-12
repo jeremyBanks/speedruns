@@ -51,7 +51,7 @@
     "export": "bash scripts/export.bash",
     "lint": "bash scripts/lint.bash",
     "precommit": "yarn install && yarn generate && yarn format && echo 'grep -q precommit package.json && (yarn precommit && git add .) || echo' > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit",
-    "gl": "git fetch --all; git log --decorate --graph --first-parent --all --name-status -m; true"
+    "gl": "git fetch --all; git log --decorate --graph --first-parent --all --name-status -m; git config alias.l '!yarn gl'"
   },
   "eslintConfig": {
     "extends": "react-app"
