@@ -2,83 +2,70 @@
 // Original Author: Sam Liu (sam@ambushnetworks.com)
 // License: MIT
 
-import Sequelize from 'sequelize';
+import Sequelize from "sequelize";
 
-import {LazySymbolScope} from './src/bester/utils.js';
+import { LazySymbolScope } from "./src/bester/utils.js";
 
-
-const internal = new LazySymbolScope('internal ');
-const {
-  DB,
-  CACHE,
-  TABLE,
-  INIT,
-} = internal;
-
-
+const internal = new LazySymbolScope("internal ");
+const { DB, CACHE, TABLE, INIT } = internal;
 
 const assertString = s => {
-  if (typeof s !== 'string') {
+  if (typeof s !== "string") {
     throw new TypeError(`expected string, got ${typeof s} ${s}`);
   }
   return s;
 };
 
-
 // okay god what does this need to be?
 // a two-tier cache, with promises committed in-memory, but never put in the database unless they resolve successfully.
 
-// oh and also we expire data after some hours. 
+// oh and also we expire data after some hours.
 
 export class SqliteStringMap {
   constructor(name) {
     name = String(name);
 
-    this[DB] = new Sequelize(
-      name,
-      process.env.DB_USER,
-      process.env.DB_PASS, {
-        host: '0.0.0.0',
-        dialect: 'sqlite',
-        pool: {
-          max: 5,
-          min: 0,
-          idle: 10000
-        },
-        // Security note: the database is saved to the file `database.sqlite` on the local filesystem. It's deliberately placed in the `.data` directory
-        // which doesn't get copied if someone remixes the project.
-        storage: '.data/database.sqlite',
-        logging: false,
-      }
-    );
+    this[DB] = new Sequelize(name, process.env.DB_USER, process.env.DB_PASS, {
+      host: "0.0.0.0",
+      dialect: "sqlite",
+      pool: {
+        max: 5,
+        min: 0,
+        idle: 10000,
+      },
+      // Security note: the database is saved to the file `database.sqlite` on the local filesystem. It's deliberately placed in the `.data` directory
+      // which doesn't get copied if someone remixes the project.
+      storage: ".data/database.sqlite",
+      logging: false,
+    });
 
     this[CACHE] = new Map();
     this[TABLE] = this[INIT]();
   }
-  
+
   async [INIT]() {
     await this[DB].authenticate();
-    const tableName = this.constructor.name || 'kv';
+    const tableName = this.constructor.name || "kv";
     const table = this[DB].define(tableName, {
       k: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
       },
       v: {
         type: Sequelize.STRING,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     });
     await table.sync();
     return table;
   }
-  
+
   async clear() {
     const table = await this[TABLE];
-    return await table.sync({force: true});
+    return await table.sync({ force: true });
   }
-  
+
   async get(key) {
     key = assertString(key);
 
@@ -86,15 +73,17 @@ export class SqliteStringMap {
     if (cached !== undefined) {
       return cached;
     }
-    
+
     const table = await this[TABLE];
     const results = await table.findAll({
       where: {
         k: key,
-        updatedAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 4 /* 4 hours ago */) }
-      }
-    })
-    
+        updatedAt: {
+          $gt: new Date(Date.now() - 1000 * 60 * 60 * 4 /* 4 hours ago */),
+        },
+      },
+    });
+
     if (results.length === 0) {
       this[CACHE].set(key, undefined);
       return undefined;
@@ -115,7 +104,7 @@ export class SqliteStringMap {
       // if value is async, we want to resolve before committing to database
       const syncValue = await value;
       const table = await this[TABLE];
-      return await table.upsert({k: key, v: syncValue});
+      return await table.upsert({ k: key, v: syncValue });
     } catch (ex) {
       // if promise or commit fails, also remove from in-memory cache:
       if (this[CACHE].get(key) === value) {

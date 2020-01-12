@@ -2,24 +2,11 @@
 <meta charset="utf-8" />
 <title></title>
 
-<script>
-  if (document.location.protocol === "http:")
-    document.location.protocol = "https:";
-</script>
-
-<meta
-  http-equiv="Content-Security-Policy"
-  value="default-src 'self'; img-src *"
-/>
 <meta name="viewport" content="width=682, initial-scale=0" />
 
 <link rel="icon" href="/assets/icon.png" />
 
 <body class="unloaded">
-  <script type="module" async>
-    import "/assets/main.js";
-  </script>
-
   <style>
     html {
       background: #222;
@@ -157,4 +144,8 @@
   <pre id="error-message">Attempting to load page...</pre>
 
   <main id="main"></main>
+
+  <script type="module" async>
+    import "/assets/main.js";
+  </script>
 </body>

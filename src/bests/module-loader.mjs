@@ -1,14 +1,14 @@
 // A custom node module loader to allow us to import our client-side modules
 // using the same paths as we do on the client, for easy server-side reuse.
 
-import url from 'url';
-import path from 'path';
-import process from 'process';
-import Module from 'module';
+import url from "url";
+import path from "path";
+import process from "process";
+import Module from "module";
 
 const builtins = Module.builtinModules;
 
-const baseURL = new url.URL('file://');
+const baseURL = new url.URL("file://");
 baseURL.pathname = `${process.cwd()}/`;
 
 export function resolve(specifier, parentModuleURL = baseURL, defaultResolve) {
@@ -16,29 +16,39 @@ export function resolve(specifier, parentModuleURL = baseURL, defaultResolve) {
   if (builtins.includes(specifier)) {
     return {
       url: specifier,
-      format: 'builtin'
+      format: "builtin",
     };
   }
 
   // node_modules
-  if (/^\.{0,2}[/]/.test(specifier) !== true && !specifier.startsWith('file:')) {
+  if (
+    /^\.{0,2}[/]/.test(specifier) !== true &&
+    !specifier.startsWith("file:")
+  ) {
     return defaultResolve(specifier, parentModuleURL);
   }
 
-  specifier = specifier.replace(/^\/assets\/bester\/deps\.js$/, `${baseURL.pathname}/src/bester/deps-node.js`);
-  specifier = specifier.replace(/^\.\/deps\.js$/, `${baseURL.pathname}/src/bester/deps-node.js`);
+  specifier = specifier.replace(
+    /^\/assets\/bester\/deps\.js$/,
+    `${baseURL.pathname}/src/bester/deps-node.js`,
+  );
+  specifier = specifier.replace(
+    /^\.\/deps\.js$/,
+    `${baseURL.pathname}/src/bester/deps-node.js`,
+  );
   specifier = specifier.replace(/^\/assets\//, `${baseURL.pathname}src/`);
 
   // local modules
   const resolved = new url.URL(specifier, parentModuleURL);
 
   const ext = path.extname(resolved.pathname);
-  if (ext !== '.js') {
+  if (ext !== ".js") {
     throw new Error(
-      `Cannot load file with non-JavaScript file extension ${ext}.`);
+      `Cannot load file with non-JavaScript file extension ${ext}.`,
+    );
   }
   return {
     url: resolved.href,
-    format: 'esm'
+    format: "esm",
   };
 }
