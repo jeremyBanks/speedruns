@@ -3,7 +3,7 @@ module.exports = {
     includes: ["src/**/*.ts", "src/**/*.tsx"],
     service: {
       name: "local",
-      url: "http://localhost:3001/"
-    }
-  }
+      url: "http://localhost:3001/",
+    },
+  },
 };
