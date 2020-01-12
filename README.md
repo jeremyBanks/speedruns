@@ -51,9 +51,7 @@ This project is not associated with or endorsed by speedrun.com.
 
 ### Code License
 
-Originally Copyright Jeremy Banks, released under the MIT License. Any
-contributions from other authors must be released under both the MIT License and
-the Blue Oak Model License 1.0.0.
+Copyright Jeremy Banks, released under the MIT License.
 
 ### Content License
 

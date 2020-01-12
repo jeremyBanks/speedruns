@@ -20,14 +20,14 @@ use speedruns::data::{
 };
 
 async fn graphiql() -> actix_web::HttpResponse {
-    let html = juniper::http::graphiql::graphiql_source("/");
+    let html = juniper::http::graphiql::graphiql_source("/graphql");
     actix_web::HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(html)
 }
 
 async fn playground() -> actix_web::HttpResponse {
-    let html = juniper::http::playground::playground_source("/");
+    let html = juniper::http::playground::playground_source("/graphql");
     actix_web::HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(html)
@@ -73,6 +73,8 @@ async fn main() -> std::io::Result<()> {
             .wrap(actix_web::middleware::Logger::default())
             .service(web::resource("/").route(web::post().to(graphql)))
             .service(web::resource("/").route(web::get().to(graphql)))
+            .service(web::resource("/graphql").route(web::post().to(graphql)))
+            .service(web::resource("/graphql").route(web::get().to(graphql)))
             .service(web::resource("/graphiql").route(web::get().to(graphiql)))
             .service(web::resource("/playground").route(web::get().to(playground)))
     });
