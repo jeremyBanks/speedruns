@@ -1,9 +1,6 @@
 {
   "private": true,
   "license": "0BSD",
-  "engines": {
-    "node": "13.5"
-  },
   "type": "module",
   "dependencies": {
     "express": "^4.16.3",
@@ -20,6 +17,6 @@
   },
   "scripts": {
     "prestart": "cloc . --exclude-dir=node_modules --not-match-d=data --force-lang=JavaScript,mjs --quiet --by-file --include-lang=JavaScript | head -n-1 | tail -n+3 | sort | tail -n+4",
-    "start": "node --experimental-modules server.js"
+    "start": "node --experimental-modules --loader ./module-loader.mjs server.js"
   }
 }
