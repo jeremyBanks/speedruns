@@ -186,6 +186,6 @@ app.use((req, res) => {
   res.sendFile(__dirname + '/src/index.html');
 });
 
-const listener = app.listen(process.env.PORT, () => {
+const listener = app.listen(3002, () => {
   console.log(`Your app is listening on port ${listener.address().port}`);
 });
