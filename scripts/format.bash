@@ -7,3 +7,5 @@ prettier --write '**/*.{config.js,ts,tsx,md,json,graphql,gql,css,sass,scss,html}
 cargo fix --workspace --allow-dirty --allow-staged -Z unstable-options --clippy
 
 cargo fmt --all
+
+tslint --fix || true
