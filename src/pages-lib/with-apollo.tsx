@@ -1,13 +1,13 @@
-import ApolloClient from "apollo-client";
-import React from "react";
-import Head from "next/head";
 import { ApolloProvider } from "@apollo/react-hooks";
-import { NextPage, NextPageContext } from "next";
+import { getDataFromTree } from "@apollo/react-ssr";
 import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
+import { persistCache } from "apollo-cache-persist";
+import ApolloClient from "apollo-client";
 import { HttpLink } from "apollo-link-http";
 import fetch from "isomorphic-unfetch";
-import { persistCache } from "apollo-cache-persist";
-import { getDataFromTree } from "@apollo/react-ssr";
+import { NextPage, NextPageContext } from "next";
+import Head from "next/head";
+import React from "react";
 
 // based on https://git.io/JepyG
 
@@ -18,7 +18,7 @@ const onNode = typeof window === "undefined";
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 const getApolloClient = (
-  initialState?: NormalizedCacheObject
+  initialState?: NormalizedCacheObject,
 ): ApolloClient<NormalizedCacheObject> => {
   if (!globalApolloClient) {
     const uri = "http://localhost:3001/";
@@ -30,7 +30,7 @@ const getApolloClient = (
       // XXX: this is supposed to be awaited but we're not async. maybe it'll still help?
       persistCache({
         cache,
-        storage: window.localStorage as any
+        storage: window.localStorage as any,
       });
     }
 
@@ -44,12 +44,12 @@ const getApolloClient = (
       ssrMode: onNode,
       defaultOptions: {
         watchQuery: {
-          fetchPolicy: policy
+          fetchPolicy: policy,
         },
         query: {
-          fetchPolicy: policy as any
-        }
-      }
+          fetchPolicy: policy as any,
+        },
+      },
     });
   }
 

@@ -1,5 +1,5 @@
-import React from "react";
 import { NextPage } from "next";
+import React from "react";
 
 import HomeContent from "../pages-lib/home";
 import { withApollo } from "../pages-lib/with-apollo";

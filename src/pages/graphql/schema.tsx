@@ -1,6 +1,6 @@
 import fetch from "isomorphic-unfetch";
 import { NextPage } from "next";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const GraphQLDocsPage: NextPage = () => {
   const [GraphQLDocs, setGraphQLDocs] = useState<
@@ -9,7 +9,7 @@ const GraphQLDocsPage: NextPage = () => {
 
   useEffect(() => {
     import("graphql-docs").then(({ GraphQLDocs }) =>
-      setGraphQLDocs(() => GraphQLDocs)
+      setGraphQLDocs(() => GraphQLDocs),
     );
   }, []);
 
@@ -25,7 +25,7 @@ const GraphQLDocsPage: NextPage = () => {
             fetch("http://localhost:3001/", {
               method: "post",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ query })
+              body: JSON.stringify({ query }),
             }).then(response => response.json())
           }
         />

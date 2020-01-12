@@ -8,4 +8,4 @@ cargo fix --workspace --allow-dirty --allow-staged -Z unstable-options --clippy
 
 cargo fmt --all
 
-tslint --fix || true
+tslint --fix --project . || echo "tslint failed"

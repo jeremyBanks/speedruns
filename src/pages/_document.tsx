@@ -1,10 +1,10 @@
-import Document, { Html, Head, Main, NextScript } from "next/document";
+import Document, { Head, Html, Main, NextScript } from "next/document";
 
-import Header from "../pages-lib/header";
 import Footer from "../pages-lib/footer";
+import Header from "../pages-lib/header";
 
 class MyDocument extends Document {
-  render() {
+  public render() {
     return (
       <Html>
         <Head>

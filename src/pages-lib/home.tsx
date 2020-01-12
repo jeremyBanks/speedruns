@@ -1,12 +1,12 @@
-import React from "react";
 import gql from "graphql-tag";
 import Link from "next/link";
+import React from "react";
 
+import AutoColor from "./auto-color";
+import { Duration } from "./duration";
 import * as schema from "./schema";
 import styles from "./styles.module.scss";
-import { Duration } from "./duration";
 import useQueryWithStatus from "./use-query-with-status";
-import AutoColor from "./auto-color";
 
 export const HomeContent: React.FC = () => {
   const result = useQueryWithStatus<schema.GetHome>(GetHome);
@@ -93,7 +93,7 @@ const RunLi: React.FC<{
                 new Date(date * 1000)
                   .toISOString()
                   .slice(0, "YYYY-MM-DD".length)) ||
-                ""
+                "",
             )}
           </span>
         </a>

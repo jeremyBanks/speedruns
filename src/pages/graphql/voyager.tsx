@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
 import { NextPage } from "next";
+import { useEffect, useState } from "react";
 
-import styles from "../../pages-lib/styles.module.scss";
 import introspection from "../../../public/graphql/schema.json";
+import styles from "../../pages-lib/styles.module.scss";
 
 const VoyagerPage: NextPage<{ introspectionData: object }> = () => {
   const [Voyager, setVoyager] = useState<
@@ -24,11 +24,11 @@ const VoyagerPage: NextPage<{ introspectionData: object }> = () => {
           <link rel="stylesheet" href="/graphql/voyager.css" />
           <Voyager
             introspection={async () => ({
-              data: introspection
+              data: introspection,
             })}
             workerURI="/graphql/voyager.worker.js"
             displayOptions={{
-              skipRelay: false
+              skipRelay: false,
             }}
             hideSettings={true}
           />

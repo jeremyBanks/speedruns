@@ -1,6 +1,6 @@
-import React from "react";
-import { useRouter } from "next/router";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
+import React from "react";
 
 const LevelPage: NextPage = () => {
   const router = useRouter();
