@@ -1,6 +1,6 @@
 {
   "private": true,
-  "license": "0BSD",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "express": "^4.16.3",
