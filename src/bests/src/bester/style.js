@@ -14,7 +14,7 @@ export class Style {
   static attrValue(data, propPrefix = '') {
     return Object.keys(data).map(key => {
       const value = data[key];
-      if (key === '_') key = '';
+      if (key === '_') { key = ''; }
       const propName = [propPrefix, key].filter(Boolean).join('-');
       if (typeof value === 'string') {
         return `${propName}: ${value};`

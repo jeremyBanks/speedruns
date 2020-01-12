@@ -58,17 +58,21 @@ const placeholderClassSuffixes = new Array(256).fill().map(() => `tmp-${String(M
 
 export class HTMLPieces {
   constructor(pieces) {
-    for (const piece of pieces)
-      if (!((typeof piece === 'string') || (piece && typeof piece.then === 'function') || piece instanceof HTMLPieces))
+    for (const piece of pieces) {
+      if (!((typeof piece === 'string') || (piece && typeof piece.then === 'function') || piece instanceof HTMLPieces)) {
         throw new TypeError();
+      }
+    }
     
     // Flatten any HTMLPieces that are passed in synchronously.
     this.pieces = [].concat(...pieces.map(
         piece => (piece instanceof HTMLPieces) ? piece.pieces : [piece]));
 
-    for (const piece of this.pieces)
-      if (!((typeof piece === 'string') || (typeof piece.then === 'function')))
+    for (const piece of this.pieces) {
+      if (!((typeof piece === 'string') || (typeof piece.then === 'function'))) {
         throw new ThisShouldNeverHappenError();
+      }
+    }
 
     this.async = this.pieces.some(piece => typeof piece.then === 'function');
 
@@ -93,7 +97,7 @@ export class HTMLPieces {
       const iterator = content[Symbol.asyncIterator]();
       const doNext = () => {
         return HTMLPieces.from(iterator.next().then(({value, done}) => {
-          if (done) return;
+          if (done) { return; }
           return [value, doNext()];
         }));
       };

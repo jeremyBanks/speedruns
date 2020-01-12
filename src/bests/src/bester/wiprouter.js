@@ -71,10 +71,10 @@ export class Router extends RootComponent {
   addClickListener(document) {
     document.addEventListener('click', event => {
       // only catch unmodified left clicks.
-      if (event.buttons > 1) return;
-      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      if (event.buttons > 1) { return; }
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) { return; }
 
-      if (!event.target.closest('a')) return;
+      if (!event.target.closest('a')) { return; }
 
       let target = new URL(event.target.closest('a').href);
       if (target.host === document.location.host) {
