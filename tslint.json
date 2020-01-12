@@ -2,5 +2,8 @@
   "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
     "arrow-parens": ["error", "as-needed"]
+  },
+  "jsRules": {
+    "no-console": false
   }
 }

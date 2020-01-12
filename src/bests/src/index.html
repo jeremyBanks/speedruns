@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title></title>
+
+<script>
+  if (document.location.protocol === "http:")
+    document.location.protocol = "https:";
+</script>
+
+<meta
+  http-equiv="Content-Security-Policy"
+  value="default-src 'self'; img-src *"
+/>
+<meta name="viewport" content="width=682, initial-scale=0" />
+
+<link rel="icon" href="/assets/icon.png" />
+
+<body class="unloaded">
+  <script type="module" async>
+    import "/assets/main.js";
+  </script>
+
+  <style>
+    html {
+      background: #222;
+      overflow-y: scroll;
+    }
+
+    pre {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      padding: 0;
+      margin: 0;
+      animation-name: appear;
+      animation-delay: 0.5s;
+      animation-duration: 0.125s;
+      animation-fill-mode: both;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    main {
+      display: block;
+      color: #000;
+      background: #fff;
+      font: 16px sans-serif;
+      padding: 24px 0;
+      margin: 16px auto;
+      width: 100%;
+      max-width: 640px;
+      min-width: 596px;
+      position: relative;
+      text-align: center;
+
+      transition: 0.1s filter;
+    }
+
+    body.unloaded main,
+    body.loading main {
+      cursor: progress;
+      pointer-events: none;
+      user-select: none;
+      filter: brightness(0.75) blur(1px);
+    }
+
+    main > * {
+      width: 588px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    img {
+      --max-size: calc(0.5em + 0.5ex);
+      max-width: var(--max-size);
+      max-height: var(--max-size);
+      vertical-align: baseline;
+      pointer-events: none;
+    }
+
+    a,
+    a:visited {
+      color: #008;
+      text-decoration: none;
+      text-decoration-color: black;
+    }
+
+    a:hover {
+      color: #00f;
+    }
+
+    a:not(:hover) {
+      color: inherit;
+    }
+
+    ::selection {
+      color: black;
+      background: rgb(200, 225, 255);
+    }
+
+    #error-message {
+      border: 1px solid red;
+      color: red;
+      position: fixed;
+      right: 4px;
+      bottom: 4px;
+      z-index: 512;
+      background: rgba(0, 0, 0, 0.9375);
+      width: auto;
+      padding: 2em;
+      max-width: 600px;
+      user-select: all;
+    }
+
+    body.loading #error-message,
+    body.loaded #error-message {
+      display: none;
+    }
+
+    body.errored #error-message {
+      display: block;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      text-align: left;
+      overflow-x: auto;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: "Trebuchet MS", sans-serif;
+    }
+
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin: 1em;
+    }
+  </style>
+
+  <pre id="error-message">Attempting to load page...</pre>
+
+  <main id="main"></main>
+</body>
