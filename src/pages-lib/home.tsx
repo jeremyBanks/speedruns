@@ -30,9 +30,7 @@ const GamePane: React.FC<{ game: schema.HomeDetails }> = ({ game }) => (
       ))}
     </ol>
 
-    <h2>
-      <AutoColor>Individual Levels</AutoColor>
-    </h2>
+    <h2>Individual Levels</h2>
 
     {game.levels
       .sort((a, b) => {
