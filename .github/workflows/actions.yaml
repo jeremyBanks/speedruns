@@ -89,23 +89,25 @@ jobs:
       - name: bot - code formatting
         run: yarn format
 
+      - name: bot - commit any changes as autofix
+        continue-on-error: true
+        env:
+          GIT_COMMITTER_NAME: autofix
+          GIT_COMMITTER_EMAIL: bot@jeremy.ca
+        run: bash scripts/commit-autofix.bash
+
       - name: test - cargo test
         uses: actions-rs/cargo@v1
         with:
           command: test
           args: --workspace
 
-      - name: bot - commit any changes as autofix
-        env:
-          GIT_COMMITTER_NAME: autofix
-          GIT_COMMITTER_EMAIL: bot@jeremy.ca
-        run: bash scripts/commit-autofix.bash
-
       - name: test - lint (optional)
+        continue-on-error: true
         run: yarn lint
 
       - name: bot - add master to ✔️ first-parent chain if we made it this far
-        if: github.ref == 'refs/heads/master' && success() || failure()
+        if: github.ref == 'refs/heads/master'
         env:
           GIT_COMMITTER_NAME: autofix
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
