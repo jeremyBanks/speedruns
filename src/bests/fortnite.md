@@ -2,11 +2,11 @@
 
 ## Build to Maximum Height in Battle Royale Solo
 
-Timed from last from before beginning of drop window, to first frame after 
+Timed from last from before beginning of drop window, to first frame after
 placement of max-height piece (as seen by the change in your resources).
 
-It could also be possible to time from drop, to give more control over the 
-start location. That might actually be *much* more fair.
+It could also be possible to time from drop, to give more control over the
+start location. That might actually be _much_ more fair.
 
 ## to review
 

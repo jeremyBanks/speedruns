@@ -44,7 +44,7 @@ const apiFetch = async (path, maxPages = Infinity, pastPages = 0, offset = 0) =>
 
 export class Runner {
   constructor(...args) {
-    this['ℹ️'] = this.constructor.name;
+    this.ℹ️ = this.constructor.name;
     this.isUser =
     this.userId =
     this.nick =
@@ -92,7 +92,7 @@ export class Runner {
 
 export class Game {
   constructor(...args) {
-    this['ℹ️'] = this.constructor.name;
+    this.ℹ️ = this.constructor.name;
     this.gameId =
     this.nick =
     this.slug =
@@ -163,7 +163,7 @@ export class Game {
 
 export class CategoryLevelPair {
   constructor(...args) {
-    this['ℹ️'] = this.constructor.name;
+    this.ℹ️ = this.constructor.name;
     this.gameId =
     this.categoryId =
     this.categoryNick =
@@ -184,12 +184,12 @@ export class CategoryLevelPair {
   }
   
   matchesSlug(slug) {
-    if (slug === this.slug) return true;
-    if (slug === this.categoryId) return true;
-    if (slug === this.levelId) return true;
-    if (this.levelNick && slug === this.levelNick.replace(/[^a-z0-9]+/ig, '-').toLowerCase()) return true;
-    if (this.categoryNick && slug === this.categoryNick.replace(/[^a-z0-9]+/ig, '-').toLowerCase()) return true;
-    if (this.levelNick && this.categoryNick && slug === this.nickSlug) return true;
+    if (slug === this.slug) { return true; }
+    if (slug === this.categoryId) { return true; }
+    if (slug === this.levelId) { return true; }
+    if (this.levelNick && slug === this.levelNick.replace(/[^a-z0-9]+/ig, '-').toLowerCase()) { return true; }
+    if (this.categoryNick && slug === this.categoryNick.replace(/[^a-z0-9]+/ig, '-').toLowerCase()) { return true; }
+    if (this.levelNick && this.categoryNick && slug === this.nickSlug) { return true; }
     return false;
   }
 }
@@ -197,7 +197,7 @@ export class CategoryLevelPair {
 
 export class Run {
   constructor(...args) {
-    this['ℹ️'] = this.constructor.name;
+    this.ℹ️ = this.constructor.name;
     this.runId =
     this.runner =
     this.durationSeconds =
@@ -213,10 +213,10 @@ export class Run {
   
   static normalizeDurationText(durationText) {
     const match = /^([A-Z]{2})(?:([0-9]{1,})H)?(?:([0-9]{1,2})M)?(?:([0-9]{1,2})(?:\.([0-9]{1,3}))?S)?$/i.exec(durationText);
-    if (!match) throw new Error(`failed to normalize duration: ${durationText}`);    const [prefix, full, hours, minutes, seconds, miliseconds] = match;
+    if (!match) { throw new Error(`failed to normalize duration: ${durationText}`); }    const [prefix, full, hours, minutes, seconds, miliseconds] = match;
     const pieces = [];
-    if (hours != null) pieces.push(String(Number(hours)).padStart(2, pieces.length ? '0' : ' '), 'h');
-    if (hours != null || minutes != null) pieces.push(String(Number(minutes)).padStart(2, pieces.length ? '0' : ' '), 'm');
+    if (hours != null) { pieces.push(String(Number(hours)).padStart(2, pieces.length ? '0' : ' '), 'h'); }
+    if (hours != null || minutes != null) { pieces.push(String(Number(minutes)).padStart(2, pieces.length ? '0' : ' '), 'm'); }
     pieces.push(String(Number(seconds || 0)).padStart(2, pieces.length ? '0' : ' '));
     if (hours == null && miliseconds != null) {
       pieces.push('.', String(Number(miliseconds)).padStart(3, '0'));
