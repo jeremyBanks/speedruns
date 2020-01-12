@@ -13,14 +13,12 @@ import React from "react";
 
 const onNode = typeof window === "undefined";
 
-// We use a client instance *even on the server* because there's
-// no user context or complicated caching to deal with.
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 const getApolloClient = (
   initialState?: NormalizedCacheObject,
 ): ApolloClient<NormalizedCacheObject> => {
-  if (!globalApolloClient) {
+  if (onNode || !globalApolloClient) {
     let uri = "http://localhost:3001/";
     if (!onNode && window.location.host === "speedrun.ca") {
       // public/prod URL!
