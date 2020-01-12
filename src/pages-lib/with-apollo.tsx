@@ -36,9 +36,9 @@ const getApolloClient = (
       });
     }
 
-    // can't use cache-and-network on client that might not have access to graphql
-    // because of https://github.com/apollographql/apollo-client/issues/3755
-    const policy = onNode ? "cache-and-network" : "cache-first";
+    // xxx: cache-and-network on client that might not have access to graphql
+    // can have problems: https://github.com/apollographql/apollo-client/issues/3755
+    const policy = "cache-and-network";
 
     globalApolloClient = new ApolloClient({
       cache,
