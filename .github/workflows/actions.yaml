@@ -101,6 +101,9 @@ jobs:
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: bash scripts/commit-autofix.bash
 
+      - name: test - lint (optional)
+        run: yarn lint
+
       - name: bot - add master to ✔️ first-parent chain if we made it this far
         if: github.ref == 'refs/heads/master' && success() || failure()
         env:

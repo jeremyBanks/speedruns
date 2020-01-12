@@ -32,7 +32,7 @@ const GamePane: React.FC<{ game: schema.HomeDetails }> = ({ game }) => (
 
     <h2>
       <b>
-        <HashColored text="Individual Levels" />
+        <HashColored>Individual Levels</HashColored>
       </b>
     </h2>
 
@@ -50,7 +50,7 @@ const GamePane: React.FC<{ game: schema.HomeDetails }> = ({ game }) => (
         <div key={level.id}>
           <h3>
             <b>
-              <HashColored text={level.name} />
+              <HashColored>{level.name}</HashColored>
             </b>
           </h3>
 
@@ -87,25 +87,24 @@ const RunLi: React.FC<{
           {" by "}
           <span>
             <b>
-              <HashColored
-                text={rankedRun.run.players
-                  .map(player => player.name)
-                  .join(" and ")}
+              <HashColored>
+                {rankedRun.run.players.map(player => player.name).join(" and ")}
+              </HashColored>
               />
             </b>
           </span>
           {" on "}
           <span>
             <b>
-              <HashColored
-                text={String(
+              <HashColored>
+                {String(
                   (date &&
                     new Date(date * 1000)
                       .toISOString()
                       .slice(0, "YYYY-MM-DD".length)) ||
                     ""
                 )}
-              />
+              </HashColored>
             </b>
           </span>
         </a>
