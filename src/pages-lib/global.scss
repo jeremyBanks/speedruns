@@ -36,8 +36,9 @@ main {
   width: 100%;
   max-width: 640px;
   min-width: 596px;
-
-  transition: 0.1s filter;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  box-shadow: 0 0 2px black, 0 0 4px rgba(255, 255, 255, 0.5);
 }
 
 main > * {
@@ -89,10 +90,14 @@ h6 {
   font-family: "Trebuchet MS", sans-serif;
 }
 
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 1em;
+section {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 1em;
+    margin-left: calc(60px - 2em);
+  }
 }

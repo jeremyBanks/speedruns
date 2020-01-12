@@ -343,13 +343,13 @@ export interface GetHome_war2x {
 export interface GetHome {
   /**
    * Get a Game by id or slug, or null if not found.
-   *
+   * 
    * Throws an error if both are specified but don't both match the same game.
    */
   war2: GetHome_war2 | null;
   /**
    * Get a Game by id or slug, or null if not found.
-   *
+   * 
    * Throws an error if both are specified but don't both match the same game.
    */
   war2x: GetHome_war2x | null;
@@ -405,7 +405,7 @@ export interface GetUser_user {
 export interface GetUser {
   /**
    * Get a User by id or slug, or null if not found.
-   *
+   * 
    * Throws an error if both are specified but don't both match the same game.
    */
   user: GetUser_user | null;
