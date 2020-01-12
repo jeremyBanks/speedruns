@@ -53,7 +53,6 @@ app.get("/*.md", async (req, res, next) => {
   const reader = new commonmark.Parser();
   const writer = new commonmark.HtmlRenderer({ safe: true });
   const result = writer.render(reader.parse(input));
-  const projectName = process.env.PROJECT_NAME || "bests";
 
   res.set("Content-Type", "text/html");
 
@@ -82,12 +81,6 @@ body {
 </style>
 </head>
 <body>
-${projectName &&
-  HTML`
-  <div class="edit-link"><a href="https://glitch.com/edit/#!/${projectName}?path=${req.url.slice(
-    1,
-  )}">edit on Glitch</a></div>
-`}
 <main>
   ${HTML(result)}
 </main>
@@ -168,7 +161,7 @@ app.use(async (req, res) => {
           const result = await HTML.string`<div>
             ${Header.of({
               currentHost: req.get("host"),
-              currentProject: process.env.PROJECT_NAME,
+              currentProject: "bests",
             })}
             <p>
               Still loading data from speedrun.com. Please try again in a minute.
@@ -184,7 +177,7 @@ app.use(async (req, res) => {
       body = await HTML.string`<div>
             ${Header.of({
               currentHost: req.get("host"),
-              currentProject: process.env.PROJECT_NAME,
+              currentProject: "bests",
             })}
             <pre>${error}\n${error.stack}</pre>
             ${Footer.of()}
