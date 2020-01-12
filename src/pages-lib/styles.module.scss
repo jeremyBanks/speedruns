@@ -46,3 +46,27 @@
   padding: 0 2px;
   border-radius: 4px;
 }
+
+.leaderboard {
+  ol {
+    li {
+      color: rgb(150, 150, 150);
+      font-weight: bold;
+
+      &[value="1"] {
+        color: rgb(250, 150, 0);
+      }
+      &[value="2"] {
+        color: rgb(125, 125, 175);
+      }
+      &[value="3"] {
+        color: rgb(200, 75, 25);
+      }
+
+      > * {
+        color: black;
+        font-weight: normal;
+      }
+    }
+  }
+}

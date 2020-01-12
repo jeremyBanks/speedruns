@@ -43,7 +43,7 @@ const GamePane: React.FC<{ game: schema.HomeDetails }> = ({ game }) => (
         }
       })
       .map(level => (
-        <div key={level.id}>
+        <div key={level.id} className={styles.leaderboard}>
           <h3>{level.name}</h3>
 
           <ol>
