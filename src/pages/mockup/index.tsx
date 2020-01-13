@@ -4,9 +4,9 @@ import React from "react";
 import AutoColor from "../../pages-lib/auto-color";
 import styles from "./styles.module.scss";
 
-const SandboxPage: NextPage = () => {
+const MockupPage: NextPage = () => {
   return (
-    <section className={styles.sandbox}>
+    <section className={styles.mockup}>
       <p>
         mockup. I'd still like the ability to include personal progression in
         the world record view but I guess that can come later. or what about
@@ -143,9 +143,9 @@ const SandboxPage: NextPage = () => {
 
       <table className={styles.progression}>
         <thead>
+          <th className={styles.level}>Level</th>
           <th className={styles.rank}>Rank</th>
           <th className={styles.player}>Player</th>
-          <th className={styles.level}>Level</th>
           <th className={styles.time}>
             Time (RTA) /
             <br />
@@ -156,12 +156,12 @@ const SandboxPage: NextPage = () => {
         </thead>
         <tbody>
           <tr data-rank="1">
+            <td className={styles.level}>
+              <AutoColor>Orc 01: And So On</AutoColor>
+            </td>
             <td className={styles.rank}>1</td>
             <td className={styles.player}>
               <AutoColor>ZPR</AutoColor>
-            </td>
-            <td className={styles.level}>
-              <AutoColor>Orc 01: And So On</AutoColor>
             </td>
             <td className={styles.time}>
               1m 31s /<br />
@@ -173,12 +173,12 @@ const SandboxPage: NextPage = () => {
             </td>
           </tr>
           <tr data-rank="1">
+            <td className={styles.level}>
+              <AutoColor>Orc 02: They Let On</AutoColor>
+            </td>
             <td className={styles.rank}>1</td>
             <td className={styles.player}>
               <AutoColor>ZPR</AutoColor>
-            </td>
-            <td className={styles.level}>
-              <AutoColor>Orc 02: They Let On</AutoColor>
             </td>
             <td className={styles.time}>
               1m 32s /<br />
@@ -190,12 +190,12 @@ const SandboxPage: NextPage = () => {
             </td>
           </tr>
           <tr data-rank="2">
+            <td className={styles.level}>
+              <AutoColor>Orc 01: And So On</AutoColor>
+            </td>
             <td className={styles.rank}>2</td>
             <td className={styles.player}>
               <AutoColor>Banks</AutoColor>
-            </td>
-            <td className={styles.level}>
-              <AutoColor>Orc 01: And So On</AutoColor>
             </td>
             <td className={styles.time}>
               1m 31s /<br />
@@ -207,12 +207,12 @@ const SandboxPage: NextPage = () => {
             </td>
           </tr>
           <tr data-rank="1">
+            <td className={styles.level}>
+              <AutoColor>Orc 04: To The One</AutoColor>
+            </td>
             <td className={styles.rank}>1</td>
             <td className={styles.player}>
               <AutoColor>Fralor</AutoColor>
-            </td>
-            <td className={styles.level}>
-              <AutoColor>Orc 04: To The One</AutoColor>
             </td>
             <td className={styles.time}>
               1m 31s /<br />
@@ -391,4 +391,4 @@ const SandboxPage: NextPage = () => {
   );
 };
 
-export default SandboxPage;
+export default MockupPage;
