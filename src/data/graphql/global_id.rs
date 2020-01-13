@@ -50,16 +50,16 @@ pub fn parse_global_id(global_id: &str) -> (u64, NodeType) {
 #[test]
 fn test_round_trip_global_ids() {
     let cases = [
-        (0x1234u64, NodeType::Game),
-        (0x0000_FFFF_FFFF_FFFF, NodeType::User),
-        (0x0000_FEDA_BCAC_EDAC, NodeType::Run),
-        (0x0, NodeType::Category),
-        (0x1, NodeType::Level),
+        (0x1234u64, NodeType::Game, "GAAAAAAAEjQ"),
+        (0x0000_FFFF_FFFF_FFFF, NodeType::User, "UAD_______8"),
+        (0x0000_FEDA_BCAC_EDAC, NodeType::Run, "RAD-2rys7aw"),
+        (0x0, NodeType::Category, "CAAAAAAAAAA"),
+        (0x1, NodeType::Level, "LAAAAAAAAAE"),
     ];
 
-    for (id, node_type) in &cases {
-        let global = global_id(*id, *node_type);
-        println!("{:?} {:?} {:?}", id, node_type, global);
+    for (id, node_type, global) in &cases {
+        let global2 = global_id(*id, *node_type);
+        assert_eq!(*global, global2);
         let (id2, node_type2) = parse_global_id(&global);
         assert_eq!(*id, id2);
         assert_eq!(*node_type, node_type2);
