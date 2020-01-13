@@ -4,9 +4,9 @@ import React from "react";
 import AutoColor from "../../pages-lib/auto-color";
 import styles from "./styles.module.scss";
 
-const SandboxPage: NextPage = () => {
+const MockupPage: NextPage = () => {
   return (
-    <section className={styles.sandbox}>
+    <section className={styles.mockup}>
       <p>
         mockup. I'd still like the ability to include personal progression in
         the world record view but I guess that can come later. or what about
@@ -391,4 +391,4 @@ const SandboxPage: NextPage = () => {
   );
 };
 
-export default SandboxPage;
+export default MockupPage;
