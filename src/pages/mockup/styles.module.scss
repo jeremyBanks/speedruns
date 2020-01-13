@@ -1,4 +1,4 @@
-.sandbox {
+.mockup {
   font-size: 12px;
 
   table {
@@ -71,21 +71,21 @@
       color: grey;
     }
 
-    tr[data-rank="1"] td:first-child {
+    tr[data-rank="1"] td.rank {
       color: black;
       font-weight: bold;
       background: rgb(255, 210, 110);
       border: 4px solid white;
     }
 
-    tr[data-rank="2"] td:first-child {
+    tr[data-rank="2"] td.rank {
       font-weight: bold;
       color: black;
       background: rgb(210, 230, 255);
       border: 4px solid white;
     }
 
-    tr[data-rank="3"] td:first-child {
+    tr[data-rank="3"] td.rank {
       font-weight: bold;
       color: black;
       background: rgb(255, 175, 125);
