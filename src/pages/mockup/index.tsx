@@ -143,9 +143,9 @@ const MockupPage: NextPage = () => {
 
       <table className={styles.progression}>
         <thead>
+          <th className={styles.level}>Level</th>
           <th className={styles.rank}>Rank</th>
           <th className={styles.player}>Player</th>
-          <th className={styles.level}>Level</th>
           <th className={styles.time}>
             Time (RTA) /
             <br />
@@ -156,12 +156,12 @@ const MockupPage: NextPage = () => {
         </thead>
         <tbody>
           <tr data-rank="1">
+            <td className={styles.level}>
+              <AutoColor>Orc 01: And So On</AutoColor>
+            </td>
             <td className={styles.rank}>1</td>
             <td className={styles.player}>
               <AutoColor>ZPR</AutoColor>
-            </td>
-            <td className={styles.level}>
-              <AutoColor>Orc 01: And So On</AutoColor>
             </td>
             <td className={styles.time}>
               1m 31s /<br />
@@ -173,12 +173,12 @@ const MockupPage: NextPage = () => {
             </td>
           </tr>
           <tr data-rank="1">
+            <td className={styles.level}>
+              <AutoColor>Orc 02: They Let On</AutoColor>
+            </td>
             <td className={styles.rank}>1</td>
             <td className={styles.player}>
               <AutoColor>ZPR</AutoColor>
-            </td>
-            <td className={styles.level}>
-              <AutoColor>Orc 02: They Let On</AutoColor>
             </td>
             <td className={styles.time}>
               1m 32s /<br />
@@ -190,12 +190,12 @@ const MockupPage: NextPage = () => {
             </td>
           </tr>
           <tr data-rank="2">
+            <td className={styles.level}>
+              <AutoColor>Orc 01: And So On</AutoColor>
+            </td>
             <td className={styles.rank}>2</td>
             <td className={styles.player}>
               <AutoColor>Banks</AutoColor>
-            </td>
-            <td className={styles.level}>
-              <AutoColor>Orc 01: And So On</AutoColor>
             </td>
             <td className={styles.time}>
               1m 31s /<br />
@@ -207,12 +207,12 @@ const MockupPage: NextPage = () => {
             </td>
           </tr>
           <tr data-rank="1">
+            <td className={styles.level}>
+              <AutoColor>Orc 04: To The One</AutoColor>
+            </td>
             <td className={styles.rank}>1</td>
             <td className={styles.player}>
               <AutoColor>Fralor</AutoColor>
-            </td>
-            <td className={styles.level}>
-              <AutoColor>Orc 04: To The One</AutoColor>
             </td>
             <td className={styles.time}>
               1m 31s /<br />
