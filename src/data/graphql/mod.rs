@@ -177,8 +177,13 @@ impl GameFields for Game {
         category: String,
         level: Option<String>,
     ) -> Vec<RankedRun> {
-        let level_id = level.map(|level| self.0.level_by_slug(&level).unwrap().id);
-        let category_id = self.0.category_by_slug(&category).unwrap().id;
+        let level_id =
+            level.map(|level| self.0.level_by_slug(&level).expect("level not found").id);
+        let category_id = self
+            .0
+            .category_by_slug(&category)
+            .expect("category not found")
+            .id;
 
         let runs: Vec<DbLinked<db::Run>> = self
             .0
