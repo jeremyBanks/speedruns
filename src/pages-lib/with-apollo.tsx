@@ -9,13 +9,12 @@ import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import React from "react";
 
-// based on https://git.io/JepyG
-
 const onNode = typeof window === "undefined";
-export const GRAPHQL_ENDPOINT =
-  !onNode && window.location.host === "speedrun.ca"
-    ? "//graphql-v0.speedrun.ca/graphql"
-    : "http://localhost:3001/graphql";
+export const GRAPHQL_ENDPOINT = ["localhost", "127.0.0.1"].includes(
+  window?.location?.hostname,
+)
+  ? "http://localhost:3001/graphql"
+  : "//graphql-v0.speedrun.ca/graphql";
 
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
