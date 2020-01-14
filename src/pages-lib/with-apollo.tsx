@@ -11,10 +11,10 @@ import React from "react";
 
 const onNode = typeof window === "undefined";
 export const GRAPHQL_ENDPOINT = ["localhost", "127.0.0.1"].includes(
-  window?.location?.hostname,
+  typeof window !== "undefined" ? window.location.hostname : "node",
 )
   ? "http://localhost:3001/graphql"
-  : "//graphql-v0.speedrun.ca/graphql";
+  : "http://graphql-v0.speedrun.ca/graphql";
 
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
