@@ -207,7 +207,7 @@ mod tests {
     #[test]
     fn test_slugify() {
         for (name, slug, src_slug) in vec![
-            ("Mission", "mission", "mission"),
+            ("Mission", "mission", "Mission"),
             ("All Campaigns", "all-campaigns", "All_Campaigns"),
             ("Celeste", "celeste", "Celeste"),
             ("Any%", "anypercent", "Any"),
