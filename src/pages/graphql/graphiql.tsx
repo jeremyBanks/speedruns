@@ -1,6 +1,7 @@
 import fetch from "isomorphic-unfetch";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
+import { GRAPHQL_ENDPOINT } from "../../pages-lib/with-apollo";
 
 const GraphiQLPage: NextPage = () => {
   const [GraphiQL, setGraphiQL] = useState<
@@ -20,7 +21,7 @@ const GraphiQLPage: NextPage = () => {
       return (
         <GraphiQL
           fetcher={(query: unknown) =>
-            fetch("http://localhost:3001/", {
+            fetch(GRAPHQL_ENDPOINT, {
               method: "post",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ query }),

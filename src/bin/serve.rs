@@ -71,10 +71,7 @@ async fn main() -> std::io::Result<()> {
             .data(schema.clone())
             .wrap(actix_cors::Cors::new().finish())
             .wrap(actix_web::middleware::Logger::default())
-            .service(web::resource("/").route(web::post().to(graphql)))
-            .service(web::resource("/").route(web::get().to(graphql)))
             .service(web::resource("/graphql").route(web::post().to(graphql)))
-            .service(web::resource("/graphql").route(web::get().to(graphql)))
             .service(web::resource("/graphiql").route(web::get().to(graphiql)))
             .service(web::resource("/playground").route(web::get().to(playground)))
     });
