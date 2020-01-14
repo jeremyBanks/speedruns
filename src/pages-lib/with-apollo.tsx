@@ -14,7 +14,7 @@ export const GRAPHQL_ENDPOINT = ["localhost", "127.0.0.1"].includes(
   typeof window !== "undefined" ? window.location.hostname : "node",
 )
   ? "http://localhost:3001/graphql"
-  : "http://graphql-v0.speedrun.ca/graphql";
+  : "https://graphql-v0.speedrun.ca/graphql";
 
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
