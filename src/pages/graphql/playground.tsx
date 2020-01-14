@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
+import { GRAPHQL_ENDPOINT } from "../../pages-lib/with-apollo";
 
 const PlaygroundPage: NextPage = () => {
   const [playground, setPlayground] = useState<
@@ -22,7 +23,7 @@ const PlaygroundPage: NextPage = () => {
     } else {
       return (
         <Provider store={playground.store as any}>
-          <playground.Playground endpoint="http://localhost:3001/" />
+          <playground.Playground endpoint={GRAPHQL_ENDPOINT} />
         </Provider>
       );
     }

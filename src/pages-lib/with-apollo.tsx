@@ -12,6 +12,10 @@ import React from "react";
 // based on https://git.io/JepyG
 
 const onNode = typeof window === "undefined";
+export const GRAPHQL_ENDPOINT =
+  !onNode && window.location.host === "speedrun.ca"
+    ? "//graphql-v0.speedrun.ca/graphql"
+    : "http://localhost:3001/graphql";
 
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -19,11 +23,6 @@ const getApolloClient = (
   initialState?: NormalizedCacheObject,
 ): ApolloClient<NormalizedCacheObject> => {
   if (onNode || !globalApolloClient) {
-    let uri = "http://localhost:3001/";
-    if (!onNode && window.location.host === "speedrun.ca") {
-      // public/prod URL!
-      uri = "//graphql-v0.speedrun.ca/graphql";
-    }
     const cache = new InMemoryCache();
     if (initialState) {
       cache.restore(initialState);
@@ -42,7 +41,7 @@ const getApolloClient = (
 
     globalApolloClient = new ApolloClient({
       cache,
-      link: new HttpLink({ uri, fetch }),
+      link: new HttpLink({ uri: GRAPHQL_ENDPOINT, fetch }),
       ssrMode: onNode,
       defaultOptions: {
         watchQuery: {
