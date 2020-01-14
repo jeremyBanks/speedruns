@@ -2,8 +2,6 @@ import React from "react";
 
 import styles from "./styles.module.scss";
 
-export default HomeContent;
-
 export const HomeContent: React.FC = () => (
   <div className={styles.home}>
     <p>
@@ -16,3 +14,5 @@ export const HomeContent: React.FC = () => (
     </p>
   </div>
 );
+
+export default HomeContent;
