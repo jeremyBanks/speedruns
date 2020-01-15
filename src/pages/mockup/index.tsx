@@ -2,11 +2,11 @@ import { NextPage } from "next";
 import React from "react";
 
 import AutoColor from "../../pages-lib/auto-color";
-import styles from "./styles.module.scss";
+import styles from "../../pages-lib/styles.module.scss";
 
 const MockupPage: NextPage = () => {
   return (
-    <section className={styles.mockup}>
+    <section className={styles.gamePage}>
       <p>
         mockup. I'd still like the ability to include personal progression in
         the world record view but I guess that can come later. or what about
