@@ -42,7 +42,7 @@ pub struct Game(DbLinked<db::Game>);
 pub struct Run(DbLinked<db::Run>);
 
 #[derive(Debug, Clone)]
-pub struct RankedRun(leaderboard::RankedRun);
+pub struct LeaderboardRun(leaderboard::RankedRun);
 
 #[derive(Debug, Clone)]
 pub struct Category(DbLinked<db::Category>);
@@ -169,52 +169,6 @@ impl GameFields for Game {
             .map(Category)
             .collect())
     }
-
-    fn field_leaderboard(
-        &self,
-        _executor: &Executor<'_, Context>,
-        _trail: &QueryTrail<'_, RankedRun, Walked>,
-        category: String,
-        level: Option<String>,
-    ) -> Vec<RankedRun> {
-        let level_id =
-            level.map(|level| self.0.level_by_slug(&level).expect("level not found").id);
-        let category_id = self
-            .0
-            .category_by_slug(&category)
-            .expect("category not found")
-            .id;
-
-        let runs: Vec<DbLinked<db::Run>> = self
-            .0
-            .runs()
-            .iter()
-            .filter(|run| run.level_id == level_id && run.category_id == category_id)
-            .cloned()
-            .collect();
-
-        let ranked = leaderboard::rank_runs(&runs);
-
-        (ranked.iter().map(|r| RankedRun(r.clone())).collect())
-    }
-
-    fn field_run(
-        &self,
-        executor: &Executor<'_, Context>,
-        _trail: &QueryTrail<'_, Run, Walked>,
-        id: String,
-    ) -> Option<Run> {
-        let id = u64_from_base36(&id).unwrap();
-        match executor.context().database.run_by_id(id) {
-            Some(run) =>
-                if run.game_id == self.0.id {
-                    Some(Run(run))
-                } else {
-                    None
-                },
-            None => None,
-        }
-    }
 }
 
 impl RunFields for Run {
@@ -272,28 +226,23 @@ impl RunFields for Run {
     }
 }
 
-impl RankedRunFields for RankedRun {
-    /// This run's rank, with ties broken by date.
+impl LeaderboardRunFields for LeaderboardRun {
     fn field_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
         (i32::try_from(*self.0.rank()).unwrap())
     }
 
-    /// The time of this run, as measured by this leaderboard's rules, in miliseconds.
     fn field_time_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
         (i32::try_from(*self.0.time_ms()).unwrap())
     }
 
-    /// Whether this run is tied for this rank.
     fn field_is_tied(&self, _executor: &Executor<'_, Context>) -> bool {
         (*self.0.is_tied())
     }
 
-    /// This run's rank, with ties unbroken.
     fn field_tied_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
         (i32::try_from(*self.0.tied_rank()).unwrap())
     }
 
-    /// The run.
     fn field_run(
         &self,
         _executor: &Executor<'_, Context>,
@@ -304,19 +253,42 @@ impl RankedRunFields for RankedRun {
 }
 
 impl CategoryFields for Category {
-    /// The category's base36 ID from speedrun.com.
     fn field_id(&self, _executor: &Executor<'_, Context>) -> String {
         (base36(self.0.id))
     }
 
-    /// The category's name.
     fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
         (self.0.name.clone())
     }
 
-    /// The category's slug.
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
         (self.0.slug.clone())
+    }
+
+    fn field_leaderboard(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
+        level_slug: Option<String>,
+    ) -> Vec<LeaderboardRun> {
+        let level_id = level_slug.map(|level_slug| {
+            self.0
+                .game()
+                .level_by_slug(&level_slug)
+                .expect("level not found")
+                .id
+        });
+        let runs: Vec<DbLinked<db::Run>> = self
+            .0
+            .runs()
+            .iter()
+            .filter(|run| run.level_id == level_id && run.category_id == self.0.id)
+            .cloned()
+            .collect();
+
+        let ranked = leaderboard::rank_runs(&runs);
+
+        (ranked.iter().map(|r| LeaderboardRun(r.clone())).collect())
     }
 }
 
@@ -331,8 +303,6 @@ impl UserFields for User {
 }
 
 impl PlayerFields for Player {
-    /// The player's name, which may be a distinct username or a non-distinct guest
-    /// nickname.
     fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
         (match self {
             Player::User(user) => user.0.name.clone(),
@@ -340,7 +310,6 @@ impl PlayerFields for Player {
         })
     }
 
-    /// The associated user, if this is a user.
     fn field_user(
         &self,
         _executor: &Executor<'_, Context>,
@@ -352,7 +321,6 @@ impl PlayerFields for Player {
         })
     }
 
-    /// Whether this player is a guest instead of a user.
     fn field_is_guest(&self, _executor: &Executor<'_, Context>) -> bool {
         (match self {
             Player::User(_user) => false,
@@ -362,22 +330,18 @@ impl PlayerFields for Player {
 }
 
 impl LevelFields for Level {
-    /// The level's base36 ID from speedrun.com.
     fn field_id(&self, _executor: &Executor<'_, Context>) -> String {
         (base36(self.0.id))
     }
 
-    /// The level's name.
     fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
         (self.0.name.clone())
     }
 
-    /// The level's slug.
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
         (self.0.slug.clone())
     }
 
-    /// The associated game.
     fn field_game(
         &self,
         _executor: &Executor<'_, Context>,
@@ -386,7 +350,6 @@ impl LevelFields for Level {
         (Game(self.0.game()))
     }
 
-    // Individual level run categories.
     fn field_categories(
         &self,
         executor: &Executor<'_, Context>,
@@ -404,16 +367,15 @@ impl LevelFields for Level {
             .collect())
     }
 
-    /// Returns ordered ranked runs.
     fn field_leaderboard(
         &self,
         _executor: &Executor<'_, Context>,
-        _trail: &QueryTrail<'_, RankedRun, Walked>,
-        category: String,
-    ) -> Vec<RankedRun> {
+        _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
+        category_slug: String,
+    ) -> Vec<LeaderboardRun> {
         let game = self.0.game();
 
-        let category_id = game.category_by_slug(&category).unwrap().id;
+        let category_id = game.category_by_slug(&category_slug).unwrap().id;
 
         let runs: Vec<DbLinked<db::Run>> = game
             .runs()
@@ -424,6 +386,6 @@ impl LevelFields for Level {
 
         let ranked = leaderboard::rank_runs(&runs);
 
-        (ranked.iter().map(|r| RankedRun(r.clone())).collect())
+        (ranked.iter().map(|r| LeaderboardRun(r.clone())).collect())
     }
 }

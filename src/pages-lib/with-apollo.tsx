@@ -1,7 +1,6 @@
 import { ApolloProvider } from "@apollo/react-hooks";
 import { getDataFromTree } from "@apollo/react-ssr";
 import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
-import { persistCache } from "apollo-cache-persist";
 import ApolloClient from "apollo-client";
 import { HttpLink } from "apollo-link-http";
 import fetch from "isomorphic-unfetch";
@@ -25,13 +24,6 @@ const getApolloClient = (
     const cache = new InMemoryCache();
     if (initialState) {
       cache.restore(initialState);
-    }
-    if (!onNode) {
-      // XXX: this is supposed to be awaited but we're not async. maybe it'll still help?
-      persistCache({
-        cache,
-        storage: window.localStorage as any,
-      });
     }
 
     // xxx: cache-and-network on client that might not have access to graphql

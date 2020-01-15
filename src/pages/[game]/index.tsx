@@ -30,70 +30,40 @@ const GamePage: NextPage = () => {
     <section className={styles.gamePage}>
       <h1>{game.name}</h1>
 
-      <h2>Full Game (Category: All Campaigns)</h2>
+      {game.categories.map(category => (
+        <>
+          <h2>Full Game (Category: {category.name})</h2>
 
-      <h3>Leaderboard</h3>
+          <h3>Leaderboard</h3>
 
-      <table className={styles.leaderboard}>
-        <thead>
-          <th className={styles.rank}>Rank</th>
-          <th className={styles.player}>Player</th>
-          <th className={styles.time}>Time (RTA)</th>
-          <th className={styles.date}>Date</th>
-        </thead>
-        <tbody>
-          <tr data-rank="1">
-            <td className={styles.rank}>1</td>
-            <td className={styles.player}>
-              <AutoColor>ZPR</AutoColor>
-            </td>
-            <td className={styles.time}>1m 31s</td>
-            <td className={styles.date}>
-              <AutoColor>2018-12Dec-18</AutoColor>
-            </td>
-          </tr>
-          <tr data-rank="2">
-            <td className={styles.rank}>2</td>
-            <td className={styles.player}>
-              <AutoColor>Banks</AutoColor>
-            </td>
-            <td className={styles.time}>1m 32s</td>
-            <td className={styles.date}>
-              <AutoColor>2018-16Dec-18</AutoColor>
-            </td>
-          </tr>
-          <tr data-rank="3">
-            <td className={styles.rank}>3</td>
-            <td className={styles.player}>
-              <AutoColor>GreenMixTape</AutoColor>
-            </td>
-            <td className={styles.time}>2m 0s</td>
-            <td className={styles.date}>
-              <AutoColor>2018-10Dec-18</AutoColor>
-            </td>
-          </tr>
-          <tr data-rank="4">
-            <td className={styles.rank}>4</td>
-            <td className={styles.player}>
-              <AutoColor>KarmikKoala</AutoColor>
-            </td>
-            <td className={styles.time}>2m 31s</td>
-            <td className={styles.date}>
-              <AutoColor>2014-12Dec-01</AutoColor>
-            </td>
-          </tr>
-          <tr data-rank="5">
-            <td className={styles.rank}>5</td>
-            <td className={styles.player}>
-              <AutoColor>Fralor</AutoColor>
-            </td>
-            <td className={styles.time}>4m 31s</td>
-            <td className={styles.date}>
-              <AutoColor>2018-02Feb-18</AutoColor>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          <table className={styles.leaderboard}>
+            <thead>
+              <th className={styles.rank}>Rank</th>
+              <th className={styles.player}>Player</th>
+              <th className={styles.time}>Time (RTA)</th>
+              <th className={styles.date}>Date</th>
+            </thead>
+            <tbody>
+              {category.leaderboard.map(ranked => {
+                return (
+                  <tr data-rank={ranked.tiedRank}>
+                    <td className={styles.rank}>{ranked.tiedRank}</td>
+                    <td className={styles.player}>
+                      <AutoColor>
+                        {ranked.run.players.map(p => p.name).join(" & ")}
+                      </AutoColor>
+                    </td>
+                    <td className={styles.time}>{ranked.timeMs}</td>
+                    <td className={styles.date}>
+                      <AutoColor>{String(ranked.run.date)}</AutoColor>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </>
+      ))}
     </section>
   );
 };
@@ -106,6 +76,39 @@ const GetGamePage = gql`
       id
       slug
       name
+      categories {
+        id
+        name
+
+        leaderboard {
+          rank
+          timeMs
+          isTied
+          tiedRank
+          run {
+            id
+            category {
+              id
+            }
+            level {
+              id
+            }
+            date
+            players {
+              name
+              isGuest
+              user {
+                id
+                slug
+              }
+            }
+          }
+        }
+      }
+      levels {
+        id
+        name
+      }
     }
   }
 `;
