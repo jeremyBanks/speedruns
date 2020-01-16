@@ -26,3 +26,5 @@ export const Duration: React.FC<{ ms: number }> = ({ ms }) => {
 
   return <span className={styles.duration}>{pieces}</span>;
 };
+
+export default Duration;

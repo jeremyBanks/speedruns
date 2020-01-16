@@ -46,7 +46,7 @@ type Level {
   slug: String! @juniper(ownership: "owned", infallible: true)
   game: Game! @juniper(ownership: "owned", infallible: true)
   categories: [Category!]! @juniper(ownership: "owned", infallible: true)
-  leaderboard(categorySlug: String!): [LeaderboardRun!]!
+  leaderboard(categorySlug: String): [LeaderboardRun!]!
     @juniper(ownership: "owned", infallible: true)
 }
 
