@@ -1,5 +1,6 @@
 use std::{convert::TryFrom, sync::Arc};
 
+use itertools::Itertools;
 #[allow(unused)]
 use juniper::{
     graphql_interface, graphql_object, graphql_scalar, graphql_union, graphql_value,
@@ -148,6 +149,7 @@ impl GameFields for Game {
             .database
             .levels()
             .filter(|level| level.game_id == self.0.id)
+            .sorted_by(|a, b| a.name.cmp(&b.name))
             .map(Level)
             .collect()
     }
@@ -166,6 +168,7 @@ impl GameFields for Game {
             .filter(|category| {
                 category.game_id == self.0.id && category.per == db::CategoryType::PerGame
             })
+            .sorted_by(|a, b| (&a.name, a.id).cmp(&(&b.name, b.id)))
             .map(Category)
             .collect())
     }
