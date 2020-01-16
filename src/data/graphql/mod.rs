@@ -371,16 +371,23 @@ impl LevelFields for Level {
         &self,
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
-        category_slug: String,
+        category_slug: Option<String>,
     ) -> Vec<LeaderboardRun> {
-        let game = self.0.game();
-
-        let category_id = game.category_by_slug(&category_slug).unwrap().id;
-
-        let runs: Vec<DbLinked<db::Run>> = game
+        let category_id = category_slug.map(|category_slug| {
+            self.0
+                .game()
+                .category_by_slug(&category_slug)
+                .expect("category not found")
+                .id
+        });
+        let runs: Vec<DbLinked<db::Run>> = self
+            .0
+            .game()
             .runs()
             .iter()
-            .filter(|run| run.level_id == Some(self.0.id) && run.category_id == category_id)
+            .filter(|run| {
+                Some(run.category_id) == category_id && run.level_id == Some(self.0.id)
+            })
             .cloned()
             .collect();
 

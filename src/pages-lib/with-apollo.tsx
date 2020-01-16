@@ -9,7 +9,7 @@ import Head from "next/head";
 import React from "react";
 
 const onNode = typeof window === "undefined";
-export const GRAPHQL_ENDPOINT = ["localhost", "127.0.0.1"].includes(
+export const GRAPHQL_ENDPOINT = ["localhost", "127.0.0.1", "node"].includes(
   typeof window !== "undefined" ? window.location.hostname : "node",
 )
   ? "http://localhost:3001/graphql"

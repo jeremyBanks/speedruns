@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import React from "react";
 
 import AutoColor from "../../pages-lib/auto-color";
+import Duration from "../../pages-lib/duration";
 import * as schema from "../../pages-lib/schema";
 import styles from "../../pages-lib/styles.module.scss";
 import { withApollo } from "../../pages-lib/with-apollo";
@@ -32,7 +33,7 @@ const GamePage: NextPage = () => {
 
       {game.categories.map(category => (
         <>
-          <h2>Full Game (Category: {category.name})</h2>
+          <h2>{category.name}</h2>
 
           <h3>Leaderboard</h3>
 
@@ -53,9 +54,19 @@ const GamePage: NextPage = () => {
                         {ranked.run.players.map(p => p.name).join(" & ")}
                       </AutoColor>
                     </td>
-                    <td className={styles.time}>{ranked.timeMs}</td>
+                    <td className={styles.time}>
+                      <Duration ms={ranked.timeMs} />
+                    </td>
                     <td className={styles.date}>
-                      <AutoColor>{String(ranked.run.date)}</AutoColor>
+                      <AutoColor>
+                        {String(
+                          (ranked.run.date &&
+                            new Date(ranked.run.date * 1000)
+                              .toISOString()
+                              .slice(0, "YYYY-MM-DD".length)) ||
+                            "",
+                        )}
+                      </AutoColor>
                     </td>
                   </tr>
                 );
@@ -64,6 +75,8 @@ const GamePage: NextPage = () => {
           </table>
         </>
       ))}
+
+      <h2>Individual Levels</h2>
     </section>
   );
 };
