@@ -117,12 +117,10 @@
       font-weight: bold;
     }
 
-    tr:hover:nth-child(n) {
-      background: #fffff0;
-    }
-
-    tr:nth-child(odd) {
-      background: #f8f8f8;
+    tbody {
+      tr:nth-child(odd) {
+        background: #f8f8f8;
+      }
     }
 
     .time {
