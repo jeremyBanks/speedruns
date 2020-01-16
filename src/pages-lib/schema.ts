@@ -6,28 +6,70 @@
 // GraphQL query operation: GetGamePage
 // ====================================================
 
-export interface GetGamePage_game {
-  __typename: "Game";
-  /**
-   * The user's global base64 ID.
-   */
+export interface GetGamePage_game_categories_leaderboard_run_category {
+  __typename: "Category";
   id: string;
-  /**
-   * The game's URL slug/abbreviation.
-   */
+}
+
+export interface GetGamePage_game_categories_leaderboard_run_level {
+  __typename: "Level";
+  id: string;
+}
+
+export interface GetGamePage_game_categories_leaderboard_run_players_user {
+  __typename: "User";
+  id: string;
   slug: string;
-  /**
-   * The game's name, in English if possible.
-   */
+}
+
+export interface GetGamePage_game_categories_leaderboard_run_players {
+  __typename: "Player";
+  name: string;
+  isGuest: boolean;
+  user: GetGamePage_game_categories_leaderboard_run_players_user | null;
+}
+
+export interface GetGamePage_game_categories_leaderboard_run {
+  __typename: "Run";
+  id: string;
+  category: GetGamePage_game_categories_leaderboard_run_category;
+  level: GetGamePage_game_categories_leaderboard_run_level | null;
+  date: number | null;
+  players: GetGamePage_game_categories_leaderboard_run_players[];
+}
+
+export interface GetGamePage_game_categories_leaderboard {
+  __typename: "LeaderboardRun";
+  rank: number;
+  timeMs: number;
+  isTied: boolean;
+  tiedRank: number;
+  run: GetGamePage_game_categories_leaderboard_run;
+}
+
+export interface GetGamePage_game_categories {
+  __typename: "Category";
+  id: string;
+  name: string;
+  leaderboard: GetGamePage_game_categories_leaderboard[];
+}
+
+export interface GetGamePage_game_levels {
+  __typename: "Level";
+  id: string;
   name: string;
 }
 
+export interface GetGamePage_game {
+  __typename: "Game";
+  id: string;
+  slug: string;
+  name: string;
+  categories: GetGamePage_game_categories[];
+  levels: GetGamePage_game_levels[];
+}
+
 export interface GetGamePage {
-  /**
-   * Get a Game by id or slug, or null if not found.
-   *
-   * Throws an error if both are specified but don't both match the same game.
-   */
   game: GetGamePage_game | null;
 }
 
@@ -45,16 +87,10 @@ export interface GetGamePageVariables {
 
 export interface GetRun_run {
   __typename: "Run";
-  /**
-   * The run's base36 ID from speedrun.com.
-   */
   id: string;
 }
 
 export interface GetRun {
-  /**
-   * Get a Run by id, or null if not found.
-   */
   run: GetRun_run | null;
 }
 
@@ -72,22 +108,11 @@ export interface GetRunVariables {
 
 export interface GetUser_user {
   __typename: "User";
-  /**
-   * The users's base36 ID from speedrun.com.
-   */
   id: string;
-  /**
-   * The user's URL slug/abbreviation.
-   */
   slug: string;
 }
 
 export interface GetUser {
-  /**
-   * Get a User by id or slug, or null if not found.
-   *
-   * Throws an error if both are specified but don't both match the same game.
-   */
   user: GetUser_user | null;
 }
 

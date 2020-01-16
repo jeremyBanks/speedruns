@@ -15,7 +15,7 @@
         "fields": [
           {
             "name": "game",
-            "description": "Get a Game by id or slug, or null if not found.\n\nThrows an error if both are specified but don't both match the same game.",
+            "description": null,
             "args": [
               {
                 "name": "slug",
@@ -48,7 +48,7 @@
           },
           {
             "name": "user",
-            "description": "Get a User by id or slug, or null if not found.\n\nThrows an error if both are specified but don't both match the same game.",
+            "description": null,
             "args": [
               {
                 "name": "slug",
@@ -81,7 +81,7 @@
           },
           {
             "name": "run",
-            "description": "Get a Run by id, or null if not found.",
+            "description": null,
             "args": [
               {
                 "name": "id",
@@ -108,7 +108,7 @@
           },
           {
             "name": "node",
-            "description": "Gets any Node by its global ID.",
+            "description": null,
             "args": [
               {
                 "name": "id",
@@ -152,11 +152,11 @@
       {
         "kind": "OBJECT",
         "name": "Game",
-        "description": "A game on speedrun.com.",
+        "description": null,
         "fields": [
           {
             "name": "id",
-            "description": "The user's global base64 ID.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -172,7 +172,7 @@
           },
           {
             "name": "srcId",
-            "description": "The user's base36 ID on speedrun.com.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -188,7 +188,7 @@
           },
           {
             "name": "name",
-            "description": "The game's name, in English if possible.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -204,7 +204,7 @@
           },
           {
             "name": "slug",
-            "description": "The game's URL slug/abbreviation.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -220,7 +220,7 @@
           },
           {
             "name": "runs",
-            "description": "All of the runs submitted for this game.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -289,82 +289,6 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "leaderboard",
-            "description": "Returns the ordered ranked runs for a run in a category and optionally level.",
-            "args": [
-              {
-                "name": "category",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "level",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "RankedRun",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "run",
-            "description": "Get a Run on this game by id, or null if not found.",
-            "args": [
-              {
-                "name": "id",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Run",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -385,7 +309,7 @@
         "fields": [
           {
             "name": "id",
-            "description": "This node's global base64 ID.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -424,11 +348,11 @@
       {
         "kind": "OBJECT",
         "name": "Run",
-        "description": "A run of a game on speedrun.com.",
+        "description": null,
         "fields": [
           {
             "name": "id",
-            "description": "The run's base36 ID from speedrun.com.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -444,7 +368,7 @@
           },
           {
             "name": "game",
-            "description": "The game associated with this run.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -460,7 +384,7 @@
           },
           {
             "name": "category",
-            "description": "The category associated with this run.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -476,7 +400,7 @@
           },
           {
             "name": "level",
-            "description": "The level associated with this run, or null.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -531,150 +455,51 @@
       {
         "kind": "OBJECT",
         "name": "Category",
-        "description": "A category for runs of a game on speedrun.com.",
+        "description": null,
         "fields": [
           {
             "name": "id",
-            "description": "The category's base36 ID from speedrun.com.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "name",
-            "description": "The category's name.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "slug",
-            "description": "The category's slug.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "Level",
-        "description": "A level of a game on speedrun.com.",
-        "fields": [
-          {
-            "name": "id",
-            "description": "The level's base36 ID from speedrun.com.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "name",
-            "description": "The level's name.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "slug",
-            "description": "The level's slug.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "game",
-            "description": "The associated game.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Game",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "categories",
             "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Category",
-                    "ofType": null
-                  }
-                }
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "slug",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -682,19 +507,15 @@
           },
           {
             "name": "leaderboard",
-            "description": "Returns ordered ranked runs.",
+            "description": null,
             "args": [
               {
-                "name": "category",
+                "name": "levelSlug",
                 "description": null,
                 "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
                 },
                 "defaultValue": null
               }
@@ -710,7 +531,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "RankedRun",
+                    "name": "LeaderboardRun",
                     "ofType": null
                   }
                 }
@@ -727,12 +548,12 @@
       },
       {
         "kind": "OBJECT",
-        "name": "RankedRun",
+        "name": "LeaderboardRun",
         "description": null,
         "fields": [
           {
             "name": "rank",
-            "description": "This run's rank, with ties broken by date.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -748,7 +569,7 @@
           },
           {
             "name": "timeMs",
-            "description": "The time of this run, as measured by this leaderboard's rules, in miliseconds.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -764,7 +585,7 @@
           },
           {
             "name": "isTied",
-            "description": "Whether this run is tied for this rank.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -780,7 +601,7 @@
           },
           {
             "name": "tiedRank",
-            "description": "This run's rank, with ties unbroken.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -796,7 +617,7 @@
           },
           {
             "name": "run",
-            "description": "The run.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -837,6 +658,144 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "Level",
+        "description": null,
+        "fields": [
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "slug",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "game",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Game",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "categories",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Category",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "leaderboard",
+            "description": null,
+            "args": [
+              {
+                "name": "categorySlug",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "LeaderboardRun",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "SCALAR",
         "name": "Float",
         "description": "The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).",
@@ -853,7 +812,7 @@
         "fields": [
           {
             "name": "name",
-            "description": "The player's name, which may be a distinct username or a non-distinct guest\nnickname.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -869,7 +828,7 @@
           },
           {
             "name": "user",
-            "description": "The associated user, if this is a user.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -881,7 +840,7 @@
           },
           {
             "name": "isGuest",
-            "description": "Whether this player is a guest instead of a user.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -904,11 +863,11 @@
       {
         "kind": "OBJECT",
         "name": "User",
-        "description": "A user of speedrun.com.",
+        "description": null,
         "fields": [
           {
             "name": "id",
-            "description": "The users's base36 ID from speedrun.com.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -924,7 +883,7 @@
           },
           {
             "name": "slug",
-            "description": "The user's URL slug/abbreviation.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
