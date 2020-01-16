@@ -39,10 +39,12 @@ const GamePage: NextPage = () => {
 
           <table className={styles.leaderboard}>
             <thead>
-              <th className={styles.rank}>Rank</th>
-              <th className={styles.player}>Player</th>
-              <th className={styles.time}>Time (RTA)</th>
-              <th className={styles.date}>Date</th>
+              <tr>
+                <th className={styles.rank}>Rank</th>
+                <th className={styles.player}>Player</th>
+                <th className={styles.time}>Time (RTA)</th>
+                <th className={styles.date}>Date</th>
+              </tr>
             </thead>
             <tbody>
               {category.leaderboard.map(ranked => {
@@ -79,17 +81,19 @@ const GamePage: NextPage = () => {
       <h2>Individual Levels</h2>
 
       {game.levels.map(level => (
-        <>
+        <div key={level.id}>
           <h3>{level.name}</h3>
 
           <h4>Leaderboard</h4>
 
           <table className={styles.leaderboard}>
             <thead>
-              <th className={styles.rank}>Rank</th>
-              <th className={styles.player}>Player</th>
-              <th className={styles.time}>Time (RTA)</th>
-              <th className={styles.date}>Date</th>
+              <tr>
+                <th className={styles.rank}>Rank</th>
+                <th className={styles.player}>Player</th>
+                <th className={styles.time}>Time (RTA)</th>
+                <th className={styles.date}>Date</th>
+              </tr>
             </thead>
             <tbody>
               {level.leaderboard.map(ranked => {
@@ -120,7 +124,7 @@ const GamePage: NextPage = () => {
               })}
             </tbody>
           </table>
-        </>
+        </div>
       ))}
     </section>
   );

@@ -11,10 +11,13 @@ import React from "react";
 // if true we never clear apollo cache in a node instance
 const persistentCacheOnNode = true;
 
-const onNode = typeof window === "undefined";
-export const GRAPHQL_ENDPOINT = ["localhost", "127.0.0.1", "node"].includes(
-  typeof window !== "undefined" ? window.location.hostname : "node",
-)
+const onNode = typeof process !== "undefined";
+const onNodeProd = onNode && process.env.NODE_ENV === "production";
+const inBrowser = !onNode;
+const inBrowserDev =
+  inBrowser && ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+export const GRAPHQL_ENDPOINT = inBrowserDev
   ? "http://localhost:3001/graphql"
   : "https://graphql-v0.speedrun.ca/graphql";
 
