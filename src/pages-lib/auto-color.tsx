@@ -17,15 +17,15 @@ const AutoColor: React.FC<{ children: string }> = ({ children }) => {
   const randoms = bytes.map(n => n / 255.0);
 
   const [r, g, b] = space.lab.rgb([
-    5 + 25 * randoms[0],
-    -100 + 200 * randoms[1],
-    -100 + 200 * randoms[2],
+    Math.floor(5 + 25 * randoms[0]),
+    Math.floor(-100 + 200 * randoms[1]),
+    Math.floor(-100 + 200 * randoms[2]),
   ]);
 
   const [sr, sg, sb] = space.lab.rgb([
-    95 + 5 * randoms[3],
-    -20 + 40 * randoms[4],
-    -20 + 40 * randoms[5],
+    Math.floor(95 + 5 * randoms[3]),
+    Math.floor(-20 + 40 * randoms[4]),
+    Math.floor(-20 + 40 * randoms[5]),
   ]);
 
   return (

@@ -8,9 +8,6 @@ import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import React from "react";
 
-// if true we never clear apollo cache in a node instance
-const persistentCacheOnNode = true;
-
 const onNode = typeof window === "undefined";
 const onNodeProd = onNode && process.env.NODE_ENV === "production";
 const inBrowser = !onNode;
@@ -26,7 +23,7 @@ let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 const getApolloClient = (
   initialState?: NormalizedCacheObject,
 ): ApolloClient<NormalizedCacheObject> => {
-  if ((onNode && !persistentCacheOnNode) || !globalApolloClient) {
+  if (onNode || !globalApolloClient) {
     const cache = new InMemoryCache();
     if (initialState) {
       cache.restore(initialState);
