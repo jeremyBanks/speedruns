@@ -63,6 +63,7 @@ async fn main() -> std::io::Result<()> {
         std::env::set_var("RUST_LOG", "debug");
     }
     pretty_env_logger::init();
+    trace!("Logging...");
 
     let schema = Arc::new(graphql::schema());
 
@@ -80,7 +81,7 @@ async fn main() -> std::io::Result<()> {
 }
 
 fn unpack_bundled_tables() -> Tables {
-    trace!("Unpacking bundled database...");
+    info!("Unpacking bundled database...");
 
     let runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
     let users = read_table("data/normalized/users.jsonl").expect("user data corrupt");
