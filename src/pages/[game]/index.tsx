@@ -19,7 +19,7 @@ const GamePage: NextPage = () => {
   });
 
   if (!data) {
-    return <>${loading ? "loading" : JSON.stringify(error)}</>;
+    return <>{loading ? "loading..." : JSON.stringify(error)}</>;
   }
 
   const game = data.game;
@@ -41,6 +41,64 @@ const GamePage: NextPage = () => {
           <h2>
             <a href={`#/category/${category.id}`}>{category.name}</a>
           </h2>
+
+          <h3>Record Progression</h3>
+
+          <table className={styles.progression}>
+            <thead>
+              <th className={styles.rank}>Rank</th>
+              <th className={styles.player}>Player</th>
+              <th className={styles.time}>Time (RTA)</th>
+              <th className={styles.improvement}>Progress</th>
+              <th className={styles.date}>Date</th>
+            </thead>
+            <tbody>
+              <tr data-rank="1">
+                <td className={styles.rank}>1</td>
+                <td className={styles.player}>
+                  <AutoColor>ZPR</AutoColor>
+                </td>
+                <td className={styles.time}>1m 31s</td>
+                <td className={styles.improvement}>2s</td>
+                <td className={styles.date}>
+                  <AutoColor>2018-12Dec-18</AutoColor>
+                </td>
+              </tr>
+              <tr data-rank="obsolete">
+                <td className={styles.rank}>-</td>
+                <td className={styles.player}>
+                  <AutoColor>ZPR</AutoColor>
+                </td>
+                <td className={styles.time}>1m 32s</td>
+                <td className={styles.improvement}>0.842s</td>
+                <td className={styles.date}>
+                  <AutoColor>2018-12Dec-12</AutoColor>
+                </td>
+              </tr>
+              <tr data-rank="2">
+                <td className={styles.rank}>2</td>
+                <td className={styles.player}>
+                  <AutoColor>Banks</AutoColor>
+                </td>
+                <td className={styles.time}>1m 31s</td>
+                <td className={styles.improvement}>1s</td>
+                <td className={styles.date}>
+                  <AutoColor>2017-06Feb-02</AutoColor>
+                </td>
+              </tr>
+              <tr data-rank="5">
+                <td className={styles.rank}>5</td>
+                <td className={styles.player}>
+                  <AutoColor>Fralor</AutoColor>
+                </td>
+                <td className={styles.time}>1m 31s</td>
+                <td className={styles.improvement}>8s</td>
+                <td className={styles.date}>
+                  <AutoColor>2016-03Mar-01</AutoColor>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Leaderboard</h3>
 
@@ -64,7 +122,11 @@ const GamePage: NextPage = () => {
                       </AutoColor>
                     </td>
                     <td className={styles.time}>
-                      <Duration ms={ranked.timeMs} />
+                      <a
+                        href={`https://www.speedrun.com/${game.id}/run/${ranked.run.id}`}
+                      >
+                        <Duration ms={ranked.timeMs} />
+                      </a>
                     </td>
                     <td className={styles.date}>
                       <AutoColor>
@@ -87,13 +149,100 @@ const GamePage: NextPage = () => {
 
       <h2>Individual Levels</h2>
 
+      <h3>Record Progression</h3>
+
+      <table className={styles.progression}>
+        <thead>
+          <th className={styles.level}>Level</th>
+          <th className={styles.rank}>Rank</th>
+          <th className={styles.player}>Player</th>
+          <th className={styles.time}>
+            Time (RTA) /
+            <br />
+            Sum Time
+          </th>
+          <th className={styles.improvement}>Progress</th>
+          <th className={styles.date}>Date</th>
+        </thead>
+        <tbody>
+          <tr data-rank="1">
+            <td className={styles.level}>
+              <AutoColor>Orc 01: And So On</AutoColor>
+            </td>
+            <td className={styles.rank}>1</td>
+            <td className={styles.player}>
+              <AutoColor>ZPR</AutoColor>
+            </td>
+            <td className={styles.time}>
+              1m 31s /<br />
+              1h 2m 32s
+            </td>
+            <td className={styles.improvement}>2s</td>
+            <td className={styles.date}>
+              <AutoColor>2018-12Dec-18</AutoColor>
+            </td>
+          </tr>
+          <tr data-rank="1">
+            <td className={styles.level}>
+              <AutoColor>Orc 02: They Let On</AutoColor>
+            </td>
+            <td className={styles.rank}>1</td>
+            <td className={styles.player}>
+              <AutoColor>ZPR</AutoColor>
+            </td>
+            <td className={styles.time}>
+              1m 32s /<br />
+              1h 2m 32s
+            </td>
+            <td className={styles.improvement}>0.842s</td>
+            <td className={styles.date}>
+              <AutoColor>2018-12Dec-18</AutoColor>
+            </td>
+          </tr>
+          <tr data-rank="2">
+            <td className={styles.level}>
+              <AutoColor>Orc 01: And So On</AutoColor>
+            </td>
+            <td className={styles.rank}>2</td>
+            <td className={styles.player}>
+              <AutoColor>Banks</AutoColor>
+            </td>
+            <td className={styles.time}>
+              1m 31s /<br />
+              1h 2m 32s
+            </td>
+            <td className={styles.improvement}>1s</td>
+            <td className={styles.date}>
+              <AutoColor>2018-12Dec-12</AutoColor>
+            </td>
+          </tr>
+          <tr data-rank="1">
+            <td className={styles.level}>
+              <AutoColor>Orc 04: To The One</AutoColor>
+            </td>
+            <td className={styles.rank}>1</td>
+            <td className={styles.player}>
+              <AutoColor>Fralor</AutoColor>
+            </td>
+            <td className={styles.time}>
+              1m 31s /<br />
+              1h 2m 32s
+            </td>
+            <td className={styles.improvement}>8s</td>
+            <td className={styles.date}>
+              <AutoColor>2018-11Nov-12</AutoColor>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Leaderboards</h3>
+
       {game.levels.map(level => (
         <div key={level.id} id={`/level/${level.id}`}>
-          <h3>
+          <h4>
             <a href={`#/level/${level.id}`}>{level.name}</a>
-          </h3>
-
-          <h4>Leaderboard</h4>
+          </h4>
 
           <table className={styles.leaderboard}>
             <thead>
