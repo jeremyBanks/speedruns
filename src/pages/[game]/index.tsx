@@ -9,6 +9,7 @@ import Duration from "../../pages-lib/duration";
 import * as schema from "../../pages-lib/schema";
 import styles from "../../pages-lib/styles.module.scss";
 import { withApollo } from "../../pages-lib/with-apollo";
+import Link from "next/link";
 
 const GamePage: NextPage = () => {
   const router = useRouter();
@@ -29,11 +30,17 @@ const GamePage: NextPage = () => {
 
   return (
     <section className={styles.gamePage}>
-      <h1>{game.name}</h1>
+      <h1>
+        <Link href={`/${game.slug}`}>
+          <a>{game.name}</a>
+        </Link>
+      </h1>
 
       {game.categories.map(category => (
-        <div key={category.id}>
-          <h2>{category.name}</h2>
+        <div key={category.id} id={`/category/${category.id}`}>
+          <h2>
+            <a href={`#/category/${category.id}`}>{category.name}</a>
+          </h2>
 
           <h3>Leaderboard</h3>
 
@@ -81,8 +88,10 @@ const GamePage: NextPage = () => {
       <h2>Individual Levels</h2>
 
       {game.levels.map(level => (
-        <div key={level.id}>
-          <h3>{level.name}</h3>
+        <div key={level.id} id={`/level/${level.id}`}>
+          <h3>
+            <a href={`#/level/${level.id}`}>{level.name}</a>
+          </h3>
 
           <h4>Leaderboard</h4>
 
