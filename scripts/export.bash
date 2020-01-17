@@ -1,12 +1,12 @@
 #!/bin/bash
 set -veuxo pipefail
 
-cargo build --bin serve
+cargo build --release --bin serve
 
-cargo run --bin serve &
+cargo run --release --bin serve &
 trap "kill $!" EXIT
 
-sleep 4
+sleep 16
 
 yarn next build
 yarn next export
