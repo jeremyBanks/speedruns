@@ -9,14 +9,15 @@ import Head from "next/head";
 import React from "react";
 
 const onNode = typeof window === "undefined";
-const onNodeProd = onNode && process.env.NODE_ENV === "production";
+const onNodeDev = onNode && process.env.NODE_ENV === "development";
 const inBrowser = !onNode;
 const inBrowserDev =
   inBrowser && ["localhost", "127.0.0.1"].includes(window.location.hostname);
 
-export const GRAPHQL_ENDPOINT = inBrowserDev
-  ? "http://localhost:3001/graphql"
-  : "https://graphql-v0.speedrun.ca/graphql";
+export const GRAPHQL_ENDPOINT =
+  inBrowserDev || onNodeDev
+    ? "http://localhost:3001/graphql"
+    : "https://graphql-v0.speedrun.ca/graphql";
 
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
