@@ -1,3 +1,4 @@
+#![feature(try_blocks)]
 #![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
 #![warn(missing_debug_implementations)]
 #![deny(unconditional_recursion)]
@@ -64,8 +65,13 @@ async fn main() -> std::io::Result<()> {
     }
     pretty_env_logger::init();
 
+    info!("Initializing server.");
+    lazy_static::initialize(&DATABASE);
+
+    info!("Initializing schema.");
     let schema = Arc::new(graphql::schema());
 
+    info!("Initializing server.");
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
             .data(schema.clone())
@@ -76,11 +82,12 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/playground").route(web::get().to(playground)))
     });
 
+    info!("Binding server.");
     server.bind("127.0.0.1:3001")?.run().await
 }
 
 fn unpack_bundled_tables() -> Tables {
-    trace!("Unpacking bundled database...");
+    info!("Unpacking bundled database...");
 
     let runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
     let users = read_table("data/normalized/users.jsonl").expect("user data corrupt");
@@ -95,13 +102,22 @@ fn unpack_bundled_tables() -> Tables {
 pub fn read_table<T: DeserializeOwned>(
     path: &str,
 ) -> Result<Vec<T>, Box<dyn std::error::Error>> {
-    let file = File::open(path)?;
-    let buffer = BufReader::new(&file);
-    let deserializer = JsonDeserializer::from_reader(buffer);
-    let json_results = deserializer.into_iter::<JsonValue>();
-    Ok(json_results
-        .map(Result::unwrap)
-        .map(T::deserialize)
-        .map(Result::unwrap)
-        .collect())
+    let result: Result<Vec<T>, Box<dyn std::error::Error>> = try {
+        let file = File::open(path)?;
+        let buffer = BufReader::new(&file);
+        let deserializer = JsonDeserializer::from_reader(buffer);
+        let json_results = deserializer.into_iter::<JsonValue>();
+        json_results
+            .map(Result::unwrap)
+            .map(T::deserialize)
+            .map(Result::unwrap)
+            .collect()
+    };
+    match result {
+        Ok(result) => Ok(result),
+        Err(err) => {
+            error!("Failed to load table: {:?}", err);
+            Ok(vec![])
+        }
+    }
 }
