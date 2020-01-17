@@ -115,7 +115,11 @@ const GamePage: NextPage = () => {
                       </AutoColor>
                     </td>
                     <td className={styles.time}>
-                      <Duration ms={ranked.timeMs} />
+                      <a
+                        href={`https://www.speedrun.com/${game.id}/run/${ranked.run.id}`}
+                      >
+                        <Duration ms={ranked.timeMs} />
+                      </a>
                     </td>
                     <td className={styles.date}>
                       <AutoColor>
