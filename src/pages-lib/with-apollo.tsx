@@ -29,9 +29,7 @@ const getApolloClient = (
       cache.restore(initialState);
     }
 
-    // xxx: cache-and-network on client that might not have access to graphql
-    // can have problems: https://github.com/apollographql/apollo-client/issues/3755
-    const policy = "cache-and-network";
+    const policy = "cache-first";
 
     globalApolloClient = new ApolloClient({
       cache,
@@ -42,7 +40,7 @@ const getApolloClient = (
           fetchPolicy: policy,
         },
         query: {
-          fetchPolicy: policy as any,
+          fetchPolicy: policy,
         },
       },
     });
