@@ -11,7 +11,7 @@ import React from "react";
 // if true we never clear apollo cache in a node instance
 const persistentCacheOnNode = true;
 
-const onNode = typeof process !== "undefined";
+const onNode = typeof window === "undefined";
 const onNodeProd = onNode && process.env.NODE_ENV === "production";
 const inBrowser = !onNode;
 const inBrowserDev =
@@ -76,9 +76,9 @@ export const withApollo = (Page: NextPage<{}>): ApolloNextPage => {
 
     const apolloClient = getApolloClient();
 
-    if (onNode && context.res && context.res.finished) {
-      return { apolloClient };
-    }
+    const props: {
+      apolloCache?: NormalizedCacheObject;
+    } = {};
 
     if (onNode) {
       try {
@@ -89,11 +89,11 @@ export const withApollo = (Page: NextPage<{}>): ApolloNextPage => {
 
       // because https://git.io/Jep8E says so:
       Head.rewind();
+
+      props.apolloCache = apolloClient.cache.extract();
     }
 
-    const apolloCache = apolloClient.cache.extract();
-
-    return { apolloCache };
+    return props;
   };
 
   return WithApollo;
