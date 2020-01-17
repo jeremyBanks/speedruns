@@ -4,12 +4,12 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React from "react";
 
+import Link from "next/link";
 import AutoColor from "../../pages-lib/auto-color";
 import Duration from "../../pages-lib/duration";
 import * as schema from "../../pages-lib/schema";
 import styles from "../../pages-lib/styles.module.scss";
 import { withApollo } from "../../pages-lib/with-apollo";
-import Link from "next/link";
 
 const GamePage: NextPage = () => {
   const router = useRouter();
