@@ -6,6 +6,9 @@ version = "0.20.20"
 
 default-run = "serve"
 
+[lib]
+name = "speedruns"
+
 [[bin]]
 name = "normalize"
 

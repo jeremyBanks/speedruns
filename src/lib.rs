@@ -7,7 +7,11 @@
     slice_concat_ext
 )]
 #![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
-#![warn(missing_debug_implementations)]
+#![warn(
+    missing_debug_implementations,
+    clippy::option_unwrap_used,
+    clippy::result_unwrap_used
+)]
 #![deny(unconditional_recursion)]
 
 /// Types for the speedrun.com API data we consume and utilities for normalizing it.  
