@@ -231,18 +231,20 @@ dependencies = [
 
 [[package]]
 name = "actix-utils"
-version = "1.0.4"
+version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a31d6e44d044cbad9d599eaac4007cf5194621c514b1324ea5116863357b04d5"
+checksum = "fcf8f5631bf01adec2267808f00e228b761c60c0584cc9fa0b5364f41d147f4e"
 dependencies = [
  "actix-codec",
  "actix-rt",
  "actix-service",
+ "bitflags",
  "bytes 0.5.3",
  "either",
  "futures 0.3.1",
  "log",
  "pin-project",
+ "slab",
 ]
 
 [[package]]
