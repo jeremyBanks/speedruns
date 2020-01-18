@@ -125,13 +125,13 @@ const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validat
 
 /// A collection of [Tables] with various generated indexes.
 pub struct Database {
-    tables:                           &'static Tables,
-    runs_by_game_id:                  HashMap<u64, Vec<&'static Run>>,
-    games_by_slug:                    HashMap<String, &'static Game>,
-    users_by_slug:                    HashMap<String, &'static User>,
-    // TODO: just index category/level by game, you shouldn't need to index by slug.
-    categories_by_game_id_and_slug:   HashMap<(u64, String), &'static Category>,
-    levels_by_game_id_and_slug:       HashMap<(u64, String), &'static Level>,
+    tables:                                   &'static Tables,
+    runs_by_game_id:                          HashMap<u64, Vec<&'static Run>>,
+    games_by_slug:                            HashMap<String, &'static Game>,
+    users_by_slug:                            HashMap<String, &'static User>,
+    per_game_categories_by_game_id_and_slug:  HashMap<(u64, String), &'static Category>,
+    per_level_categories_by_game_id_and_slug: HashMap<(u64, String), &'static Category>,
+    levels_by_game_id_and_slug:               HashMap<(u64, String), &'static Level>,
     _runs_by_category_level_and_slug: HashMap<(u64, Option<u64>, String), &'static Run>,
 }
 
@@ -154,8 +154,14 @@ impl Database {
         let mut runs_by_game_id: HashMap<u64, Vec<&'static Run>> = HashMap::new();
         let mut games_by_slug: HashMap<String, &'static Game> = HashMap::new();
         let mut users_by_slug: HashMap<String, &'static User> = HashMap::new();
-        let mut categories_by_game_id_and_slug: HashMap<(u64, String), &'static Category> =
-            HashMap::new();
+        let mut per_game_categories_by_game_id_and_slug: HashMap<
+            (u64, String),
+            &'static Category,
+        > = HashMap::new();
+        let mut per_level_categories_by_game_id_and_slug: HashMap<
+            (u64, String),
+            &'static Category,
+        > = HashMap::new();
         let mut levels_by_game_id_and_slug: HashMap<(u64, String), &'static Level> =
             HashMap::new();
         let _runs_by_category_level_and_slug: HashMap<
@@ -182,9 +188,11 @@ impl Database {
             }
 
             for category in tables.categories().values() {
-                // TODO: BUG: this collides full-game and individual-level categories
-                categories_by_game_id_and_slug
-                    .insert((*category.game_id(), category.slug().to_string()), category);
+                match category.per() {
+                    CategoryType::PerGame => &mut per_game_categories_by_game_id_and_slug,
+                    CategoryType::PerLevel => &mut per_level_categories_by_game_id_and_slug,
+                }
+                .insert((*category.game_id(), category.slug().to_string()), category);
             }
 
             for level in tables.levels().values() {
@@ -210,7 +218,8 @@ impl Database {
             runs_by_game_id,
             games_by_slug,
             users_by_slug,
-            categories_by_game_id_and_slug,
+            per_game_categories_by_game_id_and_slug,
+            per_level_categories_by_game_id_and_slug,
             levels_by_game_id_and_slug,
             _runs_by_category_level_and_slug,
         });
@@ -417,13 +426,24 @@ impl Database {
             .map(|category| self.link(category))
     }
 
-    /// Finds a category with the given slug and game ID.
-    pub fn category_by_game_id_and_slug(
+    /// Finds a per-game category with the given slug and game ID.
+    pub fn per_game_category_by_game_id_and_slug(
         self: &Arc<Self>,
         game_id: u64,
         slug: &str,
     ) -> Option<Linked<Category>> {
-        self.categories_by_game_id_and_slug
+        self.per_game_categories_by_game_id_and_slug
+            .get(&(game_id, slug.to_string()))
+            .map(|category| self.link(*category))
+    }
+
+    /// Finds a per-level category with the given slug and game ID.
+    pub fn per_level_category_by_game_id_and_slug(
+        self: &Arc<Self>,
+        game_id: u64,
+        slug: &str,
+    ) -> Option<Linked<Category>> {
+        self.per_level_categories_by_game_id_and_slug
             .get(&(game_id, slug.to_string()))
             .map(|category| self.link(*category))
     }
@@ -625,10 +645,16 @@ impl Linked<Game> {
             .expect(DATABASE_INTEGRITY)
     }
 
-    pub fn category_by_slug(&self, slug: &str) -> Option<Linked<Category>> {
+    pub fn per_game_category_by_slug(&self, slug: &str) -> Option<Linked<Category>> {
         self.database
             .clone()
-            .category_by_game_id_and_slug(*self.id(), slug)
+            .per_game_category_by_game_id_and_slug(*self.id(), slug)
+    }
+
+    pub fn per_level_category_by_slug(&self, slug: &str) -> Option<Linked<Category>> {
+        self.database
+            .clone()
+            .per_level_category_by_game_id_and_slug(*self.id(), slug)
     }
 
     pub fn level_by_slug(&self, slug: &str) -> Option<Linked<Level>> {

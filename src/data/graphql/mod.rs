@@ -388,7 +388,7 @@ impl LevelFields for Level {
         let category_id = category_slug.map(|category_slug| {
             self.0
                 .game()
-                .category_by_slug(&category_slug)
+                .per_level_category_by_slug(&category_slug)
                 .expect("category not found")
                 .id
         });
