@@ -101,7 +101,7 @@ fn unpack_bundled_tables() -> Tables {
     info!("{} games.", games.len());
     let categories =
         read_table("data/normalized/categories.jsonl").expect("category data corrupt");
-        info!("{} categories.", categories.len());
+    info!("{} categories.", categories.len());
     let levels = read_table("data/normalized/levels.jsonl").expect("level data corrupt");
     info!("{} levels.", levels.len());
 
