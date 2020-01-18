@@ -115,4 +115,4 @@ jobs:
       - name: bot - trigger zeit deploy of ✔️
         if: github.ref == 'refs/heads/master'
         run: |
-          curl "$${secrets.ZEIT_DEPLOY_STABLE}"
+          curl "${{secrets.ZEIT_DEPLOY_STABLE}}"
