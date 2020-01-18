@@ -55,15 +55,14 @@ img {
   pointer-events: none;
 }
 
-a,
-a:visited {
-  color: #008;
-  text-decoration: none;
-  text-decoration-color: black;
+a {
+  text-decoration-style: underline;
+  text-decoration-color: #008;
 }
 
 a:hover {
   color: #00f;
+  text-decoration-color: #00f;
 }
 
 a:not(:hover) {
@@ -88,6 +87,10 @@ h4,
 h5,
 h6 {
   font-family: "Trebuchet MS", sans-serif;
+
+  a {
+    text-decoration: none;
+  }
 }
 
 section {
