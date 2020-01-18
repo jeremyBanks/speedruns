@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { GRAPHQL_ENDPOINT } from "../../pages-lib/with-apollo";
 
 const GraphiQLPage: NextPage = () => {
-  const [GraphiQL, setGraphiQL] = useState<
-    typeof import("graphiql").GraphiQL
-  >();
+  const [GraphiQL, setGraphiQL] = useState<typeof import("graphiql").default>();
 
   useEffect(() => {
-    import("graphiql").then(({ GraphiQL }) => setGraphiQL(() => GraphiQL));
+    import("graphiql").then(imported => {
+      setGraphiQL(() => imported.default);
+    });
   }, []);
 
   if (typeof window === "undefined") {
@@ -22,7 +22,7 @@ const GraphiQLPage: NextPage = () => {
         <GraphiQL
           fetcher={(query: unknown) =>
             fetch(GRAPHQL_ENDPOINT, {
-              body: JSON.stringify({ query }),
+              body: JSON.stringify(query),
               headers: { "Content-Type": "application/json" },
               method: "post",
             }).then(response => response.json())
