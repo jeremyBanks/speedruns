@@ -12,7 +12,10 @@ const onNode = typeof window === "undefined";
 const onNodeDev = onNode && process.env.NODE_ENV === "development";
 const inBrowser = !onNode;
 const inBrowserDev =
-  inBrowser && ["localhost", "127.0.0.1"].includes(window.location.hostname);
+  inBrowser &&
+  ["localhost", "127.0.0.1", "local.speedrun.ca"].includes(
+    window.location.hostname,
+  );
 
 export const GRAPHQL_ENDPOINT =
   inBrowserDev || onNodeDev

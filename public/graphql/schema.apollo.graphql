@@ -1,0 +1,110 @@
+schema {
+  query: Speedruns
+  mutation: Speedruns
+}
+
+"""
+Direct the client to resolve this field locally, either from the cache or local resolvers.
+"""
+directive @client(
+  """
+  When true, the client will never use the cache for this value. See
+  https://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true
+  """
+  always: Boolean
+) on FIELD | FRAGMENT_DEFINITION | INLINE_FRAGMENT
+
+"""
+Export this locally resolved field as a variable to be used in the remainder of this query. See
+https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
+"""
+directive @export(
+  """
+  The variable name to export this field as.
+  """
+  as: String!
+) on FIELD
+
+"""
+Specify a custom store key for this result. See
+https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
+"""
+directive @connection(
+  """
+  Specify the store key.
+  """
+  key: String!
+
+  """
+  An array of query argument names to include in the generated custom store key.
+  """
+  filter: [String!]
+) on FIELD
+
+type Category {
+  id: String!
+  name: String!
+  slug: String!
+  leaderboard(levelSlug: String): [LeaderboardRun!]!
+}
+
+type Game implements Node {
+  id: ID!
+  srcId: String!
+  name: String!
+  slug: String!
+  runs: [Run!]!
+  levels: [Level!]!
+  categories: [Category!]!
+}
+
+type LeaderboardRun {
+  rank: Int!
+  timeMs: Int!
+  isTied: Boolean!
+  tiedRank: Int!
+  run: Run!
+}
+
+type Level {
+  id: String!
+  name: String!
+  slug: String!
+  game: Game!
+  categories: [Category!]!
+  leaderboard(categorySlug: String): [LeaderboardRun!]!
+}
+
+"""
+<https://graphql.org/learn/global-object-identification/>
+"""
+interface Node {
+  id: ID!
+}
+
+type Player {
+  name: String!
+  user: User
+  isGuest: Boolean!
+}
+
+type Run {
+  id: String!
+  game: Game!
+  category: Category!
+  level: Level
+  date: Float
+  players: [Player!]!
+}
+
+type Speedruns {
+  game(slug: String!): Game
+  user(slug: String!): User
+  run(id: String!): Run
+  node(id: ID!): Node
+}
+
+type User {
+  id: String!
+  slug: String!
+}
