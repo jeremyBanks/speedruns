@@ -94,11 +94,16 @@ fn unpack_bundled_tables() -> Tables {
     info!("Unpacking bundled database...");
 
     let runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
+    info!("{} runs.", runs.len());
     let users = read_table("data/normalized/users.jsonl").expect("user data corrupt");
+    info!("{} users.", users.len());
     let games = read_table("data/normalized/games.jsonl").expect("game data corrupt");
+    info!("{} games.", games.len());
     let categories =
         read_table("data/normalized/categories.jsonl").expect("category data corrupt");
+        info!("{} categories.", categories.len());
     let levels = read_table("data/normalized/levels.jsonl").expect("level data corrupt");
+    info!("{} levels.", levels.len());
 
     Tables::new(runs, users, games, categories, levels)
 }

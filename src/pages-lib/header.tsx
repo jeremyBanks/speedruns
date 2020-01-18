@@ -8,7 +8,7 @@ export const Header: React.FC = () => {
     <header className={styles.header}>
       <h1 className={styles.text}>
         <span className={styles.inner}>
-          <img src="/contest.png" />{" "}
+          <img src="/icon.png" />{" "}
           <Link href="/">
             <a>speedrun.ca</a>
           </Link>
