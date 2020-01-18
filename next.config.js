@@ -11,9 +11,6 @@ module.exports = [
       "/graphql/voyager": { page: "/graphql/voyager" },
       "/wc2": { page: "/[game]", query: { game: "wc2" } },
       "/wc2btdp": { page: "/[game]", query: { game: "wc2btdp" } },
-      "/user/zpr": { page: "/user/[user]", query: { user: "zpr" } },
-      "/user/banks": { page: "/user/[user]", query: { user: "banks" } },
-      "/user/szwagier": { page: "/user/[user]", query: { user: "szwagier" } },
     };
   },
   webpack(config) {
