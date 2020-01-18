@@ -175,9 +175,9 @@ dependencies = [
 
 [[package]]
 name = "actix-service"
-version = "1.0.1"
+version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a5ecef49693fcfe2c13a34c7218eb5b7898ff3fbe334db8445759f871fec2df"
+checksum = "d3e4fc95dfa7e24171b2d0bb46b85f8ab0e8499e4e3caec691fc4ea65c287564"
 dependencies = [
  "futures-util",
  "pin-project",
@@ -231,18 +231,20 @@ dependencies = [
 
 [[package]]
 name = "actix-utils"
-version = "1.0.4"
+version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a31d6e44d044cbad9d599eaac4007cf5194621c514b1324ea5116863357b04d5"
+checksum = "fcf8f5631bf01adec2267808f00e228b761c60c0584cc9fa0b5364f41d147f4e"
 dependencies = [
  "actix-codec",
  "actix-rt",
  "actix-service",
+ "bitflags",
  "bytes 0.5.3",
  "either",
  "futures 0.3.1",
  "log",
  "pin-project",
+ "slab",
 ]
 
 [[package]]
@@ -278,7 +280,7 @@ dependencies = [
  "serde_json",
  "serde_urlencoded 0.6.1",
  "time",
- "url 2.1.0",
+ "url 2.1.1",
 ]
 
 [[package]]
@@ -1161,9 +1163,9 @@ dependencies = [
 
 [[package]]
 name = "hermit-abi"
-version = "0.1.5"
+version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f629dc602392d3ec14bfc8a09b5e644d7ffd725102b48b81e59f90f2633621d7"
+checksum = "eff2656d88f158ce120947499e971d743c05dbcbed62e5bd2f38f1698bbc3772"
 dependencies = [
  "libc",
 ]
@@ -1356,7 +1358,7 @@ dependencies = [
  "juniper_codegen",
  "serde",
  "serde_derive",
- "url 2.1.0",
+ "url 2.1.1",
  "uuid",
 ]
 
@@ -1409,7 +1411,7 @@ dependencies = [
  "serde_json",
  "tokio 0.1.22",
  "tokio-threadpool",
- "url 2.1.0",
+ "url 2.1.1",
 ]
 
 [[package]]
@@ -1854,14 +1856,14 @@ dependencies = [
  "idna 0.2.0",
  "lazy_static",
  "regex",
- "url 2.1.0",
+ "url 2.1.1",
 ]
 
 [[package]]
 name = "quick-error"
-version = "1.2.2"
+version = "1.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9274b940887ce9addde99c4eee6b5c44cc494b182b97e73dc8ffdcb3397fd3f0"
+checksum = "a1d01941d82fa2ab50be1e79e6714289dd7cde78eba4c074bc5a4374f650dfe0"
 
 [[package]]
 name = "quote"
@@ -2036,9 +2038,9 @@ checksum = "2439c63f3f6139d1b57529d16bc3b8bb855230c8efcc5d3a896c8bea7c3b1e84"
 
 [[package]]
 name = "regex"
-version = "1.3.1"
+version = "1.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc220bd33bdce8f093101afe22a037b8eb0e5af33592e6a9caafff0d4cb81cbd"
+checksum = "b5508c1941e4e7cb19965abef075d35a9a8b5cdf0846f30b4050e9b55dc55e87"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -2048,9 +2050,9 @@ dependencies = [
 
 [[package]]
 name = "regex-syntax"
-version = "0.6.12"
+version = "0.6.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "11a7e20d1cce64ef2fed88b66d347f88bd9babb82845b2b858f3edbf59a4f716"
+checksum = "e734e891f5b408a29efbf8309e656876276f49ab6a6ac208600b4419bd893d90"
 
 [[package]]
 name = "remain"
@@ -2241,7 +2243,7 @@ dependencies = [
  "dtoa",
  "itoa",
  "serde",
- "url 2.1.0",
+ "url 2.1.1",
 ]
 
 [[package]]
@@ -2343,7 +2345,7 @@ dependencies = [
  "sha2",
  "tempfile",
  "unidecode",
- "url 2.1.0",
+ "url 2.1.1",
  "url_serde",
  "validator",
  "validator_derive",
@@ -2421,9 +2423,9 @@ dependencies = [
 
 [[package]]
 name = "thread_local"
-version = "0.3.6"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c6b53e329000edc2b34dbe8545fd20e55a333362d0a321909685a19bd28c3f1b"
+checksum = "d40c6d1b69745a6ec6fb1ca717914848da4b44ae29d9b3080cbee91d72a69b14"
 dependencies = [
  "lazy_static",
 ]
@@ -2693,7 +2695,7 @@ dependencies = [
  "smallvec 1.1.0",
  "socket2",
  "tokio 0.2.6",
- "url 2.1.0",
+ "url 2.1.1",
 ]
 
 [[package]]
@@ -2809,9 +2811,9 @@ dependencies = [
 
 [[package]]
 name = "url"
-version = "2.1.0"
+version = "2.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "75b414f6c464c879d7f9babf951f23bc3743fb7313c081b2e6ca719067ea9d61"
+checksum = "829d4a8476c35c9bf0bbce5a3b23f4106f79728039b726d292bb93bc106787cb"
 dependencies = [
  "idna 0.2.0",
  "matches",
@@ -2850,7 +2852,7 @@ dependencies = [
  "serde",
  "serde_derive",
  "serde_json",
- "url 2.1.0",
+ "url 2.1.1",
 ]
 
 [[package]]
