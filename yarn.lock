@@ -2586,10 +2586,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blake3@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/blake3/-/blake3-1.0.0.tgz#75fd33db6629bb6f45f14164ee46109794a09311"
-  integrity sha512-Ugb76uc+fQfvHtkipK3u77LvHnBqHb+FhcC6fKgnJwcAwItNldI/cZjwDOOye8HwKCYGz68I5Jx+E8jCDIr6nA==
+blake3@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/blake3/-/blake3-1.2.0.tgz#f3cd8067d6254c3a7d69c73f2043dfe2bf622a98"
+  integrity sha512-9xvZPuo8kqdG6Zjv4Ekn+rJheO4I/fc5WHCyqRlGixAY2ewAQWM90UtTr8g3d6BmVC9IOIjeaiBrbkUSozPm7Q==
 
 block-stream@*:
   version "0.0.9"
