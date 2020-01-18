@@ -3,7 +3,6 @@
 //! make any assumptions about their structure beyond the existence of
 //! a string "id" value.
 #![allow(clippy::useless_attribute, clippy::useless_vec)]
-#![warn(clippy::option_unwrap_used, clippy::result_unwrap_used)]
 
 use flate2::{read::GzDecoder, write::GzEncoder};
 #[allow(unused)] use log::{debug, error, info, trace, warn};

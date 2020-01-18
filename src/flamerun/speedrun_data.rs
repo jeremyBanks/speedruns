@@ -163,10 +163,11 @@ impl SpeedRunComData {
                         level_id:    run.level,
                         category_id: run.category,
                         performed:   NaiveDate::from_str(
-                            &run.date.unwrap_or("1970-01-01".to_string()),
+                            &run.date.unwrap_or_else(|| "1970-01-01".to_string()),
                         )?,
                         submitted:   DateTime::<Utc>::from_str(
-                            &run.submitted.unwrap_or("1970-01-01T00:00:00Z".to_string()),
+                            &run.submitted
+                                .unwrap_or_else(|| "1970-01-01T00:00:00Z".to_string()),
                         )?,
                         duration:    Duration::milliseconds(
                             (run.times.primary_t * 1000.0) as i64,
@@ -281,11 +282,7 @@ impl Display for Player {
             f,
             "{}",
             match self {
-                Player::User {
-                    user_id: _,
-                    name,
-                    country_code: _,
-                } => name,
+                Player::User { name, .. } => name,
                 Player::Guest { name } => name,
                 Player::MultiplePlayers => "multiple players",
             }

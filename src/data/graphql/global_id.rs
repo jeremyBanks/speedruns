@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum NodeType {
     Game,
@@ -26,7 +28,8 @@ pub fn global_id(id: u64, node_type: NodeType) -> String {
 }
 
 pub fn parse_global_id(global_id: &str) -> (u64, NodeType) {
-    let mut bytes = base64::decode_config(global_id, base64::URL_SAFE_NO_PAD).unwrap();
+    let mut bytes =
+        base64::decode_config(global_id, base64::URL_SAFE_NO_PAD).expect("infallible");
     assert!(bytes[1] == 0, "second-high byte must be zero");
 
     let node_type = match bytes[0] {

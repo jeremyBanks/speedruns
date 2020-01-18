@@ -4,8 +4,8 @@ schema {
 }
 
 type Speedruns {
-  game(slug: String, id: String): Game @juniper(ownership: "owned")
-  user(slug: String, id: String): User @juniper(ownership: "owned")
+  game(slug: String!): Game @juniper(ownership: "owned", infallible: true)
+  user(slug: String!): User @juniper(ownership: "owned", infallible: true)
   run(id: String!): Run @juniper(ownership: "owned", infallible: true)
   node(id: ID!): Node @juniper(ownership: "owned", infallible: true)
 }

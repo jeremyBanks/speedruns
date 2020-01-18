@@ -156,8 +156,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
             let level = game
                 .levels
                 .iter()
-                .filter(|l| Some(l.level_id.clone()) == record.run.level_id)
-                .next()
+                .find(|l| Some(l.level_id.clone()) == record.run.level_id)
                 .unwrap();
 
             sum = sum - record.improvement;

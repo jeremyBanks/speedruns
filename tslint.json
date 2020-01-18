@@ -1,9 +1,12 @@
 {
   "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
-    "arrow-parens": ["error", "as-needed"]
-  },
-  "jsRules": {
+    "arrow-parens": ["error", "as-needed"],
+    "no-submodule-imports": false,
+    "no-shadowed-variable": false,
     "no-console": false
+  },
+  "linterOptions": {
+    "exclude": ["src/bests/**/*"]
   }
 }

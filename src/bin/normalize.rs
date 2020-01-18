@@ -4,7 +4,6 @@
     clippy::cognitive_complexity,
     clippy::clone_on_copy
 )]
-#![warn(clippy::option_unwrap_used, clippy::result_unwrap_used)]
 
 use std::{
     collections::HashSet,
