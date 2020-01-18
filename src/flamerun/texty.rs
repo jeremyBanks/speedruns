@@ -29,7 +29,7 @@ const TERM_FG_COLORS: &[&str] = &[
 
 pub fn color_with_hash(string: &str) -> String {
     let digest = Hash::digest(string.trim().as_bytes());
-    let n = (u64::from(digest[0]) << 0)
+    let n = u64::from(digest[0])
         + (u64::from(digest[1]) << 1)
         + (u64::from(digest[2]) << 2)
         + (u64::from(digest[3]) << 3)

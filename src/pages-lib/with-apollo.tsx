@@ -34,16 +34,16 @@ const getApolloClient = (
 
     globalApolloClient = new ApolloClient({
       cache,
-      link: new HttpLink({ uri: GRAPHQL_ENDPOINT, fetch }),
-      ssrMode: onNode,
       defaultOptions: {
-        watchQuery: {
-          fetchPolicy: policy,
-        },
         query: {
           fetchPolicy: policy,
         },
+        watchQuery: {
+          fetchPolicy: policy,
+        },
       },
+      link: new HttpLink({ uri: GRAPHQL_ENDPOINT, fetch }),
+      ssrMode: onNode,
     });
   }
 
