@@ -4,21 +4,21 @@ CPU(s):                8
 CPU MHz:               3601.000
 
               total        used        free      shared  buff/cache   available
-Mem:            15G         11G        4.3G         17M        230M        4.4G
-Swap:           29G        211M         29G
+Mem:            15G         11G        4.5G         17M        230M        4.6G
+Swap:           29G        210M         29G
 
 
 {
   "requests": {
-    "average": 1159.38
+    "average": 1145.13
   },
   "errors": 0,
   "timeouts": 0,
-  "2xx": 9275,
+  "2xx": 9161,
   "non2xx": 0,
   "latency": {
-    "average": 8.12,
+    "average": 8.23,
     "min": 4,
-    "max": 21.5433
+    "max": 25.0171
   }
 }
