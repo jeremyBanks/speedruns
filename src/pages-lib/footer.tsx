@@ -8,7 +8,8 @@ export const Footer: React.FC = () => (
       <strong>
         The information on this site may be outdated or incomplete!
       </strong>{" "}
-      The software is not entirely robust. Refer to speedrun.com for certainty.
+      The software is not entirely robust, stable, or consistent. Refer to
+      speedrun.com for certainty.
     </p>
 
     <p>
