@@ -107,7 +107,9 @@ html.document {
 
 .home {
   ul {
-    margin-bottom: 0.3em;
+    li {
+      margin-bottom: 0.3em;
+    }
   }
 }
 
