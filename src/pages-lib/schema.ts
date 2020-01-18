@@ -124,49 +124,6 @@ export interface GetGamePageVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: GetRun
-// ====================================================
-
-export interface GetRun_run {
-  __typename: "Run";
-  id: string;
-}
-
-export interface GetRun {
-  run: GetRun_run | null;
-}
-
-export interface GetRunVariables {
-  id: string;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: GetUser
-// ====================================================
-
-export interface GetUser_user {
-  __typename: "User";
-  id: string;
-  slug: string;
-}
-
-export interface GetUser {
-  user: GetUser_user | null;
-}
-
-export interface GetUserVariables {
-  slug: string;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL fragment: GameLeaderboardRun
 // ====================================================
 
