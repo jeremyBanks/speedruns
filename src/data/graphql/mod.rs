@@ -148,7 +148,7 @@ impl GameFields for Game {
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Level, Walked>,
     ) -> Vec<Level> {
-        // XXX: full table scan
+        // TODO: not a full table scan
         executor
             .context()
             .database
@@ -165,7 +165,7 @@ impl GameFields for Game {
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Category, Walked>,
     ) -> Vec<Category> {
-        // XXX: full table scan
+        // TODO: not a full table scan
         (executor
             .context()
             .database
@@ -367,7 +367,7 @@ impl LevelFields for Level {
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Category, Walked>,
     ) -> Vec<Category> {
-        // XXX: full table scan
+        // TODO: not a full table scan
         (executor
             .context()
             .database
