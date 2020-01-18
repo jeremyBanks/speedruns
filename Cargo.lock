@@ -2975,9 +2975,9 @@ checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
 
 [[package]]
 name = "wincolor"
-version = "1.0.2"
+version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "96f5016b18804d24db43cebf3c77269e7569b8954a8464501c216cc5e070eaa9"
+checksum = "d7df6193e795abf9e39a5e4926d13ed002dbeca334fd7299398c372be918fd04"
 dependencies = [
  "winapi 0.3.8",
  "winapi-util",
