@@ -24,7 +24,7 @@
     "apollo-link-http": "^1.5.16",
     "apollo-link-retry": "^2.2.15",
     "apollo-link-schema": "^1.2.4",
-    "blake3": "^1.0.0",
+    "blake3": "^1.2.0",
     "color-space": "^1.16.0",
     "fast-sha256": "^1.2.0",
     "file-loader": "^5.0.2",
