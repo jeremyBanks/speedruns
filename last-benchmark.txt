@@ -1,0 +1,24 @@
+
+Model name:            Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz
+CPU(s):                8
+CPU MHz:               3601.000
+
+              total        used        free      shared  buff/cache   available
+Mem:            15G         11G        4.0G         17M        230M        4.1G
+Swap:           29G        210M         29G
+
+
+{
+  "requests": {
+    "average": 1128.41
+  },
+  "errors": 0,
+  "timeouts": 0,
+  "2xx": 36109,
+  "non2xx": 0,
+  "latency": {
+    "average": 8.36,
+    "min": 4,
+    "max": 67.9965
+  }
+}
