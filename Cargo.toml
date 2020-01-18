@@ -23,10 +23,6 @@ name = "flamerun"
 path = "src/flamerun/main.rs"
 
 [dependencies]
-actix = "0.9.0"
-actix-cors = "0.2.0"
-actix-rt = "1.0.0"
-actix-web = "2.0.0"
 async-std = "1.4.0"
 clap = "2.32.0"
 derive_more = "0.99.2"
@@ -57,6 +53,7 @@ validator = "0.10.0"
 validator_derive = "0.10.0"
 base64 = "0.11.0"
 arrayvec = "0.5.1"
+hyper = "0.13.1"
 
 [dependencies.chrono]
 features = ["serde"]
