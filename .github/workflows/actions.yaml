@@ -111,3 +111,8 @@ jobs:
           GIT_COMMITTER_NAME: autofix
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: bash scripts/merge-master-to-stable.bash
+
+      - name: bot - trigger zeit deploy of ✔️
+        if: github.ref == 'refs/heads/master'
+        run: |
+          curl "$${secrets.ZEIT_DEPLOY_STABLE}"
