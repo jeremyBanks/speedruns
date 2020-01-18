@@ -1,6 +1,10 @@
 #![feature(try_blocks)]
 #![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
-#![warn(missing_debug_implementations)]
+#![warn(
+    missing_debug_implementations,
+    clippy::option_unwrap_used,
+    clippy::result_unwrap_used
+)]
 #![deny(unconditional_recursion)]
 
 use std::{fs::File, io::BufReader, sync::Arc};

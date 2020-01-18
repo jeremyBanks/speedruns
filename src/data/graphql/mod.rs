@@ -1,3 +1,8 @@
+#![warn(
+    clippy::option_unwrap_used,
+    clippy::result_unwrap_used
+)]
+
 use std::{convert::TryFrom, sync::Arc};
 
 use itertools::Itertools;
@@ -7,7 +12,7 @@ use juniper::{
     object, GraphQLEnum, GraphQLInputObject, GraphQLObject, GraphQLScalarValue,
     ScalarValue,
 };
-use juniper::{Executor, FieldResult, ID};
+use juniper::{Executor, ID};
 use juniper_from_schema::graphql_schema_from_file;
 
 use crate::{
@@ -64,14 +69,11 @@ impl SpeedrunsFields for Speedruns {
         &self,
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Game, Walked>,
-        slug: Option<String>,
-        id: Option<String>,
-    ) -> FieldResult<Option<Game>> {
-        let _todo = id;
-        let slug = slug.unwrap();
+        slug: String,
+    ) -> Option<Game> {
         match executor.context().database.game_by_slug(&slug) {
-            Some(game) => Ok(Some(Game(game))),
-            None => Ok(None),
+            Some(game) => Some(Game(game)),
+            None => None,
         }
     }
 
@@ -79,14 +81,11 @@ impl SpeedrunsFields for Speedruns {
         &self,
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, User, Walked>,
-        slug: Option<String>,
-        id: Option<String>,
-    ) -> FieldResult<Option<User>> {
-        let _todo = id;
-        let slug = slug.unwrap();
+        slug: String,
+    ) -> Option<User> {
         match executor.context().database.user_by_slug(&slug) {
-            Some(user) => Ok(Some(User(user))),
-            None => Ok(None),
+            Some(user) => Some(User(user)),
+            None => None,
         }
     }
 
@@ -96,10 +95,16 @@ impl SpeedrunsFields for Speedruns {
         _trail: &QueryTrail<'_, Run, Walked>,
         id: String,
     ) -> Option<Run> {
-        let id = u64_from_base36(&id).unwrap();
+        let id = match u64_from_base36(&id) {
+            Ok(id) => id,
+            Err(_err) => {
+                // we treat invalid IDs as not found instead of error.
+                return None
+            }
+        };
         match executor.context().database.run_by_id(id) {
             Some(run) => (Some(Run(run))),
-            None => (None),
+            None => None,
         }
     }
 
@@ -220,7 +225,11 @@ impl RunFields for Run {
             .iter()
             .map(|run_player| match run_player {
                 db::RunPlayer::UserId(user_id) => {
-                    let user = executor.context().database.user_by_id(*user_id).unwrap();
+                    let user = executor
+                        .context()
+                        .database
+                        .user_by_id(*user_id)
+                        .expect("database integrity");
                     Player::User(User(user))
                 }
                 db::RunPlayer::GuestName(name) => Player::Guest(name.clone()),
@@ -231,11 +240,11 @@ impl RunFields for Run {
 
 impl LeaderboardRunFields for LeaderboardRun {
     fn field_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
-        (i32::try_from(*self.0.rank()).unwrap())
+        (i32::try_from(*self.0.rank()).expect("impossible number of runs"))
     }
 
     fn field_time_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
-        (i32::try_from(*self.0.time_ms()).unwrap())
+        (i32::try_from(*self.0.time_ms()).expect("impossibly long wrong"))
     }
 
     fn field_is_tied(&self, _executor: &Executor<'_, Context>) -> bool {
@@ -243,7 +252,7 @@ impl LeaderboardRunFields for LeaderboardRun {
     }
 
     fn field_tied_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
-        (i32::try_from(*self.0.tied_rank()).unwrap())
+        (i32::try_from(*self.0.tied_rank()).expect("impossible number of runs"))
     }
 
     fn field_run(

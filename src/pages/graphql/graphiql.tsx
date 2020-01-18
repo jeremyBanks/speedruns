@@ -22,9 +22,9 @@ const GraphiQLPage: NextPage = () => {
         <GraphiQL
           fetcher={(query: unknown) =>
             fetch(GRAPHQL_ENDPOINT, {
-              method: "post",
-              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ query }),
+              headers: { "Content-Type": "application/json" },
+              method: "post",
             }).then(response => response.json())
           }
         />
