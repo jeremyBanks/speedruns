@@ -16,11 +16,11 @@ const inBrowserDev =
   ["localhost", "127.0.0.1", "local.speedrun.ca"].includes(
     window.location.hostname,
   );
+const DEBUG = inBrowserDev || onNodeDev;
 
-export const GRAPHQL_ENDPOINT =
-  inBrowserDev || onNodeDev
-    ? "http://localhost:3001/graphql"
-    : "https://graphql-v0.speedrun.ca/graphql";
+export const GRAPHQL_ENDPOINT = DEBUG
+  ? "http://localhost:3001/graphql"
+  : "https://graphql-v0.speedrun.ca/graphql";
 
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -33,13 +33,13 @@ const getApolloClient = (
       cache.restore(initialState);
     }
 
-    const policy = "cache-first";
+    const policy = DEBUG ? "cache-and-network" : "cache-first";
 
     globalApolloClient = new ApolloClient({
       cache,
       defaultOptions: {
         query: {
-          fetchPolicy: policy,
+          fetchPolicy: policy as any,
         },
         watchQuery: {
           fetchPolicy: policy,
