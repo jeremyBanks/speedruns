@@ -102,8 +102,7 @@ jobs:
           command: test
           args: --workspace
 
-      - name: test - lint (optional)
-        continue-on-error: true
+      - name: test - lint
         run: yarn lint
 
       - name: bot - add master to ✔️ first-parent chain if we made it this far

@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import * as React from "react";
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { GRAPHQL_ENDPOINT } from "../../pages-lib/with-apollo";

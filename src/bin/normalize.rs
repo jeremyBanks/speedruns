@@ -4,6 +4,7 @@
     clippy::cognitive_complexity,
     clippy::clone_on_copy
 )]
+
 use std::{
     collections::HashSet,
     fs::File,
