@@ -2,6 +2,7 @@ import React from "react";
 
 import Link from "next/link";
 import styles from "./styles.module.scss";
+import { GRAPHQL_ENDPOINT } from "./with-apollo";
 
 export const HomeContent: React.FC = () => (
   <section className={styles.home}>
@@ -59,6 +60,15 @@ export const HomeContent: React.FC = () => (
       </li>
       <li>
         <a href="/graphql/schema.json">Introspection JSON</a>
+      </li>
+      <li>
+        <a href={`${GRAPHQL_ENDPOINT}/../playground`}>Playground IDE</a>
+      </li>
+      <li>
+        <a href={`${GRAPHQL_ENDPOINT}/../graphiql`}>GraphiQL IDE</a>
+      </li>
+      <li>
+        <a href={GRAPHQL_ENDPOINT}>Endpoint</a>
       </li>
     </ul>
   </section>
