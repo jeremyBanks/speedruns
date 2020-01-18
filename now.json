@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "name": "speedrun.ca",
+  "alias": "speedrun.ca",
+  "github": {
+    "silent": true
+  }
+}
