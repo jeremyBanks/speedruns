@@ -62,6 +62,12 @@ export const HomeContent: React.FC = () => (
         <a href="/graphql/schema.json">Introspection JSON</a>
       </li>
       <li>
+        <a href={`${GRAPHQL_ENDPOINT}/../playground`}>Playground IDE</a>
+      </li>
+      <li>
+        <a href={`${GRAPHQL_ENDPOINT}/../graphiql`}>GraphiQL IDE</a>
+      </li>
+      <li>
         <a href={GRAPHQL_ENDPOINT}>Endpoint</a>
       </li>
     </ul>
