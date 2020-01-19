@@ -302,11 +302,14 @@ const GameLeaderboardRun = gql`
     tiedRank
     run {
       id
+      srcId
       category {
         id
+        srcId
       }
       level {
         id
+        srcId
       }
       date
       players {
@@ -314,6 +317,7 @@ const GameLeaderboardRun = gql`
         isGuest
         user {
           id
+          srcId
           slug
         }
       }
@@ -327,10 +331,12 @@ const GetGamePage = gql`
   query GetGamePage($slug: String!) {
     game: game(slug: $slug) {
       id
+      srcId
       slug
       name
       categories {
         id
+        srcId
         name
         leaderboard {
           ...GameLeaderboardRun
@@ -338,6 +344,7 @@ const GetGamePage = gql`
       }
       levels {
         id
+        srcId
         name
         leaderboard(categorySlug: "mission") {
           ...GameLeaderboardRun
