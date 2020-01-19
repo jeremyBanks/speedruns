@@ -29,7 +29,9 @@ pub fn global_id(id: u64, node_type: NodeType) -> ID {
 }
 
 #[allow(unused)]
-pub fn parse_global_id(global_id: &juniper::ID) -> Result<(u64, NodeType), Box<dyn std::error::Error>> {
+pub fn parse_global_id(
+    global_id: &juniper::ID,
+) -> Result<(u64, NodeType), Box<dyn std::error::Error>> {
     let mut bytes = base64::decode_config(&global_id.to_string(), base64::URL_SAFE_NO_PAD)
         .expect("infallible");
     assert!(bytes[1] == 0xE0, "second-high byte must be 0xE0");
