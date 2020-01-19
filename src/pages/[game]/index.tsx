@@ -37,9 +37,9 @@ const GamePage: NextPage = () => {
       </h1>
 
       {game.gameCategories.map(category => (
-        <div key={category.id} id={`/category/${category.id}`}>
+        <div key={category.id} id={`${category.id}`}>
           <h2>
-            <a href={`#/category/${category.id}`}>{category.name}</a>
+            <a href={`#${category.id}`}>{category.name}</a>
           </h2>
 
           <h3>Record Progression</h3>
@@ -125,7 +125,7 @@ const GamePage: NextPage = () => {
                     </td>
                     <td className={styles.time}>
                       <a
-                        href={`https://www.speedrun.com/${game.id}/run/${ranked.run.id}`}
+                        href={`https://www.speedrun.com/${game.srcSlug}/run/${ranked.run.srcId}`}
                       >
                         <Duration ms={ranked.timeMs} />
                       </a>
@@ -243,9 +243,9 @@ const GamePage: NextPage = () => {
       <h3>Leaderboards</h3>
 
       {game.levels.map(level => (
-        <div key={level.id} id={`/level/${level.id}`}>
+        <div key={level.id} id={`${level.id}`}>
           <h4>
-            <a href={`#/level/${level.id}`}>{level.name}</a>
+            <a href={`#${level.id}`}>{level.name}</a>
           </h4>
 
           <table className={styles.leaderboard}>
@@ -269,7 +269,7 @@ const GamePage: NextPage = () => {
                     </td>
                     <td className={styles.time}>
                       <a
-                        href={`https://www.speedrun.com/${game.id}/run/${ranked.run.id}`}
+                        href={`https://www.speedrun.com/${game.srcSlug}/run/${ranked.run.srcId}`}
                       >
                         <Duration ms={ranked.timeMs} />
                       </a>
@@ -337,10 +337,13 @@ const GetGamePage = gql`
       id
       srcId
       slug
+      srcSlug
       name
       gameCategories {
         id
         srcId
+        slug
+        srcSlug
         name
         leaderboard {
           ...GameLeaderboardRun
@@ -349,6 +352,8 @@ const GetGamePage = gql`
       levels {
         id
         srcId
+        slug
+        srcSlug
         name
         leaderboard(categorySlug: "mission") {
           ...GameLeaderboardRun
