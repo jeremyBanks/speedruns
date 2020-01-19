@@ -68,7 +68,7 @@ fn test_round_trip_global_ids() {
         (
             u64_from_base36("zzzzzzzz").expect("it's valid"),
             NodeType::Level,
-            "l-ACkNdA__8",
+            "L-ACkNdA__8",
         ),
     ];
 
