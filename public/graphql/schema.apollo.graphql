@@ -19,7 +19,9 @@ Export this locally resolved field as a variable to be used in the remainder of 
 https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
 """
 directive @export(
-  """The variable name to export this field as."""
+  """
+  The variable name to export this field as.
+  """
   as: String!
 ) on FIELD
 
@@ -28,7 +30,9 @@ Specify a custom store key for this result. See
 https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
 """
 directive @connection(
-  """Specify the store key."""
+  """
+  Specify the store key.
+  """
   key: String!
 
   """
@@ -38,49 +42,77 @@ directive @connection(
 ) on FIELD
 
 type Category implements Node {
-  """GraphQL node ID"""
+  """
+  GraphQL node ID
+  """
   id: ID!
 
-  """speedrun.com category ID"""
+  """
+  speedrun.com category ID
+  """
   srcId: String!
 
-  """URL slug used on speedrun.ca"""
+  """
+  URL slug used on speedrun.ca
+  """
   slug: String!
 
-  """URL slug used on speedrun.com"""
+  """
+  URL slug used on speedrun.com
+  """
   srcSlug: String!
 
-  """name, in English if possible"""
+  """
+  name, in English if possible
+  """
   name: String!
   leaderboard(levelSlug: String): [LeaderboardRun!]!
 }
 
 type Game implements Node {
-  """GraphQL node ID"""
+  """
+  GraphQL node ID
+  """
   id: ID!
 
-  """speedrun.com game ID"""
+  """
+  speedrun.com game ID
+  """
   srcId: String!
 
-  """URL slug used on speedrun.ca"""
+  """
+  URL slug used on speedrun.ca
+  """
   slug: String!
 
-  """URL slug used on speedrun.com"""
+  """
+  URL slug used on speedrun.com
+  """
   srcSlug: String!
 
-  """name, in English if possible"""
+  """
+  name, in English if possible
+  """
   name: String!
 
-  """all runs"""
+  """
+  all runs
+  """
   runs: [Run!]!
 
-  """full-game run categories"""
+  """
+  full-game run categories
+  """
   gameCategories: [Category!]!
 
-  """individual level run categories"""
+  """
+  individual level run categories
+  """
   levelCategories: [Category!]!
 
-  """individual levels"""
+  """
+  individual levels
+  """
   levels: [Level!]!
 }
 
@@ -93,27 +125,41 @@ type LeaderboardRun {
 }
 
 type Level implements Node {
-  """GraphQL node ID"""
+  """
+  GraphQL node ID
+  """
   id: ID!
 
-  """speedrun.com level ID"""
+  """
+  speedrun.com level ID
+  """
   srcId: String!
 
-  """URL slug used on speedrun.ca"""
+  """
+  URL slug used on speedrun.ca
+  """
   slug: String!
 
-  """URL slug used on speedrun.com"""
+  """
+  URL slug used on speedrun.com
+  """
   srcSlug: String!
 
-  """name, in English if possible"""
+  """
+  name, in English if possible
+  """
   name: String!
   categories: [Category!]!
   leaderboard(categorySlug: String): [LeaderboardRun!]!
 }
 
-"""<https://graphql.org/learn/global-object-identification/>"""
+"""
+<https://graphql.org/learn/global-object-identification/>
+"""
 interface Node {
-  """GraphQL node ID"""
+  """
+  GraphQL node ID
+  """
   id: ID!
 }
 
@@ -124,10 +170,14 @@ type Player {
 }
 
 type Run implements Node {
-  """GraphQL node ID"""
+  """
+  GraphQL node ID
+  """
   id: ID!
 
-  """speedrun.com level ID"""
+  """
+  speedrun.com level ID
+  """
   srcId: String!
   category: Category!
   level: Level
@@ -141,15 +191,23 @@ type Speedruns {
 }
 
 type User implements Node {
-  """GraphQL node ID"""
+  """
+  GraphQL node ID
+  """
   id: ID!
 
-  """speedrun.com user ID"""
+  """
+  speedrun.com user ID
+  """
   srcId: String!
 
-  """URL slug used on speedrun.ca"""
+  """
+  URL slug used on speedrun.ca
+  """
   slug: String!
 
-  """URL slug used on speedrun.com"""
+  """
+  URL slug used on speedrun.com
+  """
   srcSlug: String!
 }
