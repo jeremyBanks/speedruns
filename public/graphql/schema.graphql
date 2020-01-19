@@ -27,27 +27,40 @@ type Game implements Node {
   categories: [Category!]! @juniper(ownership: "owned", infallible: true)
 }
 
-type User {
-  id: String! @juniper(ownership: "owned", infallible: true)
+type User implements Node {
+  id: ID! @juniper(ownership: "owned", infallible: true)
+  srcId: String! @juniper(ownership: "owned", infallible: true)
   slug: String! @juniper(ownership: "owned", infallible: true)
 }
 
-type Category {
-  id: String! @juniper(ownership: "owned", infallible: true)
+type Category implements Node {
+  id: ID! @juniper(ownership: "owned", infallible: true)
+  srcId: String! @juniper(ownership: "owned", infallible: true)
   name: String! @juniper(ownership: "owned", infallible: true)
   slug: String! @juniper(ownership: "owned", infallible: true)
   leaderboard(levelSlug: String): [LeaderboardRun!]!
     @juniper(ownership: "owned", infallible: true)
 }
 
-type Level {
-  id: String! @juniper(ownership: "owned", infallible: true)
+type Level implements Node {
+  id: ID! @juniper(ownership: "owned", infallible: true)
+  srcId: String! @juniper(ownership: "owned", infallible: true)
   name: String! @juniper(ownership: "owned", infallible: true)
   slug: String! @juniper(ownership: "owned", infallible: true)
   game: Game! @juniper(ownership: "owned", infallible: true)
   categories: [Category!]! @juniper(ownership: "owned", infallible: true)
   leaderboard(categorySlug: String): [LeaderboardRun!]!
     @juniper(ownership: "owned", infallible: true)
+}
+
+type Run implements Node {
+  id: ID! @juniper(ownership: "owned", infallible: true)
+  srcId: String! @juniper(ownership: "owned", infallible: true)
+  game: Game! @juniper(ownership: "owned", infallible: true)
+  category: Category! @juniper(ownership: "owned", infallible: true)
+  level: Level @juniper(ownership: "owned", infallible: true)
+  date: Float @juniper(ownership: "owned", infallible: true)
+  players: [Player!]! @juniper(ownership: "owned", infallible: true)
 }
 
 type Player {
@@ -62,13 +75,4 @@ type LeaderboardRun {
   isTied: Boolean! @juniper(ownership: "owned", infallible: true)
   tiedRank: Int! @juniper(ownership: "owned", infallible: true)
   run: Run! @juniper(ownership: "owned", infallible: true)
-}
-
-type Run {
-  id: String! @juniper(ownership: "owned", infallible: true)
-  game: Game! @juniper(ownership: "owned", infallible: true)
-  category: Category! @juniper(ownership: "owned", infallible: true)
-  level: Level @juniper(ownership: "owned", infallible: true)
-  date: Float @juniper(ownership: "owned", infallible: true)
-  players: [Player!]! @juniper(ownership: "owned", infallible: true)
 }

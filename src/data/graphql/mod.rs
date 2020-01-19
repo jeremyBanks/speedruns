@@ -120,7 +120,7 @@ impl SpeedrunsFields for Speedruns {
 
 impl GameFields for Game {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
-        ID::from(base36(self.0.id))
+        global_id::global_id(self.0.id, global_id::NodeType::Game)
     }
 
     fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
@@ -180,7 +180,11 @@ impl GameFields for Game {
 }
 
 impl RunFields for Run {
-    fn field_id(&self, _executor: &Executor<'_, Context>) -> String {
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
+        global_id::global_id(self.0.id, global_id::NodeType::Run)
+    }
+
+    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
         base36(self.0.id)
     }
 
@@ -265,8 +269,12 @@ impl LeaderboardRunFields for LeaderboardRun {
 }
 
 impl CategoryFields for Category {
-    fn field_id(&self, _executor: &Executor<'_, Context>) -> String {
-        (base36(self.0.id))
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
+        global_id::global_id(self.0.id, global_id::NodeType::Category)
+    }
+
+    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
+        base36(self.0.id)
     }
 
     fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
@@ -305,8 +313,12 @@ impl CategoryFields for Category {
 }
 
 impl UserFields for User {
-    fn field_id(&self, _executor: &Executor<'_, Context>) -> String {
-        (base36(self.0.id))
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
+        global_id::global_id(self.0.id, global_id::NodeType::User)
+    }
+
+    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
+        base36(self.0.id)
     }
 
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
@@ -342,8 +354,12 @@ impl PlayerFields for Player {
 }
 
 impl LevelFields for Level {
-    fn field_id(&self, _executor: &Executor<'_, Context>) -> String {
-        (base36(self.0.id))
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
+        global_id::global_id(self.0.id, global_id::NodeType::Level)
+    }
+
+    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
+        base36(self.0.id)
     }
 
     fn field_name(&self, _executor: &Executor<'_, Context>) -> String {

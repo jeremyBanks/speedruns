@@ -1,4 +1,4 @@
-#![allow(unused)]
+use juniper::ID;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum NodeType {
@@ -11,7 +11,7 @@ pub enum NodeType {
 
 use NodeType::*;
 
-pub fn global_id(id: u64, node_type: NodeType) -> String {
+pub fn global_id(id: u64, node_type: NodeType) -> ID {
     let mut bytes = id.to_be_bytes();
     assert!(bytes[0] == 0, "high byte of id must be zero");
     assert!(bytes[1] == 0, "second-high byte of id must be zero");
@@ -24,12 +24,13 @@ pub fn global_id(id: u64, node_type: NodeType) -> String {
         Level => 0x2C,
     };
 
-    base64::encode_config(&bytes, base64::URL_SAFE_NO_PAD)
+    ID::from(base64::encode_config(&bytes, base64::URL_SAFE_NO_PAD))
 }
 
-pub fn parse_global_id(global_id: &str) -> (u64, NodeType) {
-    let mut bytes =
-        base64::decode_config(global_id, base64::URL_SAFE_NO_PAD).expect("infallible");
+#[allow(unused)]
+pub fn parse_global_id(global_id: &juniper::ID) -> (u64, NodeType) {
+    let mut bytes = base64::decode_config(&global_id.to_string(), base64::URL_SAFE_NO_PAD)
+        .expect("infallible");
     assert!(bytes[1] == 0, "second-high byte must be zero");
 
     let node_type = match bytes[0] {
@@ -62,8 +63,8 @@ fn test_round_trip_global_ids() {
 
     for (id, node_type, global) in &cases {
         let global2 = global_id(*id, *node_type);
-        assert_eq!(*global, global2);
-        let (id2, node_type2) = parse_global_id(&global);
+        assert_eq!(**global, *global2);
+        let (id2, node_type2) = parse_global_id(&ID::from((*global).to_string()));
         assert_eq!(*id, id2);
         assert_eq!(*node_type, node_type2);
     }
