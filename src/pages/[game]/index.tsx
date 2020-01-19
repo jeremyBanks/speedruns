@@ -36,7 +36,7 @@ const GamePage: NextPage = () => {
         </Link>
       </h1>
 
-      {game.categories.map(category => (
+      {game.gameCategories.map(category => (
         <div key={category.id} id={`/category/${category.id}`}>
           <h2>
             <a href={`#/category/${category.id}`}>{category.name}</a>
@@ -46,11 +46,13 @@ const GamePage: NextPage = () => {
 
           <table className={styles.progression}>
             <thead>
-              <th className={styles.rank}>Rank</th>
-              <th className={styles.player}>Player</th>
-              <th className={styles.time}>Time (RTA)</th>
-              <th className={styles.improvement}>Progress</th>
-              <th className={styles.date}>Date</th>
+              <tr>
+                <th className={styles.rank}>Rank</th>
+                <th className={styles.player}>Player</th>
+                <th className={styles.time}>Time (RTA)</th>
+                <th className={styles.improvement}>Progress</th>
+                <th className={styles.date}>Date</th>
+              </tr>
             </thead>
             <tbody>
               <tr data-rank="1">
@@ -153,16 +155,18 @@ const GamePage: NextPage = () => {
 
       <table className={styles.progression}>
         <thead>
-          <th className={styles.level}>Level</th>
-          <th className={styles.rank}>Rank</th>
-          <th className={styles.player}>Player</th>
-          <th className={styles.time}>
-            Time (RTA) /
-            <br />
-            Sum Time
-          </th>
-          <th className={styles.improvement}>Progress</th>
-          <th className={styles.date}>Date</th>
+          <tr>
+            <th className={styles.level}>Level</th>
+            <th className={styles.rank}>Rank</th>
+            <th className={styles.player}>Player</th>
+            <th className={styles.time}>
+              Time (RTA) /
+              <br />
+              Sum Time
+            </th>
+            <th className={styles.improvement}>Progress</th>
+            <th className={styles.date}>Date</th>
+          </tr>
         </thead>
         <tbody>
           <tr data-rank="1">
@@ -334,7 +338,7 @@ const GetGamePage = gql`
       srcId
       slug
       name
-      categories {
+      gameCategories {
         id
         srcId
         name
