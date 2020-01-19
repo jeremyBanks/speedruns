@@ -41,8 +41,9 @@ directive @connection(
   filter: [String!]
 ) on FIELD
 
-type Category {
-  id: String!
+type Category implements Node {
+  id: ID!
+  srcId: String!
   name: String!
   slug: String!
   leaderboard(levelSlug: String): [LeaderboardRun!]!
@@ -66,8 +67,9 @@ type LeaderboardRun {
   run: Run!
 }
 
-type Level {
-  id: String!
+type Level implements Node {
+  id: ID!
+  srcId: String!
   name: String!
   slug: String!
   game: Game!
@@ -88,8 +90,9 @@ type Player {
   isGuest: Boolean!
 }
 
-type Run {
-  id: String!
+type Run implements Node {
+  id: ID!
+  srcId: String!
   game: Game!
   category: Category!
   level: Level
@@ -104,7 +107,8 @@ type Speedruns {
   node(id: ID!): Node
 }
 
-type User {
-  id: String!
+type User implements Node {
+  id: ID!
+  srcId: String!
   slug: String!
 }
