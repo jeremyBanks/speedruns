@@ -36,21 +36,23 @@ const GamePage: NextPage = () => {
         </Link>
       </h1>
 
-      {game.categories.map(category => (
-        <div key={category.id} id={`/category/${category.id}`}>
+      {game.gameCategories.map(category => (
+        <div key={category.id} id={`${category.id}`}>
           <h2>
-            <a href={`#/category/${category.id}`}>{category.name}</a>
+            <a href={`#${category.id}`}>{category.name}</a>
           </h2>
 
           <h3>Record Progression</h3>
 
           <table className={styles.progression}>
             <thead>
-              <th className={styles.rank}>Rank</th>
-              <th className={styles.player}>Player</th>
-              <th className={styles.time}>Time (RTA)</th>
-              <th className={styles.improvement}>Progress</th>
-              <th className={styles.date}>Date</th>
+              <tr>
+                <th className={styles.rank}>Rank</th>
+                <th className={styles.player}>Player</th>
+                <th className={styles.time}>Time (RTA)</th>
+                <th className={styles.improvement}>Progress</th>
+                <th className={styles.date}>Date</th>
+              </tr>
             </thead>
             <tbody>
               <tr data-rank="1">
@@ -123,7 +125,7 @@ const GamePage: NextPage = () => {
                     </td>
                     <td className={styles.time}>
                       <a
-                        href={`https://www.speedrun.com/${game.id}/run/${ranked.run.id}`}
+                        href={`https://www.speedrun.com/${game.srcSlug}/run/${ranked.run.srcId}`}
                       >
                         <Duration ms={ranked.timeMs} />
                       </a>
@@ -153,16 +155,18 @@ const GamePage: NextPage = () => {
 
       <table className={styles.progression}>
         <thead>
-          <th className={styles.level}>Level</th>
-          <th className={styles.rank}>Rank</th>
-          <th className={styles.player}>Player</th>
-          <th className={styles.time}>
-            Time (RTA) /
-            <br />
-            Sum Time
-          </th>
-          <th className={styles.improvement}>Progress</th>
-          <th className={styles.date}>Date</th>
+          <tr>
+            <th className={styles.level}>Level</th>
+            <th className={styles.rank}>Rank</th>
+            <th className={styles.player}>Player</th>
+            <th className={styles.time}>
+              Time (RTA) /
+              <br />
+              Sum Time
+            </th>
+            <th className={styles.improvement}>Progress</th>
+            <th className={styles.date}>Date</th>
+          </tr>
         </thead>
         <tbody>
           <tr data-rank="1">
@@ -239,9 +243,9 @@ const GamePage: NextPage = () => {
       <h3>Leaderboards</h3>
 
       {game.levels.map(level => (
-        <div key={level.id} id={`/level/${level.id}`}>
+        <div key={level.id} id={`${level.id}`}>
           <h4>
-            <a href={`#/level/${level.id}`}>{level.name}</a>
+            <a href={`#${level.id}`}>{level.name}</a>
           </h4>
 
           <table className={styles.leaderboard}>
@@ -265,7 +269,7 @@ const GamePage: NextPage = () => {
                     </td>
                     <td className={styles.time}>
                       <a
-                        href={`https://www.speedrun.com/${game.id}/run/${ranked.run.id}`}
+                        href={`https://www.speedrun.com/${game.srcSlug}/run/${ranked.run.srcId}`}
                       >
                         <Duration ms={ranked.timeMs} />
                       </a>
@@ -302,11 +306,14 @@ const GameLeaderboardRun = gql`
     tiedRank
     run {
       id
+      srcId
       category {
         id
+        srcId
       }
       level {
         id
+        srcId
       }
       date
       players {
@@ -314,6 +321,7 @@ const GameLeaderboardRun = gql`
         isGuest
         user {
           id
+          srcId
           slug
         }
       }
@@ -327,10 +335,15 @@ const GetGamePage = gql`
   query GetGamePage($slug: String!) {
     game: game(slug: $slug) {
       id
+      srcId
       slug
+      srcSlug
       name
-      categories {
+      gameCategories {
         id
+        srcId
+        slug
+        srcSlug
         name
         leaderboard {
           ...GameLeaderboardRun
@@ -338,6 +351,9 @@ const GetGamePage = gql`
       }
       levels {
         id
+        srcId
+        slug
+        srcSlug
         name
         leaderboard(categorySlug: "mission") {
           ...GameLeaderboardRun

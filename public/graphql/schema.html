@@ -3055,7 +3055,7 @@
                     fields: [
                       {
                         name: "id",
-                        description: "",
+                        description: "GraphQL node ID",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3067,23 +3067,7 @@
                       },
                       {
                         name: "srcId",
-                        description: "",
-                        args: [],
-                        type: {
-                          kind: "NON_NULL",
-                          name: null,
-                          ofType: {
-                            kind: "SCALAR",
-                            name: "String",
-                            ofType: null,
-                          },
-                        },
-                        isDeprecated: false,
-                        deprecationReason: null,
-                      },
-                      {
-                        name: "name",
-                        description: "",
+                        description: "speedrun.com level ID",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3099,7 +3083,7 @@
                       },
                       {
                         name: "slug",
-                        description: "",
+                        description: "URL slug used on speedrun.ca",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3114,15 +3098,31 @@
                         deprecationReason: null,
                       },
                       {
-                        name: "game",
-                        description: "",
+                        name: "srcSlug",
+                        description: "URL slug used on speedrun.com",
                         args: [],
                         type: {
                           kind: "NON_NULL",
                           name: null,
                           ofType: {
-                            kind: "OBJECT",
-                            name: "Game",
+                            kind: "SCALAR",
+                            name: "String",
+                            ofType: null,
+                          },
+                        },
+                        isDeprecated: false,
+                        deprecationReason: null,
+                      },
+                      {
+                        name: "name",
+                        description: "name, in English if possible",
+                        args: [],
+                        type: {
+                          kind: "NON_NULL",
+                          name: null,
+                          ofType: {
+                            kind: "SCALAR",
+                            name: "String",
                             ofType: null,
                           },
                         },
@@ -3293,7 +3293,7 @@
                     fields: [
                       {
                         name: "id",
-                        description: "",
+                        description: "GraphQL node ID",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3305,23 +3305,7 @@
                       },
                       {
                         name: "srcId",
-                        description: "",
-                        args: [],
-                        type: {
-                          kind: "NON_NULL",
-                          name: null,
-                          ofType: {
-                            kind: "SCALAR",
-                            name: "String",
-                            ofType: null,
-                          },
-                        },
-                        isDeprecated: false,
-                        deprecationReason: null,
-                      },
-                      {
-                        name: "name",
-                        description: "",
+                        description: "speedrun.com game ID",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3337,7 +3321,39 @@
                       },
                       {
                         name: "slug",
-                        description: "",
+                        description: "URL slug used on speedrun.ca",
+                        args: [],
+                        type: {
+                          kind: "NON_NULL",
+                          name: null,
+                          ofType: {
+                            kind: "SCALAR",
+                            name: "String",
+                            ofType: null,
+                          },
+                        },
+                        isDeprecated: false,
+                        deprecationReason: null,
+                      },
+                      {
+                        name: "srcSlug",
+                        description: "URL slug used on speedrun.com",
+                        args: [],
+                        type: {
+                          kind: "NON_NULL",
+                          name: null,
+                          ofType: {
+                            kind: "SCALAR",
+                            name: "String",
+                            ofType: null,
+                          },
+                        },
+                        isDeprecated: false,
+                        deprecationReason: null,
+                      },
+                      {
+                        name: "name",
+                        description: "name, in English if possible",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3353,7 +3369,7 @@
                       },
                       {
                         name: "runs",
-                        description: "",
+                        description: "all runs",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3372,28 +3388,8 @@
                         deprecationReason: null,
                       },
                       {
-                        name: "levels",
-                        description: "",
-                        args: [],
-                        type: {
-                          kind: "NON_NULL",
-                          name: null,
-                          ofType: {
-                            kind: "LIST",
-                            name: null,
-                            ofType: {
-                              kind: "NON_NULL",
-                              name: null,
-                              ofType: { kind: "OBJECT", name: "Level" },
-                            },
-                          },
-                        },
-                        isDeprecated: false,
-                        deprecationReason: null,
-                      },
-                      {
-                        name: "categories",
-                        description: "",
+                        name: "gameCategories",
+                        description: "full-game run categories",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3405,6 +3401,46 @@
                               kind: "NON_NULL",
                               name: null,
                               ofType: { kind: "OBJECT", name: "Category" },
+                            },
+                          },
+                        },
+                        isDeprecated: false,
+                        deprecationReason: null,
+                      },
+                      {
+                        name: "levelCategories",
+                        description: "individual level run categories",
+                        args: [],
+                        type: {
+                          kind: "NON_NULL",
+                          name: null,
+                          ofType: {
+                            kind: "LIST",
+                            name: null,
+                            ofType: {
+                              kind: "NON_NULL",
+                              name: null,
+                              ofType: { kind: "OBJECT", name: "Category" },
+                            },
+                          },
+                        },
+                        isDeprecated: false,
+                        deprecationReason: null,
+                      },
+                      {
+                        name: "levels",
+                        description: "individual levels",
+                        args: [],
+                        type: {
+                          kind: "NON_NULL",
+                          name: null,
+                          ofType: {
+                            kind: "LIST",
+                            name: null,
+                            ofType: {
+                              kind: "NON_NULL",
+                              name: null,
+                              ofType: { kind: "OBJECT", name: "Level" },
                             },
                           },
                         },
@@ -3426,7 +3462,7 @@
                     fields: [
                       {
                         name: "id",
-                        description: "",
+                        description: "GraphQL node ID",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3438,23 +3474,7 @@
                       },
                       {
                         name: "srcId",
-                        description: "",
-                        args: [],
-                        type: {
-                          kind: "NON_NULL",
-                          name: null,
-                          ofType: {
-                            kind: "SCALAR",
-                            name: "String",
-                            ofType: null,
-                          },
-                        },
-                        isDeprecated: false,
-                        deprecationReason: null,
-                      },
-                      {
-                        name: "name",
-                        description: "",
+                        description: "speedrun.com category ID",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3470,7 +3490,39 @@
                       },
                       {
                         name: "slug",
-                        description: "",
+                        description: "URL slug used on speedrun.ca",
+                        args: [],
+                        type: {
+                          kind: "NON_NULL",
+                          name: null,
+                          ofType: {
+                            kind: "SCALAR",
+                            name: "String",
+                            ofType: null,
+                          },
+                        },
+                        isDeprecated: false,
+                        deprecationReason: null,
+                      },
+                      {
+                        name: "srcSlug",
+                        description: "URL slug used on speedrun.com",
+                        args: [],
+                        type: {
+                          kind: "NON_NULL",
+                          name: null,
+                          ofType: {
+                            kind: "SCALAR",
+                            name: "String",
+                            ofType: null,
+                          },
+                        },
+                        isDeprecated: false,
+                        deprecationReason: null,
+                      },
+                      {
+                        name: "name",
+                        description: "name, in English if possible",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3845,7 +3897,7 @@
                     fields: [
                       {
                         name: "id",
-                        description: "",
+                        description: "GraphQL node ID",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3857,7 +3909,7 @@
                       },
                       {
                         name: "srcId",
-                        description: "",
+                        description: "speedrun.com level ID",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -3865,22 +3917,6 @@
                           ofType: {
                             kind: "SCALAR",
                             name: "String",
-                            ofType: null,
-                          },
-                        },
-                        isDeprecated: false,
-                        deprecationReason: null,
-                      },
-                      {
-                        name: "game",
-                        description: "",
-                        args: [],
-                        type: {
-                          kind: "NON_NULL",
-                          name: null,
-                          ofType: {
-                            kind: "OBJECT",
-                            name: "Game",
                             ofType: null,
                           },
                         },
@@ -4107,7 +4143,7 @@
                     fields: [
                       {
                         name: "id",
-                        description: null,
+                        description: "GraphQL node ID",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -4158,52 +4194,6 @@
                         deprecationReason: null,
                       },
                       {
-                        name: "user",
-                        description: "",
-                        args: [
-                          {
-                            name: "slug",
-                            description: null,
-                            type: {
-                              kind: "NON_NULL",
-                              name: null,
-                              ofType: {
-                                kind: "SCALAR",
-                                name: "String",
-                                ofType: null,
-                              },
-                            },
-                            defaultValue: null,
-                          },
-                        ],
-                        type: { kind: "OBJECT", name: "User", ofType: null },
-                        isDeprecated: false,
-                        deprecationReason: null,
-                      },
-                      {
-                        name: "run",
-                        description: "",
-                        args: [
-                          {
-                            name: "id",
-                            description: null,
-                            type: {
-                              kind: "NON_NULL",
-                              name: null,
-                              ofType: {
-                                kind: "SCALAR",
-                                name: "String",
-                                ofType: null,
-                              },
-                            },
-                            defaultValue: null,
-                          },
-                        ],
-                        type: { kind: "OBJECT", name: "Run", ofType: null },
-                        isDeprecated: false,
-                        deprecationReason: null,
-                      },
-                      {
                         name: "node",
                         description: "",
                         args: [
@@ -4239,7 +4229,7 @@
                     fields: [
                       {
                         name: "id",
-                        description: "",
+                        description: "GraphQL node ID",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -4251,7 +4241,7 @@
                       },
                       {
                         name: "srcId",
-                        description: "",
+                        description: "speedrun.com user ID",
                         args: [],
                         type: {
                           kind: "NON_NULL",
@@ -4267,7 +4257,23 @@
                       },
                       {
                         name: "slug",
-                        description: "",
+                        description: "URL slug used on speedrun.ca",
+                        args: [],
+                        type: {
+                          kind: "NON_NULL",
+                          name: null,
+                          ofType: {
+                            kind: "SCALAR",
+                            name: "String",
+                            ofType: null,
+                          },
+                        },
+                        isDeprecated: false,
+                        deprecationReason: null,
+                      },
+                      {
+                        name: "srcSlug",
+                        description: "URL slug used on speedrun.com",
                         args: [],
                         type: {
                           kind: "NON_NULL",
