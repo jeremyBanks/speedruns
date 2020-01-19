@@ -125,13 +125,13 @@ const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validat
 
 /// A collection of [Tables] with various generated indexes.
 pub struct Database {
-    tables:                           &'static Tables,
-    runs_by_game_id:                  HashMap<u64, Vec<&'static Run>>,
-    games_by_slug:                    HashMap<String, &'static Game>,
-    users_by_slug:                    HashMap<String, &'static User>,
-    per_game_categories_by_game_id_and_slug:   HashMap<(u64, String), &'static Category>,
-    per_level_categories_by_game_id_and_slug:   HashMap<(u64, String), &'static Category>,
-    levels_by_game_id_and_slug:       HashMap<(u64, String), &'static Level>,
+    tables:                                   &'static Tables,
+    runs_by_game_id:                          HashMap<u64, Vec<&'static Run>>,
+    games_by_slug:                            HashMap<String, &'static Game>,
+    users_by_slug:                            HashMap<String, &'static User>,
+    per_game_categories_by_game_id_and_slug:  HashMap<(u64, String), &'static Category>,
+    per_level_categories_by_game_id_and_slug: HashMap<(u64, String), &'static Category>,
+    levels_by_game_id_and_slug:               HashMap<(u64, String), &'static Level>,
     _runs_by_category_level_and_slug: HashMap<(u64, Option<u64>, String), &'static Run>,
 }
 
