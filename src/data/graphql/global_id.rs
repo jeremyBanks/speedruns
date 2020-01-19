@@ -29,9 +29,7 @@ pub fn global_id(id: u64, node_type: NodeType) -> ID {
 }
 
 #[allow(unused)]
-pub fn parse_global_id(
-    global_id: &juniper::ID,
-) -> Result<(u64, NodeType), Box<dyn std::error::Error>> {
+pub fn parse_global_id(global_id: &juniper::ID) -> Result<(u64, NodeType), Box<dyn std::error::Error>> {
     let mut bytes = base64::decode_config(&global_id.to_string(), base64::URL_SAFE_NO_PAD)
         .expect("infallible");
     assert!(bytes[1] == 0xE0, "second-high byte must be 0xE0");
@@ -60,11 +58,11 @@ fn test_round_trip_global_ids() {
     use crate::utils::u64_from_base36;
 
     let cases = [
-        (0x1234u64, NodeType::Game, "g-AAAAAAEjQ"),
-        (0x0000_FFFF_FFFF_FFFF, NodeType::User, "u-D_______8"),
-        (0x0000_FEDA_BCAC_EDAC, NodeType::Run, "r-D-2rys7aw"),
-        (0x0, NodeType::Category, "c-AAAAAAAAA"),
-        (0x1, NodeType::Level, "l-AAAAAAAAE"),
+        (0x1234u64, NodeType::Game, "G-AAAAAAEjQ"),
+        (0x0000_FFFF_FFFF_FFFF, NodeType::User, "U-D_______8"),
+        (0x0000_FEDA_BCAC_EDAC, NodeType::Run, "R-D-2rys7aw"),
+        (0x0, NodeType::Category, "C-AAAAAAAAA"),
+        (0x1, NodeType::Level, "L-AAAAAAAAE"),
         (
             u64_from_base36("zzzzzzzz").expect("it's valid"),
             NodeType::Level,
