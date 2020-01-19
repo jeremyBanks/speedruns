@@ -9,16 +9,19 @@
 export interface GetGamePage_game_categories_leaderboard_run_category {
   __typename: "Category";
   id: string;
+  srcId: string;
 }
 
 export interface GetGamePage_game_categories_leaderboard_run_level {
   __typename: "Level";
   id: string;
+  srcId: string;
 }
 
 export interface GetGamePage_game_categories_leaderboard_run_players_user {
   __typename: "User";
   id: string;
+  srcId: string;
   slug: string;
 }
 
@@ -32,6 +35,7 @@ export interface GetGamePage_game_categories_leaderboard_run_players {
 export interface GetGamePage_game_categories_leaderboard_run {
   __typename: "Run";
   id: string;
+  srcId: string;
   category: GetGamePage_game_categories_leaderboard_run_category;
   level: GetGamePage_game_categories_leaderboard_run_level | null;
   date: number | null;
@@ -50,6 +54,7 @@ export interface GetGamePage_game_categories_leaderboard {
 export interface GetGamePage_game_categories {
   __typename: "Category";
   id: string;
+  srcId: string;
   name: string;
   leaderboard: GetGamePage_game_categories_leaderboard[];
 }
@@ -57,16 +62,19 @@ export interface GetGamePage_game_categories {
 export interface GetGamePage_game_levels_leaderboard_run_category {
   __typename: "Category";
   id: string;
+  srcId: string;
 }
 
 export interface GetGamePage_game_levels_leaderboard_run_level {
   __typename: "Level";
   id: string;
+  srcId: string;
 }
 
 export interface GetGamePage_game_levels_leaderboard_run_players_user {
   __typename: "User";
   id: string;
+  srcId: string;
   slug: string;
 }
 
@@ -80,6 +88,7 @@ export interface GetGamePage_game_levels_leaderboard_run_players {
 export interface GetGamePage_game_levels_leaderboard_run {
   __typename: "Run";
   id: string;
+  srcId: string;
   category: GetGamePage_game_levels_leaderboard_run_category;
   level: GetGamePage_game_levels_leaderboard_run_level | null;
   date: number | null;
@@ -98,6 +107,7 @@ export interface GetGamePage_game_levels_leaderboard {
 export interface GetGamePage_game_levels {
   __typename: "Level";
   id: string;
+  srcId: string;
   name: string;
   leaderboard: GetGamePage_game_levels_leaderboard[];
 }
@@ -105,6 +115,7 @@ export interface GetGamePage_game_levels {
 export interface GetGamePage_game {
   __typename: "Game";
   id: string;
+  srcId: string;
   slug: string;
   name: string;
   categories: GetGamePage_game_categories[];
@@ -130,16 +141,19 @@ export interface GetGamePageVariables {
 export interface GameLeaderboardRun_run_category {
   __typename: "Category";
   id: string;
+  srcId: string;
 }
 
 export interface GameLeaderboardRun_run_level {
   __typename: "Level";
   id: string;
+  srcId: string;
 }
 
 export interface GameLeaderboardRun_run_players_user {
   __typename: "User";
   id: string;
+  srcId: string;
   slug: string;
 }
 
@@ -153,6 +167,7 @@ export interface GameLeaderboardRun_run_players {
 export interface GameLeaderboardRun_run {
   __typename: "Run";
   id: string;
+  srcId: string;
   category: GameLeaderboardRun_run_category;
   level: GameLeaderboardRun_run_level | null;
   date: number | null;

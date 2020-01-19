@@ -18,9 +18,10 @@ use juniper_from_schema::graphql_schema_from_file;
 use crate::{
     data::{
         database::{Database, Linked as DbLinked},
+        graphql::global_id::{global_id, parse_global_id, NodeType},
         leaderboard, types as db,
     },
-    utils::{base36, u64_from_base36},
+    utils::base36,
 };
 
 mod global_id;
@@ -77,50 +78,31 @@ impl SpeedrunsFields for Speedruns {
         }
     }
 
-    fn field_user(
-        &self,
-        executor: &Executor<'_, Context>,
-        _trail: &QueryTrail<'_, User, Walked>,
-        slug: String,
-    ) -> Option<User> {
-        match executor.context().database.user_by_slug(&slug) {
-            Some(user) => Some(User(user)),
-            None => None,
-        }
-    }
-
-    fn field_run(
-        &self,
-        executor: &Executor<'_, Context>,
-        _trail: &QueryTrail<'_, Run, Walked>,
-        id: String,
-    ) -> Option<Run> {
-        let id = match u64_from_base36(&id) {
-            Ok(id) => id,
-            Err(_err) => {
-                // we treat invalid IDs as not found instead of error.
-                return None
-            }
-        };
-        match executor.context().database.run_by_id(id) {
-            Some(run) => (Some(Run(run))),
-            None => None,
-        }
-    }
-
     fn field_node(
         &self,
-        _executor: &Executor<'_, Context>,
+        executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Node, Walked>,
-        _id: ID,
+        id: ID,
     ) -> Option<Node> {
-        None
+        let database = &executor.context().database;
+        match parse_global_id(&id) {
+            Ok((id, node_type)) => match node_type {
+                NodeType::Game => database.game_by_id(id).map(|g| Node::Game(Game(g))),
+                NodeType::Run => database.run_by_id(id).map(|r| Node::Run(Run(r))),
+                NodeType::User => database.user_by_id(id).map(|u| Node::User(User(u))),
+                NodeType::Level => database.level_by_id(id).map(|l| Node::Level(Level(l))),
+                NodeType::Category => database
+                    .category_by_id(id)
+                    .map(|c| Node::Category(Category(c))),
+            },
+            Err(_) => None,
+        }
     }
 }
 
 impl GameFields for Game {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
-        global_id::global_id(self.0.id, global_id::NodeType::Game)
+        global_id(self.0.id, NodeType::Game)
     }
 
     fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
@@ -159,8 +141,7 @@ impl GameFields for Game {
             .collect()
     }
 
-    // Full-game run categories.
-    fn field_categories(
+    fn field_game_categories(
         &self,
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Category, Walked>,
@@ -177,23 +158,33 @@ impl GameFields for Game {
             .map(Category)
             .collect())
     }
+
+    fn field_level_categories(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Category, Walked>,
+    ) -> Vec<Category> {
+        // TODO: not a full table scan
+        (executor
+            .context()
+            .database
+            .categories()
+            .filter(|category| {
+                category.game_id == self.0.id && category.per == db::CategoryType::PerLevel
+            })
+            .sorted_by(|a, b| (&a.name, a.id).cmp(&(&b.name, b.id)))
+            .map(Category)
+            .collect())
+    }
 }
 
 impl RunFields for Run {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
-        global_id::global_id(self.0.id, global_id::NodeType::Run)
+        global_id(self.0.id, NodeType::Run)
     }
 
     fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
         base36(self.0.id)
-    }
-
-    fn field_game(
-        &self,
-        _executor: &Executor<'_, Context>,
-        _trail: &QueryTrail<'_, Game, Walked>,
-    ) -> Game {
-        Game(self.0.game())
     }
 
     fn field_category(
@@ -270,7 +261,7 @@ impl LeaderboardRunFields for LeaderboardRun {
 
 impl CategoryFields for Category {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
-        global_id::global_id(self.0.id, global_id::NodeType::Category)
+        global_id(self.0.id, NodeType::Category)
     }
 
     fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
@@ -314,7 +305,7 @@ impl CategoryFields for Category {
 
 impl UserFields for User {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
-        global_id::global_id(self.0.id, global_id::NodeType::User)
+        global_id(self.0.id, NodeType::User)
     }
 
     fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
@@ -355,7 +346,7 @@ impl PlayerFields for Player {
 
 impl LevelFields for Level {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
-        global_id::global_id(self.0.id, global_id::NodeType::Level)
+        global_id(self.0.id, NodeType::Level)
     }
 
     fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
@@ -368,14 +359,6 @@ impl LevelFields for Level {
 
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
         (self.0.slug.clone())
-    }
-
-    fn field_game(
-        &self,
-        _executor: &Executor<'_, Context>,
-        _trail: &QueryTrail<'_, Game, Walked>,
-    ) -> Game {
-        (Game(self.0.game()))
     }
 
     fn field_categories(

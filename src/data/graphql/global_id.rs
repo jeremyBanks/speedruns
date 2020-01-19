@@ -28,7 +28,7 @@ pub fn global_id(id: u64, node_type: NodeType) -> ID {
 }
 
 #[allow(unused)]
-pub fn parse_global_id(global_id: &juniper::ID) -> (u64, NodeType) {
+pub fn parse_global_id(global_id: &juniper::ID) -> Result<(u64, NodeType), !> {
     let mut bytes = base64::decode_config(&global_id.to_string(), base64::URL_SAFE_NO_PAD)
         .expect("infallible");
     assert!(bytes[1] == 0, "second-high byte must be zero");
@@ -48,7 +48,7 @@ pub fn parse_global_id(global_id: &juniper::ID) -> (u64, NodeType) {
     let bytes = &bytes[..bytes_array.len()];
     bytes_array.copy_from_slice(bytes);
 
-    (u64::from_be_bytes(bytes_array), node_type)
+    Ok((u64::from_be_bytes(bytes_array), node_type))
 }
 
 #[test]
@@ -64,7 +64,8 @@ fn test_round_trip_global_ids() {
     for (id, node_type, global) in &cases {
         let global2 = global_id(*id, *node_type);
         assert_eq!(**global, *global2);
-        let (id2, node_type2) = parse_global_id(&ID::from((*global).to_string()));
+        let (id2, node_type2) =
+            parse_global_id(&ID::from((*global).to_string())).expect("to be valid");
         assert_eq!(*id, id2);
         assert_eq!(*node_type, node_type2);
     }
