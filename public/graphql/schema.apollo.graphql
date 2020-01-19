@@ -42,21 +42,78 @@ directive @connection(
 ) on FIELD
 
 type Category implements Node {
+  """
+  GraphQL node ID
+  """
   id: ID!
+
+  """
+  speedrun.com category ID
+  """
   srcId: String!
-  name: String!
+
+  """
+  URL slug used on speedrun.ca
+  """
   slug: String!
+
+  """
+  URL slug used on speedrun.com
+  """
+  srcSlug: String!
+
+  """
+  name, in English if possible
+  """
+  name: String!
   leaderboard(levelSlug: String): [LeaderboardRun!]!
 }
 
 type Game implements Node {
+  """
+  GraphQL node ID
+  """
   id: ID!
+
+  """
+  speedrun.com game ID
+  """
   srcId: String!
-  name: String!
+
+  """
+  URL slug used on speedrun.ca
+  """
   slug: String!
+
+  """
+  URL slug used on speedrun.com
+  """
+  srcSlug: String!
+
+  """
+  name, in English if possible
+  """
+  name: String!
+
+  """
+  all runs
+  """
   runs: [Run!]!
+
+  """
+  full-game run categories
+  """
+  gameCategories: [Category!]!
+
+  """
+  individual level run categories
+  """
+  levelCategories: [Category!]!
+
+  """
+  individual levels
+  """
   levels: [Level!]!
-  categories: [Category!]!
 }
 
 type LeaderboardRun {
@@ -68,11 +125,30 @@ type LeaderboardRun {
 }
 
 type Level implements Node {
+  """
+  GraphQL node ID
+  """
   id: ID!
+
+  """
+  speedrun.com level ID
+  """
   srcId: String!
-  name: String!
+
+  """
+  URL slug used on speedrun.ca
+  """
   slug: String!
-  game: Game!
+
+  """
+  URL slug used on speedrun.com
+  """
+  srcSlug: String!
+
+  """
+  name, in English if possible
+  """
+  name: String!
   categories: [Category!]!
   leaderboard(categorySlug: String): [LeaderboardRun!]!
 }
@@ -81,6 +157,9 @@ type Level implements Node {
 <https://graphql.org/learn/global-object-identification/>
 """
 interface Node {
+  """
+  GraphQL node ID
+  """
   id: ID!
 }
 
@@ -91,9 +170,15 @@ type Player {
 }
 
 type Run implements Node {
+  """
+  GraphQL node ID
+  """
   id: ID!
+
+  """
+  speedrun.com level ID
+  """
   srcId: String!
-  game: Game!
   category: Category!
   level: Level
   date: Float
@@ -102,13 +187,27 @@ type Run implements Node {
 
 type Speedruns {
   game(slug: String!): Game
-  user(slug: String!): User
-  run(id: String!): Run
   node(id: ID!): Node
 }
 
 type User implements Node {
+  """
+  GraphQL node ID
+  """
   id: ID!
+
+  """
+  speedrun.com user ID
+  """
   srcId: String!
+
+  """
+  URL slug used on speedrun.ca
+  """
   slug: String!
+
+  """
+  URL slug used on speedrun.com
+  """
+  srcSlug: String!
 }

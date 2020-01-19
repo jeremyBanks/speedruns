@@ -5,8 +5,6 @@ schema {
 
 type Speedruns {
   game(slug: String!): Game @juniper(ownership: "owned", infallible: true)
-  user(slug: String!): User @juniper(ownership: "owned", infallible: true)
-  run(id: String!): Run @juniper(ownership: "owned", infallible: true)
   node(id: ID!): Node @juniper(ownership: "owned", infallible: true)
 }
 
@@ -14,49 +12,153 @@ type Speedruns {
 <https://graphql.org/learn/global-object-identification/>
 """
 interface Node {
+  """
+  GraphQL node ID
+  """
   id: ID! @juniper(ownership: "owned", infallible: true)
 }
 
 type Game implements Node {
+  """
+  GraphQL node ID
+  """
   id: ID! @juniper(ownership: "owned", infallible: true)
+
+  """
+  speedrun.com game ID
+  """
   srcId: String! @juniper(ownership: "owned", infallible: true)
-  name: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  URL slug used on speedrun.ca
+  """
   slug: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  URL slug used on speedrun.com
+  """
+  srcSlug: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  name, in English if possible
+  """
+  name: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  all runs
+  """
   runs: [Run!]! @juniper(ownership: "owned", infallible: true)
+
+  """
+  full-game run categories
+  """
+  gameCategories: [Category!]! @juniper(ownership: "owned", infallible: true)
+
+  """
+  individual level run categories
+  """
+  levelCategories: [Category!]! @juniper(ownership: "owned", infallible: true)
+
+  """
+  individual levels
+  """
   levels: [Level!]! @juniper(ownership: "owned", infallible: true)
-  categories: [Category!]! @juniper(ownership: "owned", infallible: true)
 }
 
 type User implements Node {
+  """
+  GraphQL node ID
+  """
   id: ID! @juniper(ownership: "owned", infallible: true)
+
+  """
+  speedrun.com user ID
+  """
   srcId: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  URL slug used on speedrun.ca
+  """
   slug: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  URL slug used on speedrun.com
+  """
+  srcSlug: String! @juniper(ownership: "owned", infallible: true)
 }
 
 type Category implements Node {
+  """
+  GraphQL node ID
+  """
   id: ID! @juniper(ownership: "owned", infallible: true)
+
+  """
+  speedrun.com category ID
+  """
   srcId: String! @juniper(ownership: "owned", infallible: true)
-  name: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  URL slug used on speedrun.ca
+  """
   slug: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  URL slug used on speedrun.com
+  """
+  srcSlug: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  name, in English if possible
+  """
+  name: String! @juniper(ownership: "owned", infallible: true)
+
   leaderboard(levelSlug: String): [LeaderboardRun!]!
     @juniper(ownership: "owned", infallible: true)
 }
 
 type Level implements Node {
+  """
+  GraphQL node ID
+  """
   id: ID! @juniper(ownership: "owned", infallible: true)
+
+  """
+  speedrun.com level ID
+  """
   srcId: String! @juniper(ownership: "owned", infallible: true)
-  name: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  URL slug used on speedrun.ca
+  """
   slug: String! @juniper(ownership: "owned", infallible: true)
-  game: Game! @juniper(ownership: "owned", infallible: true)
+
+  """
+  URL slug used on speedrun.com
+  """
+  srcSlug: String! @juniper(ownership: "owned", infallible: true)
+
+  """
+  name, in English if possible
+  """
+  name: String! @juniper(ownership: "owned", infallible: true)
+
   categories: [Category!]! @juniper(ownership: "owned", infallible: true)
   leaderboard(categorySlug: String): [LeaderboardRun!]!
     @juniper(ownership: "owned", infallible: true)
 }
 
 type Run implements Node {
+  """
+  GraphQL node ID
+  """
   id: ID! @juniper(ownership: "owned", infallible: true)
+
+  """
+  speedrun.com level ID
+  """
   srcId: String! @juniper(ownership: "owned", infallible: true)
-  game: Game! @juniper(ownership: "owned", infallible: true)
+
   category: Category! @juniper(ownership: "owned", infallible: true)
   level: Level @juniper(ownership: "owned", infallible: true)
   date: Float @juniper(ownership: "owned", infallible: true)
