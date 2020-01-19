@@ -21,7 +21,7 @@ use crate::{
         graphql::global_id::{global_id, parse_global_id, NodeType},
         leaderboard, types as db,
     },
-    utils::base36,
+    utils::{base36, src_slugify},
 };
 
 mod global_id;
@@ -110,11 +110,15 @@ impl GameFields for Game {
     }
 
     fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
-        self.0.name.to_string()
+        self.0.name.clone()
     }
 
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        (self.0.slug.to_string())
+        (self.0.slug.clone())
+    }
+
+    fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        src_slugify(&self.0.slug)
     }
 
     fn field_runs(
@@ -276,6 +280,10 @@ impl CategoryFields for Category {
         (self.0.slug.clone())
     }
 
+    fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        src_slugify(&self.0.name)
+    }
+
     fn field_leaderboard(
         &self,
         _executor: &Executor<'_, Context>,
@@ -314,6 +322,10 @@ impl UserFields for User {
 
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
         (self.0.slug.clone())
+    }
+
+    fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        src_slugify(&self.0.name)
     }
 }
 
@@ -359,6 +371,10 @@ impl LevelFields for Level {
 
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
         (self.0.slug.clone())
+    }
+
+    fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        src_slugify(&self.0.name)
     }
 
     fn field_categories(

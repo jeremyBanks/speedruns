@@ -17,11 +17,11 @@ pub fn global_id(id: u64, node_type: NodeType) -> ID {
     assert!(bytes[1] == 0, "second-high byte of id must be zero");
 
     bytes[0] = match node_type {
-        Game => 0x83,
-        User => 0xBB,
-        Run => 0xAF,
-        Category => 0x73,
-        Level => 0x97,
+        Game => 0x1B,
+        User => 0x53,
+        Run => 0x47,
+        Category => 0x0B,
+        Level => 0x2F,
     };
     bytes[1] |= 0xE0;
 
@@ -29,17 +29,19 @@ pub fn global_id(id: u64, node_type: NodeType) -> ID {
 }
 
 #[allow(unused)]
-pub fn parse_global_id(global_id: &juniper::ID) -> Result<(u64, NodeType), !> {
+pub fn parse_global_id(
+    global_id: &juniper::ID,
+) -> Result<(u64, NodeType), Box<dyn std::error::Error>> {
     let mut bytes = base64::decode_config(&global_id.to_string(), base64::URL_SAFE_NO_PAD)
         .expect("infallible");
     assert!(bytes[1] == 0xE0, "second-high byte must be 0xE0");
 
     let node_type = match bytes[0] {
-        0x83 => Game,
-        0xBB => User,
-        0xAF => Run,
-        0x73 => Category,
-        0x97 => Level,
+        0x1B => Game,
+        0x53 => User,
+        0x47 => Run,
+        0x0B => Category,
+        0x2F => Level,
         _ => panic!("high byte didn't match expected tag values"),
     };
 

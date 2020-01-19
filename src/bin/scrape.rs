@@ -197,17 +197,15 @@ impl Spider {
                             // no new items at beginning of list
                             break
                         }
-                    } else {
-                        if items.len() < 200 {
-                            // end of entire run list
-                            break
-                        }
-
-                        // save progress
-                        if i % 256 == 0 {
-                            self.save(resource)?;
-                        }
+                    } else if items.len() < 200 {
+                        // end of entire run list
+                        break
                     };
+
+                    // save progress
+                    if i % 256 == 0 {
+                        self.save(resource)?;
+                    }
 
                     previous = self.resource_by_id(resource).len();
 

@@ -53,9 +53,14 @@ type Category implements Node {
   srcId: String!
 
   """
-  URL-safe slug, may differ from slug on speedrun.com
+  URL slug used on speedrun.ca
   """
   slug: String!
+
+  """
+  URL slug used on speedrun.com
+  """
+  srcSlug: String!
 
   """
   name, in English if possible
@@ -76,9 +81,14 @@ type Game implements Node {
   srcId: String!
 
   """
-  URL-safe slug, may differ from slug on speedrun.com
+  URL slug used on speedrun.ca
   """
   slug: String!
+
+  """
+  URL slug used on speedrun.com
+  """
+  srcSlug: String!
 
   """
   name, in English if possible
@@ -126,9 +136,14 @@ type Level implements Node {
   srcId: String!
 
   """
-  URL-safe slug, may differ from slug on speedrun.com
+  URL slug used on speedrun.ca
   """
   slug: String!
+
+  """
+  URL slug used on speedrun.com
+  """
+  srcSlug: String!
 
   """
   name, in English if possible
@@ -187,7 +202,12 @@ type User implements Node {
   srcId: String!
 
   """
-  URL-safe slug, may differ from slug on speedrun.com
+  URL slug used on speedrun.ca
   """
   slug: String!
+
+  """
+  URL slug used on speedrun.com
+  """
+  srcSlug: String!
 }
