@@ -6,6 +6,8 @@ import { GRAPHQL_ENDPOINT } from "./with-apollo";
 
 export const HomeContent: React.FC = () => (
   <section className={styles.home}>
+    <p>An unofficial mirror of speedrun.com.</p>
+
     <h2>Games</h2>
 
     <ul>
@@ -42,6 +44,18 @@ export const HomeContent: React.FC = () => (
     </ul>
 
     <h2>Internals</h2>
+
+    <h3>Stats</h3>
+
+    <ul>
+      <li>Last Updated: never?</li>
+      <li>
+        Games: <code>2</code>
+      </li>
+      <li>
+        Runs: <code>3</code>
+      </li>
+    </ul>
 
     <h3>GraphQL Schema</h3>
 
