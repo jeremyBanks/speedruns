@@ -1,5 +1,28 @@
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: normal;
+  src: local("JetBrains Mono"),
+    url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: bold;
+  src: local("JetBrains Mono"),
+    url("/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+}
+
 html.document {
   background: #222;
+
+  pre,
+  code,
+  td.rank,
+  td.time,
+  td.progress,
+  td.date {
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  }
 
   body {
     padding: 0;
@@ -113,10 +136,6 @@ html.document {
   }
 }
 
-.duration {
-  font-family: consolas, monospace;
-}
-
 .footer {
   font-size: 0.75em;
   margin-top: 128px;
@@ -200,6 +219,8 @@ html.document {
     }
 
     .rank {
+      font-size: 14px;
+      padding: 2px;
       text-align: center;
       width: 35px;
     }
@@ -224,7 +245,7 @@ html.document {
       width: 80px;
     }
 
-    .improvement {
+    .progress {
       text-align: center;
       width: 40px;
     }
