@@ -1,5 +1,41 @@
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: normal;
+  src: local("JetBrains Mono"),
+    url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: bold;
+  src: local("JetBrains Mono"),
+    url("/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  font-weight: normal;
+  src: local("Fira Sans"), url("/fonts/FiraSans-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  font-weight: bold;
+  src: local("Fira Sans"), url("/fonts/FiraSans-Bold.woff2") format("woff2");
+}
+
 html.document {
   background: #222;
+
+  pre,
+  code,
+  td.rank,
+  td.time,
+  td.progress,
+  td.date {
+    font-size: 90%;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  }
 
   body {
     padding: 0;
@@ -10,7 +46,7 @@ html.document {
     display: block;
     color: #000;
     background: #fff;
-    font: 16px sans-serif;
+    font: 16px "Fira Sans", sans-serif;
     padding: 24px 0;
     margin: 16px auto;
     width: 100%;
@@ -66,8 +102,6 @@ html.document {
   h4,
   h5,
   h6 {
-    font-family: "Trebuchet MS", sans-serif;
-
     a {
       text-decoration: none;
     }
@@ -113,10 +147,6 @@ html.document {
   }
 }
 
-.duration {
-  font-family: consolas, monospace;
-}
-
 .footer {
   font-size: 0.75em;
   margin-top: 128px;
@@ -141,30 +171,6 @@ html.document {
 .colored {
   padding: 0 2px;
   border-radius: 4px;
-}
-
-.leaderboard {
-  ol {
-    li {
-      color: rgb(150, 150, 150);
-      font-weight: bold;
-
-      &[value="1"] {
-        color: rgb(250, 150, 0);
-      }
-      &[value="2"] {
-        color: rgb(125, 125, 175);
-      }
-      &[value="3"] {
-        color: rgb(200, 75, 25);
-      }
-
-      > * {
-        color: black;
-        font-weight: normal;
-      }
-    }
-  }
 }
 
 .gamePage {
@@ -199,7 +205,9 @@ html.document {
       text-align: center;
     }
 
-    .rank {
+    td.rank {
+      font-size: 14px;
+      padding: 2px;
       text-align: center;
       width: 35px;
     }
@@ -207,10 +215,6 @@ html.document {
     .player {
       text-align: center;
       width: 140px;
-    }
-
-    td.player {
-      font-weight: bold;
     }
 
     tbody {
@@ -224,7 +228,7 @@ html.document {
       width: 80px;
     }
 
-    .improvement {
+    .progress {
       text-align: center;
       width: 40px;
     }
