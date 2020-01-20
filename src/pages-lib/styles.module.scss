@@ -12,6 +12,18 @@
     url("/fonts/JetBrainsMono-Bold.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "Fira Sans";
+  font-weight: normal;
+  src: local("Fira Sans"), url("/fonts/FiraSans-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  font-weight: bold;
+  src: local("Fira Sans"), url("/fonts/FiraSans-Bold.woff2") format("woff2");
+}
+
 html.document {
   background: #222;
 
@@ -21,6 +33,7 @@ html.document {
   td.time,
   td.progress,
   td.date {
+    font-size: 90%;
     font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
   }
 
@@ -33,7 +46,7 @@ html.document {
     display: block;
     color: #000;
     background: #fff;
-    font: 16px sans-serif;
+    font: 16px "Fira Sans", sans-serif;
     padding: 24px 0;
     margin: 16px auto;
     width: 100%;
@@ -89,8 +102,6 @@ html.document {
   h4,
   h5,
   h6 {
-    font-family: "Trebuchet MS", sans-serif;
-
     a {
       text-decoration: none;
     }
@@ -162,30 +173,6 @@ html.document {
   border-radius: 4px;
 }
 
-.leaderboard {
-  ol {
-    li {
-      color: rgb(150, 150, 150);
-      font-weight: bold;
-
-      &[value="1"] {
-        color: rgb(250, 150, 0);
-      }
-      &[value="2"] {
-        color: rgb(125, 125, 175);
-      }
-      &[value="3"] {
-        color: rgb(200, 75, 25);
-      }
-
-      > * {
-        color: black;
-        font-weight: normal;
-      }
-    }
-  }
-}
-
 .gamePage {
   font-size: 12px;
 
@@ -218,7 +205,7 @@ html.document {
       text-align: center;
     }
 
-    .rank {
+    td.rank {
       font-size: 14px;
       padding: 2px;
       text-align: center;
@@ -228,10 +215,6 @@ html.document {
     .player {
       text-align: center;
       width: 140px;
-    }
-
-    td.player {
-      font-weight: bold;
     }
 
     tbody {
