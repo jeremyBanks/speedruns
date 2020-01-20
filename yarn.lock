@@ -2603,10 +2603,10 @@ bindings@^1.2.1, bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blake3@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/blake3/-/blake3-1.2.0.tgz#f3cd8067d6254c3a7d69c73f2043dfe2bf622a98"
-  integrity sha512-9xvZPuo8kqdG6Zjv4Ekn+rJheO4I/fc5WHCyqRlGixAY2ewAQWM90UtTr8g3d6BmVC9IOIjeaiBrbkUSozPm7Q==
+blake3@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/blake3/-/blake3-2.0.0.tgz#5225188a7590de1a862bceac8f076330de8eb291"
+  integrity sha512-pvrcyTsowJu1Z0QeHSuW+4DD+rHtRk3LaKoCsuB1y7XGim/ALzOLiZ8jIfJrvUJ6lq0Cd4BJQX8yy7Q3QCyqpg==
 
 block-stream@*:
   version "0.0.9"
