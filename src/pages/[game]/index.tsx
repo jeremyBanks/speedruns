@@ -50,7 +50,7 @@ const GamePage: NextPage = () => {
                 <th className={styles.rank}>Rank</th>
                 <th className={styles.player}>Player</th>
                 <th className={styles.time}>Time (RTA)</th>
-                <th className={styles.improvement}>Progress</th>
+                <th className={styles.progress}>Progress</th>
                 <th className={styles.date}>Date</th>
               </tr>
             </thead>
@@ -61,7 +61,7 @@ const GamePage: NextPage = () => {
                   <AutoColor>ZPR</AutoColor>
                 </td>
                 <td className={styles.time}>1m 31s</td>
-                <td className={styles.improvement}>2s</td>
+                <td className={styles.progress}>2s</td>
                 <td className={styles.date}>
                   <AutoColor>2018-12Dec-18</AutoColor>
                 </td>
@@ -72,7 +72,7 @@ const GamePage: NextPage = () => {
                   <AutoColor>ZPR</AutoColor>
                 </td>
                 <td className={styles.time}>1m 32s</td>
-                <td className={styles.improvement}>0.842s</td>
+                <td className={styles.progress}>0.842s</td>
                 <td className={styles.date}>
                   <AutoColor>2018-12Dec-12</AutoColor>
                 </td>
@@ -83,7 +83,7 @@ const GamePage: NextPage = () => {
                   <AutoColor>Banks</AutoColor>
                 </td>
                 <td className={styles.time}>1m 31s</td>
-                <td className={styles.improvement}>1s</td>
+                <td className={styles.progress}>1s</td>
                 <td className={styles.date}>
                   <AutoColor>2017-06Feb-02</AutoColor>
                 </td>
@@ -94,7 +94,7 @@ const GamePage: NextPage = () => {
                   <AutoColor>Fralor</AutoColor>
                 </td>
                 <td className={styles.time}>1m 31s</td>
-                <td className={styles.improvement}>8s</td>
+                <td className={styles.progress}>8s</td>
                 <td className={styles.date}>
                   <AutoColor>2016-03Mar-01</AutoColor>
                 </td>
@@ -164,7 +164,7 @@ const GamePage: NextPage = () => {
               <br />
               Sum Time
             </th>
-            <th className={styles.improvement}>Progress</th>
+            <th className={styles.progress}>Progress</th>
             <th className={styles.date}>Date</th>
           </tr>
         </thead>
@@ -181,7 +181,7 @@ const GamePage: NextPage = () => {
               1m 31s /<br />
               1h 2m 32s
             </td>
-            <td className={styles.improvement}>2s</td>
+            <td className={styles.progress}>2s</td>
             <td className={styles.date}>
               <AutoColor>2018-12Dec-18</AutoColor>
             </td>
@@ -198,7 +198,7 @@ const GamePage: NextPage = () => {
               1m 32s /<br />
               1h 2m 32s
             </td>
-            <td className={styles.improvement}>0.842s</td>
+            <td className={styles.progress}>0.842s</td>
             <td className={styles.date}>
               <AutoColor>2018-12Dec-18</AutoColor>
             </td>
@@ -215,7 +215,7 @@ const GamePage: NextPage = () => {
               1m 31s /<br />
               1h 2m 32s
             </td>
-            <td className={styles.improvement}>1s</td>
+            <td className={styles.progress}>1s</td>
             <td className={styles.date}>
               <AutoColor>2018-12Dec-12</AutoColor>
             </td>
@@ -232,7 +232,7 @@ const GamePage: NextPage = () => {
               1m 31s /<br />
               1h 2m 32s
             </td>
-            <td className={styles.improvement}>8s</td>
+            <td className={styles.progress}>8s</td>
             <td className={styles.date}>
               <AutoColor>2018-11Nov-12</AutoColor>
             </td>
