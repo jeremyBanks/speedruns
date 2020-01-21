@@ -62,7 +62,7 @@ export const HomePage: NextPage<{}> = () => (
 
     <ul>
       <li>
-        <a href="/graphql/schema.html">Documentation</a>
+        <a href="/graphql/schema">Documentation</a>
       </li>
       <li>
         <a href="/graphql/voyager">Graph Viewer</a>

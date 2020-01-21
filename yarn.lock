@@ -1425,6 +1425,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-no-ssr@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@types/react-no-ssr/-/react-no-ssr-1.1.1.tgz#a2f9ab1c49ecc6b90eeb9523fc32f435e549b535"
+  integrity sha512-ZAQYaPATEFAkYXYZsL8w2LfyTZm8zACF8ej3qlSLnKo+0Ump7gfS0wfQd53ZPdNJroeg/Mt93VQ8dXuQSwmPaQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-redux@^7.1.6":
   version "7.1.6"
   resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.6.tgz#9a2097d1c74cfd7b4ec3d1c4e30fe806c2058da2"
@@ -2532,7 +2539,7 @@ babel-polyfill@6.26.0:
     core-js "^2.5.0"
     regenerator-runtime "^0.10.5"
 
-babel-runtime@^6.11.6, babel-runtime@^6.25.0, babel-runtime@^6.26.0:
+babel-runtime@6.x.x, babel-runtime@^6.11.6, babel-runtime@^6.25.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -9724,6 +9731,13 @@ react-modal@^3.1.11:
     prop-types "^15.5.10"
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
+
+react-no-ssr@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-no-ssr/-/react-no-ssr-1.1.0.tgz#313b48d2e26020f969ed98e472f10481604e3cc8"
+  integrity sha1-MTtI0uJgIPlp7ZjkcvEEgWBOPMg=
+  dependencies:
+    babel-runtime "6.x.x"
 
 react-redux@^5.0.6:
   version "5.1.2"

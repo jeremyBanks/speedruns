@@ -1,9 +1,20 @@
 import fetch from "isomorphic-unfetch";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
+import NoSSR from "react-no-ssr";
+
+import styles from "../../pages-lib/styles.module.scss";
 import { GRAPHQL_ENDPOINT } from "../../pages-lib/with-apollo";
 
-const GraphiQLPage: NextPage = () => {
+const GraphiQLPage: NextPage<{}> = () => (
+  <NoSSR onSSR={<>Loading...</>}>
+    <div className={styles.graphiqlFrame}>
+      <GraphiQL />
+    </div>
+  </NoSSR>
+);
+
+const GraphiQL: React.FC<{}> = () => {
   const [GraphiQL, setGraphiQL] = useState<typeof import("graphiql").default>();
 
   useEffect(() => {
@@ -19,15 +30,17 @@ const GraphiQLPage: NextPage = () => {
       return <div>loading</div>;
     } else {
       return (
-        <GraphiQL
-          fetcher={(query: unknown) =>
-            fetch(GRAPHQL_ENDPOINT, {
-              body: JSON.stringify(query),
-              headers: { "Content-Type": "application/json" },
-              method: "post",
-            }).then(response => response.json())
-          }
-        />
+        <div className={styles.graphiqlFrame}>
+          <GraphiQL
+            fetcher={(query: unknown) =>
+              fetch(GRAPHQL_ENDPOINT, {
+                body: JSON.stringify(query),
+                headers: { "Content-Type": "application/json" },
+                method: "post",
+              }).then(response => response.json())
+            }
+          />
+        </div>
       );
     }
   }
