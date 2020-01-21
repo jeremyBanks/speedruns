@@ -1,17 +1,28 @@
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
+import NoSSR from "react-no-ssr";
 import { Provider } from "react-redux";
+
+import styles from "../../pages-lib/styles.module.scss";
 import { GRAPHQL_ENDPOINT } from "../../pages-lib/with-apollo";
 
-const PlaygroundPage: NextPage = () => {
+const PlaygroundPage: NextPage<{}> = () => (
+  <NoSSR onSSR={<>Loading...</>}>
+    <div className={styles.playgroundFrame}>
+      <Playground />
+    </div>
+  </NoSSR>
+);
+
+const Playground: React.FC<{}> = () => {
   const [playground, setPlayground] = useState<
     typeof import("@apollographql/graphql-playground-react")
   >();
 
   useEffect(() => {
-    import("@apollographql/graphql-playground-react").then(playground =>
-      setPlayground(playground),
-    );
+    import("@apollographql/graphql-playground-react").then(playground => {
+      setPlayground(playground);
+    });
   }, []);
 
   if (typeof window === "undefined") {
@@ -21,9 +32,11 @@ const PlaygroundPage: NextPage = () => {
       return <div>loading</div>;
     } else {
       return (
-        <Provider store={playground.store as any}>
-          <playground.Playground endpoint={GRAPHQL_ENDPOINT} />
-        </Provider>
+        <div>
+          <Provider store={playground.store as any}>
+            <playground.Playground endpoint={GRAPHQL_ENDPOINT} />
+          </Provider>
+        </div>
       );
     }
   }

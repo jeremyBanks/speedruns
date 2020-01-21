@@ -1,9 +1,20 @@
 import fetch from "isomorphic-unfetch";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
+import NoSSR from "react-no-ssr";
+
+import styles from "../../pages-lib/styles.module.scss";
 import { GRAPHQL_ENDPOINT } from "../../pages-lib/with-apollo";
 
-const GraphQLDocsPage: NextPage = () => {
+const GraphQLDocsPage: NextPage<{}> = () => (
+  <NoSSR onSSR={<>Loading...</>}>
+    <div className={styles.schemaFrame}>
+      <GraphQLDocs />
+    </div>
+  </NoSSR>
+);
+
+const GraphQLDocs: React.FC<{}> = () => {
   const [GraphQLDocs, setGraphQLDocs] = useState<
     typeof import("graphql-docs").GraphQLDocs
   >();
@@ -21,15 +32,17 @@ const GraphQLDocsPage: NextPage = () => {
       return <div>loading</div>;
     } else {
       return (
-        <GraphQLDocs
-          fetcher={(query: unknown) =>
-            fetch(`${GRAPHQL_ENDPOINT}/graphql`, {
-              body: JSON.stringify({ query }),
-              headers: { "Content-Type": "application/json" },
-              method: "post",
-            }).then(response => response.json())
-          }
-        />
+        <div>
+          <GraphQLDocs
+            fetcher={(query: unknown) =>
+              fetch(`${GRAPHQL_ENDPOINT}`, {
+                body: JSON.stringify({ query }),
+                headers: { "Content-Type": "application/json" },
+                method: "post",
+              }).then(response => response.json())
+            }
+          />
+        </div>
       );
     }
   }
