@@ -11,11 +11,7 @@ import React from "react";
 const onNode = typeof window === "undefined";
 const onNodeDev = onNode && process.env.NODE_ENV === "development";
 const inBrowser = !onNode;
-const inBrowserDev =
-  inBrowser &&
-  ["localhost", "127.0.0.1", "local.speedrun.ca"].includes(
-    window.location.hostname,
-  );
+const inBrowserDev = inBrowser && window.location.protocol !== "https:";
 const DEBUG = inBrowserDev || onNodeDev;
 
 export const GRAPHQL_ENDPOINT = DEBUG

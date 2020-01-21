@@ -10,7 +10,7 @@ export const Header: React.FC = () => {
         <span className={styles.inner}>
           <img src="/icon.png" />{" "}
           <Link href="/">
-            <a>speedrun.ca</a>
+            <a>speedruns.ca</a>
           </Link>
         </span>
       </h1>
