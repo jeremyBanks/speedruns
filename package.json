@@ -79,12 +79,9 @@
       "last 1 chrome version"
     ]
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "files": [
-    "src/**/*",
-    "public/**/*",
-    "*"
+    "src/pages/**/*",
+    "src/pages-lib/**/*",
+    "public/**/*"
   ]
 }
