@@ -245,6 +245,133 @@ export interface GetGamePageVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: GetNodePage
+// ====================================================
+
+export interface GetNodePage_node_Game {
+  __typename: "Game";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com game ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+  /**
+   * URL slug used on speedrun.ca
+   */
+  slug: string;
+}
+
+export interface GetNodePage_node_User {
+  __typename: "User";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com user ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * URL slug used on speedrun.ca
+   */
+  slug: string;
+}
+
+export interface GetNodePage_node_Level {
+  __typename: "Level";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com level ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+  /**
+   * URL slug used on speedrun.ca
+   */
+  slug: string;
+}
+
+export interface GetNodePage_node_Category {
+  __typename: "Category";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com category ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+  /**
+   * URL slug used on speedrun.ca
+   */
+  slug: string;
+}
+
+export interface GetNodePage_node_Run {
+  __typename: "Run";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com level ID
+   */
+  srcId: string;
+}
+
+export type GetNodePage_node =
+  | GetNodePage_node_Game
+  | GetNodePage_node_User
+  | GetNodePage_node_Level
+  | GetNodePage_node_Category
+  | GetNodePage_node_Run;
+
+export interface GetNodePage {
+  node: GetNodePage_node | null;
+}
+
+export interface GetNodePageVariables {
+  id: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: GameLeaderboardRun
 // ====================================================
 
