@@ -30,7 +30,7 @@ type Game implements Node {
   srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
-  URL slug used on speedrun.ca
+  URL slug used on speedruns.ca
   """
   slug: String! @juniper(ownership: "owned", infallible: true)
 
@@ -77,7 +77,7 @@ type User implements Node {
   srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
-  URL slug used on speedrun.ca
+  URL slug used on speedruns.ca
   """
   slug: String! @juniper(ownership: "owned", infallible: true)
 
@@ -99,7 +99,7 @@ type Category implements Node {
   srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
-  URL slug used on speedrun.ca
+  URL slug used on speedruns.ca
   """
   slug: String! @juniper(ownership: "owned", infallible: true)
 
@@ -129,7 +129,7 @@ type Level implements Node {
   srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
-  URL slug used on speedrun.ca
+  URL slug used on speedruns.ca
   """
   slug: String! @juniper(ownership: "owned", infallible: true)
 

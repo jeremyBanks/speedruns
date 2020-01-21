@@ -53,7 +53,7 @@ type Category implements Node {
   srcId: String!
 
   """
-  URL slug used on speedrun.ca
+  URL slug used on speedruns.ca
   """
   slug: String!
 
@@ -81,7 +81,7 @@ type Game implements Node {
   srcId: String!
 
   """
-  URL slug used on speedrun.ca
+  URL slug used on speedruns.ca
   """
   slug: String!
 
@@ -136,7 +136,7 @@ type Level implements Node {
   srcId: String!
 
   """
-  URL slug used on speedrun.ca
+  URL slug used on speedruns.ca
   """
   slug: String!
 
@@ -202,7 +202,7 @@ type User implements Node {
   srcId: String!
 
   """
-  URL slug used on speedrun.ca
+  URL slug used on speedruns.ca
   """
   slug: String!
 
