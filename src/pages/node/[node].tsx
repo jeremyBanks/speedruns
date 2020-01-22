@@ -3,8 +3,6 @@ import gql from "graphql-tag";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React from "react";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 import * as schema from "../../pages-lib/schema";
 import styles from "../../pages-lib/styles.module.scss";
@@ -21,11 +19,25 @@ const NodePage: NextPage = () => {
     return <>{loading ? "loading..." : JSON.stringify(error)}</>;
   }
 
+  const node = data.node && { ...data.node };
+
+  if (!node) {
+    return (
+      <div className={styles.nodePage}>
+        <pre>null</pre>
+      </div>
+    );
+  }
+
+  console.log(node);
+  const typename = node.__typename;
+  delete node.__typename;
+
   return (
     <div className={styles.nodePage}>
-      <SyntaxHighlighter language="json">
-        {JSON.stringify(data, null, 4)}
-      </SyntaxHighlighter>
+      <pre>
+        {typename} {JSON.stringify(node, null, 4)}
+      </pre>
     </div>
   );
 };

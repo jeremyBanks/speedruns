@@ -68,7 +68,7 @@ export const HomePage: NextPage<{}> = () => (
         <a href="/graphql/voyager">Graph Viewer</a>
       </li>
       <li>
-        <a href="/node/gamBtuPrEpI">Node Inspector</a>
+        <a href="/node/gamdtuPrEpI">Node Inspector</a>
       </li>
       <li>
         <a href="/graphql/schema.graphql">SDL for Juniper</a>
