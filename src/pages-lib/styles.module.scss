@@ -265,10 +265,16 @@ html.document {
   }
 }
 
-.nodePage pre {
-  background: white !important;
-  color: black !important;
-  font-size: 16px !important;
+.nodePage {
+  pre {
+    background: white !important;
+    color: black !important;
+    font-size: 16px !important;
+  }
+  .typeName {
+    font-size: 200%;
+    vertical-align: -2px;
+  }
 }
 
 .schemaFrame {

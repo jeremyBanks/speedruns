@@ -340,6 +340,30 @@ export interface GetNodePage_node_Category {
   slug: string;
 }
 
+export interface GetNodePage_node_Run_category {
+  __typename: "Category";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com category ID
+   */
+  srcId: string;
+}
+
+export interface GetNodePage_node_Run_level {
+  __typename: "Level";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com level ID
+   */
+  srcId: string;
+}
+
 export interface GetNodePage_node_Run {
   __typename: "Run";
   /**
@@ -350,6 +374,9 @@ export interface GetNodePage_node_Run {
    * speedrun.com level ID
    */
   srcId: string;
+  date: number | null;
+  category: GetNodePage_node_Run_category;
+  level: GetNodePage_node_Run_level | null;
   timeMs: number;
 }
 
