@@ -23,21 +23,24 @@ pub fn global_id(id: u64, node_type: NodeType) -> ID {
      speedrun.com IDs are 8 base-36 digits, which means they require
      log2(36**8) = ~41.3 bits, giving us 64 - 42 = 22 bits clear to work with.
      We only really need a few to identify our five node types, but since
-     22 bits / 6 bits per base-64 character = ~3.6, we can instead use 18 of them
-     to pick three meaningful prefix character in the encoded value.
+     22 bits / 6 bits per base-64 character = ~3.6, we can instead use 18 of
+     them to pick three meaningful prefix character in the encoded value. The
+     last four bits are distinct, so that they identify the type even without
+     the first three characters, and are chosen arbitrarily to produce
+     "nicer-looking" IDs.
     */
 
     let (a, b, c) = match node_type {
-        Game => (0b1000_0001, 0b1010_1001, 0b1000_0000), // gam
-        User => (0b1011_1010, 0b1100_1010, 0b1100_0000), // usr
-        Run => (0b1010_1110, 0b1110_1001, 0b1100_0000),  // run
-        Category => (0b0111_0001, 0b1010_1011, 0b0100_0000), // cat
-        Level => (0b1001_0110, 0b1111_1001, 0b0100_0000), // lvl
+        Game => (0b1000_0001, 0b1010_1001, 0b1001_1100), // gam
+        User => (0b1011_1010, 0b1100_1010, 0b1110_0000), // usr
+        Run => (0b1010_1110, 0b1110_1001, 0b1110_1000),  // run
+        Category => (0b0111_0001, 0b1010_1011, 0b0111_1000), // cat
+        Level => (0b1001_0110, 0b1111_1001, 0b0100_1000), // lvl
     };
 
     bytes[0] = a;
     bytes[1] = b;
-    bytes[2] = (c & 0b1100_0000) | (bytes[2] & 0b0011_1111);
+    bytes[2] = (c & 0b1111_1100) | (bytes[2] & 0b0000_0011);
 
     ID::from(base64::encode_config(&bytes, base64::URL_SAFE_NO_PAD))
 }
@@ -60,7 +63,7 @@ pub fn parse_global_id(
     // clear tag bits
     bytes[0] = 0;
     bytes[1] = 0;
-    bytes[2] &= 0b0011_1111;
+    bytes[2] &= 0b0000_0011;
 
     let mut bytes_array = [0u8; 8];
     let bytes = &bytes[..bytes_array.len()];
@@ -73,20 +76,26 @@ pub fn parse_global_id(
 fn test_round_trip_global_ids() {
     use crate::utils::u64_from_base36;
 
+    let zeroes = u64_from_base36("00000000").expect("it's valid");
+    let ones = u64_from_base36("zzzzzzzz").expect("it's valid");
+    let alphabet = u64_from_base36("abcdefgh").expect("it's valid");
+
     let cases = [
-        (0x1234u64, NodeType::Game, "gamAAAAAEjQ"),
-        (0x0, NodeType::Category, "catAAAAAAAA"),
-        (0x1, NodeType::Level, "lvlAAAAAAAE"),
-        (
-            u64_from_base36("zzzzzzzz").expect("it's valid"),
-            NodeType::Level,
-            "lvlCkNdA__8",
-        ),
-        (
-            u64_from_base36("0abcdefg").expect("it's valid"),
-            NodeType::Level,
-            "lvlABTpYwkw",
-        ),
+        (zeroes, NodeType::Game, "gamcAAAAAAA"),
+        (ones, NodeType::Game, "gamekNdA__8"),
+        (alphabet, NodeType::Game, "gamcvDR7UsE"),
+        (zeroes, NodeType::User, "usrgAAAAAAA"),
+        (ones, NodeType::User, "usrikNdA__8"),
+        (alphabet, NodeType::User, "usrgvDR7UsE"),
+        (zeroes, NodeType::Run, "runoAAAAAAA"),
+        (ones, NodeType::Run, "runqkNdA__8"),
+        (alphabet, NodeType::Run, "runovDR7UsE"),
+        (zeroes, NodeType::Level, "lvlIAAAAAAA"),
+        (ones, NodeType::Level, "lvlKkNdA__8"),
+        (alphabet, NodeType::Level, "lvlIvDR7UsE"),
+        (zeroes, NodeType::Category, "cat4AAAAAAA"),
+        (ones, NodeType::Category, "cat6kNdA__8"),
+        (alphabet, NodeType::Category, "cat4vDR7UsE"),
     ];
 
     for (id, node_type, global) in &cases {
