@@ -116,3 +116,4 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           curl "${{secrets.ZEIT_DEPLOY_STABLE}}"
+          curl "${{secrets.GRAPHQL_DEPLOY_STABLE}}"
