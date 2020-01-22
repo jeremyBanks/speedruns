@@ -11,29 +11,29 @@ module.exports = [
       "/graphql/voyager": { page: "/graphql/voyager" },
       "/wc2": { page: "/[game]", query: { game: "wc2" } },
       "/wc2btdp": { page: "/[game]", query: { game: "wc2btdp" } },
-      "/node/cat00000000": {
+      "/node/gamekNdA__8": {
         page: "/node/[node]",
-        query: { node: "cat00000000" },
+        query: { node: "gamekNdA__8" },
       },
-      "/node/catCUheVH-k": {
+      "/node/cat6f7V-VpE": {
         page: "/node/[node]",
-        query: { node: "catCUheVH-k" },
+        query: { node: "cat6f7V-VpE" },
       },
-      "/node/gamBtuPrEpI": {
+      "/node/gamdtuPrEpI": {
         page: "/node/[node]",
-        query: { node: "gamBtuPrEpI" },
+        query: { node: "gamdtuPrEpI" },
       },
-      "/node/lvlBhjzlf1k": {
+      "/node/lvlIcodwALE": {
         page: "/node/[node]",
-        query: { node: "lvlBhjzlf1k" },
+        query: { node: "lvlIcodwALE" },
       },
-      "/node/runBk0OGMPY": {
+      "/node/runqi928yNY": {
         page: "/node/[node]",
-        query: { node: "runBk0OGMPY" },
+        query: { node: "runqi928yNY" },
       },
-      "/node/usrAFq39djE": {
+      "/node/usrgcfqgH0Q": {
         page: "/node/[node]",
-        query: { node: "usrAFq39djE" },
+        query: { node: "usrgcfqgH0Q" },
       },
     };
   },
