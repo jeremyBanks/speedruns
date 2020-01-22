@@ -127,7 +127,7 @@ const GamePage: NextPage = () => {
                       <a
                         href={`https://www.speedrun.com/${game.srcSlug}/run/${ranked.run.srcId}`}
                       >
-                        <Duration ms={ranked.timeMs} />
+                        <Duration ms={ranked.run.timeMs} />
                       </a>
                     </td>
                     <td className={styles.date}>
@@ -271,7 +271,7 @@ const GamePage: NextPage = () => {
                       <a
                         href={`https://www.speedrun.com/${game.srcSlug}/run/${ranked.run.srcId}`}
                       >
-                        <Duration ms={ranked.timeMs} />
+                        <Duration ms={ranked.run.timeMs} />
                       </a>
                     </td>
                     <td className={styles.date}>
@@ -301,12 +301,12 @@ export default withApollo(GamePage);
 const GameLeaderboardRun = gql`
   fragment GameLeaderboardRun on LeaderboardRun {
     rank
-    timeMs
     isTied
     tiedRank
     run {
       id
       srcId
+      timeMs
       category {
         id
         srcId

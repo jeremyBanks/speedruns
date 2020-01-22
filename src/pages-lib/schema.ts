@@ -63,6 +63,7 @@ export interface GetGamePage_game_gameCategories_leaderboard_run {
    * speedrun.com level ID
    */
   srcId: string;
+  timeMs: number;
   category: GetGamePage_game_gameCategories_leaderboard_run_category;
   level: GetGamePage_game_gameCategories_leaderboard_run_level | null;
   date: number | null;
@@ -72,7 +73,6 @@ export interface GetGamePage_game_gameCategories_leaderboard_run {
 export interface GetGamePage_game_gameCategories_leaderboard {
   __typename: "LeaderboardRun";
   rank: number;
-  timeMs: number;
   isTied: boolean;
   tiedRank: number;
   run: GetGamePage_game_gameCategories_leaderboard_run;
@@ -160,6 +160,7 @@ export interface GetGamePage_game_levels_leaderboard_run {
    * speedrun.com level ID
    */
   srcId: string;
+  timeMs: number;
   category: GetGamePage_game_levels_leaderboard_run_category;
   level: GetGamePage_game_levels_leaderboard_run_level | null;
   date: number | null;
@@ -169,7 +170,6 @@ export interface GetGamePage_game_levels_leaderboard_run {
 export interface GetGamePage_game_levels_leaderboard {
   __typename: "LeaderboardRun";
   rank: number;
-  timeMs: number;
   isTied: boolean;
   tiedRank: number;
   run: GetGamePage_game_levels_leaderboard_run;
@@ -350,6 +350,7 @@ export interface GetNodePage_node_Run {
    * speedrun.com level ID
    */
   srcId: string;
+  timeMs: number;
 }
 
 export type GetNodePage_node =
@@ -432,6 +433,7 @@ export interface GameLeaderboardRun_run {
    * speedrun.com level ID
    */
   srcId: string;
+  timeMs: number;
   category: GameLeaderboardRun_run_category;
   level: GameLeaderboardRun_run_level | null;
   date: number | null;
@@ -441,7 +443,6 @@ export interface GameLeaderboardRun_run {
 export interface GameLeaderboardRun {
   __typename: "LeaderboardRun";
   rank: number;
-  timeMs: number;
   isTied: boolean;
   tiedRank: number;
   run: GameLeaderboardRun_run;

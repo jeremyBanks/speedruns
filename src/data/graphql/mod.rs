@@ -19,7 +19,7 @@ use crate::{
     data::{
         database::{Database, Linked as DbLinked},
         graphql::global_id::{global_id, parse_global_id, NodeType},
-        leaderboard, types as db,
+        leaderboard, progression, types as db,
     },
     utils::{base36, src_slugify},
 };
@@ -49,7 +49,10 @@ pub struct Game(DbLinked<db::Game>);
 pub struct Run(DbLinked<db::Run>);
 
 #[derive(Debug, Clone)]
-pub struct LeaderboardRun(leaderboard::RankedRun);
+pub struct LeaderboardRun(leaderboard::LeaderboardRun);
+
+#[derive(Debug, Clone)]
+pub struct ProgressionRun(progression::ProgressionRun);
 
 #[derive(Debug, Clone)]
 pub struct Category(DbLinked<db::Category>);
@@ -191,6 +194,11 @@ impl RunFields for Run {
         base36(self.0.id)
     }
 
+    fn field_time_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
+        (i32::try_from(self.0.time_ms().expect("must have primary timing"))
+            .expect("impossibly long wrong"))
+    }
+
     fn field_category(
         &self,
         _executor: &Executor<'_, Context>,
@@ -242,10 +250,6 @@ impl LeaderboardRunFields for LeaderboardRun {
         (i32::try_from(*self.0.rank()).expect("impossible number of runs"))
     }
 
-    fn field_time_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
-        (i32::try_from(*self.0.time_ms()).expect("impossibly long wrong"))
-    }
-
     fn field_is_tied(&self, _executor: &Executor<'_, Context>) -> bool {
         (*self.0.is_tied())
     }
@@ -254,6 +258,16 @@ impl LeaderboardRunFields for LeaderboardRun {
         (i32::try_from(*self.0.tied_rank()).expect("impossible number of runs"))
     }
 
+    fn field_run(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Run, Walked>,
+    ) -> Run {
+        (Run(self.0.run().clone()))
+    }
+}
+
+impl ProgressionRunFields for ProgressionRun {
     fn field_run(
         &self,
         _executor: &Executor<'_, Context>,
@@ -305,7 +319,7 @@ impl CategoryFields for Category {
             .cloned()
             .collect();
 
-        let ranked = leaderboard::rank_runs(&runs);
+        let ranked = leaderboard::leaderboard(&runs);
 
         (ranked.iter().map(|r| LeaderboardRun(r.clone())).collect())
     }
@@ -418,7 +432,7 @@ impl LevelFields for Level {
             .cloned()
             .collect();
 
-        let ranked = leaderboard::rank_runs(&runs);
+        let ranked = leaderboard::leaderboard(&runs);
 
         (ranked.iter().map(|r| LeaderboardRun(r.clone())).collect())
     }
