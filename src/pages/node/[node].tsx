@@ -7,6 +7,7 @@ import React from "react";
 import * as schema from "../../pages-lib/schema";
 import styles from "../../pages-lib/styles.module.scss";
 import { withApollo } from "../../pages-lib/with-apollo";
+import Head from "next/head";
 
 const NodePage: NextPage = () => {
   const router = useRouter();
@@ -41,6 +42,10 @@ const NodePage: NextPage = () => {
 
   return (
     <div className={styles.nodePage}>
+      <Head>
+        <title>{id}</title>
+      </Head>
+
       <pre>
         <span className={styles.typeName}>{typename}</span>(id:{" "}
         {JSON.stringify(id)}) {JSON.stringify(node, null, 4)}
