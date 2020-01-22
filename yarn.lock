@@ -105,10 +105,10 @@
   dependencies:
     "@apollographql/graphql-language-service-types" "^2.0.0"
 
-"@apollographql/graphql-playground-react@^1.7.31":
-  version "1.7.31"
-  resolved "https://registry.yarnpkg.com/@apollographql/graphql-playground-react/-/graphql-playground-react-1.7.31.tgz#aec579eb0e7e929d448be6a65a1e64e5b4d0734b"
-  integrity sha512-xyKLGQg8zLIEL3mtnBrzrl+V8lIr8Ss4dUzwufOItWxzhmlQRW00yOjXknjQXGdGIV2wKqBjGCRG4yAeS3xMBA==
+"@apollographql/graphql-playground-react@^1.7.32":
+  version "1.7.32"
+  resolved "https://registry.yarnpkg.com/@apollographql/graphql-playground-react/-/graphql-playground-react-1.7.32.tgz#3cc11ee897981cb5d162beac7e733d153e2d572e"
+  integrity sha512-IRp92j+XOyiONQQDA45yJxEeylmQIRhewVwB0i+DnH2HNUp37BSk/ZzF6OPncHfiZ9qnGe6jZloQftYHQKk5Vg==
   dependencies:
     "@types/lru-cache" "^4.1.1"
     apollo-link "^1.0.7"
