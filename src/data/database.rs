@@ -489,6 +489,11 @@ impl<ModelType: Model> Deref for Linked<ModelType> {
 }
 
 impl Linked<Run> {
+    /// Returns the primary timing for this run.
+    pub fn time_ms(&self) -> Option<u64> {
+        self.times_ms().get(self.game().primary_timing())
+    }
+
     /// Returns the Linked<Game> for this Run.
     pub fn game(&self) -> Linked<Game> {
         self.database

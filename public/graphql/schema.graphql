@@ -163,6 +163,7 @@ type Run implements Node {
   level: Level @juniper(ownership: "owned", infallible: true)
   date: Float @juniper(ownership: "owned", infallible: true)
   players: [Player!]! @juniper(ownership: "owned", infallible: true)
+  timeMs: Int! @juniper(ownership: "owned", infallible: true)
 }
 
 type Player {
@@ -173,8 +174,11 @@ type Player {
 
 type LeaderboardRun {
   rank: Int! @juniper(ownership: "owned", infallible: true)
-  timeMs: Int! @juniper(ownership: "owned", infallible: true)
   isTied: Boolean! @juniper(ownership: "owned", infallible: true)
   tiedRank: Int! @juniper(ownership: "owned", infallible: true)
+  run: Run! @juniper(ownership: "owned", infallible: true)
+}
+
+type ProgressionRun {
   run: Run! @juniper(ownership: "owned", infallible: true)
 }

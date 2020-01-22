@@ -118,7 +118,6 @@ type Game implements Node {
 
 type LeaderboardRun {
   rank: Int!
-  timeMs: Int!
   isTied: Boolean!
   tiedRank: Int!
   run: Run!
@@ -183,6 +182,7 @@ type Run implements Node {
   level: Level
   date: Float
   players: [Player!]!
+  timeMs: Int!
 }
 
 type Speedruns {

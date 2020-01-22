@@ -74,6 +74,7 @@ const GetNodePage = gql`
       }
       ... on Run {
         srcId
+        timeMs
       }
     }
   }

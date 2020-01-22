@@ -1,4 +1,3 @@
-//! Leaderboard logic.
 use std::{collections::HashSet, convert::TryFrom};
 
 use getset::Getters;
@@ -8,7 +7,7 @@ use crate::data::{database::Linked, types::*};
 
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
-pub struct RankedRun {
+pub struct LeaderboardRun {
     rank:      u64,
     time_ms:   u64,
     is_tied:   bool,
@@ -19,7 +18,7 @@ pub struct RankedRun {
 /// Ranks a set of runs (all for the same game/category/level) using the
 /// timing specified for the game rules, then by run date, then by
 /// submission datetime, discarding lower-ranked runs by the same runner.
-pub fn rank_runs(runs: &[Linked<Run>]) -> Vec<RankedRun> {
+pub fn leaderboard(runs: &[Linked<Run>]) -> Vec<LeaderboardRun> {
     let mut runs: Vec<Linked<Run>> = runs.to_vec();
 
     if runs.is_empty() {
@@ -39,7 +38,7 @@ pub fn rank_runs(runs: &[Linked<Run>]) -> Vec<RankedRun> {
 
     let mut ranked_players: HashSet<&Vec<RunPlayer>> = HashSet::new();
 
-    let mut ranks: Vec<RankedRun> = vec![];
+    let mut leaderboard: Vec<LeaderboardRun> = vec![];
 
     let mut n = 0;
     for run in runs.iter() {
@@ -58,7 +57,7 @@ pub fn rank_runs(runs: &[Linked<Run>]) -> Vec<RankedRun> {
         let mut tied_rank = rank;
         let mut is_tied = false;
 
-        if let Some(ref mut previous) = ranks.last_mut() {
+        if let Some(ref mut previous) = leaderboard.last_mut() {
             if time_ms == *previous.time_ms() {
                 is_tied = true;
                 previous.is_tied = true;
@@ -66,7 +65,7 @@ pub fn rank_runs(runs: &[Linked<Run>]) -> Vec<RankedRun> {
             }
         }
 
-        let new = RankedRun {
+        let new = LeaderboardRun {
             rank,
             time_ms,
             is_tied,
@@ -74,8 +73,8 @@ pub fn rank_runs(runs: &[Linked<Run>]) -> Vec<RankedRun> {
             run: run.clone(),
         };
 
-        ranks.push(new);
+        leaderboard.push(new);
     }
 
-    ranks
+    leaderboard
 }
