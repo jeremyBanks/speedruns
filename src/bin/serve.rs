@@ -61,6 +61,10 @@ async fn graphql(
         .body(user))
 }
 
+async fn diediedie() -> actix_web::HttpResponse {
+    panic!("/diediedie")
+}
+
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
     // Enable all debug logs by default.
@@ -84,6 +88,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/graphql").route(web::post().to(graphql)))
             .service(web::resource("/graphiql").route(web::get().to(graphiql)))
             .service(web::resource("/playground").route(web::get().to(playground)))
+            .service(web::resource("/diediedie").route(web::get().to(diediedie)))
     });
 
     info!("Binding server.");
