@@ -82,7 +82,7 @@ const GamePage: NextPage = () => {
                     </a>
                   </td>
                   <td className={styles.progress}>
-                    <Duration ms={progress.run.timeMs} />
+                    <Duration ms={progress.progressMs} />
                   </td>
                   <td className={styles.date}>
                     <AutoColor>
@@ -337,7 +337,7 @@ const GetGamePage = gql`
           ...GameLeaderboardRun
         }
         progression {
-          improvementMs
+          progressMs
           run {
             ...GameRun
           }

@@ -216,7 +216,7 @@ export interface GetGamePage_game_gameCategories_progression_leaderboardRun {
 
 export interface GetGamePage_game_gameCategories_progression {
   __typename: "ProgressionRun";
-  improvementMs: number;
+  progressMs: number;
   run: GetGamePage_game_gameCategories_progression_run;
   leaderboardRun: GetGamePage_game_gameCategories_progression_leaderboardRun | null;
 }

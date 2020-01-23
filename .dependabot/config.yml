@@ -12,6 +12,7 @@ update_configs:
           dependency_type: all
           update_type: all
     version_requirement_updates: increase_versions
+    default_labels: [dependencies]
 
   - package_manager: rust:cargo
     directory: /
@@ -24,3 +25,4 @@ update_configs:
           dependency_type: all
           update_type: all
     version_requirement_updates: auto
+    default_labels: [dependencies]

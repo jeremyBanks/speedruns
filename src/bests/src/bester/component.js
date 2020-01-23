@@ -2,13 +2,12 @@
 // instance, and add some class-name-based CSS classes to a prefix placeholder
 // element facilitate styling and dedbugging.
 
-import {HTML} from './html.js';
-import {style} from './style.js';
-import {document} from './deps.js';
-import {LazySymbolScope} from './utils.js';
+import { HTML } from "./html.js";
+import { style } from "./style.js";
+import { document } from "./deps.js";
+import { LazySymbolScope } from "./utils.js";
 
-
-const internal = new LazySymbolScope('internal ');
+const internal = new LazySymbolScope("internal ");
 const {
   classNames,
   props,
@@ -17,9 +16,8 @@ const {
   getElement,
   setProps,
   onElementCreated,
-  onElementRendered
+  onElementRendered,
 } = internal;
-
 
 export class Component {
   static of(props) {
@@ -49,7 +47,7 @@ export class Component {
   // many subclasses to override this.
   get style() {
     return style({
-      'display': 'contents'
+      display: "contents",
     });
   }
 
@@ -58,7 +56,7 @@ export class Component {
   }
 
   render(props) {
-    throw new Error("not implemented"); 
+    throw new Error("not implemented");
   }
 
   get rendered() {
@@ -66,17 +64,19 @@ export class Component {
   }
 
   [HTML.fromThis]() {
-    return HTML`<bester-component class="${this[classNames].join(" ")}" ${this.style}>${this[renderedHTML]}</bester-component>`;
+    return HTML`<bester-component class="${this[classNames].join(" ")}" ${
+      this.style
+    }>${this[renderedHTML]}</bester-component>`;
   }
 
   [getElement]() {
     if (!this[element]) {
       console.debug(`🔨 Creating element for ${this[classNames][0]}.`);
-      this[element] = document.createElement('bester-component');
+      this[element] = document.createElement("bester-component");
       this[element].classList.add(...this[classNames]);
-      this[element].setAttribute('style', this.styleAttributeValue);
+      this[element].setAttribute("style", this.styleAttributeValue);
       this[element].appendChild(this[renderedHTML].fragment());
-      
+
       Promise.resolve().then(() => this[onElementCreated]());
     }
     return this[element];
@@ -88,16 +88,18 @@ export class Component {
 
     this[renderedHTML] = HTML.from(this.render(props));
     if (this[element]) {
-      this[element].textContent = '';
+      this[element].textContent = "";
       this[element].appendChild(this[renderedHTML].fragment());
-      
+
       let renderedProps = this.props;
       this[renderedHTML].done().then(result => {
         if (this.props !== renderedProps) {
           return;
         }
 
-        console.debug(`🍹 Rendered element contents for ${this[classNames][0]}.`);
+        console.debug(
+          `🍹 Rendered element contents for ${this[classNames][0]}.`,
+        );
         Promise.resolve().then(() => this[onElementRendered](this.element));
       });
     }
@@ -107,7 +109,6 @@ export class Component {
 
   [onElementRendered]() {}
 }
-
 
 // FOR NOW, only a root component allows its props to be changed, so everything must be re-rendered at once.
 // Maybe we could call this an Application, and give it some of the router logic too, accepting a location object?
@@ -126,7 +127,7 @@ export class RootComponent extends Component {
   set props(props) {
     this[setProps](props);
   }
-  
+
   [onElementCreated]() {
     this.onElementCreated();
   }
@@ -135,7 +136,7 @@ export class RootComponent extends Component {
     // called after an associated element is created, if ever.
     // XXX: this doesn't wait for it to be attached to the document? so it better use currentDoc or somehting.
   }
-  
+
   [onElementRendered]() {
     this.onElementRendered();
   }
@@ -146,7 +147,7 @@ export class RootComponent extends Component {
 
   // Consider adding a new common parent of Component types, instead of violate the Liskov substitution principle by killing this method.
   // If we did that, maybe we should stop making element() lazy, and make it part of setting props on an ElementComponent.
-  // maybe rename to not say "root", to allow for eventuall nested element-associated components, but that requires major templating improvements.
+  // maybe rename to not say "root", to allow for eventuall nested element-associated components, but that requires major templating progresss.
   // [HTML.fromThis]() {
   //   throw new Error("cannot convert a RootComponent to HTML directly, you should just use this.element instead");
   // }

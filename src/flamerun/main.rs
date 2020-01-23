@@ -106,12 +106,12 @@ pub fn main() -> Result<(), Box<dyn Error>> {
                 let new_record = match level_records.last() {
                     None => Some(Record {
                         run,
-                        improvement: Duration::zero(),
+                        progress: Duration::zero(),
                     }),
                     Some(record) => {
-                        let improvement = record.run.duration - run.duration;
-                        if improvement > Duration::zero() {
-                            Some(Record { run, improvement })
+                        let progress = record.run.duration - run.duration;
+                        if progress > Duration::zero() {
+                            Some(Record { run, progress })
                         } else {
                             None
                         }
@@ -159,7 +159,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
                 .find(|l| Some(l.level_id.clone()) == record.run.level_id)
                 .unwrap();
 
-            sum = sum - record.improvement;
+            sum = sum - record.progress;
 
             if Utc::today().naive_utc() - record.run.performed
                 > Duration::days(max_age_days)
@@ -172,14 +172,14 @@ pub fn main() -> Result<(), Box<dyn Error>> {
             let fg_grey = "\x1b[37m";
             let fg_white = "\x1b[97m";
             let term_style_reset = "\x1b[0m";
-            let improvement_text;
+            let progress_text;
             let record_style;
-            if record.improvement == Duration::zero() {
-                improvement_text = "".to_string();
+            if record.progress == Duration::zero() {
+                progress_text = "".to_string();
             } else {
-                improvement_text = fmt_duration(record.improvement);
+                progress_text = fmt_duration(record.progress);
             };
-            let improvement = &format!("{:>5}", improvement_text);
+            let progress = &format!("{:>5}", progress_text);
 
             if records_by_level_id[&level.level_id]
                 .last()
@@ -221,7 +221,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
                     "  ",
                     // delta
                     fg_white,
-                    improvement,
+                    progress,
                     // reset before EOL
                     " ",
                     term_style_reset,
@@ -260,6 +260,6 @@ fn fmt_duration(duration: Duration) -> String {
 
 #[derive(Debug, Clone)]
 struct Record<'a> {
-    pub run:         &'a Run,
-    pub improvement: Duration,
+    pub run:      &'a Run,
+    pub progress: Duration,
 }
