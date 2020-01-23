@@ -30,19 +30,19 @@ const GamePage: NextPage = () => {
   }
 
   return (
-    <section className={styles.gamePage}>
+    <section className={styles.gamePage} id={game.id} data-id={game.id}>
       <Head>
         <title>{game.name}</title>
       </Head>
 
       <h1>
-        <Link href={`/${game.slug}`}>
+        <Link href={`/[game]?slug=${game.slug}`} as={`/${game.slug}`}>
           <a>{game.name}</a>
         </Link>
       </h1>
 
       {game.gameCategories.map(category => (
-        <div key={category.id} id={`${category.id}`}>
+        <div key={category.id} id={`${category.id}`} data-id={`${category.id}`}>
           <h2>
             <a href={`#${category.id}`}>{category.name}</a>
           </h2>
@@ -62,8 +62,8 @@ const GamePage: NextPage = () => {
             <tbody>
               {category.progression.map(progress => (
                 <tr
-                  data-id={progress.run.id}
                   key={progress.run.id}
+                  data-id={progress.run.id}
                   data-rank={progress.leaderboardRun?.tiedRank ?? "obsolete"}
                 >
                   <td className={styles.rank}>
@@ -115,8 +115,8 @@ const GamePage: NextPage = () => {
               {category.leaderboard.map(ranked => {
                 return (
                   <tr
-                    data-id={ranked.run.id}
                     key={ranked.run.id}
+                    data-id={ranked.run.id}
                     data-rank={ranked.tiedRank}
                   >
                     <td className={styles.rank}>{ranked.tiedRank}</td>
@@ -245,57 +245,10 @@ const GamePage: NextPage = () => {
       <h3>Leaderboards</h3>
 
       {game.levels.map(level => (
-        <div key={level.id} id={`${level.id}`}>
+        <div key={level.id} id={level.id} data-id={level.id}>
           <h4>
             <a href={`#${level.id}`}>{level.name}</a>
           </h4>
-
-          <table className={styles.leaderboard}>
-            <thead>
-              <tr>
-                <th className={styles.rank}>Rank</th>
-                <th className={styles.player}>Player</th>
-                <th className={styles.time}>Time (RTA)</th>
-                <th className={styles.date}>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {level.leaderboard.map(ranked => {
-                return (
-                  <tr
-                    data-id={ranked.run.id}
-                    key={ranked.run.id}
-                    data-rank={ranked.tiedRank}
-                  >
-                    <td className={styles.rank}>{ranked.tiedRank}</td>
-                    <td className={styles.player}>
-                      <AutoColor>
-                        {ranked.run.players.map(p => p.name).join(" & ")}
-                      </AutoColor>
-                    </td>
-                    <td className={styles.time}>
-                      <a
-                        href={`https://www.speedrun.com/${game.srcSlug}/run/${ranked.run.srcId}`}
-                      >
-                        <Duration ms={ranked.run.timeMs} />
-                      </a>
-                    </td>
-                    <td className={styles.date}>
-                      <AutoColor>
-                        {String(
-                          (ranked.run.date &&
-                            new Date(ranked.run.date * 1000)
-                              .toISOString()
-                              .slice(0, "YYYY-MM-DD".length)) ||
-                            "",
-                        )}
-                      </AutoColor>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
         </div>
       ))}
     </section>
@@ -399,9 +352,6 @@ const GetGamePage = gql`
         slug
         srcSlug
         name
-        leaderboard(categorySlug: "mission") {
-          ...GameLeaderboardRun
-        }
       }
     }
   }
