@@ -173,12 +173,14 @@ type Player {
 }
 
 type LeaderboardRun {
+  run: Run! @juniper(ownership: "owned", infallible: true)
   rank: Int! @juniper(ownership: "owned", infallible: true)
   isTied: Boolean! @juniper(ownership: "owned", infallible: true)
   tiedRank: Int! @juniper(ownership: "owned", infallible: true)
-  run: Run! @juniper(ownership: "owned", infallible: true)
 }
 
 type ProgressionRun {
+  improvementMs: Int! @juniper(ownership: "owned", infallible: true)
   run: Run! @juniper(ownership: "owned", infallible: true)
+  leaderboardRun: LeaderboardRun @juniper(ownership: "owned", infallible: true)
 }

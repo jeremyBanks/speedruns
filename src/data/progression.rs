@@ -18,28 +18,28 @@ pub struct ProgressionRun {
 pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
     let leaderboard_runs = leaderboard(runs);
 
-    return leaderboard_runs
+    leaderboard_runs
         .into_iter()
         .map(|lr| ProgressionRun {
             improvement_ms:  0,
             run:             lr.run().clone(),
             leaderboard_run: lr,
         })
-        .collect();
+        .collect()
 
-    let runs: Vec<Linked<Run>> = runs.to_vec();
+    // let runs: Vec<Linked<Run>> = runs.to_vec();
 
-    if runs.is_empty() {
-        return vec![]
-    }
+    // if runs.is_empty() {
+    //     return vec![];
+    // }
 
-    let mut progression: Vec<ProgressionRun> = vec![];
+    // let mut progression: Vec<ProgressionRun> = vec![];
 
-    for run in runs.iter() {
-        // let new = ProgressionRun { run: run.clone() };
+    // for run in runs.iter() {
+    //     // let new = ProgressionRun { run: run.clone() };
 
-        // progression.push(new);
-    }
+    //     // progression.push(new);
+    // }
 
-    progression
+    // progression
 }
