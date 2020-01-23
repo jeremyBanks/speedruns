@@ -60,50 +60,43 @@ const GamePage: NextPage = () => {
               </tr>
             </thead>
             <tbody>
-              <tr data-rank="1">
-                <td className={styles.rank}>1</td>
-                <td className={styles.player}>
-                  <AutoColor>ZPR</AutoColor>
-                </td>
-                <td className={styles.time}>1m 31s</td>
-                <td className={styles.progress}>2s</td>
-                <td className={styles.date}>
-                  <AutoColor>2018-12Dec-18</AutoColor>
-                </td>
-              </tr>
-              <tr data-rank="obsolete">
-                <td className={styles.rank}>-</td>
-                <td className={styles.player}>
-                  <AutoColor>ZPR</AutoColor>
-                </td>
-                <td className={styles.time}>1m 32s</td>
-                <td className={styles.progress}>0.842s</td>
-                <td className={styles.date}>
-                  <AutoColor>2018-12Dec-12</AutoColor>
-                </td>
-              </tr>
-              <tr data-rank="2">
-                <td className={styles.rank}>2</td>
-                <td className={styles.player}>
-                  <AutoColor>Banks</AutoColor>
-                </td>
-                <td className={styles.time}>1m 31s</td>
-                <td className={styles.progress}>1s</td>
-                <td className={styles.date}>
-                  <AutoColor>2017-06Feb-02</AutoColor>
-                </td>
-              </tr>
-              <tr data-rank="5">
-                <td className={styles.rank}>5</td>
-                <td className={styles.player}>
-                  <AutoColor>Fralor</AutoColor>
-                </td>
-                <td className={styles.time}>1m 31s</td>
-                <td className={styles.progress}>8s</td>
-                <td className={styles.date}>
-                  <AutoColor>2016-03Mar-01</AutoColor>
-                </td>
-              </tr>
+              {category.progression.map(progress => (
+                <tr
+                  data-id={progress.run.id}
+                  key={progress.run.id}
+                  data-rank={progress.leaderboardRun?.tiedRank ?? "obsolete"}
+                >
+                  <td className={styles.rank}>
+                    {progress.leaderboardRun?.tiedRank ?? "obsolete"}
+                  </td>
+                  <td className={styles.player}>
+                    <AutoColor>
+                      {progress.run.players.map(p => p.name).join(" & ")}
+                    </AutoColor>
+                  </td>
+                  <td className={styles.time}>
+                    <a
+                      href={`https://www.speedrun.com/${game.srcSlug}/run/${progress.run.srcId}`}
+                    >
+                      <Duration ms={progress.run.timeMs} />
+                    </a>
+                  </td>
+                  <td className={styles.progress}>
+                    <Duration ms={progress.run.timeMs} />
+                  </td>
+                  <td className={styles.date}>
+                    <AutoColor>
+                      {String(
+                        (progress.run.date &&
+                          new Date(progress.run.date * 1000)
+                            .toISOString()
+                            .slice(0, "YYYY-MM-DD".length)) ||
+                          "",
+                      )}
+                    </AutoColor>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
 
@@ -311,38 +304,47 @@ const GamePage: NextPage = () => {
 
 export default withApollo(GamePage);
 
-const GameLeaderboardRun = gql`
-  fragment GameLeaderboardRun on LeaderboardRun {
-    rank
-    isTied
-    tiedRank
-    run {
+const GameRun = gql`
+  fragment GameRun on Run {
+    id
+    srcId
+    timeMs
+    category {
       id
       srcId
-      timeMs
-      category {
+    }
+    level {
+      id
+      srcId
+    }
+    date
+    players {
+      name
+      isGuest
+      user {
         id
         srcId
-      }
-      level {
-        id
-        srcId
-      }
-      date
-      players {
-        name
-        isGuest
-        user {
-          id
-          srcId
-          slug
-        }
+        slug
       }
     }
   }
 `;
 
+const GameLeaderboardRun = gql`
+  ${GameRun}
+
+  fragment GameLeaderboardRun on LeaderboardRun {
+    rank
+    isTied
+    tiedRank
+    run {
+      ...GameRun
+    }
+  }
+`;
+
 const GetGamePage = gql`
+  ${GameRun}
   ${GameLeaderboardRun}
 
   query GetGamePage($slug: String!) {
@@ -360,6 +362,15 @@ const GetGamePage = gql`
         name
         leaderboard {
           ...GameLeaderboardRun
+        }
+        progression {
+          improvementMs
+          run {
+            ...GameRun
+          }
+          leaderboardRun {
+            ...GameLeaderboardRun
+          }
         }
       }
       levels {
