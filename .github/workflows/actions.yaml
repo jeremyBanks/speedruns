@@ -71,23 +71,11 @@ jobs:
         with:
           node-version: ${{ steps.env.outputs.node }}
 
-      - name: setup - install node dependencies
-        run: yarn install
-
       - name: test - cargo build
         uses: actions-rs/cargo@v1
         with:
           command: build
           args: --workspace
-
-      - name: bot - code generation
-        run: yarn generate
-
-      - name: test - yarn build and export
-        run: yarn export
-
-      - name: bot - code formatting
-        run: yarn format
 
       - name: bot - commit any changes as autofix
         continue-on-error: true
@@ -101,9 +89,6 @@ jobs:
         with:
           command: test
           args: --workspace
-
-      - name: test - lint
-        run: yarn lint
 
       - name: bot - add master to ✔️ first-parent chain if we made it this far
         if: github.ref == 'refs/heads/master'

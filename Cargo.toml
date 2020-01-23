@@ -1,8 +1,8 @@
 [package]
 edition = "2018"
 license = "MIT"
-name = "speedruns"
-version = "0.20.20"
+name = "example"
+version = "0.0.1"
 
 default-run = "serve"
 
@@ -10,25 +10,9 @@ default-run = "serve"
 name = "speedruns"
 
 [[bin]]
-name = "normalize"
-
-[[bin]]
-name = "scrape"
-
-[[bin]]
 name = "serve"
 
-[[bin]]
-name = "flamerun"
-path = "src/flamerun/main.rs"
-
 [dependencies]
-actix = "0.9.0"
-actix-cors = "0.2.0"
-actix-rt = "1.0.0"
-actix-web = "2.0.0"
-async-std = "1.4.0"
-clap = "2.32.0"
 derive_more = "0.99.2"
 env_logger = "0.7.1"
 err-derive = "0.1.5"
@@ -38,7 +22,6 @@ getset = "0.0.9"
 itertools = "0.8.2"
 juniper = "0.14.2"
 juniper-from-schema = "0.5.1"
-juniper_hyper = "0.5.2"
 lazy_static = "1.4.0"
 log = "0.4.8"
 no-panic = "0.1.12"
@@ -61,10 +44,6 @@ arrayvec = "0.5.1"
 [dependencies.chrono]
 features = ["serde"]
 version = "0.4.10"
-
-[dependencies.futures]
-version = "0.3.1"
-features = ["compat"]
 
 [dependencies.serde]
 features = ["derive"]

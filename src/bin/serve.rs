@@ -9,10 +9,7 @@
 
 use std::{fs::File, io::BufReader, sync::Arc};
 
-use actix_cors::{self};
-use actix_web::{self, web};
-
-use juniper::{self, http::GraphQLRequest};
+use juniper;
 use lazy_static::lazy_static;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 
@@ -24,20 +21,6 @@ use speedruns::data::{
     graphql,
 };
 
-async fn graphiql() -> actix_web::HttpResponse {
-    let html = juniper::http::graphiql::graphiql_source("/graphql");
-    actix_web::HttpResponse::Ok()
-        .content_type("text/html; charset=utf-8")
-        .body(html)
-}
-
-async fn playground() -> actix_web::HttpResponse {
-    let html = juniper::http::playground::playground_source("/graphql");
-    actix_web::HttpResponse::Ok()
-        .content_type("text/html; charset=utf-8")
-        .body(html)
-}
-
 lazy_static! {
     static ref DATABASE: Arc<Database> = {
         let tables: &'static Tables = Box::leak(Box::new(unpack_bundled_tables()));
@@ -45,28 +28,7 @@ lazy_static! {
     };
 }
 
-async fn graphql(
-    schema: web::Data<Arc<graphql::Schema>>,
-    query: web::Json<GraphQLRequest>,
-) -> actix_web::Result<actix_web::HttpResponse> {
-    let database = DATABASE.clone();
-    let user = web::block(move || {
-        let res = query.execute(&schema, &graphql::Context { database });
-        Ok::<_, serde_json::error::Error>(serde_json::to_string(&res)?)
-    })
-    .await?;
-    Ok(actix_web::HttpResponse::Ok()
-        .content_type("application/json")
-        .header(actix_web::http::header::ACCESS_CONTROL_ALLOW_ORIGIN, "*")
-        .body(user))
-}
-
-async fn diediedie() -> actix_web::HttpResponse {
-    panic!("/diediedie")
-}
-
-#[actix_rt::main]
-async fn main() -> std::io::Result<()> {
+fn main() {
     // Enable all debug logs by default.
     if std::env::var("RUST_LOG").unwrap_or_default().is_empty() {
         std::env::set_var("RUST_LOG", "debug");
@@ -79,20 +41,99 @@ async fn main() -> std::io::Result<()> {
     info!("Initializing schema.");
     let schema = Arc::new(graphql::schema());
 
-    info!("Initializing server.");
-    let server = actix_web::HttpServer::new(move || {
-        actix_web::App::new()
-            .data(schema.clone())
-            .wrap(actix_cors::Cors::new().finish())
-            .wrap(actix_web::middleware::Logger::default())
-            .service(web::resource("/graphql").route(web::post().to(graphql)))
-            .service(web::resource("/graphiql").route(web::get().to(graphiql)))
-            .service(web::resource("/playground").route(web::get().to(playground)))
-            .service(web::resource("/diediedie").route(web::get().to(diediedie)))
-    });
+    let query = r#"
+    fragment GameRun on Run {
+        id
+        # srcId
+        # timeMs
+        # category {
+        #   id
+        #   srcId
+        #   __typename
+        # }
+        # level {
+        #   id
+        #   srcId
+        #   __typename
+        # }
+        # date
+        # players {
+        #   name
+        #   isGuest
+        #   user {
+        #     id
+        #     srcId
+        #     slug
+        #     __typename
+        #   }
+        #   __typename
+        # }
+    }
+    fragment GameLeaderboardRun on LeaderboardRun {
+        rank
+        isTied
+        tiedRank
+        run {
+            id
+            ...GameRun
+        }
+        __typename
+    }
+    query GetGamePage {
+        game: game(slug: "wc2") {
+            id
+            srcId
+            slug
+            srcSlug
+            name
+            gameCategories {
+            id
+            srcId
+            slug
+            srcSlug
+            name
+            leaderboard {
+                ...GameLeaderboardRun
+            }
+            progression {
+                improvementMs
+                run {
+                ...GameRun
+                }
+                leaderboardRun {
+                ...GameLeaderboardRun
+                __typename
+                }
+                __typename
+            }
+            __typename
+            }
+            levels {
+            id
+            srcId
+            slug
+            srcSlug
+            name
+            leaderboard(categorySlug: "mission") {
+                ...GameLeaderboardRun
+                __typename
+            }
+            __typename
+            }
+            __typename
+        }
+    }
+    "#;
 
-    info!("Binding server.");
-    server.bind("127.0.0.1:3001")?.run().await
+    
+    let (result, errors) = juniper::execute(
+        query,
+        None,
+        &schema,
+        &juniper::Variables::new(),
+        &graphql::Context { database: DATABASE.clone() },
+    )
+    .unwrap();
 }
 
 fn unpack_bundled_tables() -> Tables {
