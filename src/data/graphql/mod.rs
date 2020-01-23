@@ -315,6 +315,7 @@ impl CategoryFields for Category {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
         level_slug: Option<String>,
+        _include_obsolete: bool,
     ) -> Vec<LeaderboardRun> {
         let level_id = level_slug.map(|level_slug| {
             self.0
@@ -334,6 +335,16 @@ impl CategoryFields for Category {
         let ranked = leaderboard::leaderboard(&runs);
 
         (ranked.iter().map(|r| LeaderboardRun(r.clone())).collect())
+    }
+
+    fn field_progression(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, ProgressionRun, Walked>,
+        _level_slug: Option<String>,
+        _include_ties: bool,
+    ) -> Vec<ProgressionRun> {
+        unimplemented!()
     }
 }
 
@@ -425,6 +436,7 @@ impl LevelFields for Level {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
         category_slug: Option<String>,
+        _include_obsolete: bool,
     ) -> Vec<LeaderboardRun> {
         let category_id = category_slug.map(|category_slug| {
             self.0
@@ -447,5 +459,15 @@ impl LevelFields for Level {
         let ranked = leaderboard::leaderboard(&runs);
 
         (ranked.iter().map(|r| LeaderboardRun(r.clone())).collect())
+    }
+
+    fn field_progression(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, ProgressionRun, Walked>,
+        _category_slug: Option<String>,
+        _include_ties: bool,
+    ) -> Vec<ProgressionRun> {
+        unimplemented!()
     }
 }
