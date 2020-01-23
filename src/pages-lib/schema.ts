@@ -380,12 +380,7 @@ export interface GetNodePage_node_Run {
   timeMs: number;
 }
 
-export type GetNodePage_node =
-  | GetNodePage_node_Game
-  | GetNodePage_node_User
-  | GetNodePage_node_Level
-  | GetNodePage_node_Category
-  | GetNodePage_node_Run;
+export type GetNodePage_node = GetNodePage_node_Game | GetNodePage_node_User | GetNodePage_node_Level | GetNodePage_node_Category | GetNodePage_node_Run;
 
 export interface GetNodePage {
   node: GetNodePage_node | null;
