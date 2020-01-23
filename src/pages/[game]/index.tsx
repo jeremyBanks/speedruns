@@ -338,7 +338,27 @@ const GameLeaderboardRun = gql`
     isTied
     tiedRank
     run {
-      ...GameRun
+      id
+      srcId
+      timeMs
+      category {
+        id
+        srcId
+      }
+      level {
+        id
+        srcId
+      }
+      date
+      players {
+        name
+        isGuest
+        user {
+          id
+          srcId
+          slug
+        }
+      }
     }
   }
 `;
