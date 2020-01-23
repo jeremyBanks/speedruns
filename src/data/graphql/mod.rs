@@ -251,7 +251,7 @@ impl LeaderboardRunFields for LeaderboardRun {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Run, Walked>,
     ) -> Run {
-        (Run(self.0.run().clone()))
+        Run(self.0.run().clone())
     }
 
     fn field_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
@@ -341,10 +341,27 @@ impl CategoryFields for Category {
         &self,
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, ProgressionRun, Walked>,
-        _level_slug: Option<String>,
+        level_slug: Option<String>,
         _include_ties: bool,
     ) -> Vec<ProgressionRun> {
-        unimplemented!()
+        let level_id = level_slug.map(|level_slug| {
+            self.0
+                .game()
+                .level_by_slug(&level_slug)
+                .expect("level not found")
+                .id
+        });
+        let runs: Vec<DbLinked<db::Run>> = self
+            .0
+            .runs()
+            .iter()
+            .filter(|run| run.level_id == level_id && run.category_id == self.0.id)
+            .cloned()
+            .collect();
+
+        let progress = progression::progression(&runs);
+
+        (progress.iter().map(|r| ProgressionRun(r.clone())).collect())
     }
 }
 
@@ -465,9 +482,29 @@ impl LevelFields for Level {
         &self,
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, ProgressionRun, Walked>,
-        _category_slug: Option<String>,
+        category_slug: Option<String>,
         _include_ties: bool,
     ) -> Vec<ProgressionRun> {
-        unimplemented!()
+        let category_id = category_slug.map(|category_slug| {
+            self.0
+                .game()
+                .per_level_category_by_slug(&category_slug)
+                .expect("category not found")
+                .id
+        });
+        let runs: Vec<DbLinked<db::Run>> = self
+            .0
+            .game()
+            .runs()
+            .iter()
+            .filter(|run| {
+                Some(run.category_id) == category_id && run.level_id == Some(self.0.id)
+            })
+            .cloned()
+            .collect();
+
+        let progress = progression::progression(&runs);
+
+        (progress.iter().map(|r| ProgressionRun(r.clone())).collect())
     }
 }
