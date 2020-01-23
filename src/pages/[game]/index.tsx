@@ -10,6 +10,7 @@ import Duration from "../../pages-lib/duration";
 import * as schema from "../../pages-lib/schema";
 import styles from "../../pages-lib/styles.module.scss";
 import { withApollo } from "../../pages-lib/with-apollo";
+import Head from "next/head";
 
 const GamePage: NextPage = () => {
   const router = useRouter();
@@ -30,6 +31,10 @@ const GamePage: NextPage = () => {
 
   return (
     <section className={styles.gamePage}>
+      <Head>
+        <title>{game.name}</title>
+      </Head>
+
       <h1>
         <Link href={`/${game.slug}`}>
           <a>{game.name}</a>
@@ -116,7 +121,11 @@ const GamePage: NextPage = () => {
             <tbody>
               {category.leaderboard.map(ranked => {
                 return (
-                  <tr key={ranked.run.id} data-rank={ranked.tiedRank}>
+                  <tr
+                    data-id={ranked.run.id}
+                    key={ranked.run.id}
+                    data-rank={ranked.tiedRank}
+                  >
                     <td className={styles.rank}>{ranked.tiedRank}</td>
                     <td className={styles.player}>
                       <AutoColor>
@@ -260,7 +269,11 @@ const GamePage: NextPage = () => {
             <tbody>
               {level.leaderboard.map(ranked => {
                 return (
-                  <tr key={ranked.run.id} data-rank={ranked.tiedRank}>
+                  <tr
+                    data-id={ranked.run.id}
+                    key={ranked.run.id}
+                    data-rank={ranked.tiedRank}
+                  >
                     <td className={styles.rank}>{ranked.tiedRank}</td>
                     <td className={styles.player}>
                       <AutoColor>

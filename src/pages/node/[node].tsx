@@ -7,12 +7,17 @@ import React from "react";
 import * as schema from "../../pages-lib/schema";
 import styles from "../../pages-lib/styles.module.scss";
 import { withApollo } from "../../pages-lib/with-apollo";
+import Head from "next/head";
 
 const NodePage: NextPage = () => {
   const router = useRouter();
 
   const { loading, error, data } = useQuery<schema.GetNodePage>(GetNodePage, {
     variables: { id: router.query.node },
+    // The use of fragments in this query requires special handling to be
+    // cached and we haven't done that, so let's disable it for now.
+    // https://www.apollographql.com/docs/react/data/fragments/
+    fetchPolicy: "no-cache",
   });
 
   if (!data) {
@@ -31,12 +36,19 @@ const NodePage: NextPage = () => {
 
   console.log(node);
   const typename = node.__typename;
+  const id = node.id;
   delete node.__typename;
+  delete node.id;
 
   return (
     <div className={styles.nodePage}>
+      <Head>
+        <title>{id}</title>
+      </Head>
+
       <pre>
-        {typename} {JSON.stringify(node, null, 4)}
+        <span className={styles.typeName}>{typename}</span>(id:{" "}
+        {JSON.stringify(id)}) {JSON.stringify(node, null, 4)}
       </pre>
     </div>
   );
@@ -74,6 +86,15 @@ const GetNodePage = gql`
       }
       ... on Run {
         srcId
+        date
+        category {
+          id
+          srcId
+        }
+        level {
+          id
+          srcId
+        }
         timeMs
       }
     }
