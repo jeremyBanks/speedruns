@@ -4,7 +4,6 @@ module.exports = [
   require("@zeit/next-sass"),
 ].reduce((config, plugin) => plugin(config), {
   cssModules: true,
-  exportTrailingSlash: false,
   exportPathMap() {
     return {
       "/": { page: "/" },
