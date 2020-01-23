@@ -1,27 +1,24 @@
 schema {
-  query: Speedruns
-  mutation: Speedruns
+  query: Query
+  mutation: Query
 }
 
-type Speedruns {
-  game(slug: String!): Game @juniper(ownership: "owned", infallible: true)
+type Query {
+  grandparent: Grandparent @juniper(ownership: "owned", infallible: true)
 }
 
-type Game {
-  gameCategories: [Category!]! @juniper(ownership: "owned", infallible: true)
+type Grandparent {
+  parent: [Parent!]! @juniper(ownership: "owned", infallible: true)
 }
 
-type Category {
-  leaderboard(
-    levelSlug: String
-    includeObsolete: Boolean = false
-  ): [LeaderboardRun!]! @juniper(ownership: "owned", infallible: true)
+type Parent {
+  child: [Child!]! @juniper(ownership: "owned", infallible: true)
 }
 
-type Run {
+type Child {
+  grandchild: Grandchild! @juniper(ownership: "owned", infallible: true)
+}
+
+type Grandchild {
   id: ID! @juniper(ownership: "owned", infallible: true)
-}
-
-type LeaderboardRun {
-  run: Run! @juniper(ownership: "owned", infallible: true)
 }
