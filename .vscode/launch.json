@@ -4,37 +4,10 @@
     {
       "type": "lldb",
       "request": "launch",
-      "name": "Debug executable: scrape",
+      "name": "Debug executable",
       "cargo": {
-        "args": ["build", "--bin=scrape"],
+        "args": ["build"],
         "filter": {
-          "name": "scrape",
-          "kind": "bin"
-        }
-      },
-      "args": []
-    },
-    {
-      "type": "lldb",
-      "request": "launch",
-      "name": "Debug executable: normalize",
-      "cargo": {
-        "args": ["build", "--bin=normalize"],
-        "filter": {
-          "name": "normalize",
-          "kind": "bin"
-        }
-      },
-      "args": []
-    },
-    {
-      "type": "lldb",
-      "request": "launch",
-      "name": "Debug executable: serve",
-      "cargo": {
-        "args": ["build", "--bin=serve"],
-        "filter": {
-          "name": "serve",
           "kind": "bin"
         }
       },

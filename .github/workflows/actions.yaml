@@ -20,3 +20,4 @@ jobs:
           command: run
         env:
           RUST_BACKTRACE: full
+          JUNIPER_FROM_SCHEMA_DEBUG: 1
