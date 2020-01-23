@@ -13,31 +13,31 @@ export const HomePage: NextPage<{}> = () => (
 
     <ul>
       <li>
-        <Link href="/wc2">
+        <Link href="/[game]?slug=wc2" as="/wc2">
           <a>/wc2</a>
         </Link>{" "}
         WarCraft II: Tides of Darkness
       </li>
       <li>
-        <Link href="/wc2btdp">
+        <Link href="/[game]?slug=wc2btdp" as="/wc2btdp">
           <a>/wc2btdp</a>
         </Link>{" "}
         WarCraft II: Beyond the Dark Portal
       </li>
       <li>
-        <Link href="/wc2btdp">
+        <Link href="/[game]?slug=sc1" as="/sc1">
           <a>/sc1</a>
         </Link>{" "}
         StarCraft
       </li>
       <li>
-        <Link href="/wc2btdp">
+        <Link href="/[game]?slug=scbw" as="/scbw">
           <a>/scbw</a>
         </Link>{" "}
         StarCraft: Brood War
       </li>
       <li>
-        <Link href="/celeste">
+        <Link href="/[game]?slug=celeste" as="/celeste">
           <a>/celeste</a>
         </Link>{" "}
         Celeste
@@ -62,13 +62,19 @@ export const HomePage: NextPage<{}> = () => (
 
     <ul>
       <li>
-        <a href="/graphql/schema">Documentation</a>
+        <Link href="/graphql/schema">
+          <a>Documentation</a>
+        </Link>
       </li>
       <li>
-        <a href="/graphql/voyager">Graph Viewer</a>
+        <Link href="/graphql/voyager">
+          <a>Graph Viewer</a>
+        </Link>
       </li>
       <li>
-        <a href="/node/gamdtuPrEpI">Node Inspector</a>
+        <Link href="/node/gamdtuPrEpI">
+          <a>Node Inspector</a>
+        </Link>
       </li>
       <li>
         <a href="/graphql/schema.graphql">SDL for Juniper</a>
