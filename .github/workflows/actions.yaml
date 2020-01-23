@@ -17,7 +17,6 @@ jobs:
           echo "::set-output name=rust::$(cat rust-toolchain)"
           echo "::set-output name=node::$(cat .nvmrc)"
           echo "::set-output name=git-branch::$(echo ${GITHUB_REF#refs/heads/})"
-          echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
       - name: preparation - configure git write access
         run: |
@@ -27,32 +26,6 @@ jobs:
           git checkout ${{ steps.env.outputs.git-branch }}
           git config user.name "$(git log -1 --pretty=format:'%an')"
           git config user.email "$(git log -1 --pretty=format:'%ae')"
-
-      - name: caching - yarn
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.env.outputs.yarn-cache }}
-          key: yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: yarn-
-
-      - name: caching - node_modules
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: yarn-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: yarn-modules-
-
-      - name: caching - next state
-        uses: actions/cache@v1
-        with:
-          path: .next
-          key: next-cache-${{ hashFiles('**/yarn.lock') }}
-
-      - name: caching - next build
-        uses: actions/cache@v1
-        with:
-          path: out
-          key: next-state-${{ hashFiles('**/yarn.lock') }}
 
       - name: caching - cargo registry
         uses: actions/cache@v1
@@ -66,39 +39,9 @@ jobs:
         with:
           toolchain: ${{ steps.env.outputs.rust }}
 
-      - name: setup - install node
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ steps.env.outputs.node }}
-
-      - name: test - cargo build
+      - name: cargo run
         uses: actions-rs/cargo@v1
         with:
-          command: build
-          args: --workspace
-
-      - name: bot - commit any changes as autofix
-        continue-on-error: true
+          command: run
         env:
-          GIT_COMMITTER_NAME: autofix
-          GIT_COMMITTER_EMAIL: bot@jeremy.ca
-        run: bash scripts/commit-autofix.bash
-
-      - name: test - cargo test
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --workspace
-
-      - name: bot - add master to ✔️ first-parent chain if we made it this far
-        if: github.ref == 'refs/heads/master'
-        env:
-          GIT_COMMITTER_NAME: autofix
-          GIT_COMMITTER_EMAIL: bot@jeremy.ca
-        run: bash scripts/merge-master-to-stable.bash
-
-      - name: bot - trigger zeit deploy of ✔️
-        if: github.ref == 'refs/heads/master'
-        run: |
-          curl "${{secrets.ZEIT_DEPLOY_STABLE}}"
-          curl "${{secrets.GRAPHQL_DEPLOY_STABLE}}"
+          RUST_BACKTRACE: full

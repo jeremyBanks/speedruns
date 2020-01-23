@@ -44,30 +44,6 @@ fn main() {
     let query = r#"
     fragment GameRun on Run {
         id
-        # srcId
-        # timeMs
-        # category {
-        #   id
-        #   srcId
-        #   __typename
-        # }
-        # level {
-        #   id
-        #   srcId
-        #   __typename
-        # }
-        # date
-        # players {
-        #   name
-        #   isGuest
-        #   user {
-        #     id
-        #     srcId
-        #     slug
-        #     __typename
-        #   }
-        #   __typename
-        # }
     }
     fragment GameLeaderboardRun on LeaderboardRun {
         rank
