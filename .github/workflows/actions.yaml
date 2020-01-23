@@ -4,40 +4,15 @@ on: [push]
 jobs:
   my-job:
     name: Action
-
     runs-on: ubuntu-latest
-
     steps:
       - name: preparation - checkout source
         uses: actions/checkout@v1
 
-      - name: preparation - reading environment
-        id: env
-        run: |
-          echo "::set-output name=rust::$(cat rust-toolchain)"
-          echo "::set-output name=node::$(cat .nvmrc)"
-          echo "::set-output name=git-branch::$(echo ${GITHUB_REF#refs/heads/})"
-
-      - name: preparation - configure git write access
-        run: |
-          git remote rm origin
-          git remote add origin "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
-          git fetch origin
-          git checkout ${{ steps.env.outputs.git-branch }}
-          git config user.name "$(git log -1 --pretty=format:'%an')"
-          git config user.email "$(git log -1 --pretty=format:'%ae')"
-
-      - name: caching - cargo registry
-        uses: actions/cache@v1
-        with:
-          path: /usr/share/rust/.cargo/registry
-          key: cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-          restore-key: cargo-registry-
-
       - name: setup - install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: ${{ steps.env.outputs.rust }}
+          toolchain: stable
 
       - name: cargo run
         uses: actions-rs/cargo@v1
