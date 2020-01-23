@@ -80,36 +80,11 @@ impl SpeedrunsFields for Speedruns {
             None => None,
         }
     }
-
-    fn field_node(
-        &self,
-        executor: &Executor<'_, Context>,
-        _trail: &QueryTrail<'_, Node, Walked>,
-        id: ID,
-    ) -> Option<Node> {
-        let database = &executor.context().database;
-        match parse_global_id(&id) {
-            Ok((id, node_type)) => match node_type {
-                NodeType::Game => database.game_by_id(id).map(|g| Node::Game(Game(g))),
-                NodeType::Run => database.run_by_id(id).map(|r| Node::Run(Run(r))),
-                NodeType::User => database.user_by_id(id).map(|u| Node::User(User(u))),
-                NodeType::Level => database.level_by_id(id).map(|l| Node::Level(Level(l))),
-                NodeType::Category => database
-                    .category_by_id(id)
-                    .map(|c| Node::Category(Category(c))),
-            },
-            Err(_) => None,
-        }
-    }
 }
 
 impl GameFields for Game {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
         global_id(self.0.id, NodeType::Game)
-    }
-
-    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
-        base36(self.0.id)
     }
 
     fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
@@ -188,10 +163,6 @@ impl GameFields for Game {
 impl RunFields for Run {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
         global_id(self.0.id, NodeType::Run)
-    }
-
-    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
-        base36(self.0.id)
     }
 
     fn field_time_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
@@ -294,10 +265,6 @@ impl CategoryFields for Category {
         global_id(self.0.id, NodeType::Category)
     }
 
-    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
-        base36(self.0.id)
-    }
-
     fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
         (self.0.name.clone())
     }
@@ -370,10 +337,6 @@ impl UserFields for User {
         global_id(self.0.id, NodeType::User)
     }
 
-    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
-        base36(self.0.id)
-    }
-
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
         (self.0.slug.clone())
     }
@@ -413,10 +376,6 @@ impl PlayerFields for Player {
 impl LevelFields for Level {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
         global_id(self.0.id, NodeType::Level)
-    }
-
-    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
-        base36(self.0.id)
     }
 
     fn field_name(&self, _executor: &Executor<'_, Context>) -> String {

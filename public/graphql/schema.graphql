@@ -5,29 +5,13 @@ schema {
 
 type Speedruns {
   game(slug: String!): Game @juniper(ownership: "owned", infallible: true)
-  node(id: ID!): Node @juniper(ownership: "owned", infallible: true)
 }
 
-"""
-<https://graphql.org/learn/global-object-identification/>
-"""
-interface Node {
+type Game {
   """
   GraphQL node ID
   """
   id: ID! @juniper(ownership: "owned", infallible: true)
-}
-
-type Game implements Node {
-  """
-  GraphQL node ID
-  """
-  id: ID! @juniper(ownership: "owned", infallible: true)
-
-  """
-  speedrun.com game ID
-  """
-  srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
   URL slug used on speedruns.ca
@@ -65,16 +49,11 @@ type Game implements Node {
   levels: [Level!]! @juniper(ownership: "owned", infallible: true)
 }
 
-type User implements Node {
+type User {
   """
   GraphQL node ID
   """
   id: ID! @juniper(ownership: "owned", infallible: true)
-
-  """
-  speedrun.com user ID
-  """
-  srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
   URL slug used on speedruns.ca
@@ -87,16 +66,11 @@ type User implements Node {
   srcSlug: String! @juniper(ownership: "owned", infallible: true)
 }
 
-type Category implements Node {
+type Category {
   """
   GraphQL node ID
   """
   id: ID! @juniper(ownership: "owned", infallible: true)
-
-  """
-  speedrun.com category ID
-  """
-  srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
   URL slug used on speedruns.ca
@@ -130,16 +104,11 @@ type Category implements Node {
   ): [ProgressionRun!]! @juniper(ownership: "owned", infallible: true)
 }
 
-type Level implements Node {
+type Level {
   """
   GraphQL node ID
   """
   id: ID! @juniper(ownership: "owned", infallible: true)
-
-  """
-  speedrun.com level ID
-  """
-  srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
   URL slug used on speedruns.ca
@@ -175,16 +144,11 @@ type Level implements Node {
   ): [ProgressionRun!]! @juniper(ownership: "owned", infallible: true)
 }
 
-type Run implements Node {
+type Run {
   """
   GraphQL node ID
   """
   id: ID! @juniper(ownership: "owned", infallible: true)
-
-  """
-  speedrun.com level ID
-  """
-  srcId: String! @juniper(ownership: "owned", infallible: true)
 
   category: Category! @juniper(ownership: "owned", infallible: true)
   level: Level @juniper(ownership: "owned", infallible: true)

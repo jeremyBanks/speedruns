@@ -11,7 +11,6 @@ use std::{fs::File, io::BufReader, sync::Arc};
 
 use juniper;
 use lazy_static::lazy_static;
-#[allow(unused)] use log::{debug, error, info, trace, warn};
 
 use serde::de::DeserializeOwned;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
@@ -29,104 +28,44 @@ lazy_static! {
 }
 
 fn main() {
-    // Enable all debug logs by default.
-    if std::env::var("RUST_LOG").unwrap_or_default().is_empty() {
-        std::env::set_var("RUST_LOG", "debug");
-    }
-    pretty_env_logger::init();
-
-    info!("Initializing server.");
-    lazy_static::initialize(&DATABASE);
-
-    info!("Initializing schema.");
     let schema = Arc::new(graphql::schema());
 
     let query = r#"
-    fragment GameRun on Run {
-        id
-    }
-    fragment GameLeaderboardRun on LeaderboardRun {
-        rank
-        isTied
-        tiedRank
-        run {
+        fragment GameRun on Run {
             id
-            ...GameRun
         }
-        __typename
-    }
-    query GetGamePage {
-        game: game(slug: "wc2") {
-            id
-            srcId
-            slug
-            srcSlug
-            name
-            gameCategories {
-            id
-            srcId
-            slug
-            srcSlug
-            name
-            leaderboard {
-                ...GameLeaderboardRun
-            }
-            progression {
-                improvementMs
-                run {
+        fragment GameLeaderboardRun on LeaderboardRun {
+            run {
                 ...GameRun
-                }
-                leaderboardRun {
-                ...GameLeaderboardRun
-                __typename
-                }
-                __typename
             }
-            __typename
-            }
-            levels {
-            id
-            srcId
-            slug
-            srcSlug
-            name
-            leaderboard(categorySlug: "mission") {
-                ...GameLeaderboardRun
-                __typename
-            }
-            __typename
-            }
-            __typename
         }
-    }
+        query GetGamePage {
+            game: game(slug: "wc2") {
+                gameCategories {
+                    leaderboard {
+                        ...GameLeaderboardRun
+                    }
+                }
+            }
+        }
     "#;
 
     
-    let (result, errors) = juniper::execute(
+    juniper::execute(
         query,
         None,
         &schema,
         &juniper::Variables::new(),
         &graphql::Context { database: DATABASE.clone() },
-    )
-    .unwrap();
+    ).unwrap();
 }
 
-fn unpack_bundled_tables() -> Tables {
-    info!("Unpacking bundled database...");
-
-    let runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
-    info!("{} runs.", runs.len());
+fn unpack_bundled_tables() -> Tables {    let runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
     let users = read_table("data/normalized/users.jsonl").expect("user data corrupt");
-    info!("{} users.", users.len());
     let games = read_table("data/normalized/games.jsonl").expect("game data corrupt");
-    info!("{} games.", games.len());
     let categories =
         read_table("data/normalized/categories.jsonl").expect("category data corrupt");
-    info!("{} categories.", categories.len());
     let levels = read_table("data/normalized/levels.jsonl").expect("level data corrupt");
-    info!("{} levels.", levels.len());
-
     Tables::new(runs, users, games, categories, levels)
 }
 
@@ -147,7 +86,6 @@ pub fn read_table<T: DeserializeOwned>(
     match result {
         Ok(result) => Ok(result),
         Err(err) => {
-            error!("Failed to load table: {:?}", err);
             Ok(vec![])
         }
     }
