@@ -116,7 +116,11 @@ const GamePage: NextPage = () => {
             <tbody>
               {category.leaderboard.map(ranked => {
                 return (
-                  <tr key={ranked.run.id} data-rank={ranked.tiedRank}>
+                  <tr
+                    data-id={ranked.run.id}
+                    key={ranked.run.id}
+                    data-rank={ranked.tiedRank}
+                  >
                     <td className={styles.rank}>{ranked.tiedRank}</td>
                     <td className={styles.player}>
                       <AutoColor>
@@ -260,7 +264,11 @@ const GamePage: NextPage = () => {
             <tbody>
               {level.leaderboard.map(ranked => {
                 return (
-                  <tr key={ranked.run.id} data-rank={ranked.tiedRank}>
+                  <tr
+                    data-id={ranked.run.id}
+                    key={ranked.run.id}
+                    data-rank={ranked.tiedRank}
+                  >
                     <td className={styles.rank}>{ranked.tiedRank}</td>
                     <td className={styles.player}>
                       <AutoColor>
