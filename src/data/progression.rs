@@ -1,28 +1,45 @@
 use getset::Getters;
 use serde::Serialize;
 
-use crate::data::{database::Linked, types::*};
+use crate::data::{
+    database::Linked,
+    leaderboard::{leaderboard, LeaderboardRun},
+    types::*,
+};
 
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
 pub struct ProgressionRun {
-    run: Linked<Run>,
+    improvement_ms:  u64,
+    run:             Linked<Run>,
+    leaderboard_run: LeaderboardRun,
 }
 
 pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
-    let runs: Vec<Linked<Run>> = runs.to_vec();
+    let leaderboard_runs = leaderboard(runs);
 
-    if runs.is_empty() {
-        return vec![]
-    }
+    leaderboard_runs
+        .into_iter()
+        .map(|lr| ProgressionRun {
+            improvement_ms:  0,
+            run:             lr.run().clone(),
+            leaderboard_run: lr,
+        })
+        .collect()
 
-    let mut progression: Vec<ProgressionRun> = vec![];
+    // let runs: Vec<Linked<Run>> = runs.to_vec();
 
-    for run in runs.iter() {
-        let new = ProgressionRun { run: run.clone() };
+    // if runs.is_empty() {
+    //     return vec![];
+    // }
 
-        progression.push(new);
-    }
+    // let mut progression: Vec<ProgressionRun> = vec![];
 
-    progression
+    // for run in runs.iter() {
+    //     // let new = ProgressionRun { run: run.clone() };
+
+    //     // progression.push(new);
+    // }
+
+    // progression
 }
