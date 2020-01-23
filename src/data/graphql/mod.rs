@@ -246,6 +246,14 @@ impl RunFields for Run {
 }
 
 impl LeaderboardRunFields for LeaderboardRun {
+    fn field_run(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Run, Walked>,
+    ) -> Run {
+        (Run(self.0.run().clone()))
+    }
+
     fn field_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
         (i32::try_from(*self.0.rank()).expect("impossible number of runs"))
     }
@@ -257,14 +265,6 @@ impl LeaderboardRunFields for LeaderboardRun {
     fn field_tied_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
         (i32::try_from(*self.0.tied_rank()).expect("impossible number of runs"))
     }
-
-    fn field_run(
-        &self,
-        _executor: &Executor<'_, Context>,
-        _trail: &QueryTrail<'_, Run, Walked>,
-    ) -> Run {
-        (Run(self.0.run().clone()))
-    }
 }
 
 impl ProgressionRunFields for ProgressionRun {
@@ -274,6 +274,18 @@ impl ProgressionRunFields for ProgressionRun {
         _trail: &QueryTrail<'_, Run, Walked>,
     ) -> Run {
         (Run(self.0.run().clone()))
+    }
+
+    fn field_improvement_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
+        (i32::try_from(*self.0.improvement_ms()).expect("impossibly long wrong"))
+    }
+
+    fn field_leaderboard_run(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
+    ) -> Option<LeaderboardRun> {
+        Some(LeaderboardRun(self.0.leaderboard_run().clone()))
     }
 }
 
