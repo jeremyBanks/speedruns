@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use getset::Getters;
 use itertools::Itertools;
 use serde::Serialize;
@@ -17,21 +19,39 @@ pub struct ProgressionRun {
 }
 
 pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
-    let leaderboard_runs = leaderboard(runs);
+    if runs.is_empty() {
+        return vec![]
+    }
 
-    let _runs_by_level = runs
+    let game_id = runs[0].game_id;
+    let category_id = runs[0].category_id;
+    assert!(
+        runs.iter()
+            .all(|r| r.game_id == game_id && r.category_id == category_id),
+        "runs must all be from same game and category"
+    );
+
+    assert!(
+        runs.iter().all(|r| r.level_id == None),
+        "levels not supported yet"
+    );
+
+    let runs_by_level: HashMap<Option<u64>, Vec<Linked<Run>>> = runs
         .iter()
-        .map(|run| (run.level_id.clone(), run))
+        .map(|run| (run.level_id.clone(), run.clone()))
         .into_group_map();
 
-    leaderboard_runs
-        .into_iter()
-        .map(|lr| ProgressionRun {
-            progress_ms:     0,
-            run:             lr.run().clone(),
-            leaderboard_run: lr,
-        })
-        .collect()
+    let mut progression: Vec<ProgressionRun> = Vec::new();
+
+    for (_level_id, runs) in runs_by_level {
+        let mut leaderboard_runs = leaderboard(&runs.to_vec());
+        leaderboard_runs.sort_by(|a, b| {
+            a.run()
+                .date()
+                .cmp(&b.run().date())
+                .then(a.run().created().cmp(&b.run().created()))
+        });
+    }
 
     // let runs: Vec<Linked<Run>> = runs.to_vec();
 
@@ -47,5 +67,12 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
     //     // progression.push(new);
     // }
 
-    // progression
+    progression.sort_by(|a, b| {
+        a.run()
+            .date()
+            .cmp(&b.run().date())
+            .then(a.run().created().cmp(&b.run().created()))
+    });
+
+    progression
 }
