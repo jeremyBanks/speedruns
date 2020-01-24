@@ -276,8 +276,8 @@ impl ProgressionRunFields for ProgressionRun {
         (Run(self.0.run().clone()))
     }
 
-    fn field_improvement_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
-        (i32::try_from(*self.0.improvement_ms()).expect("impossibly long wrong"))
+    fn field_progress_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
+        (i32::try_from(*self.0.progress_ms()).expect("impossibly long wrong"))
     }
 
     fn field_leaderboard_run(

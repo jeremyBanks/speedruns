@@ -1,4 +1,5 @@
 use getset::Getters;
+use itertools::Itertools;
 use serde::Serialize;
 
 use crate::data::{
@@ -10,7 +11,7 @@ use crate::data::{
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
 pub struct ProgressionRun {
-    improvement_ms:  u64,
+    progress_ms:     u64,
     run:             Linked<Run>,
     leaderboard_run: LeaderboardRun,
 }
@@ -18,10 +19,15 @@ pub struct ProgressionRun {
 pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
     let leaderboard_runs = leaderboard(runs);
 
+    let _runs_by_level = runs
+        .iter()
+        .map(|run| (run.level_id.clone(), run))
+        .into_group_map();
+
     leaderboard_runs
         .into_iter()
         .map(|lr| ProgressionRun {
-            improvement_ms:  0,
+            progress_ms:     0,
             run:             lr.run().clone(),
             leaderboard_run: lr,
         })

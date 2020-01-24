@@ -756,7 +756,7 @@
         "description": null,
         "fields": [
           {
-            "name": "improvementMs",
+            "name": "progressMs",
             "description": null,
             "args": [],
             "type": {
