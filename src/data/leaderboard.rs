@@ -19,11 +19,21 @@ pub struct LeaderboardRun {
 /// timing specified for the game rules, then by run date, then by
 /// submission datetime, discarding lower-ranked runs by the same runner.
 pub fn leaderboard(runs: &[Linked<Run>]) -> Vec<LeaderboardRun> {
-    let mut runs: Vec<Linked<Run>> = runs.to_vec();
-
     if runs.is_empty() {
         return vec![]
     }
+
+    let mut runs: Vec<Linked<Run>> = runs.to_vec();
+
+    let game_id = runs[0].game_id;
+    let category_id = runs[0].category_id;
+    let level_id = runs[0].level_id;
+    assert!(
+        runs.iter().all(|r| r.game_id == game_id
+            && r.category_id == category_id
+            && r.level_id == level_id),
+        "runs must all be from same game and category and level"
+    );
 
     let game = runs[0].game();
 
