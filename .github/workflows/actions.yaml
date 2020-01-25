@@ -66,13 +66,10 @@ jobs:
         with:
           toolchain: ${{ steps.env.outputs.rust }}
 
-      - name: setup - install node
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ steps.env.outputs.node }}
-
       - name: setup - install node dependencies
-        run: yarn install
+        run: |
+          node install -g yarn@berry
+          yarn install
 
       - name: test - cargo build
         uses: actions-rs/cargo@v1
