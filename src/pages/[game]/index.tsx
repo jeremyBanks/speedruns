@@ -9,7 +9,7 @@ import AutoColor from "../../pages-lib/auto-color";
 import Duration from "../../pages-lib/duration";
 import * as schema from "../../pages-lib/schema";
 import styles from "../../pages-lib/styles.module.scss";
-import { withApollo } from "../../pages-lib/with-apollo";
+import { withApollo, DEBUG } from "../../pages-lib/with-apollo";
 import Head from "next/head";
 
 const GamePage: NextPage = () => {
@@ -17,6 +17,8 @@ const GamePage: NextPage = () => {
 
   const { loading, error, data } = useQuery<schema.GetGamePage>(GetGamePage, {
     variables: { slug: router.query.game },
+    fetchPolicy: DEBUG ? "no-cache" : "cache-and-network",
+    pollInterval: DEBUG ? 4000 : undefined,
   });
 
   if (!data) {
