@@ -89,6 +89,9 @@ jobs:
       - name: bot - code formatting
         run: yarn format
 
+      - name: bot - automatic fixes
+        run: yarn fix
+
       - name: bot - commit any changes as autofix
         continue-on-error: true
         env:
