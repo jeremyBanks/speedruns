@@ -44,13 +44,16 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
     let mut progression: Vec<ProgressionRun> = Vec::new();
 
     for (_level_id, runs) in runs_by_level {
-        let mut leaderboard_runs = leaderboard(&runs.to_vec());
-        leaderboard_runs.sort_by(|a, b| {
+        let mut runs_by_date = leaderboard(&runs.to_vec());
+        runs_by_date.sort_by(|a, b| {
             a.run()
                 .date()
                 .cmp(&b.run().date())
                 .then(a.run().created().cmp(&b.run().created()))
         });
+
+        // collect all runs which are progress
+        // don't need to worry about sum time yet!
     }
 
     // let runs: Vec<Linked<Run>> = runs.to_vec();
