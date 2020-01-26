@@ -47,7 +47,7 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
     for (_level_id, runs) in runs_by_level {
         let mut last_ms: Option<u64> = None;
 
-        let mut leaderboard_runs = leaderboard(&runs.to_vec(), false);
+        let _leaderboard_runs = leaderboard(&runs.to_vec(), false);
 
         for run in runs.iter() {
             let is_progress;
