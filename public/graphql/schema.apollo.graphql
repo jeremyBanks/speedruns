@@ -190,7 +190,7 @@ type Player {
 }
 
 type ProgressionRun {
-  improvementMs: Int!
+  progressMs: Int!
   run: Run!
   leaderboardRun: LeaderboardRun
 }
