@@ -66,10 +66,10 @@ const GamePage: NextPage = () => {
                 <tr
                   key={progress.run.id}
                   data-id={progress.run.id}
-                  data-rank={progress.leaderboardRun?.tiedRank ?? "obsolete"}
+                  data-rank={progress.leaderboardRun?.tiedRank ?? "-"}
                 >
                   <td className={styles.rank}>
-                    {progress.leaderboardRun?.tiedRank ?? "obsolete"}
+                    {progress.leaderboardRun?.tiedRank ?? "-"}
                   </td>
                   <td className={styles.player}>
                     <AutoColor>
@@ -84,7 +84,11 @@ const GamePage: NextPage = () => {
                     </a>
                   </td>
                   <td className={styles.progress}>
-                    <Duration ms={progress.progressMs} />
+                    {progress.progressMs ? (
+                      <Duration ms={progress.progressMs} />
+                    ) : (
+                      "-"
+                    )}
                   </td>
                   <td className={styles.date}>
                     <AutoColor>

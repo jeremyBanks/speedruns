@@ -1,7 +1,4 @@
-#![warn(
-    clippy::option_unwrap_used,
-    clippy::result_unwrap_used
-)]
+#![warn(clippy::option_unwrap_used, clippy::result_unwrap_used)]
 
 use std::{convert::TryFrom, sync::Arc};
 
@@ -195,8 +192,7 @@ impl RunFields for Run {
     }
 
     fn field_time_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
-        (i32::try_from(self.0.time_ms().expect("must have primary timing"))
-            .expect("impossibly long wrong"))
+        (i32::try_from(self.0.time_ms()).expect("impossibly long run"))
     }
 
     fn field_category(
@@ -277,7 +273,7 @@ impl ProgressionRunFields for ProgressionRun {
     }
 
     fn field_progress_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
-        (i32::try_from(*self.0.progress_ms()).expect("impossibly long wrong"))
+        (i32::try_from(*self.0.progress_ms()).expect("impossibly long run"))
     }
 
     fn field_leaderboard_run(
@@ -285,7 +281,10 @@ impl ProgressionRunFields for ProgressionRun {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
     ) -> Option<LeaderboardRun> {
-        Some(LeaderboardRun(self.0.leaderboard_run().clone()))
+        self.0
+            .leaderboard_run()
+            .as_ref()
+            .map(|lr| LeaderboardRun(lr.clone()))
     }
 }
 
@@ -332,7 +331,7 @@ impl CategoryFields for Category {
             .cloned()
             .collect();
 
-        let ranked = leaderboard::leaderboard(&runs);
+        let ranked = leaderboard::leaderboard(&runs, false);
 
         (ranked.iter().map(|r| LeaderboardRun(r.clone())).collect())
     }
@@ -473,7 +472,7 @@ impl LevelFields for Level {
             .cloned()
             .collect();
 
-        let ranked = leaderboard::leaderboard(&runs);
+        let ranked = leaderboard::leaderboard(&runs, false);
 
         (ranked.iter().map(|r| LeaderboardRun(r.clone())).collect())
     }
