@@ -207,7 +207,7 @@ type LeaderboardRun {
 }
 
 type ProgressionRun {
-  improvementMs: Int! @juniper(ownership: "owned", infallible: true)
+  progressMs: Int! @juniper(ownership: "owned", infallible: true)
   run: Run! @juniper(ownership: "owned", infallible: true)
   leaderboardRun: LeaderboardRun @juniper(ownership: "owned", infallible: true)
 }

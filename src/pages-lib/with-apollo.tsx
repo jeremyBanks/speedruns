@@ -12,7 +12,7 @@ const onNode = typeof window === "undefined";
 const onNodeDev = onNode && process.env.NODE_ENV === "development";
 const inBrowser = !onNode;
 const inBrowserDev = inBrowser && window.location.protocol !== "https:";
-const DEBUG = inBrowserDev || onNodeDev;
+export const DEBUG = inBrowserDev || onNodeDev;
 
 export const GRAPHQL_ENDPOINT = DEBUG
   ? "http://localhost:3001/graphql"
@@ -35,12 +35,12 @@ const getApolloClient = (
       cache,
       defaultOptions: {
         query: {
-          fetchPolicy: policy as any,
+          fetchPolicy: policy,
         },
         watchQuery: {
           fetchPolicy: policy,
         },
-      },
+      } as any,
       link: new HttpLink({ uri: GRAPHQL_ENDPOINT, fetch }),
       ssrMode: onNode,
     });
