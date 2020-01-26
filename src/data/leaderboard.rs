@@ -17,8 +17,9 @@ pub struct LeaderboardRun {
 
 /// Ranks a set of runs (all for the same game/category/level) using the
 /// timing specified for the game rules, then by run date, then by
-/// submission datetime, discarding lower-ranked runs by the same runner.
-pub fn leaderboard(runs: &[Linked<Run>]) -> Vec<LeaderboardRun> {
+/// submission datetime, discarding lower-ranked runs by the same runner
+/// unless rank_obsoletes is true.
+pub fn leaderboard(runs: &[Linked<Run>], rank_obsoletes: bool) -> Vec<LeaderboardRun> {
     if runs.is_empty() {
         return vec![]
     }
@@ -52,7 +53,7 @@ pub fn leaderboard(runs: &[Linked<Run>]) -> Vec<LeaderboardRun> {
 
     let mut n = 0;
     for run in runs.iter() {
-        if !ranked_players.insert(run.players()) {
+        if !rank_obsoletes && !ranked_players.insert(run.players()) {
             // this run is obsolete, skip it
             continue
         }

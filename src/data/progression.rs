@@ -15,7 +15,7 @@ use crate::data::{
 pub struct ProgressionRun {
     progress_ms:     u64,
     run:             Linked<Run>,
-    leaderboard_run: LeaderboardRun,
+    leaderboard_run: Option<LeaderboardRun>,
 }
 
 pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
@@ -38,19 +38,41 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
 
     let runs_by_level: HashMap<Option<u64>, Vec<Linked<Run>>> = runs
         .iter()
-        .map(|run| (run.level_id.clone(), run.clone()))
+        .sorted_by(|a, b| a.date().cmp(&b.date()).then(a.created().cmp(&b.created())))
+        .map(|run| (run.level_id, run.clone()))
         .into_group_map();
 
     let mut progression: Vec<ProgressionRun> = Vec::new();
 
     for (_level_id, runs) in runs_by_level {
-        let mut runs_by_date = leaderboard(&runs.to_vec());
-        runs_by_date.sort_by(|a, b| {
-            a.run()
-                .date()
-                .cmp(&b.run().date())
-                .then(a.run().created().cmp(&b.run().created()))
-        });
+        let mut last_ms: Option<u64> = None;
+
+        let mut leaderboard_runs = leaderboard(&runs.to_vec(), false);
+
+        for run in runs.iter() {
+            let is_progress;
+            let mut progress_ms = 0;
+            match last_ms {
+                None => {
+                    is_progress = true;
+                }
+                Some(last_ms) => {
+                    is_progress = run.time_ms() < last_ms;
+                    if is_progress {
+                        progress_ms = last_ms - run.time_ms();
+                    }
+                }
+            }
+
+            if is_progress {
+                progression.push(ProgressionRun {
+                    progress_ms,
+                    run: run.clone(),
+                    leaderboard_run: None,
+                })
+            }
+            last_ms = Some(run.time_ms());
+        }
 
         // collect all runs which are progress
         // don't need to worry about sum time yet!
@@ -70,12 +92,8 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
     //     // progression.push(new);
     // }
 
-    progression.sort_by(|a, b| {
-        a.run()
-            .date()
-            .cmp(&b.run().date())
-            .then(a.run().created().cmp(&b.run().created()))
-    });
+    // we actually want it reverse-chronologial
+    progression.reverse();
 
     progression
 }
