@@ -31,11 +31,6 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
         "runs must all be from same game and category"
     );
 
-    assert!(
-        runs.iter().all(|r| r.level_id == None),
-        "levels not supported yet"
-    );
-
     let runs_by_level: HashMap<Option<u64>, Vec<Linked<Run>>> = runs
         .iter()
         .sorted_by(|a, b| a.date().cmp(&b.date()).then(a.created().cmp(&b.created())))
@@ -45,21 +40,25 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
     let mut progression: Vec<ProgressionRun> = Vec::new();
 
     for (_level_id, runs) in runs_by_level {
-        let mut last_ms: Option<u64> = None;
+        let mut best_ms: Option<u64> = None;
 
-        let _leaderboard_runs = leaderboard(&runs.to_vec(), false);
+        let mut leaderboard_runs_by_id: HashMap<u64, LeaderboardRun> = HashMap::new();
+        for leaderboard_run in leaderboard(&runs.to_vec(), false) {
+            let id = *leaderboard_run.run().id();
+            leaderboard_runs_by_id.insert(id, leaderboard_run);
+        }
 
         for run in runs.iter() {
             let is_progress;
             let mut progress_ms = 0;
-            match last_ms {
+            match best_ms {
                 None => {
                     is_progress = true;
                 }
-                Some(last_ms) => {
-                    is_progress = run.time_ms() < last_ms;
+                Some(best_ms) => {
+                    is_progress = run.time_ms() < best_ms;
                     if is_progress {
-                        progress_ms = last_ms - run.time_ms();
+                        progress_ms = best_ms - run.time_ms();
                     }
                 }
             }
@@ -68,14 +67,11 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
                 progression.push(ProgressionRun {
                     progress_ms,
                     run: run.clone(),
-                    leaderboard_run: None,
-                })
+                    leaderboard_run: leaderboard_runs_by_id.remove(run.id()),
+                });
+                best_ms = Some(run.time_ms());
             }
-            last_ms = Some(run.time_ms());
         }
-
-        // collect all runs which are progress
-        // don't need to worry about sum time yet!
     }
 
     // let runs: Vec<Linked<Run>> = runs.to_vec();
@@ -92,8 +88,12 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
     //     // progression.push(new);
     // }
 
-    // we actually want it reverse-chronologial
-    progression.reverse();
-
+    // reverse-chronologial
+    progression.sort_by(|a, b| {
+        b.run
+            .date()
+            .cmp(&a.run.date())
+            .then(b.run.created().cmp(&a.run.created()))
+    });
     progression
 }
