@@ -2,8 +2,8 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import NoSSR from "react-no-ssr";
 
-import introspection from "../../../public/graphql/schema.json";
-import styles from "../../pages-lib/styles.module.scss";
+import introspection from "~/../public/graphql/schema.json";
+import styles from "~/components/styles.module.scss";
 
 const VoyagerPage: NextPage<{}> = () => (
   <NoSSR onSSR={<>Loading...</>}>

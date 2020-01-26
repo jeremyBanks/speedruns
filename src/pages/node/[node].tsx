@@ -1,13 +1,13 @@
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { NextPage } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
 
-import * as schema from "../../pages-lib/schema";
-import styles from "../../pages-lib/styles.module.scss";
-import { withApollo } from "../../pages-lib/with-apollo";
-import Head from "next/head";
+import * as schema from "~/components/schema";
+import styles from "~/components/styles.module.scss";
+import { withApollo } from "~/components/hooks/with-apollo";
 
 const NodePage: NextPage = () => {
   const router = useRouter();

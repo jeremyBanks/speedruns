@@ -1,6 +1,6 @@
 import React from "react";
 
-import styles from "./styles.module.scss";
+import styles from "~/components/styles.module.scss";
 
 export const Duration: React.FC<{ ms: number }> = ({ ms }) => {
   const msPart = ms % 1000;
