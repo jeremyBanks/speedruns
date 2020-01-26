@@ -497,7 +497,8 @@ impl LevelFields for Level {
             .runs()
             .iter()
             .filter(|run| {
-                Some(run.category_id) == category_id && run.level_id == Some(self.0.id)
+                run.level_id == Some(self.0.id)
+                    && (category_id == None || Some(run.category_id) == category_id)
             })
             .cloned()
             .collect();

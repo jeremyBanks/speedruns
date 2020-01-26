@@ -66,10 +66,10 @@ const GamePage: NextPage = () => {
                 <tr
                   key={progress.run.id}
                   data-id={progress.run.id}
-                  data-rank={progress.leaderboardRun?.tiedRank ?? "-"}
+                  data-rank={progress.leaderboardRun?.rank ?? "-"}
                 >
                   <td className={styles.rank}>
-                    {progress.leaderboardRun?.tiedRank ?? "-"}
+                    {progress.leaderboardRun?.rank ?? "-"}
                   </td>
                   <td className={styles.player}>
                     <AutoColor>
@@ -255,6 +255,63 @@ const GamePage: NextPage = () => {
           <h4>
             <a href={`#${level.id}`}>{level.name}</a>
           </h4>
+
+          <h3>Record Progression</h3>
+
+          <table className={styles.progression}>
+            <thead>
+              <tr>
+                <th className={styles.rank}>Rank</th>
+                <th className={styles.player}>Player</th>
+                <th className={styles.time}>Time (RTA)</th>
+                <th className={styles.progress}>Progress</th>
+                <th className={styles.date}>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {level.progression.map(progress => (
+                <tr
+                  key={progress.run.id}
+                  data-id={progress.run.id}
+                  data-rank={progress.leaderboardRun?.rank ?? "-"}
+                >
+                  <td className={styles.rank}>
+                    {progress.leaderboardRun?.rank ?? "-"}
+                  </td>
+                  <td className={styles.player}>
+                    <AutoColor>
+                      {progress.run.players.map(p => p.name).join(" & ")}
+                    </AutoColor>
+                  </td>
+                  <td className={styles.time}>
+                    <a
+                      href={`https://www.speedrun.com/${game.srcSlug}/run/${progress.run.srcId}`}
+                    >
+                      <Duration ms={progress.run.timeMs} />
+                    </a>
+                  </td>
+                  <td className={styles.progress}>
+                    {progress.progressMs ? (
+                      <Duration ms={progress.progressMs} />
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                  <td className={styles.date}>
+                    <AutoColor>
+                      {String(
+                        (progress.run.date &&
+                          new Date(progress.run.date * 1000)
+                            .toISOString()
+                            .slice(0, "YYYY-MM-DD".length)) ||
+                          "",
+                      )}
+                    </AutoColor>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ))}
     </section>
@@ -358,6 +415,15 @@ const GetGamePage = gql`
         slug
         srcSlug
         name
+        progression {
+          progressMs
+          run {
+            ...GameRun
+          }
+          leaderboardRun {
+            ...GameLeaderboardRun
+          }
+        }
       }
     }
   }
