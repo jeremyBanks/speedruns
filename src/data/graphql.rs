@@ -314,7 +314,7 @@ impl CategoryFields for Category {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
         level_slug: Option<String>,
-        _include_obsolete: bool,
+        include_obsolete: bool,
     ) -> Vec<LeaderboardRun> {
         let level_id = level_slug.map(|level_slug| {
             self.0
@@ -331,7 +331,7 @@ impl CategoryFields for Category {
             .cloned()
             .collect();
 
-        let ranked = leaderboard::leaderboard(&runs, false);
+        let ranked = leaderboard::leaderboard(&runs, include_obsolete);
 
         (ranked.iter().map(|r| LeaderboardRun(r.clone())).collect())
     }
@@ -452,7 +452,7 @@ impl LevelFields for Level {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
         category_slug: Option<String>,
-        _include_obsolete: bool,
+        include_obsolete: bool,
     ) -> Vec<LeaderboardRun> {
         let category_id = category_slug.map(|category_slug| {
             self.0
@@ -467,12 +467,13 @@ impl LevelFields for Level {
             .runs()
             .iter()
             .filter(|run| {
-                Some(run.category_id) == category_id && run.level_id == Some(self.0.id)
+                run.level_id == Some(self.0.id)
+                    && (category_id == None || Some(run.category_id) == category_id)
             })
             .cloned()
             .collect();
 
-        let ranked = leaderboard::leaderboard(&runs, false);
+        let ranked = leaderboard::leaderboard(&runs, include_obsolete);
 
         (ranked.iter().map(|r| LeaderboardRun(r.clone())).collect())
     }
