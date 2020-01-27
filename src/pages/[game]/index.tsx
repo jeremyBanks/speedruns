@@ -1,16 +1,16 @@
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import React from "react";
 
-import Link from "next/link";
-import AutoColor from "../../components/auto-color";
-import Duration from "../../components/duration";
-import * as schema from "../../components/schema";
-import styles from "../../components/styles.module.scss";
-import { withApollo, DEBUG } from "../../components/with-apollo";
-import Head from "next/head";
+import AutoColor from "~/components/auto-color";
+import Duration from "~/components/duration";
+import * as schema from "~/components/schema";
+import styles from "~/components/styles.module.scss";
+import { withApollo, DEBUG } from "~/components/hooks/with-apollo";
 
 const GamePage: NextPage = () => {
   const router = useRouter();

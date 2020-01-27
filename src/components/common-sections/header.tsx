@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-import styles from "./styles.module.scss";
+import styles from "~/components/styles.module.scss";
 
 // XXX: This link doesn't seem to be handled by Next, but that might be
 // this issue which is apparently fixed in the next release:

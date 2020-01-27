@@ -2,8 +2,8 @@ import { NextPage } from "next";
 import Link from "next/link";
 import React from "react";
 
-import styles from "../components/styles.module.scss";
-import { GRAPHQL_ENDPOINT, withApollo } from "../components/with-apollo";
+import styles from "~/components/styles.module.scss";
+import { GRAPHQL_ENDPOINT, withApollo } from "~/components/hooks/with-apollo";
 
 export const HomePage: NextPage<{}> = () => (
   <section className={styles.home}>
