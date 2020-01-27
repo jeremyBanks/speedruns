@@ -23,7 +23,7 @@ use crate::{
 
 mod global_id;
 
-graphql_schema_from_file!("public/graphql/schema.graphql");
+graphql_schema_from_file!("src/lib/data/graphql/schema.juniper.graphql");
 
 pub fn schema() -> Schema {
     Schema::new(Speedruns {}, Speedruns {})
@@ -114,7 +114,7 @@ impl GameFields for Game {
     }
 
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        (self.0.slug.clone())
+        self.0.slug.clone()
     }
 
     fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
@@ -126,7 +126,7 @@ impl GameFields for Game {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Run, Walked>,
     ) -> Vec<Run> {
-        (self.0.runs().iter().map(|run| Run(run.clone())).collect())
+        self.0.runs().iter().map(|run| Run(run.clone())).collect()
     }
 
     fn field_levels(
@@ -151,7 +151,7 @@ impl GameFields for Game {
         _trail: &QueryTrail<'_, Category, Walked>,
     ) -> Vec<Category> {
         // TODO: not a full table scan
-        (executor
+        executor
             .context()
             .database
             .categories()
@@ -160,7 +160,7 @@ impl GameFields for Game {
             })
             .sorted_by(|a, b| (&a.name, a.id).cmp(&(&b.name, b.id)))
             .map(Category)
-            .collect())
+            .collect()
     }
 
     fn field_level_categories(
@@ -169,7 +169,7 @@ impl GameFields for Game {
         _trail: &QueryTrail<'_, Category, Walked>,
     ) -> Vec<Category> {
         // TODO: not a full table scan
-        (executor
+        executor
             .context()
             .database
             .categories()
@@ -178,7 +178,7 @@ impl GameFields for Game {
             })
             .sorted_by(|a, b| (&a.name, a.id).cmp(&(&b.name, b.id)))
             .map(Category)
-            .collect())
+            .collect()
     }
 }
 
@@ -192,7 +192,7 @@ impl RunFields for Run {
     }
 
     fn field_time_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
-        (i32::try_from(self.0.time_ms()).expect("impossibly long run"))
+        i32::try_from(self.0.time_ms()).expect("impossibly long run")
     }
 
     fn field_category(
@@ -251,15 +251,15 @@ impl LeaderboardRunFields for LeaderboardRun {
     }
 
     fn field_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
-        (i32::try_from(*self.0.rank()).expect("impossible number of runs"))
+        i32::try_from(*self.0.rank()).expect("impossible number of runs")
     }
 
     fn field_is_tied(&self, _executor: &Executor<'_, Context>) -> bool {
-        (*self.0.is_tied())
+        *self.0.is_tied()
     }
 
     fn field_tied_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
-        (i32::try_from(*self.0.tied_rank()).expect("impossible number of runs"))
+        i32::try_from(*self.0.tied_rank()).expect("impossible number of runs")
     }
 }
 
@@ -269,11 +269,11 @@ impl ProgressionRunFields for ProgressionRun {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Run, Walked>,
     ) -> Run {
-        (Run(self.0.run().clone()))
+        Run(self.0.run().clone())
     }
 
     fn field_progress_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
-        (i32::try_from(*self.0.progress_ms()).expect("impossibly long run"))
+        i32::try_from(*self.0.progress_ms()).expect("impossibly long run")
     }
 
     fn field_leaderboard_run(
@@ -298,11 +298,11 @@ impl CategoryFields for Category {
     }
 
     fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
-        (self.0.name.clone())
+        self.0.name.clone()
     }
 
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        (self.0.slug.clone())
+        self.0.slug.clone()
     }
 
     fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
@@ -333,7 +333,7 @@ impl CategoryFields for Category {
 
         let ranked = leaderboard::leaderboard(&runs, include_obsolete);
 
-        (ranked.iter().map(|r| LeaderboardRun(r.clone())).collect())
+        ranked.iter().map(|r| LeaderboardRun(r.clone())).collect()
     }
 
     fn field_progression(
@@ -360,7 +360,7 @@ impl CategoryFields for Category {
 
         let progress = progression::progression(&runs);
 
-        (progress.iter().map(|r| ProgressionRun(r.clone())).collect())
+        progress.iter().map(|r| ProgressionRun(r.clone())).collect()
     }
 }
 
@@ -374,7 +374,7 @@ impl UserFields for User {
     }
 
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        (self.0.slug.clone())
+        self.0.slug.clone()
     }
 
     fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
@@ -384,10 +384,10 @@ impl UserFields for User {
 
 impl PlayerFields for Player {
     fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
-        (match self {
+        match self {
             Player::User(user) => user.0.name.clone(),
             Player::Guest(name) => name.clone(),
-        })
+        }
     }
 
     fn field_user(
@@ -395,17 +395,17 @@ impl PlayerFields for Player {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, User, Walked>,
     ) -> Option<User> {
-        (match self {
+        match self {
             Player::User(user) => Some(user.clone()),
             Player::Guest(_name) => None,
-        })
+        }
     }
 
     fn field_is_guest(&self, _executor: &Executor<'_, Context>) -> bool {
-        (match self {
+        match self {
             Player::User(_user) => false,
             Player::Guest(_name) => true,
-        })
+        }
     }
 }
 
@@ -419,11 +419,11 @@ impl LevelFields for Level {
     }
 
     fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
-        (self.0.name.clone())
+        self.0.name.clone()
     }
 
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        (self.0.slug.clone())
+        self.0.slug.clone()
     }
 
     fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
@@ -436,7 +436,7 @@ impl LevelFields for Level {
         _trail: &QueryTrail<'_, Category, Walked>,
     ) -> Vec<Category> {
         // TODO: not a full table scan
-        (executor
+        executor
             .context()
             .database
             .categories()
@@ -444,7 +444,7 @@ impl LevelFields for Level {
                 category.game_id == self.0.id && category.per == db::CategoryType::PerLevel
             })
             .map(Category)
-            .collect())
+            .collect()
     }
 
     fn field_leaderboard(
@@ -475,7 +475,7 @@ impl LevelFields for Level {
 
         let ranked = leaderboard::leaderboard(&runs, include_obsolete);
 
-        (ranked.iter().map(|r| LeaderboardRun(r.clone())).collect())
+        ranked.iter().map(|r| LeaderboardRun(r.clone())).collect()
     }
 
     fn field_progression(
@@ -506,6 +506,6 @@ impl LevelFields for Level {
 
         let progress = progression::progression(&runs);
 
-        (progress.iter().map(|r| ProgressionRun(r.clone())).collect())
+        progress.iter().map(|r| ProgressionRun(r.clone())).collect()
     }
 }

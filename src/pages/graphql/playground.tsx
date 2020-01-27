@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import NoSSR from "react-no-ssr";
 import { Provider } from "react-redux";
 
-import styles from "../../components/styles.module.scss";
-import { GRAPHQL_ENDPOINT } from "../../components/with-apollo";
+import styles from "~/components/styles.module.scss";
+import { GRAPHQL_ENDPOINT } from "~/components/hooks/with-apollo";
 
 const PlaygroundPage: NextPage<{}> = () => (
   <NoSSR onSSR={<>Loading...</>}>

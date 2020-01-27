@@ -4,7 +4,8 @@
     "arrow-parens": ["error", "as-needed"],
     "no-submodule-imports": false,
     "no-shadowed-variable": false,
-    "no-console": false
+    "no-console": false,
+    "no-implicit-dependencies": [true, ["~"]]
   },
   "linterOptions": {
     "exclude": ["src/bests/**/*"]
