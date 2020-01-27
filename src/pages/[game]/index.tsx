@@ -61,7 +61,13 @@ const GamePage: NextPage = () => {
 
       <h2>Individual Levels</h2>
 
-      <ProgressionTable runs={[]} showLevels={true} showSums={true} />
+      {game.levelCategories.map(levelCategory => (
+        <ProgressionTable
+          runs={levelCategory.progression}
+          showLevels={true}
+          showSums={true}
+        />
+      ))}
 
       {game.levels.map(level => (
         <div key={level.id} id={level.id}>
@@ -157,6 +163,24 @@ const GetGamePage = gql`
       srcSlug
       name
       gameCategories {
+        id
+        srcId
+        srcSlug
+        name
+        leaderboard {
+          ...GameLeaderboardRun
+        }
+        progression {
+          progressMs
+          run {
+            ...GameRun
+          }
+          leaderboardRun {
+            ...GameLeaderboardRun
+          }
+        }
+      }
+      levelCategories {
         id
         srcId
         srcSlug
