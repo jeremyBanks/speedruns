@@ -5,11 +5,11 @@ import { useRouter } from "next/router";
 import React from "react";
 
 import Link from "next/link";
-import AutoColor from "../../pages-lib/auto-color";
-import Duration from "../../pages-lib/duration";
-import * as schema from "../../pages-lib/schema";
-import styles from "../../pages-lib/styles.module.scss";
-import { withApollo, DEBUG } from "../../pages-lib/with-apollo";
+import AutoColor from "../../components/auto-color";
+import Duration from "../../components/duration";
+import * as schema from "../../components/schema";
+import styles from "../../components/styles.module.scss";
+import { withApollo, DEBUG } from "../../components/with-apollo";
 import Head from "next/head";
 
 const GamePage: NextPage = () => {

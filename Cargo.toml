@@ -6,17 +6,23 @@ version = "0.20.20"
 
 default-run = "serve"
 
+[workspace]
+
 [lib]
 name = "speedruns"
+path = "src/lib/speedruns.rs"
 
 [[bin]]
 name = "normalize"
+path = "src/bin/normalize.rs"
 
 [[bin]]
 name = "scrape"
+path = "src/bin/scrape.rs"
 
 [[bin]]
 name = "serve"
+path = "src/bin/serve.rs"
 
 [dependencies]
 actix = "0.9.0"
