@@ -18,11 +18,7 @@ const LeaderboardTable: React.FC<{
     </thead>
     <tbody>
       {runs.map(leaderboardRun => (
-        <tr
-          key={leaderboardRun.run.id}
-          data-id={leaderboardRun.run.id}
-          data-rank={leaderboardRun?.rank ?? "-"}
-        >
+        <tr key={leaderboardRun.run.id} data-rank={leaderboardRun?.rank ?? "-"}>
           <td className={styles.rank}>{leaderboardRun?.rank ?? "-"}</td>
           <td className={styles.player}>
             <RunPlayers players={leaderboardRun.run.players} />

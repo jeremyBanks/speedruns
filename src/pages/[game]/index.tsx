@@ -53,11 +53,7 @@ const GamePage: NextPage = () => {
             <a href={`#${category.id}`}>{category.name}</a>
           </h2>
 
-          <h3>Progression</h3>
-
           <ProgressionTable runs={category.progression} />
-
-          <h3>Leaderboard</h3>
 
           <LeaderboardTable runs={category.leaderboard} />
         </div>
@@ -65,108 +61,15 @@ const GamePage: NextPage = () => {
 
       <h2>Individual Levels</h2>
 
-      <h3>Progression</h3>
-
-      <table className={styles.progression}>
-        <thead>
-          <tr>
-            <th className={styles.level}>Level</th>
-            <th className={styles.rank}>Rank</th>
-            <th className={styles.player}>Player</th>
-            <th className={styles.time}>
-              Time (RTA) /
-              <br />
-              Sum Time
-            </th>
-            <th className={styles.progress}>Progress</th>
-            <th className={styles.date}>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr data-rank="1">
-            <td className={styles.level}>
-              <AutoColor>Orc 01: And So On</AutoColor>
-            </td>
-            <td className={styles.rank}>1</td>
-            <td className={styles.player}>
-              <AutoColor>ZPR</AutoColor>
-            </td>
-            <td className={styles.time}>
-              1m 31s /<br />
-              1h 2m 32s
-            </td>
-            <td className={styles.progress}>2s</td>
-            <td className={styles.date}>
-              <AutoColor>2018-12Dec-18</AutoColor>
-            </td>
-          </tr>
-          <tr data-rank="1">
-            <td className={styles.level}>
-              <AutoColor>Orc 02: They Let On</AutoColor>
-            </td>
-            <td className={styles.rank}>1</td>
-            <td className={styles.player}>
-              <AutoColor>ZPR</AutoColor>
-            </td>
-            <td className={styles.time}>
-              1m 32s /<br />
-              1h 2m 32s
-            </td>
-            <td className={styles.progress}>0.842s</td>
-            <td className={styles.date}>
-              <AutoColor>2018-12Dec-18</AutoColor>
-            </td>
-          </tr>
-          <tr data-rank="2">
-            <td className={styles.level}>
-              <AutoColor>Orc 01: And So On</AutoColor>
-            </td>
-            <td className={styles.rank}>2</td>
-            <td className={styles.player}>
-              <AutoColor>Banks</AutoColor>
-            </td>
-            <td className={styles.time}>
-              1m 31s /<br />
-              1h 2m 32s
-            </td>
-            <td className={styles.progress}>1s</td>
-            <td className={styles.date}>
-              <AutoColor>2018-12Dec-12</AutoColor>
-            </td>
-          </tr>
-          <tr data-rank="1">
-            <td className={styles.level}>
-              <AutoColor>Orc 04: To The One</AutoColor>
-            </td>
-            <td className={styles.rank}>1</td>
-            <td className={styles.player}>
-              <AutoColor>Fralor</AutoColor>
-            </td>
-            <td className={styles.time}>
-              1m 31s /<br />
-              1h 2m 32s
-            </td>
-            <td className={styles.progress}>8s</td>
-            <td className={styles.date}>
-              <AutoColor>2018-11Nov-12</AutoColor>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h3>Leaderboards</h3>
+      <ProgressionTable runs={[]} showLevels={true} showSums={true} />
 
       {game.levels.map(level => (
         <div key={level.id} id={level.id}>
-          <h4>
+          <h3>
             <a href={`#${level.id}`}>{level.name}</a>
-          </h4>
-
-          <h3>Progression</h3>
+          </h3>
 
           <ProgressionTable runs={level.progression} />
-
-          <h3>Leaderboard</h3>
 
           <LeaderboardTable runs={level.leaderboard} />
         </div>
@@ -185,10 +88,13 @@ const GameRun = gql`
     category {
       id
       srcId
+      name
     }
     level {
       id
       srcId
+      srcSlug
+      name
     }
     date
     players {
@@ -217,10 +123,13 @@ const GameLeaderboardRun = gql`
       category {
         id
         srcId
+        name
       }
       level {
         id
         srcId
+        srcSlug
+        name
       }
       date
       players {
@@ -250,7 +159,6 @@ const GetGamePage = gql`
       gameCategories {
         id
         srcId
-        slug
         srcSlug
         name
         leaderboard {
@@ -269,7 +177,6 @@ const GetGamePage = gql`
       levels {
         id
         srcId
-        slug
         srcSlug
         name
         leaderboard {
