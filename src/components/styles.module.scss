@@ -190,6 +190,9 @@ html.document {
     border-collapse: collapse;
     margin: auto;
 
+    border-bottom: 3px double #f8f8f8;
+    margin-bottom: 32px;
+
     th {
       font: 10px sans-serif;
       color: grey;
@@ -207,6 +210,8 @@ html.document {
 
     .level {
       text-align: center;
+      font-size: 8px;
+      width: 100px;
     }
 
     td.rank {
@@ -227,14 +232,19 @@ html.document {
       }
     }
 
-    .time {
-      text-align: center;
-      width: 80px;
+    .time,
+    .progress {
+      width: 100px;
     }
 
-    .progress {
+    th.time,
+    th.progress {
       text-align: center;
-      width: 40px;
+    }
+
+    td.time,
+    td.progress {
+      text-align: right;
     }
 
     .date {

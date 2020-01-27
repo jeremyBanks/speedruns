@@ -27,7 +27,7 @@ export const RunDuration: React.FC<{ ms: number }> = ({ ms }) => {
 
     return <span className={styles.duration}>{pieces}</span>;
   } else {
-    return <>-</>;
+    return <span className={styles.duration}>{"-    "}</span>;
   }
 };
 
