@@ -256,7 +256,54 @@ const GamePage: NextPage = () => {
             <a href={`#${level.id}`}>{level.name}</a>
           </h4>
 
-          <h3>Record Progression</h3>
+          <table className={styles.leaderboard}>
+            <thead>
+              <tr>
+                <th className={styles.rank}>Rank</th>
+                <th className={styles.player}>Player</th>
+                <th className={styles.time}>Time (RTA)</th>
+                <th className={styles.date}>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {level.leaderboard.map(ranked => {
+                return (
+                  <tr
+                    key={ranked.run.id}
+                    data-id={ranked.run.id}
+                    data-rank={ranked.tiedRank}
+                  >
+                    <td className={styles.rank}>{ranked.tiedRank}</td>
+                    <td className={styles.player}>
+                      <AutoColor>
+                        {ranked.run.players.map(p => p.name).join(" & ")}
+                      </AutoColor>
+                    </td>
+                    <td className={styles.time}>
+                      <a
+                        href={`https://www.speedrun.com/${game.srcSlug}/run/${ranked.run.srcId}`}
+                      >
+                        <Duration ms={ranked.run.timeMs} />
+                      </a>
+                    </td>
+                    <td className={styles.date}>
+                      <AutoColor>
+                        {String(
+                          (ranked.run.date &&
+                            new Date(ranked.run.date * 1000)
+                              .toISOString()
+                              .slice(0, "YYYY-MM-DD".length)) ||
+                            "",
+                        )}
+                      </AutoColor>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          <h5>Record Progression</h5>
 
           <table className={styles.progression}>
             <thead>
@@ -415,6 +462,9 @@ const GetGamePage = gql`
         slug
         srcSlug
         name
+        leaderboard {
+          ...GameLeaderboardRun
+        }
         progression {
           progressMs
           run {
