@@ -22,8 +22,8 @@ const ProgressionTable: React.FC<{
         {showLevels ? <th className={styles.level}>Level</th> : null}
         {showCategories ? <th className={styles.category}>Category</th> : null}
         <th className={styles.date}>Date</th>
-        <th className={styles.time}>Time (RTA)</th>
         <th className={styles.progress}>Progress</th>
+        <th className={styles.time}>Time (RTA)</th>
         <th className={styles.player}>Player</th>
         <th className={styles.rank}>Rank</th>
       </tr>
@@ -39,7 +39,7 @@ const ProgressionTable: React.FC<{
               <AutoColor>{progress.run.level?.name}</AutoColor>
             </td>
           ) : null}
-          {showLevels ? (
+          {showCategories ? (
             <td className={styles.level}>
               <AutoColor>{progress.run.category?.name}</AutoColor>
             </td>
@@ -47,11 +47,11 @@ const ProgressionTable: React.FC<{
           <td className={styles.date}>
             <RunDate date={progress.run.date} />
           </td>
-          <td className={styles.time}>
-            <RunDuration ms={progress.run.timeMs} />
-          </td>
           <td className={styles.progress}>
             <RunDuration ms={progress.progressMs} />
+          </td>
+          <td className={styles.time}>
+            <RunDuration ms={progress.run.timeMs} />
           </td>
           <td className={styles.player}>
             <RunPlayers players={progress.run.players} />
