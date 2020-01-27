@@ -2388,10 +2388,10 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-autocannon@^4.4.2:
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/autocannon/-/autocannon-4.4.2.tgz#8e8054006860ba700575eb5e4c3fb6aebe589ec9"
-  integrity sha512-cEhTsw6XS5jiDgZ2YxMG0F6m7N9ktB+I9fDFjfdrJiH71RuTqhxOtBREI39oafvqJVQv4nyMq9ea2pSYtGwVzA==
+autocannon@^4.5.2:
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/autocannon/-/autocannon-4.5.2.tgz#93fdeed3a9773347f80a69945ded14d6cca81ba7"
+  integrity sha512-03oXhdwkR6L8MeRxlSM6ubrL6lIKv/+sdZQaeD+80LCWgaK7HrzWe0bcbBV7dFprbiAGSGlw4dLxpygQMDHOwQ==
   dependencies:
     chalk "^3.0.0"
     cli-table3 "^0.5.1"
@@ -2402,8 +2402,8 @@ autocannon@^4.4.2:
     has-async-hooks "^1.0.0"
     hdr-histogram-js "^1.1.4"
     hdr-histogram-percentiles-obj "^2.0.0"
-    http-parser-js "^0.5.1"
-    hyperid "^2.0.2"
+    http-parser-js "^0.5.2"
+    hyperid "^2.0.3"
     manage-path "^2.0.0"
     minimist "^1.2.0"
     on-net-listen "^1.1.1"
@@ -5984,7 +5984,7 @@ http-errors@~1.7.2:
     statuses ">= 1.5.0 < 2"
     toidentifier "1.0.0"
 
-http-parser-js@^0.5.1:
+http-parser-js@^0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/http-parser-js/-/http-parser-js-0.5.2.tgz#da2e31d237b393aae72ace43882dd7e270a8ff77"
   integrity sha512-opCO9ASqg5Wy2FNo7A0sxy71yGbbkJJXLdgMK04Tcypw9jr2MgWbyubb0+WdmDmGnFflO7fRbqbaihh/ENDlRQ==
@@ -6019,13 +6019,13 @@ https-proxy-agent@^2.2.1:
     agent-base "^4.3.0"
     debug "^3.1.0"
 
-hyperid@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/hyperid/-/hyperid-2.0.2.tgz#f56d898f810f0b737c81475803ea4b63515a92d5"
-  integrity sha512-D4krJfLyXZTZZibL5CEUJzyL001ah1TOK+5wlsra9eMnb0RtMZcBRkblxVRDwzB9VIm9PKXJ4zZtAisFCKuuKQ==
+hyperid@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/hyperid/-/hyperid-2.0.3.tgz#f3729f54d769a8473dda6471156f871827572a52"
+  integrity sha512-DjiKJrHehXuu0nDIY8Enzx5DohjoBuxL1wenzv5pQE6MsSp9tyBg/ziM2lxXXPu8L5DF02dsJgUrEQq1fJHVYQ==
   dependencies:
-    uuid "^3.3.2"
-    uuid-parse "^1.0.0"
+    uuid "^3.4.0"
+    uuid-parse "^1.1.0"
 
 hyperlinker@^1.0.0:
   version "1.0.0"
@@ -11701,7 +11701,7 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid-parse@^1.0.0:
+uuid-parse@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/uuid-parse/-/uuid-parse-1.1.0.tgz#7061c5a1384ae0e1f943c538094597e1b5f3a65b"
   integrity sha512-OdmXxA8rDsQ7YpNVbKSJkNzTw2I+S5WsbMDnCtIWSQaosNAcWtFuI/YK1TjzUI6nbkgiqEyh8gWngfcv8Asd9A==
@@ -11710,6 +11710,11 @@ uuid@^3.3.2:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
   integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
+
+uuid@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
+  integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
