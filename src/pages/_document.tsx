@@ -1,8 +1,8 @@
 import Document, { Head, Html, Main, NextScript } from "next/document";
 
-import Footer from "../pages-lib/footer";
-import Header from "../pages-lib/header";
-import styles from "../pages-lib/styles.module.scss";
+import Footer from "~/components/common-sections/footer";
+import Header from "~/components/common-sections/header";
+import styles from "~/components/styles.module.scss";
 
 class MyDocument extends Document {
   public render() {

@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = [
   require("@zeit/next-css"),
   require("@zeit/next-source-maps"),
@@ -51,6 +53,7 @@ module.exports = [
         use: ["@lcdev/toml-loader"],
       },
     );
+    config.resolve.alias["~"] = path.resolve("./src");
     return config;
   },
 });

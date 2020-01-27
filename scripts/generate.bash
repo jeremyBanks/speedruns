@@ -14,8 +14,8 @@ trap "kill $!" EXIT
 
 sleep 16
 
-apollo client:codegen --target typescript --outputFlat src/pages-lib/schema.ts
-apollo client:download-schema public/graphql/schema.json
-apollo client:download-schema public/graphql/schema.apollo.graphql
+apollo client:codegen --target typescript --outputFlat src/components/schema.ts
+get-graphql-schema http://localhost:3001/graphql --json > public/graphql/schema.json
+get-graphql-schema http://localhost:3001/graphql > public/graphql/schema.graphql
 cp -f node_modules/graphql-voyager/dist/voyager.worker.js public/graphql/voyager.worker.js
 cp -f node_modules/graphql-voyager/dist/voyager.css public/graphql/voyager.css

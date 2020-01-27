@@ -1,16 +1,16 @@
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import React from "react";
 
-import Link from "next/link";
-import AutoColor from "../../pages-lib/auto-color";
-import Duration from "../../pages-lib/duration";
-import * as schema from "../../pages-lib/schema";
-import styles from "../../pages-lib/styles.module.scss";
-import { withApollo, DEBUG } from "../../pages-lib/with-apollo";
-import Head from "next/head";
+import AutoColor from "~/components/auto-color";
+import Duration from "~/components/duration";
+import * as schema from "~/components/schema";
+import styles from "~/components/styles.module.scss";
+import { withApollo, DEBUG } from "~/components/hooks/with-apollo";
 
 const GamePage: NextPage = () => {
   const router = useRouter();
@@ -256,7 +256,54 @@ const GamePage: NextPage = () => {
             <a href={`#${level.id}`}>{level.name}</a>
           </h4>
 
-          <h3>Record Progression</h3>
+          <table className={styles.leaderboard}>
+            <thead>
+              <tr>
+                <th className={styles.rank}>Rank</th>
+                <th className={styles.player}>Player</th>
+                <th className={styles.time}>Time (RTA)</th>
+                <th className={styles.date}>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {level.leaderboard.map(ranked => {
+                return (
+                  <tr
+                    key={ranked.run.id}
+                    data-id={ranked.run.id}
+                    data-rank={ranked.tiedRank}
+                  >
+                    <td className={styles.rank}>{ranked.tiedRank}</td>
+                    <td className={styles.player}>
+                      <AutoColor>
+                        {ranked.run.players.map(p => p.name).join(" & ")}
+                      </AutoColor>
+                    </td>
+                    <td className={styles.time}>
+                      <a
+                        href={`https://www.speedrun.com/${game.srcSlug}/run/${ranked.run.srcId}`}
+                      >
+                        <Duration ms={ranked.run.timeMs} />
+                      </a>
+                    </td>
+                    <td className={styles.date}>
+                      <AutoColor>
+                        {String(
+                          (ranked.run.date &&
+                            new Date(ranked.run.date * 1000)
+                              .toISOString()
+                              .slice(0, "YYYY-MM-DD".length)) ||
+                            "",
+                        )}
+                      </AutoColor>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          <h5>Record Progression</h5>
 
           <table className={styles.progression}>
             <thead>
@@ -415,6 +462,9 @@ const GetGamePage = gql`
         slug
         srcSlug
         name
+        leaderboard {
+          ...GameLeaderboardRun
+        }
         progression {
           progressMs
           run {
