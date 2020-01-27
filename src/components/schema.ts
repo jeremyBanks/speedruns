@@ -16,6 +16,10 @@ export interface GetGamePage_game_gameCategories_leaderboard_run_category {
    * speedrun.com category ID
    */
   srcId: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGamePage_game_gameCategories_leaderboard_run_level {
@@ -28,6 +32,14 @@ export interface GetGamePage_game_gameCategories_leaderboard_run_level {
    * speedrun.com level ID
    */
   srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGamePage_game_gameCategories_leaderboard_run_players_user {
@@ -88,6 +100,10 @@ export interface GetGamePage_game_gameCategories_progression_run_category {
    * speedrun.com category ID
    */
   srcId: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGamePage_game_gameCategories_progression_run_level {
@@ -100,6 +116,14 @@ export interface GetGamePage_game_gameCategories_progression_run_level {
    * speedrun.com level ID
    */
   srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGamePage_game_gameCategories_progression_run_players_user {
@@ -152,6 +176,10 @@ export interface GetGamePage_game_gameCategories_progression_leaderboardRun_run_
    * speedrun.com category ID
    */
   srcId: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGamePage_game_gameCategories_progression_leaderboardRun_run_level {
@@ -164,6 +192,14 @@ export interface GetGamePage_game_gameCategories_progression_leaderboardRun_run_
    * speedrun.com level ID
    */
   srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGamePage_game_gameCategories_progression_leaderboardRun_run_players_user {
@@ -232,10 +268,6 @@ export interface GetGamePage_game_gameCategories {
    */
   srcId: string;
   /**
-   * URL slug used on speedruns.ca
-   */
-  slug: string;
-  /**
    * URL slug used on speedrun.com
    */
   srcSlug: string;
@@ -263,6 +295,10 @@ export interface GetGamePage_game_levels_leaderboard_run_category {
    * speedrun.com category ID
    */
   srcId: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGamePage_game_levels_leaderboard_run_level {
@@ -275,6 +311,14 @@ export interface GetGamePage_game_levels_leaderboard_run_level {
    * speedrun.com level ID
    */
   srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGamePage_game_levels_leaderboard_run_players_user {
@@ -335,6 +379,10 @@ export interface GetGamePage_game_levels_progression_run_category {
    * speedrun.com category ID
    */
   srcId: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGamePage_game_levels_progression_run_level {
@@ -347,6 +395,14 @@ export interface GetGamePage_game_levels_progression_run_level {
    * speedrun.com level ID
    */
   srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGamePage_game_levels_progression_run_players_user {
@@ -399,6 +455,10 @@ export interface GetGamePage_game_levels_progression_leaderboardRun_run_category
    * speedrun.com category ID
    */
   srcId: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGamePage_game_levels_progression_leaderboardRun_run_level {
@@ -411,6 +471,14 @@ export interface GetGamePage_game_levels_progression_leaderboardRun_run_level {
    * speedrun.com level ID
    */
   srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGamePage_game_levels_progression_leaderboardRun_run_players_user {
@@ -478,10 +546,6 @@ export interface GetGamePage_game_levels {
    * speedrun.com level ID
    */
   srcId: string;
-  /**
-   * URL slug used on speedruns.ca
-   */
-  slug: string;
   /**
    * URL slug used on speedrun.com
    */
@@ -680,12 +744,7 @@ export interface GetNodePage_node_Run {
   timeMs: number;
 }
 
-export type GetNodePage_node =
-  | GetNodePage_node_Game
-  | GetNodePage_node_User
-  | GetNodePage_node_Level
-  | GetNodePage_node_Category
-  | GetNodePage_node_Run;
+export type GetNodePage_node = GetNodePage_node_Game | GetNodePage_node_User | GetNodePage_node_Level | GetNodePage_node_Category | GetNodePage_node_Run;
 
 export interface GetNodePage {
   node: GetNodePage_node | null;
@@ -713,6 +772,10 @@ export interface GameRun_category {
    * speedrun.com category ID
    */
   srcId: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GameRun_level {
@@ -725,6 +788,14 @@ export interface GameRun_level {
    * speedrun.com level ID
    */
   srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GameRun_players_user {
@@ -785,6 +856,10 @@ export interface GameLeaderboardRun_run_category {
    * speedrun.com category ID
    */
   srcId: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GameLeaderboardRun_run_level {
@@ -797,6 +872,14 @@ export interface GameLeaderboardRun_run_level {
    * speedrun.com level ID
    */
   srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GameLeaderboardRun_run_players_user {
