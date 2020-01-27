@@ -7,7 +7,11 @@ import Head from "next/head";
 import React from "react";
 
 import AutoColor from "~/components/auto-color";
-import Duration from "~/components/duration";
+import RunDate from "~/components/run-date";
+import RunDuration from "~/components/run-duration";
+import RunPlayers from "~/components/run-players";
+import ProgressionTable from "~/components/progression-table";
+import LeaderboardTable from "~/components/leaderboard-table";
 import * as schema from "~/components/schema";
 import styles from "~/components/styles.module.scss";
 import { withApollo, DEBUG } from "~/components/hooks/with-apollo";
@@ -32,7 +36,7 @@ const GamePage: NextPage = () => {
   }
 
   return (
-    <section className={styles.gamePage} id={game.id} data-id={game.id}>
+    <section className={styles.gamePage} id={game.id}>
       <Head>
         <title>{game.name}</title>
       </Head>
@@ -44,122 +48,24 @@ const GamePage: NextPage = () => {
       </h1>
 
       {game.gameCategories.map(category => (
-        <div key={category.id} id={`${category.id}`} data-id={`${category.id}`}>
+        <div key={category.id} id={`${category.id}`}>
           <h2>
             <a href={`#${category.id}`}>{category.name}</a>
           </h2>
 
-          <h3>Record Progression</h3>
+          <h3>Progression</h3>
 
-          <table className={styles.progression}>
-            <thead>
-              <tr>
-                <th className={styles.rank}>Rank</th>
-                <th className={styles.player}>Player</th>
-                <th className={styles.time}>Time (RTA)</th>
-                <th className={styles.progress}>Progress</th>
-                <th className={styles.date}>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {category.progression.map(progress => (
-                <tr
-                  key={progress.run.id}
-                  data-id={progress.run.id}
-                  data-rank={progress.leaderboardRun?.rank ?? "-"}
-                >
-                  <td className={styles.rank}>
-                    {progress.leaderboardRun?.rank ?? "-"}
-                  </td>
-                  <td className={styles.player}>
-                    <AutoColor>
-                      {progress.run.players.map(p => p.name).join(" & ")}
-                    </AutoColor>
-                  </td>
-                  <td className={styles.time}>
-                    <a
-                      href={`https://www.speedrun.com/${game.srcSlug}/run/${progress.run.srcId}`}
-                    >
-                      <Duration ms={progress.run.timeMs} />
-                    </a>
-                  </td>
-                  <td className={styles.progress}>
-                    {progress.progressMs ? (
-                      <Duration ms={progress.progressMs} />
-                    ) : (
-                      "-"
-                    )}
-                  </td>
-                  <td className={styles.date}>
-                    <AutoColor>
-                      {String(
-                        (progress.run.date &&
-                          new Date(progress.run.date * 1000)
-                            .toISOString()
-                            .slice(0, "YYYY-MM-DD".length)) ||
-                          "",
-                      )}
-                    </AutoColor>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <ProgressionTable runs={category.progression} />
 
           <h3>Leaderboard</h3>
 
-          <table className={styles.leaderboard}>
-            <thead>
-              <tr>
-                <th className={styles.rank}>Rank</th>
-                <th className={styles.player}>Player</th>
-                <th className={styles.time}>Time (RTA)</th>
-                <th className={styles.date}>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {category.leaderboard.map(ranked => {
-                return (
-                  <tr
-                    key={ranked.run.id}
-                    data-id={ranked.run.id}
-                    data-rank={ranked.tiedRank}
-                  >
-                    <td className={styles.rank}>{ranked.tiedRank}</td>
-                    <td className={styles.player}>
-                      <AutoColor>
-                        {ranked.run.players.map(p => p.name).join(" & ")}
-                      </AutoColor>
-                    </td>
-                    <td className={styles.time}>
-                      <a
-                        href={`https://www.speedrun.com/${game.srcSlug}/run/${ranked.run.srcId}`}
-                      >
-                        <Duration ms={ranked.run.timeMs} />
-                      </a>
-                    </td>
-                    <td className={styles.date}>
-                      <AutoColor>
-                        {String(
-                          (ranked.run.date &&
-                            new Date(ranked.run.date * 1000)
-                              .toISOString()
-                              .slice(0, "YYYY-MM-DD".length)) ||
-                            "",
-                        )}
-                      </AutoColor>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <LeaderboardTable runs={category.leaderboard} />
         </div>
       ))}
 
       <h2>Individual Levels</h2>
 
-      <h3>Record Progression</h3>
+      <h3>Progression</h3>
 
       <table className={styles.progression}>
         <thead>
@@ -251,114 +157,18 @@ const GamePage: NextPage = () => {
       <h3>Leaderboards</h3>
 
       {game.levels.map(level => (
-        <div key={level.id} id={level.id} data-id={level.id}>
+        <div key={level.id} id={level.id}>
           <h4>
             <a href={`#${level.id}`}>{level.name}</a>
           </h4>
 
-          <table className={styles.leaderboard}>
-            <thead>
-              <tr>
-                <th className={styles.rank}>Rank</th>
-                <th className={styles.player}>Player</th>
-                <th className={styles.time}>Time (RTA)</th>
-                <th className={styles.date}>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {level.leaderboard.map(ranked => {
-                return (
-                  <tr
-                    key={ranked.run.id}
-                    data-id={ranked.run.id}
-                    data-rank={ranked.tiedRank}
-                  >
-                    <td className={styles.rank}>{ranked.tiedRank}</td>
-                    <td className={styles.player}>
-                      <AutoColor>
-                        {ranked.run.players.map(p => p.name).join(" & ")}
-                      </AutoColor>
-                    </td>
-                    <td className={styles.time}>
-                      <a
-                        href={`https://www.speedrun.com/${game.srcSlug}/run/${ranked.run.srcId}`}
-                      >
-                        <Duration ms={ranked.run.timeMs} />
-                      </a>
-                    </td>
-                    <td className={styles.date}>
-                      <AutoColor>
-                        {String(
-                          (ranked.run.date &&
-                            new Date(ranked.run.date * 1000)
-                              .toISOString()
-                              .slice(0, "YYYY-MM-DD".length)) ||
-                            "",
-                        )}
-                      </AutoColor>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <h3>Progression</h3>
 
-          <h5>Record Progression</h5>
+          <ProgressionTable runs={level.progression} />
 
-          <table className={styles.progression}>
-            <thead>
-              <tr>
-                <th className={styles.rank}>Rank</th>
-                <th className={styles.player}>Player</th>
-                <th className={styles.time}>Time (RTA)</th>
-                <th className={styles.progress}>Progress</th>
-                <th className={styles.date}>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {level.progression.map(progress => (
-                <tr
-                  key={progress.run.id}
-                  data-id={progress.run.id}
-                  data-rank={progress.leaderboardRun?.rank ?? "-"}
-                >
-                  <td className={styles.rank}>
-                    {progress.leaderboardRun?.rank ?? "-"}
-                  </td>
-                  <td className={styles.player}>
-                    <AutoColor>
-                      {progress.run.players.map(p => p.name).join(" & ")}
-                    </AutoColor>
-                  </td>
-                  <td className={styles.time}>
-                    <a
-                      href={`https://www.speedrun.com/${game.srcSlug}/run/${progress.run.srcId}`}
-                    >
-                      <Duration ms={progress.run.timeMs} />
-                    </a>
-                  </td>
-                  <td className={styles.progress}>
-                    {progress.progressMs ? (
-                      <Duration ms={progress.progressMs} />
-                    ) : (
-                      "-"
-                    )}
-                  </td>
-                  <td className={styles.date}>
-                    <AutoColor>
-                      {String(
-                        (progress.run.date &&
-                          new Date(progress.run.date * 1000)
-                            .toISOString()
-                            .slice(0, "YYYY-MM-DD".length)) ||
-                          "",
-                      )}
-                    </AutoColor>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <h3>Leaderboard</h3>
+
+          <LeaderboardTable runs={level.leaderboard} />
         </div>
       ))}
     </section>

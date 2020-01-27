@@ -1,6 +1,10 @@
 import { ApolloProvider } from "@apollo/react-hooks";
 import { getDataFromTree } from "@apollo/react-ssr";
-import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
+import {
+  InMemoryCache,
+  NormalizedCacheObject,
+  defaultDataIdFromObject,
+} from "apollo-cache-inmemory";
 import ApolloClient from "apollo-client";
 import { HttpLink } from "apollo-link-http";
 import fetch from "isomorphic-unfetch";
@@ -24,7 +28,16 @@ const getApolloClient = (
   initialState?: NormalizedCacheObject,
 ): ApolloClient<NormalizedCacheObject> => {
   if (onNode || !globalApolloClient) {
-    const cache = new InMemoryCache();
+    const cache = new InMemoryCache({
+      dataIdFromObject: (o: any) => {
+        if (o && o.id && o.srcId) {
+          return o.id;
+        } else {
+          return defaultDataIdFromObject(o);
+        }
+      },
+    });
+
     if (initialState) {
       cache.restore(initialState);
     }
