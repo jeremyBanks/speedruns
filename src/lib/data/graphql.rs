@@ -354,7 +354,10 @@ impl CategoryFields for Category {
             .0
             .runs()
             .iter()
-            .filter(|run| run.level_id == level_id && run.category_id == self.0.id)
+            .filter(|run| {
+                run.category_id == self.0.id
+                    && (level_id == None || run.level_id == level_id)
+            })
             .cloned()
             .collect();
 
