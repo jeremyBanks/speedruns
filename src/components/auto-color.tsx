@@ -3,7 +3,7 @@ import sha256 from "fast-sha256";
 
 import styles from "~/components/styles.module.scss";
 
-const AutoColor: React.FC<{ children: string }> = ({ children }) => {
+const AutoColor: React.FC<{ children?: string }> = ({ children }) => {
   const seed = "2";
 
   const bytes = Array.from(
