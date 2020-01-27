@@ -3,8 +3,8 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import NoSSR from "react-no-ssr";
 
-import styles from "../../pages-lib/styles.module.scss";
-import { GRAPHQL_ENDPOINT } from "../../pages-lib/with-apollo";
+import styles from "../../components/styles.module.scss";
+import { GRAPHQL_ENDPOINT } from "../../components/with-apollo";
 
 const GraphQLDocsPage: NextPage<{}> = () => (
   <NoSSR onSSR={<>Loading...</>}>
