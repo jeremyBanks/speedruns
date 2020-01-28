@@ -41,25 +41,33 @@ const GamePage: NextPage = () => {
         <title>{game.name}</title>
       </Head>
 
-      <h1>
+      <h2>
         <Link href={`/[game]?slug=${game.slug}`} as={`/${game.slug}`}>
           <a>{game.name}</a>
         </Link>
-      </h1>
+      </h2>
 
       {game.gameCategories.map(category => (
         <div key={category.id} id={`${category.id}`}>
-          <h2>
+          <h3>
             <a href={`#${category.id}`}>{category.name}</a>
-          </h2>
+          </h3>
+
+          <h4>Progress</h4>
 
           <ProgressionTable runs={category.progression} />
+
+          <h4>Leaderboard</h4>
 
           <LeaderboardTable runs={category.leaderboard} />
         </div>
       ))}
 
-      <h2>Individual Levels</h2>
+      <h3 id="il">
+        <a href="#il">Individual Levels</a>
+      </h3>
+
+      <h4>Progress</h4>
 
       {game.levelCategories.map(levelCategory => (
         <ProgressionTable
@@ -75,7 +83,11 @@ const GamePage: NextPage = () => {
             <a href={`#${level.id}`}>{level.name}</a>
           </h3>
 
+          <h4>Progress</h4>
+
           <ProgressionTable runs={level.progression} />
+
+          <h4>Leaderboard</h4>
 
           <LeaderboardTable runs={level.leaderboard} />
         </div>

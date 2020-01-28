@@ -91,9 +91,9 @@ pub struct Game {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct GameAsset {
-    height: u32,
+    height: Option<u32>,
     uri:    String,
-    width:  u32,
+    width:  Option<u32>,
 }
 
 #[remain::sorted]
