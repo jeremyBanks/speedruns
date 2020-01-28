@@ -44,7 +44,7 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
 
     let mut progression: Vec<ProgressionRun> = Vec::new();
 
-    for (_level_id, runs) in runs_by_level {
+    for (_level_id, runs) in runs_by_level.iter().sorted_by(|a, b| a.0.cmp(b.0)) {
         let mut best_ms: Option<u64> = None;
 
         let mut leaderboard_runs_by_id: HashMap<u64, LeaderboardRun> = HashMap::new();
