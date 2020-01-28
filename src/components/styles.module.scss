@@ -316,3 +316,9 @@ html.document {
     display: block !important;
   }
 }
+
+span.obsolete {
+  cursor: help;
+  color: #ddd;
+  font-size: 8px;
+}
