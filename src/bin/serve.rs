@@ -40,7 +40,7 @@ async fn playground() -> actix_web::HttpResponse {
 
 lazy_static! {
     static ref DATABASE: Arc<Database> = {
-        let tables: &'static Tables = Box::leak(Box::new(unpack_bundled_tables()));
+        let tables: &'static Tables = Box::leak(Box::new(unpack_tables()));
         Database::new(tables).expect("database should be valid")
     };
 }
@@ -95,8 +95,8 @@ async fn main() -> std::io::Result<()> {
     server.bind("127.0.0.1:3001")?.run().await
 }
 
-fn unpack_bundled_tables() -> Tables {
-    info!("Unpacking bundled database...");
+fn unpack_tables() -> Tables {
+    info!("Unpacking database...");
 
     let runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
     info!("{} runs.", runs.len());
