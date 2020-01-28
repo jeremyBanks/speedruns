@@ -3,6 +3,7 @@ import * as schema from "~/components/schema";
 import RunDate from "~/components/run-date";
 import RunDuration from "~/components/run-duration";
 import RunPlayers from "~/components/run-players";
+import RunRank from "~/components/run-rank";
 
 const LeaderboardTable: React.FC<{
   runs: schema.GetGamePage_game_gameCategories_leaderboard[];
@@ -22,7 +23,9 @@ const LeaderboardTable: React.FC<{
           key={leaderboardRun.run.id}
           data-rank={leaderboardRun?.tiedRank ?? "obsolete"}
         >
-          <td className={styles.rank}>{leaderboardRun?.tiedRank ?? "-"}</td>
+          <td className={styles.rank}>
+            <RunRank rank={leaderboardRun?.tiedRank} />
+          </td>
           <td className={styles.player}>
             <RunPlayers players={leaderboardRun.run.players} />
           </td>
