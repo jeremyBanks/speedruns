@@ -98,8 +98,11 @@ async fn main() -> std::io::Result<()> {
 fn unpack_tables() -> Tables {
     info!("Unpacking database...");
 
-    let runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
+    let mut runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
     info!("{} runs.", runs.len());
+    let supplemental =
+        read_table("data/supplemental/runs.jsonl").expect("supplemental run data corrupt");
+    info!("{} supplemental runs.", supplemental.len());
     let users = read_table("data/normalized/users.jsonl").expect("user data corrupt");
     info!("{} users.", users.len());
     let games = read_table("data/normalized/games.jsonl").expect("game data corrupt");
@@ -109,6 +112,8 @@ fn unpack_tables() -> Tables {
     info!("{} categories.", categories.len());
     let levels = read_table("data/normalized/levels.jsonl").expect("level data corrupt");
     info!("{} levels.", levels.len());
+
+    runs.extend(supplemental.into_iter());
 
     Tables::new(runs, users, games, categories, levels)
 }
