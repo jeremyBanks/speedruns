@@ -24,10 +24,6 @@ path = "src/bin/scrape.rs"
 name = "serve"
 path = "src/bin/serve.rs"
 
-[[bin]]
-name = "src-id"
-path = "src/bin/src-id.rs"
-
 [dependencies]
 actix = "0.9.0"
 actix-cors = "0.2.0"
