@@ -3,6 +3,7 @@ import * as schema from "~/components/schema";
 import RunDate from "~/components/run-date";
 import RunDuration from "~/components/run-duration";
 import RunPlayers from "~/components/run-players";
+import RunRank from "~/components/run-rank";
 import AutoColor from "~/components/auto-color";
 
 const ProgressionTable: React.FC<{
@@ -32,7 +33,7 @@ const ProgressionTable: React.FC<{
       {runs.map(progress => (
         <tr
           key={progress.run.id}
-          data-rank={progress.leaderboardRun?.rank ?? "-"}
+          data-rank={progress.leaderboardRun?.rank ?? "obsolete"}
         >
           {showLevels ? (
             <td className={styles.level}>
@@ -57,7 +58,7 @@ const ProgressionTable: React.FC<{
             <RunPlayers players={progress.run.players} />
           </td>
           <td className={styles.rank}>
-            {progress.leaderboardRun?.rank ?? "-"}
+            <RunRank rank={progress.leaderboardRun?.rank} />
           </td>
         </tr>
       ))}

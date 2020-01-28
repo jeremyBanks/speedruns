@@ -194,7 +194,8 @@ impl Level {
     Getters,
     Validate,
 )]
-#[serde(deny_unknown_fields)]
+// disabled for now to allow unused .video_url on supplemental data
+// #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Run {
     pub game_id:     u64,

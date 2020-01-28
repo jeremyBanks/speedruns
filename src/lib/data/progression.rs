@@ -33,13 +33,18 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
 
     let runs_by_level: HashMap<Option<u64>, Vec<Linked<Run>>> = runs
         .iter()
-        .sorted_by(|a, b| a.date().cmp(&b.date()).then(a.created().cmp(&b.created())))
+        .sorted_by(|a, b| {
+            a.date()
+                .cmp(&b.date())
+                .then(a.created().cmp(&b.created()))
+                .then(a.id().cmp(&b.id()))
+        })
         .map(|run| (run.level_id, run.clone()))
         .into_group_map();
 
     let mut progression: Vec<ProgressionRun> = Vec::new();
 
-    for (_level_id, runs) in runs_by_level {
+    for (_level_id, runs) in runs_by_level.iter().sorted_by(|a, b| a.0.cmp(b.0)) {
         let mut best_ms: Option<u64> = None;
 
         let mut leaderboard_runs_by_id: HashMap<u64, LeaderboardRun> = HashMap::new();
