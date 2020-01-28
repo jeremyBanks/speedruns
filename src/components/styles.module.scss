@@ -297,6 +297,11 @@ html.document {
       border: 4px solid white;
     }
   }
+
+  section:target {
+    border-left: 4px dotted #234;
+    border-right: 4px dotted #234;
+  }
 }
 
 .nodePage {
