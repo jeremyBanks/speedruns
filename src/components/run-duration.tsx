@@ -22,12 +22,12 @@ export const RunDuration: React.FC<{ ms: number }> = ({ ms }) => {
     if (msPart) {
       pieces.push(`.${String(msPart).padStart(3, "0")}s`);
     } else {
-      pieces.push("s   ");
+      pieces.push("s    ");
     }
 
     return <span className={styles.duration}>{pieces}</span>;
   } else {
-    return <span className={styles.duration}>{"-    "}</span>;
+    return <span className={styles.duration}>{"-     "}</span>;
   }
 };
 

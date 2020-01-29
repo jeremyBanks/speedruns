@@ -59,13 +59,13 @@ const GamePage: NextPage = () => {
 
           <h4>Leaderboard</h4>
 
-          <LeaderboardTable runs={category.leaderboard} />
+          <LeaderboardTable runs={category.leaderboard.slice(0, 16)} />
         </section>
       ))}
 
       {game.levelCategories.map(levelCategory => (
-        <div key={levelCategory.id}>
-          <h2 id={levelCategory.id}>
+        <div key={levelCategory.id} id={levelCategory.id}>
+          <h2>
             <a href={`#${levelCategory.id}`}>{levelCategory.name}</a>
           </h2>
 
@@ -89,7 +89,7 @@ const GamePage: NextPage = () => {
 
               <h4>Leaderboard</h4>
 
-              <LeaderboardTable runs={leaderboard} />
+              <LeaderboardTable runs={leaderboard.slice(0, 16)} />
             </section>
           ))}
         </div>
