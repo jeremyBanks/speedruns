@@ -298,6 +298,11 @@ html.document {
     }
   }
 
+  section {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
   section:target {
     border-left: 4px dotted #234;
     border-right: 4px dotted #234;

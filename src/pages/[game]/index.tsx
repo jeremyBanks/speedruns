@@ -63,34 +63,36 @@ const GamePage: NextPage = () => {
         </section>
       ))}
 
-      <h3 id="il">
-        <a href="#il">Individual Levels</a>
-      </h3>
-
-      <h4>Progress</h4>
-
       {game.levelCategories.map(levelCategory => (
-        <ProgressionTable
-          runs={levelCategory.progression}
-          showLevels={true}
-          showSums={true}
-        />
-      ))}
-
-      {game.levels.map(level => (
-        <section key={level.id} id={level.id}>
-          <h3>
-            <a href={`#${level.id}`}>{level.name}</a>
-          </h3>
+        <div key={levelCategory.id}>
+          <h2 id={levelCategory.id}>
+            <a href={`#${levelCategory.id}`}>{levelCategory.name}</a>
+          </h2>
 
           <h4>Progress</h4>
 
-          <ProgressionTable runs={level.progression} />
+          <ProgressionTable
+            runs={levelCategory.progression}
+            showLevels={true}
+            showSums={true}
+          />
 
-          <h4>Leaderboard</h4>
+          {levelCategory.levels.map(({ level, leaderboard, progression }) => (
+            <section key={level.id} id={`${levelCategory.id}${level.id}`}>
+              <h3>
+                <a href={`#${levelCategory.id}${level.id}`}>{level.name}</a>
+              </h3>
 
-          <LeaderboardTable runs={level.leaderboard} />
-        </section>
+              <h4>Progress</h4>
+
+              <ProgressionTable runs={progression} />
+
+              <h4>Leaderboard</h4>
+
+              <LeaderboardTable runs={leaderboard} />
+            </section>
+          ))}
+        </div>
       ))}
     </section>
   );
@@ -209,22 +211,24 @@ const GetGamePage = gql`
             ...GameLeaderboardRun
           }
         }
-      }
-      levels {
-        id
-        srcId
-        srcSlug
-        name
-        leaderboard {
-          ...GameLeaderboardRun
-        }
-        progression {
-          progressMs
-          run {
-            ...GameRun
+        levels {
+          level {
+            id
+            srcId
+            srcSlug
+            name
           }
-          leaderboardRun {
+          leaderboard {
             ...GameLeaderboardRun
+          }
+          progression {
+            progressMs
+            run {
+              ...GameRun
+            }
+            leaderboardRun {
+              ...GameLeaderboardRun
+            }
           }
         }
       }

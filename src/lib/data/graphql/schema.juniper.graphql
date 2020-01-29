@@ -114,6 +114,11 @@ type Category implements Node {
   name: String! @juniper(ownership: "owned", infallible: true)
 
   """
+  category-level links
+  """
+  levels: [CategoryLevel!]! @juniper(ownership: "owned", infallible: true)
+
+  """
   leaderboards of ranked runs
   """
   leaderboard(
@@ -155,24 +160,33 @@ type Level implements Node {
   name, in English if possible
   """
   name: String! @juniper(ownership: "owned", infallible: true)
+}
 
-  categories: [Category!]! @juniper(ownership: "owned", infallible: true)
+"""
+a category-level pair
+"""
+type CategoryLevel {
+  """
+  the category
+  """
+  category: Category! @juniper(ownership: "owned", infallible: true)
+
+  """
+  the level
+  """
+  level: Level! @juniper(ownership: "owned", infallible: true)
 
   """
   leaderboards of ranked runs
   """
-  leaderboard(
-    categorySlug: String
-    includeObsolete: Boolean = false
-  ): [LeaderboardRun!]! @juniper(ownership: "owned", infallible: true)
+  leaderboard(includeObsolete: Boolean = false): [LeaderboardRun!]!
+    @juniper(ownership: "owned", infallible: true)
 
   """
   progress of record over time
   """
-  progression(
-    categorySlug: String
-    includeTies: Boolean = false
-  ): [ProgressionRun!]! @juniper(ownership: "owned", infallible: true)
+  progression(includeTies: Boolean = false): [ProgressionRun!]!
+    @juniper(ownership: "owned", infallible: true)
 }
 
 type Run implements Node {
