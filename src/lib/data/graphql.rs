@@ -92,7 +92,7 @@ impl StatsFields for Stats {
 impl SpeedrunsFields for Speedruns {
     fn field_stats(
         &self,
-        executor: &Executor<'_, Context>,
+        _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Stats, Walked>,
     ) -> Stats {
         Stats {}
