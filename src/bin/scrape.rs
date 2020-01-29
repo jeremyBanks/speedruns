@@ -203,7 +203,7 @@ impl Spider {
                     };
 
                     // save progress
-                    if i % 256 == 0 {
+                    if i % 256 == 255 {
                         self.save(resource)?;
                     }
 
