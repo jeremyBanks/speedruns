@@ -6,10 +6,6 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import React from "react";
 
-import AutoColor from "~/components/auto-color";
-import RunDate from "~/components/run-date";
-import RunDuration from "~/components/run-duration";
-import RunPlayers from "~/components/run-players";
 import ProgressionTable from "~/components/progression-table";
 import LeaderboardTable from "~/components/leaderboard-table";
 import * as schema from "~/components/schema";
@@ -59,13 +55,13 @@ const GamePage: NextPage = () => {
 
           <h4>Leaderboard</h4>
 
-          <LeaderboardTable runs={category.leaderboard} />
+          <LeaderboardTable runs={category.leaderboard.slice(0, 16)} />
         </section>
       ))}
 
       {game.levelCategories.map(levelCategory => (
-        <div key={levelCategory.id}>
-          <h2 id={levelCategory.id}>
+        <div key={levelCategory.id} id={levelCategory.id}>
+          <h2>
             <a href={`#${levelCategory.id}`}>{levelCategory.name}</a>
           </h2>
 
@@ -89,7 +85,7 @@ const GamePage: NextPage = () => {
 
               <h4>Leaderboard</h4>
 
-              <LeaderboardTable runs={leaderboard} />
+              <LeaderboardTable runs={leaderboard.slice(0, 16)} />
             </section>
           ))}
         </div>

@@ -4,8 +4,26 @@ schema {
 }
 
 type Speedruns {
+  stats: Stats! @juniper(ownership: "owned", infallible: true)
   game(slug: String!): Game @juniper(ownership: "owned", infallible: true)
   node(id: ID!): Node @juniper(ownership: "owned", infallible: true)
+}
+
+type Stats {
+  """
+  timestamp of last update
+  """
+  lastUpdated: Float! @juniper(ownership: "owned", infallible: true)
+
+  """
+  number of games
+  """
+  games: Int! @juniper(ownership: "owned", infallible: true)
+
+  """
+  number of runs
+  """
+  runs: Int! @juniper(ownership: "owned", infallible: true)
 }
 
 """

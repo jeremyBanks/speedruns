@@ -900,6 +900,34 @@ export interface GetGamePageVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: GetHomeStats
+// ====================================================
+
+export interface GetHomeStats_stats {
+  __typename: "Stats";
+  /**
+   * timestamp of last update
+   */
+  lastUpdated: number;
+  /**
+   * number of runs
+   */
+  runs: number;
+  /**
+   * number of games
+   */
+  games: number;
+}
+
+export interface GetHomeStats {
+  stats: GetHomeStats_stats;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: GetNodePage
 // ====================================================
 
