@@ -77,10 +77,7 @@ export const HomePage: NextPage<{}> = () => (
         </Link>
       </li>
       <li>
-        <a href="/graphql/schema.graphql">SDL for Juniper</a>
-      </li>
-      <li>
-        <a href="/graphql/schema.apollo.graphql">SDL from Apollo</a>
+        <a href="/graphql/schema.graphql">SDL Definition</a>
       </li>
       <li>
         <a href="/graphql/schema.json">Introspection JSON</a>
