@@ -5858,9 +5858,9 @@ hash.js@^1.0.0, hash.js@^1.0.3:
     minimalistic-assert "^1.0.1"
 
 hdr-histogram-js@^1.0.0, hdr-histogram-js@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/hdr-histogram-js/-/hdr-histogram-js-1.1.4.tgz#74134025d1ae1cfef5d7f1127eb7560de2a0a773"
-  integrity sha1-dBNAJdGuHP711/ESfrdWDeKgp3M=
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/hdr-histogram-js/-/hdr-histogram-js-1.2.0.tgz#1213c0b317f39b9c05bc4f208cb7931dbbc192ae"
+  integrity sha512-h0YToJ3ewqsaZ3nFTTa6dLOD7sqx+EgdC4+OcJ9Ou7zZDlT0sXSPHHr3cyenQsPqqbVHGn/oFY6zjfEKXGvzmQ==
   dependencies:
     base64-js "^1.2.0"
     pako "^1.0.3"
