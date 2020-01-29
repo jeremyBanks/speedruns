@@ -39,6 +39,9 @@ impl juniper::Context for Context {}
 #[derive(Debug)]
 pub struct Speedruns {}
 
+#[derive(Debug)]
+pub struct Stats {}
+
 #[derive(Debug, Clone)]
 pub struct Game(DbLinked<db::Game>);
 
@@ -71,7 +74,30 @@ pub enum Player {
 
 #[derive(Debug, Clone)]
 pub struct Level(DbLinked<db::Level>);
+
+impl StatsFields for Stats {
+    fn field_last_updated(&self, _executor: &Executor<'_, Context>) -> f64 {
+        0.0
+    }
+
+    fn field_runs(&self, _executor: &Executor<'_, Context>) -> i32 {
+        0
+    }
+
+    fn field_games(&self, _executor: &Executor<'_, Context>) -> i32 {
+        0
+    }
+}
+
 impl SpeedrunsFields for Speedruns {
+    fn field_stats(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Stats, Walked>,
+    ) -> Stats {
+        Stats {}
+    }
+
     fn field_game(
         &self,
         executor: &Executor<'_, Context>,
