@@ -58,6 +58,12 @@ pub struct Category(DbLinked<db::Category>);
 pub struct User(DbLinked<db::User>);
 
 #[derive(Debug, Clone)]
+pub struct CategoryLevel {
+    category: DbLinked<db::Category>,
+    level:    DbLinked<db::Level>,
+}
+
+#[derive(Debug, Clone)]
 pub enum Player {
     User(User),
     Guest(String),
@@ -365,6 +371,25 @@ impl CategoryFields for Category {
 
         progress.iter().map(|r| ProgressionRun(r.clone())).collect()
     }
+
+    fn field_levels(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, CategoryLevel, Walked>,
+    ) -> Vec<CategoryLevel> {
+        // TODO: not a full table scan
+        executor
+            .context()
+            .database
+            .levels()
+            .filter(|level| level.game_id == self.0.game_id)
+            .sorted_by(|a, b| a.name.cmp(&b.name))
+            .map(|level| CategoryLevel {
+                category: self.0.clone(),
+                level,
+            })
+            .collect()
+    }
 }
 
 impl UserFields for User {
@@ -432,46 +457,38 @@ impl LevelFields for Level {
     fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
         src_slugify(&self.0.name)
     }
+}
 
-    fn field_categories(
+impl CategoryLevelFields for CategoryLevel {
+    fn field_level(
         &self,
-        executor: &Executor<'_, Context>,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Level, Walked>,
+    ) -> Level {
+        Level(self.level.clone())
+    }
+
+    fn field_category(
+        &self,
+        _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Category, Walked>,
-    ) -> Vec<Category> {
-        // TODO: not a full table scan
-        executor
-            .context()
-            .database
-            .categories()
-            .filter(|category| {
-                category.game_id == self.0.id && category.per == db::CategoryType::PerLevel
-            })
-            .map(Category)
-            .collect()
+    ) -> Category {
+        Category(self.category.clone())
     }
 
     fn field_leaderboard(
         &self,
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
-        category_slug: Option<String>,
         include_obsolete: bool,
     ) -> Vec<LeaderboardRun> {
-        let category_id = category_slug.map(|category_slug| {
-            self.0
-                .game()
-                .per_level_category_by_slug(&category_slug)
-                .expect("category not found")
-                .id
-        });
         let runs: Vec<DbLinked<db::Run>> = self
-            .0
+            .category
             .game()
             .runs()
             .iter()
             .filter(|run| {
-                run.level_id == Some(self.0.id)
-                    && (category_id == None || Some(run.category_id) == category_id)
+                run.level_id == Some(self.level.id) && run.category_id == self.category.id
             })
             .cloned()
             .collect();
@@ -485,24 +502,15 @@ impl LevelFields for Level {
         &self,
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, ProgressionRun, Walked>,
-        category_slug: Option<String>,
         _include_ties: bool,
     ) -> Vec<ProgressionRun> {
-        let category_id = category_slug.map(|category_slug| {
-            self.0
-                .game()
-                .per_level_category_by_slug(&category_slug)
-                .expect("category not found")
-                .id
-        });
         let runs: Vec<DbLinked<db::Run>> = self
-            .0
+            .category
             .game()
             .runs()
             .iter()
             .filter(|run| {
-                run.level_id == Some(self.0.id)
-                    && (category_id == None || Some(run.category_id) == category_id)
+                run.level_id == Some(self.level.id) && run.category_id == self.category.id
             })
             .cloned()
             .collect();
