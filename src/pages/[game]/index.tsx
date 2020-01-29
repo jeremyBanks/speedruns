@@ -209,22 +209,24 @@ const GetGamePage = gql`
             ...GameLeaderboardRun
           }
         }
-      }
-      levels {
-        id
-        srcId
-        srcSlug
-        name
-        leaderboard {
-          ...GameLeaderboardRun
-        }
-        progression {
-          progressMs
-          run {
-            ...GameRun
+        levels {
+          level {
+            id
+            srcId
+            srcSlug
+            name
           }
-          leaderboardRun {
+          leaderboard {
             ...GameLeaderboardRun
+          }
+          progression {
+            progressMs
+            run {
+              ...GameRun
+            }
+            leaderboardRun {
+              ...GameLeaderboardRun
+            }
           }
         }
       }

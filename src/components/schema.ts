@@ -536,6 +536,293 @@ export interface GetGamePage_game_levelCategories_progression {
   leaderboardRun: GetGamePage_game_levelCategories_progression_leaderboardRun | null;
 }
 
+export interface GetGamePage_game_levelCategories_levels_level {
+  __typename: "Level";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com level ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+}
+
+export interface GetGamePage_game_levelCategories_levels_leaderboard_run_category {
+  __typename: "Category";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com category ID
+   */
+  srcId: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+}
+
+export interface GetGamePage_game_levelCategories_levels_leaderboard_run_level {
+  __typename: "Level";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com level ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+}
+
+export interface GetGamePage_game_levelCategories_levels_leaderboard_run_players_user {
+  __typename: "User";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com user ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedruns.ca
+   */
+  slug: string;
+}
+
+export interface GetGamePage_game_levelCategories_levels_leaderboard_run_players {
+  __typename: "Player";
+  name: string;
+  isGuest: boolean;
+  user: GetGamePage_game_levelCategories_levels_leaderboard_run_players_user | null;
+}
+
+export interface GetGamePage_game_levelCategories_levels_leaderboard_run {
+  __typename: "Run";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com level ID
+   */
+  srcId: string;
+  timeMs: number;
+  category: GetGamePage_game_levelCategories_levels_leaderboard_run_category;
+  level: GetGamePage_game_levelCategories_levels_leaderboard_run_level | null;
+  date: number | null;
+  players: GetGamePage_game_levelCategories_levels_leaderboard_run_players[];
+}
+
+export interface GetGamePage_game_levelCategories_levels_leaderboard {
+  __typename: "LeaderboardRun";
+  rank: number;
+  isTied: boolean;
+  tiedRank: number;
+  run: GetGamePage_game_levelCategories_levels_leaderboard_run;
+}
+
+export interface GetGamePage_game_levelCategories_levels_progression_run_category {
+  __typename: "Category";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com category ID
+   */
+  srcId: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+}
+
+export interface GetGamePage_game_levelCategories_levels_progression_run_level {
+  __typename: "Level";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com level ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+}
+
+export interface GetGamePage_game_levelCategories_levels_progression_run_players_user {
+  __typename: "User";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com user ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedruns.ca
+   */
+  slug: string;
+}
+
+export interface GetGamePage_game_levelCategories_levels_progression_run_players {
+  __typename: "Player";
+  name: string;
+  isGuest: boolean;
+  user: GetGamePage_game_levelCategories_levels_progression_run_players_user | null;
+}
+
+export interface GetGamePage_game_levelCategories_levels_progression_run {
+  __typename: "Run";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com level ID
+   */
+  srcId: string;
+  timeMs: number;
+  category: GetGamePage_game_levelCategories_levels_progression_run_category;
+  level: GetGamePage_game_levelCategories_levels_progression_run_level | null;
+  date: number | null;
+  players: GetGamePage_game_levelCategories_levels_progression_run_players[];
+}
+
+export interface GetGamePage_game_levelCategories_levels_progression_leaderboardRun_run_category {
+  __typename: "Category";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com category ID
+   */
+  srcId: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+}
+
+export interface GetGamePage_game_levelCategories_levels_progression_leaderboardRun_run_level {
+  __typename: "Level";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com level ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+}
+
+export interface GetGamePage_game_levelCategories_levels_progression_leaderboardRun_run_players_user {
+  __typename: "User";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com user ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedruns.ca
+   */
+  slug: string;
+}
+
+export interface GetGamePage_game_levelCategories_levels_progression_leaderboardRun_run_players {
+  __typename: "Player";
+  name: string;
+  isGuest: boolean;
+  user: GetGamePage_game_levelCategories_levels_progression_leaderboardRun_run_players_user | null;
+}
+
+export interface GetGamePage_game_levelCategories_levels_progression_leaderboardRun_run {
+  __typename: "Run";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com level ID
+   */
+  srcId: string;
+  timeMs: number;
+  category: GetGamePage_game_levelCategories_levels_progression_leaderboardRun_run_category;
+  level: GetGamePage_game_levelCategories_levels_progression_leaderboardRun_run_level | null;
+  date: number | null;
+  players: GetGamePage_game_levelCategories_levels_progression_leaderboardRun_run_players[];
+}
+
+export interface GetGamePage_game_levelCategories_levels_progression_leaderboardRun {
+  __typename: "LeaderboardRun";
+  rank: number;
+  isTied: boolean;
+  tiedRank: number;
+  run: GetGamePage_game_levelCategories_levels_progression_leaderboardRun_run;
+}
+
+export interface GetGamePage_game_levelCategories_levels_progression {
+  __typename: "ProgressionRun";
+  progressMs: number;
+  run: GetGamePage_game_levelCategories_levels_progression_run;
+  leaderboardRun: GetGamePage_game_levelCategories_levels_progression_leaderboardRun | null;
+}
+
+export interface GetGamePage_game_levelCategories_levels {
+  __typename: "CategoryLevel";
+  /**
+   * the level
+   */
+  level: GetGamePage_game_levelCategories_levels_level;
+  /**
+   * leaderboards of ranked runs
+   */
+  leaderboard: GetGamePage_game_levelCategories_levels_leaderboard[];
+  /**
+   * progress of record over time
+   */
+  progression: GetGamePage_game_levelCategories_levels_progression[];
+}
+
 export interface GetGamePage_game_levelCategories {
   __typename: "Category";
   /**
@@ -562,285 +849,10 @@ export interface GetGamePage_game_levelCategories {
    * progress of record over time
    */
   progression: GetGamePage_game_levelCategories_progression[];
-}
-
-export interface GetGamePage_game_levels_leaderboard_run_category {
-  __typename: "Category";
   /**
-   * GraphQL node ID
+   * category-level links
    */
-  id: string;
-  /**
-   * speedrun.com category ID
-   */
-  srcId: string;
-  /**
-   * name, in English if possible
-   */
-  name: string;
-}
-
-export interface GetGamePage_game_levels_leaderboard_run_level {
-  __typename: "Level";
-  /**
-   * GraphQL node ID
-   */
-  id: string;
-  /**
-   * speedrun.com level ID
-   */
-  srcId: string;
-  /**
-   * URL slug used on speedrun.com
-   */
-  srcSlug: string;
-  /**
-   * name, in English if possible
-   */
-  name: string;
-}
-
-export interface GetGamePage_game_levels_leaderboard_run_players_user {
-  __typename: "User";
-  /**
-   * GraphQL node ID
-   */
-  id: string;
-  /**
-   * speedrun.com user ID
-   */
-  srcId: string;
-  /**
-   * URL slug used on speedruns.ca
-   */
-  slug: string;
-}
-
-export interface GetGamePage_game_levels_leaderboard_run_players {
-  __typename: "Player";
-  name: string;
-  isGuest: boolean;
-  user: GetGamePage_game_levels_leaderboard_run_players_user | null;
-}
-
-export interface GetGamePage_game_levels_leaderboard_run {
-  __typename: "Run";
-  /**
-   * GraphQL node ID
-   */
-  id: string;
-  /**
-   * speedrun.com level ID
-   */
-  srcId: string;
-  timeMs: number;
-  category: GetGamePage_game_levels_leaderboard_run_category;
-  level: GetGamePage_game_levels_leaderboard_run_level | null;
-  date: number | null;
-  players: GetGamePage_game_levels_leaderboard_run_players[];
-}
-
-export interface GetGamePage_game_levels_leaderboard {
-  __typename: "LeaderboardRun";
-  rank: number;
-  isTied: boolean;
-  tiedRank: number;
-  run: GetGamePage_game_levels_leaderboard_run;
-}
-
-export interface GetGamePage_game_levels_progression_run_category {
-  __typename: "Category";
-  /**
-   * GraphQL node ID
-   */
-  id: string;
-  /**
-   * speedrun.com category ID
-   */
-  srcId: string;
-  /**
-   * name, in English if possible
-   */
-  name: string;
-}
-
-export interface GetGamePage_game_levels_progression_run_level {
-  __typename: "Level";
-  /**
-   * GraphQL node ID
-   */
-  id: string;
-  /**
-   * speedrun.com level ID
-   */
-  srcId: string;
-  /**
-   * URL slug used on speedrun.com
-   */
-  srcSlug: string;
-  /**
-   * name, in English if possible
-   */
-  name: string;
-}
-
-export interface GetGamePage_game_levels_progression_run_players_user {
-  __typename: "User";
-  /**
-   * GraphQL node ID
-   */
-  id: string;
-  /**
-   * speedrun.com user ID
-   */
-  srcId: string;
-  /**
-   * URL slug used on speedruns.ca
-   */
-  slug: string;
-}
-
-export interface GetGamePage_game_levels_progression_run_players {
-  __typename: "Player";
-  name: string;
-  isGuest: boolean;
-  user: GetGamePage_game_levels_progression_run_players_user | null;
-}
-
-export interface GetGamePage_game_levels_progression_run {
-  __typename: "Run";
-  /**
-   * GraphQL node ID
-   */
-  id: string;
-  /**
-   * speedrun.com level ID
-   */
-  srcId: string;
-  timeMs: number;
-  category: GetGamePage_game_levels_progression_run_category;
-  level: GetGamePage_game_levels_progression_run_level | null;
-  date: number | null;
-  players: GetGamePage_game_levels_progression_run_players[];
-}
-
-export interface GetGamePage_game_levels_progression_leaderboardRun_run_category {
-  __typename: "Category";
-  /**
-   * GraphQL node ID
-   */
-  id: string;
-  /**
-   * speedrun.com category ID
-   */
-  srcId: string;
-  /**
-   * name, in English if possible
-   */
-  name: string;
-}
-
-export interface GetGamePage_game_levels_progression_leaderboardRun_run_level {
-  __typename: "Level";
-  /**
-   * GraphQL node ID
-   */
-  id: string;
-  /**
-   * speedrun.com level ID
-   */
-  srcId: string;
-  /**
-   * URL slug used on speedrun.com
-   */
-  srcSlug: string;
-  /**
-   * name, in English if possible
-   */
-  name: string;
-}
-
-export interface GetGamePage_game_levels_progression_leaderboardRun_run_players_user {
-  __typename: "User";
-  /**
-   * GraphQL node ID
-   */
-  id: string;
-  /**
-   * speedrun.com user ID
-   */
-  srcId: string;
-  /**
-   * URL slug used on speedruns.ca
-   */
-  slug: string;
-}
-
-export interface GetGamePage_game_levels_progression_leaderboardRun_run_players {
-  __typename: "Player";
-  name: string;
-  isGuest: boolean;
-  user: GetGamePage_game_levels_progression_leaderboardRun_run_players_user | null;
-}
-
-export interface GetGamePage_game_levels_progression_leaderboardRun_run {
-  __typename: "Run";
-  /**
-   * GraphQL node ID
-   */
-  id: string;
-  /**
-   * speedrun.com level ID
-   */
-  srcId: string;
-  timeMs: number;
-  category: GetGamePage_game_levels_progression_leaderboardRun_run_category;
-  level: GetGamePage_game_levels_progression_leaderboardRun_run_level | null;
-  date: number | null;
-  players: GetGamePage_game_levels_progression_leaderboardRun_run_players[];
-}
-
-export interface GetGamePage_game_levels_progression_leaderboardRun {
-  __typename: "LeaderboardRun";
-  rank: number;
-  isTied: boolean;
-  tiedRank: number;
-  run: GetGamePage_game_levels_progression_leaderboardRun_run;
-}
-
-export interface GetGamePage_game_levels_progression {
-  __typename: "ProgressionRun";
-  progressMs: number;
-  run: GetGamePage_game_levels_progression_run;
-  leaderboardRun: GetGamePage_game_levels_progression_leaderboardRun | null;
-}
-
-export interface GetGamePage_game_levels {
-  __typename: "Level";
-  /**
-   * GraphQL node ID
-   */
-  id: string;
-  /**
-   * speedrun.com level ID
-   */
-  srcId: string;
-  /**
-   * URL slug used on speedrun.com
-   */
-  srcSlug: string;
-  /**
-   * name, in English if possible
-   */
-  name: string;
-  /**
-   * leaderboards of ranked runs
-   */
-  leaderboard: GetGamePage_game_levels_leaderboard[];
-  /**
-   * progress of record over time
-   */
-  progression: GetGamePage_game_levels_progression[];
+  levels: GetGamePage_game_levelCategories_levels[];
 }
 
 export interface GetGamePage_game {
@@ -873,10 +885,6 @@ export interface GetGamePage_game {
    * individual level run categories
    */
   levelCategories: GetGamePage_game_levelCategories[];
-  /**
-   * individual levels
-   */
-  levels: GetGamePage_game_levels[];
 }
 
 export interface GetGamePage {
