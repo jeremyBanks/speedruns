@@ -374,10 +374,21 @@ impl CategoryFields for Category {
 
     fn field_levels(
         &self,
-        _executor: &Executor<'_, Context>,
+        executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, CategoryLevel, Walked>,
     ) -> Vec<CategoryLevel> {
-        unimplemented!()
+        // TODO: not a full table scan
+        executor
+            .context()
+            .database
+            .levels()
+            .filter(|level| level.game_id == self.0.game_id)
+            .sorted_by(|a, b| a.name.cmp(&b.name))
+            .map(|level| CategoryLevel {
+                category: self.0.clone(),
+                level,
+            })
+            .collect()
     }
 }
 
