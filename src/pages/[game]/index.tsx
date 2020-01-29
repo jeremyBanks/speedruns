@@ -6,10 +6,6 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import React from "react";
 
-import AutoColor from "~/components/auto-color";
-import RunDate from "~/components/run-date";
-import RunDuration from "~/components/run-duration";
-import RunPlayers from "~/components/run-players";
 import ProgressionTable from "~/components/progression-table";
 import LeaderboardTable from "~/components/leaderboard-table";
 import * as schema from "~/components/schema";

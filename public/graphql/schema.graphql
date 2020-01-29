@@ -191,8 +191,26 @@ type Run implements Node {
 }
 
 type Speedruns {
+  stats: Stats!
   game(slug: String!): Game
   node(id: ID!): Node
+}
+
+type Stats {
+  """
+  timestamp of last update
+  """
+  lastUpdated: Float!
+
+  """
+  number of games
+  """
+  games: Int!
+
+  """
+  number of runs
+  """
+  runs: Int!
 }
 
 type User implements Node {
