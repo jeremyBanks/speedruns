@@ -167,6 +167,16 @@ a category-level pair
 """
 type CategoryLevel {
   """
+  the category
+  """
+  category: Category! @juniper(ownership: "owned", infallible: true)
+
+  """
+  the level
+  """
+  level: Level! @juniper(ownership: "owned", infallible: true)
+
+  """
   leaderboards of ranked runs
   """
   leaderboard(includeObsolete: Boolean = false): [LeaderboardRun!]!

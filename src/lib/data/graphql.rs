@@ -449,6 +449,22 @@ impl LevelFields for Level {
 }
 
 impl CategoryLevelFields for CategoryLevel {
+    fn field_level(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Level, Walked>,
+    ) -> Level {
+        Level(self.level.clone())
+    }
+
+    fn field_category(
+        &self,
+        _executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Category, Walked>,
+    ) -> Category {
+        Category(self.category.clone())
+    }
+
     fn field_leaderboard(
         &self,
         _executor: &Executor<'_, Context>,

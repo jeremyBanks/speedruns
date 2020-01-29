@@ -30,6 +30,11 @@ type Category implements Node {
   name: String!
 
   """
+  category-level links
+  """
+  levels: [CategoryLevel!]!
+
+  """
   leaderboards of ranked runs
   """
   leaderboard(levelSlug: String, includeObsolete: Boolean): [LeaderboardRun!]!
@@ -38,6 +43,31 @@ type Category implements Node {
   progress of record over time
   """
   progression(levelSlug: String, includeTies: Boolean): [ProgressionRun!]!
+}
+
+"""
+a category-level pair
+"""
+type CategoryLevel {
+  """
+  the category
+  """
+  category: Category!
+
+  """
+  the level
+  """
+  level: Level!
+
+  """
+  leaderboards of ranked runs
+  """
+  leaderboard(includeObsolete: Boolean): [LeaderboardRun!]!
+
+  """
+  progress of record over time
+  """
+  progression(includeTies: Boolean): [ProgressionRun!]!
 }
 
 type Game implements Node {
@@ -119,20 +149,6 @@ type Level implements Node {
   name, in English if possible
   """
   name: String!
-  categories: [Category!]!
-
-  """
-  leaderboards of ranked runs
-  """
-  leaderboard(
-    categorySlug: String
-    includeObsolete: Boolean
-  ): [LeaderboardRun!]!
-
-  """
-  progress of record over time
-  """
-  progression(categorySlug: String, includeTies: Boolean): [ProgressionRun!]!
 }
 
 """
