@@ -6,6 +6,10 @@ version = "0.20.20"
 
 default-run = "serve"
 
+# https://twitter.com/CryZe107/status/1222947784103538689
+[profile.release.build-override]
+opt-level = 0
+
 [workspace]
 
 [lib]
