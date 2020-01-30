@@ -10,7 +10,6 @@ class MyDocument extends Document {
       <Html className={styles.document}>
         <Head>
           <meta charSet="utf-8" />
-          <meta name="viewport" content="width=682, initial-scale=0" />
           <link rel="icon" href="/icon.png" />
         </Head>
         <body>
