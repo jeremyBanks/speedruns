@@ -1,5 +1,5 @@
 #!/bin/bash
-set -veuxo pipefail
+set -euxo pipefail
 
 cargo build --release --bin serve
 

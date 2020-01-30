@@ -1,5 +1,5 @@
 #!/bin/bash
-set -veuxo pipefail
+set -euxo pipefail
 
 git add .
 
