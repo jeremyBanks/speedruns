@@ -1,6 +1,9 @@
 #![warn(clippy::option_unwrap_used, clippy::result_unwrap_used)]
 
-use std::{convert::TryFrom, sync::Arc};
+use std::{
+    convert::{TryFrom, TryInto},
+    sync::Arc,
+};
 
 use itertools::Itertools;
 #[allow(unused)]
@@ -18,7 +21,7 @@ use crate::{
         graphql::global_id::{global_id, parse_global_id, NodeType},
         leaderboard, progression, types as db,
     },
-    utils::{base36, src_slugify},
+    utils::{base36, src_slugify, u64_from_base36},
 };
 
 mod global_id;
@@ -80,12 +83,14 @@ impl StatsFields for Stats {
         0.0
     }
 
-    fn field_runs(&self, _executor: &Executor<'_, Context>) -> i32 {
-        0
+    fn field_runs(&self, executor: &Executor<'_, Context>) -> i32 {
+        let n = executor.context().database.tables().runs().len();
+        n.try_into().expect("impossibly large number of runs")
     }
 
-    fn field_games(&self, _executor: &Executor<'_, Context>) -> i32 {
-        0
+    fn field_games(&self, executor: &Executor<'_, Context>) -> i32 {
+        let n = executor.context().database.tables().games().len();
+        n.try_into().expect("impossibly large number of runs")
     }
 }
 
@@ -107,6 +112,22 @@ impl SpeedrunsFields for Speedruns {
         match executor.context().database.game_by_slug(&slug) {
             Some(game) => Some(Game(game)),
             None => None,
+        }
+    }
+
+    fn field_run(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Run, Walked>,
+        src_id: ID,
+    ) -> Option<Run> {
+        let db_id = u64_from_base36(&src_id.to_string());
+        match db_id {
+            Ok(db_id) => match executor.context().database.run_by_id(db_id) {
+                Some(run) => Some(Run(run)),
+                None => None,
+            },
+            Err(_) => None,
         }
     }
 
