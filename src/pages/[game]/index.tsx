@@ -35,10 +35,14 @@ const GamePage: NextPage = () => {
     <section className={styles.gamePage} id={game.id}>
       <Head>
         <title>{game.name}</title>
+        <link
+          rel="canonical"
+          href={`https://www.speedrun.com/${game.srcSlug}`}
+        />
       </Head>
 
       <h2>
-        <Link href={`/[game]?slug=${game.slug}`} as={`/${game.slug}`}>
+        <Link href={`/[game]?game=${game.slug}`} as={`/${game.slug}`}>
           <a>{game.name}</a>
         </Link>
       </h2>
@@ -166,7 +170,7 @@ const GetGamePage = gql`
   ${GameLeaderboardRun}
 
   query GetGamePage($slug: String!) {
-    game: game(slug: $slug) {
+    game(slug: $slug) {
       id
       srcId
       slug

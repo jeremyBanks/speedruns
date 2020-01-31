@@ -231,6 +231,10 @@ impl Database {
         IntegrityErrors::try_from(errors).map(|_| self_)
     }
 
+    pub fn tables(&self) -> &Tables {
+        &self.tables
+    }
+
     pub fn validate(self: &Arc<Self>) -> Result<(), IntegrityErrors> {
         let mut errors = vec![];
 

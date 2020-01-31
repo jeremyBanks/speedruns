@@ -42,10 +42,7 @@ jobs:
         run: yarn install
 
       - name: test - cargo build
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --workspace
+        run: cargo build --workspace
 
       - name: bot - code generation
         run: yarn generate
@@ -67,10 +64,7 @@ jobs:
         run: bash scripts/commit-autofix.bash
 
       - name: test - cargo test
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --workspace
+        run: cargo test --workspace
 
       - name: test - lint
         run: yarn lint
