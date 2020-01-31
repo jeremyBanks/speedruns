@@ -1,6 +1,9 @@
 #![warn(clippy::option_unwrap_used, clippy::result_unwrap_used)]
 
-use std::{convert::TryFrom, sync::Arc};
+use std::{
+    convert::{TryFrom, TryInto},
+    sync::Arc,
+};
 
 use itertools::Itertools;
 #[allow(unused)]
@@ -80,12 +83,14 @@ impl StatsFields for Stats {
         0.0
     }
 
-    fn field_runs(&self, _executor: &Executor<'_, Context>) -> i32 {
-        0
+    fn field_runs(&self, executor: &Executor<'_, Context>) -> i32 {
+        let n = executor.context().database.tables().runs().len();
+        n.try_into().expect("impossibly large number of runs")
     }
 
-    fn field_games(&self, _executor: &Executor<'_, Context>) -> i32 {
-        0
+    fn field_games(&self, executor: &Executor<'_, Context>) -> i32 {
+        let n = executor.context().database.tables().games().len();
+        n.try_into().expect("impossibly large number of runs")
     }
 }
 
