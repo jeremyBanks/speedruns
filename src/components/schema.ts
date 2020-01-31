@@ -900,6 +900,124 @@ export interface GetGamePageVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: GetRunPage
+// ====================================================
+
+export interface GetRunPage_game {
+  __typename: "Game";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com game ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedruns.ca
+   */
+  slug: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+}
+
+export interface GetRunPage_run_category {
+  __typename: "Category";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com category ID
+   */
+  srcId: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+}
+
+export interface GetRunPage_run_level {
+  __typename: "Level";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com level ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+}
+
+export interface GetRunPage_run_players_user {
+  __typename: "User";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com user ID
+   */
+  srcId: string;
+  /**
+   * URL slug used on speedruns.ca
+   */
+  slug: string;
+}
+
+export interface GetRunPage_run_players {
+  __typename: "Player";
+  name: string;
+  isGuest: boolean;
+  user: GetRunPage_run_players_user | null;
+}
+
+export interface GetRunPage_run {
+  __typename: "Run";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
+   * speedrun.com level ID
+   */
+  srcId: string;
+  timeMs: number;
+  category: GetRunPage_run_category;
+  level: GetRunPage_run_level | null;
+  date: number | null;
+  players: GetRunPage_run_players[];
+}
+
+export interface GetRunPage {
+  game: GetRunPage_game | null;
+  run: GetRunPage_run | null;
+}
+
+export interface GetRunPageVariables {
+  gameSrcSlug: string;
+  runSrcId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: GetHomeStats
 // ====================================================
 

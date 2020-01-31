@@ -21,7 +21,7 @@ use crate::{
         graphql::global_id::{global_id, parse_global_id, NodeType},
         leaderboard, progression, types as db,
     },
-    utils::{base36, src_slugify},
+    utils::{base36, src_slugify, u64_from_base36},
 };
 
 mod global_id;
@@ -112,6 +112,22 @@ impl SpeedrunsFields for Speedruns {
         match executor.context().database.game_by_slug(&slug) {
             Some(game) => Some(Game(game)),
             None => None,
+        }
+    }
+
+    fn field_run(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Run, Walked>,
+        src_id: ID,
+    ) -> Option<Run> {
+        let db_id = u64_from_base36(&src_id.to_string());
+        match db_id {
+            Ok(db_id) => match executor.context().database.run_by_id(db_id) {
+                Some(run) => Some(Run(run)),
+                None => None,
+            },
+            Err(_) => None,
         }
     }
 
