@@ -62,7 +62,7 @@ async fn graphql(
 }
 
 async fn diediedie() -> actix_web::HttpResponse {
-    panic!("/diediedie")
+    panic!("this doesn't work, it just kills one worker. oops.")
 }
 
 #[actix_rt::main]
