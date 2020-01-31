@@ -1,5 +1,5 @@
 #!/bin/bash
-set -veuxo pipefail
+set -euxo pipefail
 
 host=172.105.11.193
 cargo run --release --bin scrape;
