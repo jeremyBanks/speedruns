@@ -10,6 +10,10 @@ module.exports = [
     return {
       "/": { page: "/" },
       "/graphql/voyager": { page: "/graphql/voyager" },
+      "/wc2/run/yj4xokny": {
+        page: "/[game]/run/[runSrcId]",
+        query: { game: "wc2", runSrcId: "yj4xokny" },
+      },
       "/wc2": { page: "/[game]", query: { game: "wc2" } },
       "/wc2btdp": { page: "/[game]", query: { game: "wc2btdp" } },
       "/node/gamekNdA__8": {
