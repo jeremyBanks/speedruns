@@ -1,14 +1,9 @@
 #!/bin/bash
 set -euxo pipefail
 
-if [ ! -f data/normalized/runs.jsonl ]; then
-    echo "WARNING: no data found, so loading minimal test/fixture data"
-    cp data/fixture/{categories,games,levels,runs,users}.jsonl data/normalized/
-fi
+cargo build --workspace
 
-cargo build --bin serve
-
-cargo run --bin serve -- --no-data &
+cargo run serve --no-data &
 trap "kill $!" EXIT
 
 sleep 16

@@ -4,6 +4,7 @@
 .DS_Store
 /.next
 /out
+/package-lock.json
 
 # dependencies
 /node_modules
