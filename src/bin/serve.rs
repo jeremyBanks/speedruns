@@ -125,19 +125,19 @@ fn unpack_tables() -> Tables {
 
     info!("Unpacking database...");
 
-    let mut runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
+    let mut runs = read_table("data/imported/runs.jsonl").expect("run data corrupt");
     info!("{} runs.", runs.len());
     let supplemental =
         read_table("data/supplemental/runs.jsonl").expect("supplemental run data corrupt");
     info!("{} supplemental runs.", supplemental.len());
-    let users = read_table("data/normalized/users.jsonl").expect("user data corrupt");
+    let users = read_table("data/imported/users.jsonl").expect("user data corrupt");
     info!("{} users.", users.len());
-    let games = read_table("data/normalized/games.jsonl").expect("game data corrupt");
+    let games = read_table("data/imported/games.jsonl").expect("game data corrupt");
     info!("{} games.", games.len());
     let categories =
-        read_table("data/normalized/categories.jsonl").expect("category data corrupt");
+        read_table("data/imported/categories.jsonl").expect("category data corrupt");
     info!("{} categories.", categories.len());
-    let levels = read_table("data/normalized/levels.jsonl").expect("level data corrupt");
+    let levels = read_table("data/imported/levels.jsonl").expect("level data corrupt");
     info!("{} levels.", levels.len());
 
     runs.extend(supplemental.into_iter());
