@@ -7,11 +7,11 @@
 )]
 #![deny(unconditional_recursion)]
 
-use std::{fs::File, io::BufReader, sync::Arc, time::Duration};
+use std::{fs::File, io::BufReader, sync::Arc};
 
 use actix_cors::{self};
 use actix_web::{self, web};
-use async_std::task::sleep as asleep;
+
 use juniper::{self, http::GraphQLRequest};
 use lazy_static::lazy_static;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
