@@ -61,3 +61,4 @@ url = { features = ["serde"], version = "2.1.1" }
 url_serde = "0.2.0"
 validator = "0.10.0"
 validator_derive = "0.10.0"
+heck = "0.3.1"
