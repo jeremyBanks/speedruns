@@ -1,4 +1,3 @@
-#![feature(try_blocks)]
 #![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
 #![warn(
     missing_debug_implementations,
@@ -76,23 +75,21 @@ async fn diediedie() -> HttpResponse {
         .body("/diediedie only works on linux")
 }
 
-#[derive(argh::FromArgs)]
-/// graphql server
-struct Args {
+#[derive(argh::FromArgs, PartialEq, Debug)]
+/// Serves imported data from a GraphQL server. All data is loaded into memory, not served
+/// from disk.
+#[argh(subcommand, name = "serve")]
+pub struct Args {
+    /// port to run server on
+    #[argh(option)]
+    port:    Option<u32>,
     /// whether to skip the database import (such as if you only need to run the server to
     /// briefly download the schema)
     #[argh(switch)]
     no_data: bool,
 }
 
-#[actix_rt::main]
-async fn main() -> std::io::Result<()> {
-    // Enable all debug logs by default.
-    if std::env::var("RUST_LOG").unwrap_or_default().is_empty() {
-        std::env::set_var("RUST_LOG", "debug");
-    }
-    pretty_env_logger::init();
-
+pub async fn main(args: Args) -> std::io::Result<()> {
     info!("Initializing server.");
     lazy_static::initialize(&DATABASE);
 
@@ -112,32 +109,36 @@ async fn main() -> std::io::Result<()> {
     });
 
     info!("Binding server.");
-    server.bind("127.0.0.1:3001")?.run().await
+    server
+        .bind(format!("127.0.0.1:{}", args.port.unwrap_or(3001)))?
+        .run()
+        .await
 }
 
 fn unpack_tables() -> Tables {
-    let args: Args = argh::from_env();
-
-    if args.no_data {
-        info!("Skipping database import, will run with no data!");
-        return Tables::new(vec![], vec![], vec![], vec![], vec![])
+    let args: crate::Args = argh::from_env();
+    if let crate::Subcommand::Serve(args) = args.subcommand {
+        if args.no_data {
+            info!("Skipping database import, will run with no data!");
+            return Tables::new(vec![], vec![], vec![], vec![], vec![])
+        }
     }
 
     info!("Unpacking database...");
 
-    let mut runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
+    let mut runs = read_table("data/imported/runs.jsonl").expect("run data corrupt");
     info!("{} runs.", runs.len());
     let supplemental =
         read_table("data/supplemental/runs.jsonl").expect("supplemental run data corrupt");
     info!("{} supplemental runs.", supplemental.len());
-    let users = read_table("data/normalized/users.jsonl").expect("user data corrupt");
+    let users = read_table("data/imported/users.jsonl").expect("user data corrupt");
     info!("{} users.", users.len());
-    let games = read_table("data/normalized/games.jsonl").expect("game data corrupt");
+    let games = read_table("data/imported/games.jsonl").expect("game data corrupt");
     info!("{} games.", games.len());
     let categories =
-        read_table("data/normalized/categories.jsonl").expect("category data corrupt");
+        read_table("data/imported/categories.jsonl").expect("category data corrupt");
     info!("{} categories.", categories.len());
-    let levels = read_table("data/normalized/levels.jsonl").expect("level data corrupt");
+    let levels = read_table("data/imported/levels.jsonl").expect("level data corrupt");
     info!("{} levels.", levels.len());
 
     runs.extend(supplemental.into_iter());
