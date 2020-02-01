@@ -61,7 +61,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let args: Args = argh::from_env();
 
     if args.quiet {
-        std::env::set_var("RUST_LOG", "");
+        std::env::set_var("RUST_LOG", "warn");
     } else if args.verbose {
         std::env::set_var("RUST_LOG", "debug,speedruns=trace");
     } else if std::env::var("RUST_LOG").unwrap_or_default().is_empty() {
