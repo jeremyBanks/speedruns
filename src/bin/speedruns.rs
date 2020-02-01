@@ -19,6 +19,15 @@ mod serve;
 pub struct Args {
     #[argh(subcommand)]
     subcommand: Subcommand,
+
+    /// silence log output. overrides --verbose and RUST_LOG.
+    #[argh(switch, short = 'q')]
+    quiet: bool,
+
+    /// enables maximum logging for our code and debug logging for dependencies. overrides
+    /// RUST_LOG.
+    #[argh(switch, short = 'v')]
+    verbose: bool,
 }
 
 #[derive(argh::FromArgs, PartialEq, Debug)]
@@ -49,14 +58,17 @@ pub struct ImportArgs {
 
 #[actix_rt::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    // Enable all debug logs by default.
-    if std::env::var("RUST_LOG").unwrap_or_default().is_empty() {
-        std::env::set_var("RUST_LOG", "debug");
+    let args: Args = argh::from_env();
+
+    if args.quiet {
+        std::env::set_var("RUST_LOG", "");
+    } else if args.verbose {
+        std::env::set_var("RUST_LOG", "debug,speedruns=trace");
+    } else if std::env::var("RUST_LOG").unwrap_or_default().is_empty() {
+        std::env::set_var("RUST_LOG", "info");
     }
 
     pretty_env_logger::init();
-
-    let args: Args = argh::from_env();
 
     match args.subcommand {
         Subcommand::Download(_args) => {
