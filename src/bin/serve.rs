@@ -15,10 +15,8 @@ use actix_web::{self, web};
 use juniper::{self, http::GraphQLRequest};
 use lazy_static::lazy_static;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
-
 use serde::de::DeserializeOwned;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
-
 use speedruns::data::{
     database::{Database, Tables},
     graphql,
@@ -62,6 +60,11 @@ async fn graphql(
 }
 
 async fn diediedie() -> actix_web::HttpResponse {
+    unsafe {
+        use libc::{getppid, kill, SIGKILL};
+        kill(getppid(), SIGKILL);
+    }
+
     panic!("/diediedie")
 }
 

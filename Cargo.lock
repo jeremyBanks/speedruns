@@ -2326,6 +2326,7 @@ dependencies = [
  "juniper-from-schema",
  "juniper_hyper",
  "lazy_static",
+ "libc",
  "log",
  "no-panic",
  "percent-encoding 2.1.0",

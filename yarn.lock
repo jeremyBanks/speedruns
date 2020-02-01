@@ -1330,6 +1330,13 @@
   dependencies:
     any-observable "^0.3.0"
 
+"@shopify/useful-types@^2.1.4":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@shopify/useful-types/-/useful-types-2.1.4.tgz#c3552235630760c4d7b11f262ce119aaf42fadc6"
+  integrity sha512-jX4toMDnFNoj2VrhbuM/ITAfWW+bezZgcZ/N7ktTCv12MUadcGH7PG/LccoDXtOp49jv/VesDw3pP4QZN85Ezg==
+  dependencies:
+    tslib "^1.9.3"
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
