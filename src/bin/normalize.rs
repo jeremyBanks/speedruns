@@ -30,12 +30,7 @@ use speedruns::{
 // TODO: include Run::comment()
 // TODO: include Game::variables() and Run::values()
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    env_logger::try_init_from_env(
-        env_logger::Env::new()
-            .default_filter_or(format!("{}=trace,speedruns=trace", module_path!())),
-    )?;
-
+pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut runs = Vec::new();
     let mut users = Vec::new();
     let mut games = Vec::new();

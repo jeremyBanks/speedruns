@@ -1,4 +1,3 @@
-#![feature(try_blocks)]
 #![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
 #![warn(
     missing_debug_implementations,
@@ -76,23 +75,20 @@ async fn diediedie() -> HttpResponse {
         .body("/diediedie only works on linux")
 }
 
-#[derive(argh::FromArgs)]
-/// graphql server
-struct Args {
+#[derive(argh::FromArgs, PartialEq, Debug)]
+/// serves imported data from a GraphQL server
+#[argh(subcommand, name = "serve")]
+pub struct Args {
+    /// port to run server on
+    #[argh(option)]
+    port:    Option<u32>,
     /// whether to skip the database import (such as if you only need to run the server to
     /// briefly download the schema)
     #[argh(switch)]
     no_data: bool,
 }
 
-#[actix_rt::main]
-async fn main() -> std::io::Result<()> {
-    // Enable all debug logs by default.
-    if std::env::var("RUST_LOG").unwrap_or_default().is_empty() {
-        std::env::set_var("RUST_LOG", "debug");
-    }
-    pretty_env_logger::init();
-
+pub async fn main(args: Args) -> std::io::Result<()> {
     info!("Initializing server.");
     lazy_static::initialize(&DATABASE);
 
@@ -112,16 +108,17 @@ async fn main() -> std::io::Result<()> {
     });
 
     info!("Binding server.");
-    server.bind("127.0.0.1:3001")?.run().await
+    server
+        .bind(format!("127.0.0.1:{}", args.port.unwrap_or(3001)))?
+        .run()
+        .await
 }
 
 fn unpack_tables() -> Tables {
-    let args: Args = argh::from_env();
-
-    if args.no_data {
-        info!("Skipping database import, will run with no data!");
-        return Tables::new(vec![], vec![], vec![], vec![], vec![])
-    }
+    // if args.no_data {
+    //     info!("Skipping database import, will run with no data!");
+    //     return Tables::new(vec![], vec![], vec![], vec![], vec![])
+    // }
 
     info!("Unpacking database...");
 

@@ -4,41 +4,38 @@
     {
       "type": "lldb",
       "request": "launch",
-      "name": "Debug executable: scrape",
+      "name": "Debug executable: download",
       "cargo": {
-        "args": ["build", "--bin=scrape"],
+        "args": ["build"],
         "filter": {
-          "name": "scrape",
           "kind": "bin"
         }
       },
-      "args": []
+      "args": ["download"]
     },
     {
       "type": "lldb",
       "request": "launch",
-      "name": "Debug executable: normalize",
+      "name": "Debug executable: import",
       "cargo": {
-        "args": ["build", "--bin=normalize"],
+        "args": ["build"],
         "filter": {
-          "name": "normalize",
           "kind": "bin"
         }
       },
-      "args": []
+      "args": ["import", "--skip-most"]
     },
     {
       "type": "lldb",
       "request": "launch",
       "name": "Debug executable: serve",
       "cargo": {
-        "args": ["build", "--bin=serve"],
+        "args": ["build"],
         "filter": {
-          "name": "serve",
           "kind": "bin"
         }
       },
-      "args": []
+      "args": ["serve"]
     }
   ]
 }

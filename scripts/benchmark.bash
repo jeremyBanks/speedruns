@@ -14,8 +14,8 @@ free --human | tee -a "${TARGET}"
 echo | tee -a "${TARGET}"
 
 
-cargo build --release --bin serve
-(RUST_LOG="speedruns=info,serve=info" cargo run --release --bin serve | tee -a "${TARGET}") &
+cargo build --release --workspace
+(RUST_LOG="speedruns=info,serve=info" cargo run --release serve | tee -a "${TARGET}") &
 trap "kill $!" EXIT
 
 sleep 16
