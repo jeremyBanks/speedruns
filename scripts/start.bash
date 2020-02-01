@@ -6,7 +6,7 @@ if [ ! -f data/normalized/runs.jsonl ]; then
     cp data/fixture/{categories,games,levels,runs,users}.jsonl data/normalized/
 fi
 
-cargo build --release serve
+cargo build --release
 
 cargo run --release serve &
 trap "kill $!" EXIT
