@@ -20,7 +20,7 @@ pub struct Args {
     #[argh(subcommand)]
     subcommand: Subcommand,
 
-    /// silence log output. overrides --verbose and RUST_LOG.
+    /// silence log output except for errors. overrides --verbose and RUST_LOG.
     #[argh(switch, short = 'q')]
     quiet: bool,
 
@@ -39,16 +39,18 @@ pub enum Subcommand {
 }
 
 #[derive(argh::FromArgs, PartialEq, Debug)]
-/// Fetches/updates a local mirror of speedrun.com API content. This
-/// just stores the JSON representation of each item as-is, it doesn't
-/// make any assumptions about their structure beyond the existence of
-/// a string "id" value.
+/// Fetches/updates a local mirror of speedrun.com API content. This just stores the JSON
+/// representation of each item as-is, it doesn't make any assumptions about their structure
+/// beyond the existence of  a string "id" value. This stores everything in-memory, it's not
+/// memory-efficient.
 #[argh(subcommand, name = "download")]
 pub struct DownloadArgs {}
 
 #[derive(argh::FromArgs, PartialEq, Debug)]
-/// imports downloaded data (converting it to our internal representation, discarding weird
-/// records). existing data is removed/replaced.
+/// Imports downloaded data (converting it to our internal representation, discarding weird
+/// records). existing data is removed/replaced. This is even less memory-efficient than
+/// `download` because it also stores everything in memory, and but also memory leaks on top
+/// of that!
 #[argh(subcommand, name = "import")]
 pub struct ImportArgs {
     /// whether to skip most records and only import a small number, for faster testing.
@@ -61,10 +63,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let args: Args = argh::from_env();
 
     if args.quiet {
-        std::env::set_var("RUST_LOG", "warn");
+        std::env::set_var("RUST_LOG", "error");
     } else if args.verbose {
         std::env::set_var("RUST_LOG", "debug,speedruns=trace");
-    } else if std::env::var("RUST_LOG").unwrap_or_default().is_empty() {
+    } else if std::env::var("RUST_LOG").is_err() {
         std::env::set_var("RUST_LOG", "info");
     }
 

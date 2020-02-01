@@ -76,7 +76,7 @@ async fn diediedie() -> HttpResponse {
 }
 
 #[derive(argh::FromArgs, PartialEq, Debug)]
-/// serves imported data from a GraphQL server
+/// Serves imported data from a GraphQL server.
 #[argh(subcommand, name = "serve")]
 pub struct Args {
     /// port to run server on
