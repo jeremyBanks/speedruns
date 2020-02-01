@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euxo pipefail
 
-cargo build --release --bin serve
+cargo build --release --workspace
 
-cargo run --release --bin serve &
+cargo run --release serve &
 trap "kill $!" EXIT
 
 sleep 16
