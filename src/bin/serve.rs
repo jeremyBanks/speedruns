@@ -7,18 +7,16 @@
 )]
 #![deny(unconditional_recursion)]
 
-use std::{fs::File, io::BufReader, sync::Arc};
+use std::{fs::File, io::BufReader, sync::Arc, time::Duration};
 
 use actix_cors::{self};
 use actix_web::{self, web};
-
+use async_std::task::sleep as asleep;
 use juniper::{self, http::GraphQLRequest};
 use lazy_static::lazy_static;
 #[allow(unused)] use log::{debug, error, info, trace, warn};
-
 use serde::de::DeserializeOwned;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
-
 use speedruns::data::{
     database::{Database, Tables},
     graphql,
@@ -62,7 +60,12 @@ async fn graphql(
 }
 
 async fn diediedie() -> actix_web::HttpResponse {
-    panic!("this doesn't work, it just kills one worker. oops.")
+    unsafe {
+        use libc::{getppid, kill, SIGKILL};
+        kill(getppid(), SIGKILL);
+    }
+
+    panic!("/diediedie")
 }
 
 #[actix_rt::main]
