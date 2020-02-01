@@ -213,15 +213,15 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     info!("Dumping {} games...", games.len());
-    dump_table("data/normalized/games", games)?;
+    dump_table("data/imported/games", games)?;
     info!("Dumping {} users...", users.len());
-    dump_table("data/normalized/users", users)?;
+    dump_table("data/imported/users", users)?;
     info!("Dumping {} runs...", runs.len());
-    dump_table("data/normalized/runs", runs)?;
+    dump_table("data/imported/runs", runs)?;
     info!("Dumping {} categories...", categories.len());
-    dump_table("data/normalized/categories", categories)?;
+    dump_table("data/imported/categories", categories)?;
     info!("Dumping {} levels...", levels.len());
-    dump_table("data/normalized/levels", levels)?;
+    dump_table("data/imported/levels", levels)?;
 
     Ok(())
 }
