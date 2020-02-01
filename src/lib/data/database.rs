@@ -90,6 +90,18 @@ pub struct Tables {
     levels:     BTreeMap<u64, Level>,
 }
 
+/// A collection of [Tables] with various generated indexes.
+#[derive(Clone)]
+pub struct Database {
+    tables:                                   &'static Tables,
+    runs_by_game_id:                          HashMap<u64, Vec<&'static Run>>,
+    games_by_slug:                            HashMap<String, &'static Game>,
+    users_by_slug:                            HashMap<String, &'static User>,
+    per_game_categories_by_game_id_and_slug:  HashMap<(u64, String), &'static Category>,
+    per_level_categories_by_game_id_and_slug: HashMap<(u64, String), &'static Category>,
+    levels_by_game_id_and_slug:               HashMap<(u64, String), &'static Level>,
+}
+
 impl Tables {
     pub fn new(
         runs: Vec<Run>,
@@ -123,18 +135,6 @@ impl Tables {
 /// key lookups.
 const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validation?!";
 
-/// A collection of [Tables] with various generated indexes.
-pub struct Database {
-    tables:                                   &'static Tables,
-    runs_by_game_id:                          HashMap<u64, Vec<&'static Run>>,
-    games_by_slug:                            HashMap<String, &'static Game>,
-    users_by_slug:                            HashMap<String, &'static User>,
-    per_game_categories_by_game_id_and_slug:  HashMap<(u64, String), &'static Category>,
-    per_level_categories_by_game_id_and_slug: HashMap<(u64, String), &'static Category>,
-    levels_by_game_id_and_slug:               HashMap<(u64, String), &'static Level>,
-    _runs_by_category_level_and_slug: HashMap<(u64, Option<u64>, String), &'static Run>,
-}
-
 impl std::fmt::Debug for Database {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Database {{ .. }}")
@@ -164,11 +164,6 @@ impl Database {
         > = HashMap::new();
         let mut levels_by_game_id_and_slug: HashMap<(u64, String), &'static Level> =
             HashMap::new();
-        let _runs_by_category_level_and_slug: HashMap<
-            (u64, Option<u64>, String),
-            &'static Run,
-        > = HashMap::new();
-
         let index_errored = 'indexing: {
             for game in tables.games().values() {
                 runs_by_game_id.insert(*game.id(), Vec::new());
@@ -221,7 +216,6 @@ impl Database {
             per_game_categories_by_game_id_and_slug,
             per_level_categories_by_game_id_and_slug,
             levels_by_game_id_and_slug,
-            _runs_by_category_level_and_slug,
         });
 
         if let Err(mut errors_) = self_.validate() {
