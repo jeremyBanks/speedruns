@@ -115,10 +115,13 @@ pub async fn main(args: Args) -> std::io::Result<()> {
 }
 
 fn unpack_tables() -> Tables {
-    // if args.no_data {
-    //     info!("Skipping database import, will run with no data!");
-    //     return Tables::new(vec![], vec![], vec![], vec![], vec![])
-    // }
+    let args: crate::Args = argh::from_env();
+    if let crate::Subcommand::Serve(args) = args.subcommand {
+        if args.no_data {
+            info!("Skipping database import, will run with no data!");
+            return Tables::new(vec![], vec![], vec![], vec![], vec![])
+        }
+    }
 
     info!("Unpacking database...");
 
