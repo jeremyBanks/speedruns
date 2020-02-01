@@ -2351,6 +2351,7 @@ dependencies = [
  "fs2",
  "futures 0.3.1",
  "getset",
+ "heck",
  "itertools",
  "juniper",
  "juniper-from-schema",

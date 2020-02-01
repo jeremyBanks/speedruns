@@ -1,7 +1,7 @@
 import Document, { Head, Html, Main, NextScript } from "next/document";
 
-import Footer from "~/components/common-sections/footer";
-import Header from "~/components/common-sections/header";
+import Footer from "~/components/footer";
+import Header from "~/components/header";
 import styles from "~/components/styles.module.scss";
 
 class MyDocument extends Document {
