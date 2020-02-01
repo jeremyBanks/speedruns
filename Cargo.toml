@@ -63,6 +63,7 @@ validator = "0.10.0"
 validator_derive = "0.10.0"
 base64 = "0.11.0"
 arrayvec = "0.5.1"
+libc = "0.2.66"
 
 [dependencies.chrono]
 features = ["serde"]
