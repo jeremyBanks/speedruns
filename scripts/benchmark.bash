@@ -15,7 +15,7 @@ echo | tee -a "${TARGET}"
 
 
 cargo build --release --workspace
-(RUST_LOG="speedruns=info,serve=info" cargo run --release serve | tee -a "${TARGET}") &
+(cargo run --release -- --quiet serve | tee -a "${TARGET}") &
 trap "kill $!" EXIT
 
 sleep 16
