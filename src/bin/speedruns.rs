@@ -16,14 +16,14 @@ mod serve;
 
 #[derive(argh::FromArgs, PartialEq, Debug)]
 /// Tools for importing and serving some data from the speedrun.com API.
-struct Args {
+pub struct Args {
     #[argh(subcommand)]
     subcommand: Subcommand,
 }
 
 #[derive(argh::FromArgs, PartialEq, Debug)]
 #[argh(subcommand)]
-enum Subcommand {
+pub enum Subcommand {
     Download(DownloadArgs),
     Import(ImportArgs),
     Serve(serve::Args),
@@ -35,13 +35,13 @@ enum Subcommand {
 /// make any assumptions about their structure beyond the existence of
 /// a string "id" value.
 #[argh(subcommand, name = "download")]
-struct DownloadArgs {}
+pub struct DownloadArgs {}
 
 #[derive(argh::FromArgs, PartialEq, Debug)]
 /// imports downloaded data (converting it to our internal representation, discarding weird
 /// records). existing data is removed/replaced.
 #[argh(subcommand, name = "import")]
-struct ImportArgs {
+pub struct ImportArgs {
     /// whether to skip most records and only import a small number, for faster testing.
     #[argh(switch)]
     skip_most: bool,
