@@ -1,6 +1,6 @@
 # speedruns
 
-Tools for mirroring speedrun.com API data.
+Unofficial tools for mirroring [speedrun.com](https://www.speedrun.com/) API data. Using Rust, TypeScript, GraphQL, and React.
 
 ## Legal
 
@@ -10,7 +10,7 @@ This project is not associated with or endorsed by speedrun.com.
 
 ### Code License
 
-Copyright Jeremy Banks, released under the MIT License.
+Copyright Jeremy Banks, released under [the MIT License](./LICENSE).
 
 ### Content License
 
@@ -22,7 +22,7 @@ Attribution-NonCommercial 4.0 International license.
 
 ### Environment
 
-Install [rustup](https://rustup.rs/) to manage Rust toolchain and [nvm](https://github.com/nvm-sh/nvm) to manage JavaScript toolchain, following instructions on their respective pages.
+Install [rustup](https://rustup.rs/) to manage the Rust toolchain and [nvm](https://github.com/nvm-sh/nvm) to manage the JavaScript toolchain, following instructions on their respective pages.
 
 Install and activate our expected version of npm using nvm, then install [the Yarn package manager](https://yarnpkg.com/):
 
@@ -44,7 +44,7 @@ Initially, this will load a test fixture data set only intended for development.
 
 ### Import Data
 
-If you want to use the full data set, you'll need to import it.
+If you want to use the real data set, you'll need to import it.
 
 (Optional) You may want to start by downloading archived copies of `{runs,users,games}.jsonl.gz` from
 https://archive.org/download/speedrun.com-2019-04-27, and putting them in `data/api`, to reduce the amount you load through the API (which can take a long time).
