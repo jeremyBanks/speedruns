@@ -10,7 +10,7 @@
 use std::{fs::File, io::BufReader, sync::Arc};
 
 use actix_cors::{self};
-use actix_web::{self, web};
+use actix_web::{self, web, HttpResponse};
 
 use juniper::{self, http::GraphQLRequest};
 use lazy_static::lazy_static;
@@ -22,16 +22,16 @@ use speedruns::data::{
     graphql,
 };
 
-async fn graphiql() -> actix_web::HttpResponse {
+async fn graphiql() -> HttpResponse {
     let html = juniper::http::graphiql::graphiql_source("/graphql");
-    actix_web::HttpResponse::Ok()
+    HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(html)
 }
 
-async fn playground() -> actix_web::HttpResponse {
+async fn playground() -> HttpResponse {
     let html = juniper::http::playground::playground_source("/graphql");
-    actix_web::HttpResponse::Ok()
+    HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(html)
 }
@@ -46,26 +46,43 @@ lazy_static! {
 async fn graphql(
     schema: web::Data<Arc<graphql::Schema>>,
     query: web::Json<GraphQLRequest>,
-) -> actix_web::Result<actix_web::HttpResponse> {
+) -> actix_web::Result<HttpResponse> {
     let database = DATABASE.clone();
     let user = web::block(move || {
         let res = query.execute(&schema, &graphql::Context { database });
         Ok::<_, serde_json::error::Error>(serde_json::to_string(&res)?)
     })
     .await?;
-    Ok(actix_web::HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .content_type("application/json")
         .header(actix_web::http::header::ACCESS_CONTROL_ALLOW_ORIGIN, "*")
         .body(user))
 }
 
-async fn diediedie() -> actix_web::HttpResponse {
+#[cfg(target_os = "linux")]
+async fn diediedie() -> HttpResponse {
     unsafe {
         use libc::{getppid, kill, SIGKILL};
         kill(getppid(), SIGKILL);
     }
 
     panic!("/diediedie")
+}
+
+#[cfg(not(target_os = "linux"))]
+async fn diediedie() -> HttpResponse {
+    HttpResponse::InternalServerError()
+        .content_type("text/plain")
+        .body("/diediedie only works on linux")
+}
+
+#[derive(argh::FromArgs)]
+/// graphql server
+struct Args {
+    /// whether to skip the database import (such as if you only need to run the server to
+    /// briefly download the schema)
+    #[argh(switch)]
+    no_data: bool,
 }
 
 #[actix_rt::main]
@@ -99,6 +116,13 @@ async fn main() -> std::io::Result<()> {
 }
 
 fn unpack_tables() -> Tables {
+    let args: Args = argh::from_env();
+
+    if args.no_data {
+        info!("Skipping database import, will run with no data!");
+        return Tables::new(vec![], vec![], vec![], vec![], vec![])
+    }
+
     info!("Unpacking database...");
 
     let mut runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
