@@ -76,6 +76,15 @@ async fn diediedie() -> HttpResponse {
         .body("/diediedie only works on linux")
 }
 
+#[derive(argh::FromArgs)]
+/// graphql server
+struct Args {
+    /// whether to skip the database import (such as if you only need to run the server to
+    /// briefly download the schema)
+    #[argh(switch)]
+    no_data: bool,
+}
+
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
     // Enable all debug logs by default.
@@ -107,6 +116,13 @@ async fn main() -> std::io::Result<()> {
 }
 
 fn unpack_tables() -> Tables {
+    let args: Args = argh::from_env();
+
+    if args.no_data {
+        info!("Skipping database import, will run with no data!");
+        return Tables::new(vec![], vec![], vec![], vec![], vec![])
+    }
+
     info!("Unpacking database...");
 
     let mut runs = read_table("data/normalized/runs.jsonl").expect("run data corrupt");
