@@ -65,7 +65,12 @@ impl Spider {
                 let iterator = deserializer.into_iter::<JsonValue>();
                 for item in iterator {
                     let item = item?;
-                    let id = item.get("id").unwrap().as_str().unwrap().to_string();
+                    let id = item
+                        .get("id")
+                        .unwrap()
+                        .as_str()
+                        .expect("record should have id field")
+                        .to_string();
                     spider.resource_by_id(resource).insert(id, item);
                 }
                 info!(
@@ -166,7 +171,9 @@ impl Spider {
                     loop {
                         match client.get(&url).send() {
                             Ok(mut ok) => {
-                                response = ok.json().unwrap();
+                                response = ok
+                                    .json()
+                                    .expect("if we get a response it should be json");
                                 break
                             }
                             Err(error) => {
@@ -177,11 +184,20 @@ impl Spider {
                         }
                     }
 
-                    let response = response.as_object().unwrap();
-                    let items = response["data"].as_array().unwrap();
+                    let response = response
+                        .as_object()
+                        .expect("json response to have expected structure");
+                    let items = response["data"]
+                        .as_array()
+                        .expect("json response to have expected structure");
 
                     for item in items.iter().cloned() {
-                        let id = item.get("id").unwrap().as_str().unwrap().to_string();
+                        let id = item
+                            .get("id")
+                            .expect("json response to have expected structure")
+                            .as_str()
+                            .expect("json response to have expected structure")
+                            .to_string();
                         self.resource_by_id(resource).insert(id, item);
                     }
 

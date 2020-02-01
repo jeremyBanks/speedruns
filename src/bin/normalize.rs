@@ -39,21 +39,28 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     info!("Loading API runs...");
     for api_run in load_api_type::<api::Run>("data/api/runs.jsonl.gz")? {
-        if let Some(run) = api_run.normalize().unwrap() {
+        if let Some(run) = api_run
+            .normalize()
+            .expect("we should be able to handle all run data variations")
+        {
             runs.push(run);
         }
     }
 
     info!("Loading API users...");
     for api_user in load_api_type::<api::User>("data/api/users.jsonl.gz")? {
-        let user = api_user.normalize().unwrap();
+        let user = api_user
+            .normalize()
+            .expect("we should be able to handle all user data variations");
 
         users.push(user);
     }
 
     info!("Loading API games, with categories and levels...");
     for api_game in load_api_type::<api::Game>("data/api/games.jsonl.gz")? {
-        let (game, mut game_categories, mut game_levels) = api_game.normalize().unwrap();
+        let (game, mut game_categories, mut game_levels) = api_game
+            .normalize()
+            .expect("we should be able to handle all run game variations");
 
         games.push(game);
         categories.append(&mut game_categories);
