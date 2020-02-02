@@ -7,6 +7,7 @@ use std::{
     sync::Arc,
 };
 
+use chrono::{DateTime, NaiveDateTime, Utc};
 use derive_more::From;
 use err_derive::Error;
 use getset::Getters;
@@ -97,6 +98,8 @@ pub struct Database {
     #[get = "pub"]
     tables:                                       &'static Tables,
     #[get = "pub"]
+    last_updated:                                 DateTime<Utc>,
+    #[get = "pub"]
     runs_by_game_id_and_category_id_and_level_id:
         BTreeMap<(u64, u64, Option<u64>), Vec<&'static Run>>,
     games_by_slug:                                BTreeMap<String, &'static Game>,
@@ -157,6 +160,8 @@ impl Database {
 
     /// Creates a new Database indexing a collection of static tables.
     pub fn new(tables: &'static Tables) -> Result<Arc<Self>, IntegrityErrors> {
+        let mut last_updated: DateTime<Utc> =
+            DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(0, 0), Utc);
         let mut runs_by_game_id_and_category_id_and_level_id: BTreeMap<
             (u64, u64, Option<u64>),
             Vec<&'static Run>,
@@ -179,6 +184,12 @@ impl Database {
             }
 
             for run in tables.runs().values() {
+                if let Some(created) = run.created {
+                    if created > last_updated {
+                        last_updated = created;
+                    }
+                }
+
                 let key = (*run.game_id(), *run.category_id(), *run.level_id());
                 if let Some(runs) =
                     runs_by_game_id_and_category_id_and_level_id.get_mut(&key)
@@ -223,6 +234,7 @@ impl Database {
 
         let self_ = Arc::new(Self {
             tables,
+            last_updated,
             runs_by_game_id_and_category_id_and_level_id,
             games_by_slug,
             users_by_slug,

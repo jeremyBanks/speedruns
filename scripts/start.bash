@@ -1,9 +1,13 @@
 #!/bin/bash
 set -euxo pipefail
 
-"$(dirname $0)/generate.bash"
+yarn generate
 
-cargo run serve &
+yarn format
+
+cargo build --release --workspace
+
+cargo run --release serve &
 trap "kill $!" EXIT
 
 next dev

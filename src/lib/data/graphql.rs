@@ -79,8 +79,12 @@ pub enum Player {
 pub struct Level(DbLinked<db::Level>);
 
 impl StatsFields for Stats {
-    fn field_last_updated(&self, _executor: &Executor<'_, Context>) -> f64 {
-        0.0
+    fn field_last_updated(&self, executor: &Executor<'_, Context>) -> f64 {
+        executor
+            .context()
+            .database
+            .last_updated()
+            .timestamp_millis() as f64
     }
 
     fn field_runs(&self, executor: &Executor<'_, Context>) -> i32 {
