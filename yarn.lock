@@ -2415,10 +2415,10 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-autocannon@^4.5.2:
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/autocannon/-/autocannon-4.5.2.tgz#93fdeed3a9773347f80a69945ded14d6cca81ba7"
-  integrity sha512-03oXhdwkR6L8MeRxlSM6ubrL6lIKv/+sdZQaeD+80LCWgaK7HrzWe0bcbBV7dFprbiAGSGlw4dLxpygQMDHOwQ==
+autocannon@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/autocannon/-/autocannon-4.6.0.tgz#01c18e211444bd523c97da4ff7ff83cd25035333"
+  integrity sha512-pWHEBJh9bkQeDXYj1NL2BBYeXTaLkbRiy3NZ7vNR1bq7vWxHP8R+iCmDyBCtuh2PMJiWlGlikXa1p0LUUY3Tdw==
   dependencies:
     chalk "^3.0.0"
     cli-table3 "^0.5.1"
