@@ -187,13 +187,11 @@ impl GameFields for Game {
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Level, Walked>,
     ) -> Vec<Level> {
-        // TODO: not a full table scan
         executor
             .context()
             .database
-            .levels()
-            .filter(|level| level.game_id == self.0.id)
-            .sorted_by(|a, b| a.name.cmp(&b.name))
+            .levels_by_game_id(self.0.id)
+            .into_iter()
             .map(Level)
             .collect()
     }
@@ -203,16 +201,14 @@ impl GameFields for Game {
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Category, Walked>,
     ) -> Vec<Category> {
-        // TODO: not a full table scan
         executor
             .context()
             .database
-            .categories()
-            .filter(|category| {
-                category.game_id == self.0.id && category.per == db::CategoryType::PerGame
-            })
+            .per_game_categories_by_game_id_and_slug()
+            .range((self.0.id, "".to_string())..(self.0.id + 1, "".to_string()))
+            .map(|(_key, value)| value)
             .sorted_by(|a, b| (&a.name, a.id).cmp(&(&b.name, b.id)))
-            .map(Category)
+            .map(|c| Category(executor.context().database.link(c)))
             .collect()
     }
 
@@ -221,16 +217,14 @@ impl GameFields for Game {
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Category, Walked>,
     ) -> Vec<Category> {
-        // TODO: not a full table scan
         executor
             .context()
             .database
-            .categories()
-            .filter(|category| {
-                category.game_id == self.0.id && category.per == db::CategoryType::PerLevel
-            })
+            .per_level_categories_by_game_id_and_slug()
+            .range((self.0.id, "".to_string())..(self.0.id + 1, "".to_string()))
+            .map(|(_key, value)| value)
             .sorted_by(|a, b| (&a.name, a.id).cmp(&(&b.name, b.id)))
-            .map(Category)
+            .map(|c| Category(executor.context().database.link(c)))
             .collect()
     }
 }
@@ -407,6 +401,7 @@ impl CategoryFields for Category {
             .0
             .runs()
             .iter()
+            // TODO
             .filter(|run| {
                 run.category_id == self.0.id
                     && (level_id == None || run.level_id == level_id)
@@ -424,13 +419,11 @@ impl CategoryFields for Category {
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, CategoryLevel, Walked>,
     ) -> Vec<CategoryLevel> {
-        // TODO: not a full table scan
         executor
             .context()
             .database
-            .levels()
-            .filter(|level| level.game_id == self.0.game_id)
-            .sorted_by(|a, b| a.name.cmp(&b.name))
+            .levels_by_game_id(self.0.game_id)
+            .into_iter()
             .map(|level| CategoryLevel {
                 category: self.0.clone(),
                 level,
@@ -525,19 +518,19 @@ impl CategoryLevelFields for CategoryLevel {
 
     fn field_leaderboard(
         &self,
-        _executor: &Executor<'_, Context>,
+        executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
         include_obsolete: bool,
     ) -> Vec<LeaderboardRun> {
-        let runs: Vec<DbLinked<db::Run>> = self
-            .category
-            .game()
-            .runs()
+        let runs: Vec<DbLinked<db::Run>> = executor
+            .context()
+            .database
+            .runs_by_game_id_and_category_id_and_level_id()
+            .get(&(self.category.game_id, self.category.id, Some(self.level.id)))
+            .map(Clone::clone)
+            .unwrap_or_else(Default::default)
             .iter()
-            .filter(|run| {
-                run.level_id == Some(self.level.id) && run.category_id == self.category.id
-            })
-            .cloned()
+            .map(|run| executor.context().database.link(*run))
             .collect();
 
         let ranked = leaderboard::leaderboard(&runs, include_obsolete);
@@ -547,19 +540,19 @@ impl CategoryLevelFields for CategoryLevel {
 
     fn field_progression(
         &self,
-        _executor: &Executor<'_, Context>,
+        executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, ProgressionRun, Walked>,
         _include_ties: bool,
     ) -> Vec<ProgressionRun> {
-        let runs: Vec<DbLinked<db::Run>> = self
-            .category
-            .game()
-            .runs()
+        let runs: Vec<DbLinked<db::Run>> = executor
+            .context()
+            .database
+            .runs_by_game_id_and_category_id_and_level_id()
+            .get(&(self.category.game_id, self.category.id, Some(self.level.id)))
+            .map(Clone::clone)
+            .unwrap_or_else(Default::default)
             .iter()
-            .filter(|run| {
-                run.level_id == Some(self.level.id) && run.category_id == self.category.id
-            })
-            .cloned()
+            .map(|run| executor.context().database.link(*run))
             .collect();
 
         let progress = progression::progression(&runs);

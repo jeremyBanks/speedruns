@@ -92,15 +92,20 @@ pub struct Tables {
 }
 
 /// A collection of [Tables] with various generated indexes.
-#[derive(Clone)]
+#[derive(Getters, Clone)]
 pub struct Database {
-    tables:                                   &'static Tables,
-    runs_by_game_id:                          BTreeMap<u64, Vec<&'static Run>>,
-    games_by_slug:                            BTreeMap<String, &'static Game>,
-    users_by_slug:                            BTreeMap<String, &'static User>,
-    per_game_categories_by_game_id_and_slug:  BTreeMap<(u64, String), &'static Category>,
+    #[get = "pub"]
+    tables:                                       &'static Tables,
+    #[get = "pub"]
+    runs_by_game_id_and_category_id_and_level_id:
+        BTreeMap<(u64, u64, Option<u64>), Vec<&'static Run>>,
+    games_by_slug:                                BTreeMap<String, &'static Game>,
+    users_by_slug:                                BTreeMap<String, &'static User>,
+    #[get = "pub"]
+    per_game_categories_by_game_id_and_slug: BTreeMap<(u64, String), &'static Category>,
+    #[get = "pub"]
     per_level_categories_by_game_id_and_slug: BTreeMap<(u64, String), &'static Category>,
-    levels_by_game_id_and_slug:               BTreeMap<(u64, String), &'static Level>,
+    levels_by_game_id_and_slug:                   BTreeMap<(u64, String), &'static Level>,
 }
 
 impl Tables {
@@ -143,7 +148,7 @@ impl std::fmt::Debug for Database {
 }
 
 impl Database {
-    fn link<ModelType: Model>(
+    pub fn link<ModelType: Model>(
         self: &Arc<Self>,
         item: &'static ModelType,
     ) -> Linked<ModelType> {
@@ -152,7 +157,10 @@ impl Database {
 
     /// Creates a new Database indexing a collection of static tables.
     pub fn new(tables: &'static Tables) -> Result<Arc<Self>, IntegrityErrors> {
-        let mut runs_by_game_id: BTreeMap<u64, Vec<&'static Run>> = Default::default();
+        let mut runs_by_game_id_and_category_id_and_level_id: BTreeMap<
+            (u64, u64, Option<u64>),
+            Vec<&'static Run>,
+        > = Default::default();
         let mut games_by_slug: BTreeMap<String, &'static Game> = Default::default();
         let mut users_by_slug: BTreeMap<String, &'static User> = Default::default();
         let mut per_game_categories_by_game_id_and_slug: BTreeMap<
@@ -165,17 +173,21 @@ impl Database {
         > = Default::default();
         let mut levels_by_game_id_and_slug: BTreeMap<(u64, String), &'static Level> =
             Default::default();
-        let index_errored = 'indexing: {
+        let index_errored = '_indexing: {
             for game in tables.games().values() {
-                runs_by_game_id.insert(*game.id(), Vec::new());
                 games_by_slug.insert(game.slug().to_string(), game);
             }
 
             for run in tables.runs().values() {
-                if let Some(runs) = runs_by_game_id.get_mut(run.game_id()) {
+                let key = (*run.game_id(), *run.category_id(), *run.level_id());
+                if let Some(runs) =
+                    runs_by_game_id_and_category_id_and_level_id.get_mut(&key)
+                {
                     runs.push(run);
                 } else {
-                    break 'indexing true
+                    runs_by_game_id_and_category_id_and_level_id
+                        .insert(key, vec![run])
+                        .unwrap_none();
                 }
             }
 
@@ -196,7 +208,7 @@ impl Database {
                     .insert((*level.game_id(), level.slug().to_string()), level);
             }
 
-            for game_runs in runs_by_game_id.values_mut() {
+            for game_runs in runs_by_game_id_and_category_id_and_level_id.values_mut() {
                 game_runs.sort();
             }
 
@@ -211,7 +223,7 @@ impl Database {
 
         let self_ = Arc::new(Self {
             tables,
-            runs_by_game_id,
+            runs_by_game_id_and_category_id_and_level_id,
             games_by_slug,
             users_by_slug,
             per_game_categories_by_game_id_and_slug,
@@ -224,10 +236,6 @@ impl Database {
         }
 
         IntegrityErrors::try_from(errors).map(|_| self_)
-    }
-
-    pub fn tables(&self) -> &Tables {
-        &self.tables
     }
 
     pub fn validate(self: &Arc<Self>) -> Result<(), IntegrityErrors> {
@@ -347,10 +355,12 @@ impl Database {
 
     /// Returns a Vec of Linked<Run> for a given game ID, sorted by category,
     /// level, and then primary time (ascending).
-    pub fn runs_by_game_id(self: &Arc<Self>, game_id: u64) -> Option<Vec<Linked<Run>>> {
-        self.runs_by_game_id
-            .get(&game_id)
-            .map(|ref runs| runs.iter().map(|run| self.link(*run)).collect())
+    pub fn runs_by_game_id(self: &Arc<Self>, game_id: u64) -> Vec<Linked<Run>> {
+        self.runs_by_game_id_and_category_id_and_level_id
+            .range((game_id, 0, None)..(game_id + 1, 0, None))
+            .map(|(_key, value)| value)
+            .flat_map(|ref runs| runs.iter().map(|run| self.link(*run)).collect::<Vec<_>>())
+            .collect()
     }
 
     /// Iterator over all Linked<User>s.
@@ -390,6 +400,13 @@ impl Database {
     /// Finds a Linked<Game> by slug.
     pub fn game_by_slug(self: &Arc<Self>, slug: &str) -> Option<Linked<Game>> {
         self.games_by_slug.get(slug).map(|game| self.link(*game))
+    }
+
+    pub fn levels_by_game_id(self: &Arc<Self>, game_id: u64) -> Vec<Linked<Level>> {
+        self.levels_by_game_id_and_slug
+            .range((game_id, "".to_string())..(game_id + 1, "".to_string()))
+            .map(|(_key, level)| self.link(*level))
+            .collect()
     }
 
     /// Finds a level with the given name and game ID.
@@ -645,10 +662,7 @@ impl Linked<User> {
 impl Linked<Game> {
     /// Returns a Vec of all the verified Runs for this Game.
     pub fn runs(&self) -> Vec<Linked<Run>> {
-        self.database
-            .clone()
-            .runs_by_game_id(*self.id())
-            .expect(DATABASE_INTEGRITY)
+        self.database.clone().runs_by_game_id(*self.id())
     }
 
     pub fn per_game_category_by_slug(&self, slug: &str) -> Option<Linked<Category>> {
@@ -728,7 +742,6 @@ impl Linked<Category> {
         self.database
             .clone()
             .runs_by_game_id(*self.game_id())
-            .expect(DATABASE_INTEGRITY)
             .iter()
             .filter(|r| r.category_id() == self.id())
             .cloned()
