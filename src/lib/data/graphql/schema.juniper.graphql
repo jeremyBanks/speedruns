@@ -37,6 +37,26 @@ interface Node {
   id: ID! @juniper(ownership: "owned", infallible: true)
 }
 
+"""
+A timing method that can be used to time a run.
+"""
+enum TimingMethod {
+  """
+  In-game time
+  """
+  IGT
+
+  """
+  Real time
+  """
+  RTA
+
+  """
+  Real time with load time removed
+  """
+  RTA_NL
+}
+
 type Game implements Node {
   """
   GraphQL node ID
@@ -82,6 +102,11 @@ type Game implements Node {
   individual levels
   """
   levels: [Level!]! @juniper(ownership: "owned", infallible: true)
+
+  """
+  primary run timing method used for this game
+  """
+  timingMethod: TimingMethod! @juniper(ownership: "owned", infallible: true)
 }
 
 type User implements Node {

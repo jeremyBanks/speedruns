@@ -55,11 +55,14 @@ const GamePage: NextPage = () => {
 
           <h4>Progress</h4>
 
-          <ProgressionTable runs={category.progression} />
+          <ProgressionTable runs={category.progression} game={game} />
 
           <h4>Leaderboard</h4>
 
-          <LeaderboardTable runs={category.leaderboard.slice(0, 16)} />
+          <LeaderboardTable
+            runs={category.leaderboard.slice(0, 16)}
+            game={game}
+          />
         </section>
       ))}
 
@@ -75,6 +78,7 @@ const GamePage: NextPage = () => {
             runs={levelCategory.progression}
             showLevels={true}
             showSums={true}
+            game={game}
           />
 
           {levelCategory.levels.map(({ level, leaderboard, progression }) => (
@@ -85,11 +89,11 @@ const GamePage: NextPage = () => {
 
               <h4>Progress</h4>
 
-              <ProgressionTable runs={progression} />
+              <ProgressionTable runs={progression} game={game} />
 
               <h4>Leaderboard</h4>
 
-              <LeaderboardTable runs={leaderboard.slice(0, 16)} />
+              <LeaderboardTable runs={leaderboard.slice(0, 16)} game={game} />
             </section>
           ))}
         </div>
@@ -176,6 +180,7 @@ const GetGamePage = gql`
       slug
       srcSlug
       name
+      timingMethod
       gameCategories {
         id
         srcId

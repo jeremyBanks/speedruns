@@ -115,6 +115,11 @@ type Game implements Node {
   individual levels
   """
   levels: [Level!]!
+
+  """
+  primary run timing method used for this game
+  """
+  timingMethod: TimingMethod!
 }
 
 type LeaderboardRun {
@@ -212,6 +217,26 @@ type Stats {
   number of runs
   """
   runs: Int!
+}
+
+"""
+A timing method that can be used to time a run.
+"""
+enum TimingMethod {
+  """
+  In-game time
+  """
+  IGT
+
+  """
+  Real time
+  """
+  RTA
+
+  """
+  Real time with load time removed
+  """
+  RTA_NL
 }
 
 type User implements Node {
