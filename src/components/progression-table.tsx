@@ -11,11 +11,13 @@ const ProgressionTable: React.FC<{
   showLevels?: boolean;
   showSums?: boolean;
   showCategories?: boolean;
+  game: { timingMethod: string };
 }> = ({
   runs,
   showLevels = false,
   showSums = false,
   showCategories = false,
+  game,
 }) => (
   <table className={styles.progression}>
     <thead>
@@ -24,7 +26,7 @@ const ProgressionTable: React.FC<{
         {showCategories ? <th className={styles.category}>Category</th> : null}
         <th className={styles.date}>Date</th>
         <th className={styles.progress}>Progress</th>
-        <th className={styles.time}>Time (RTA)</th>
+        <th className={styles.time}>Time ({game.timingMethod})</th>
         <th className={styles.player}>Player</th>
         <th className={styles.rank}>Rank</th>
       </tr>

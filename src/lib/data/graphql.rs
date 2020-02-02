@@ -174,6 +174,14 @@ impl GameFields for Game {
         src_slugify(&self.0.slug)
     }
 
+    fn field_timing_method(&self, _executor: &Executor<'_, Context>) -> TimingMethod {
+        match self.0.primary_timing() {
+            crate::data::types::TimingMethod::IGT => TimingMethod::Igt,
+            crate::data::types::TimingMethod::RTA => TimingMethod::Rta,
+            crate::data::types::TimingMethod::RTA_NL => TimingMethod::RtaNl,
+        }
+    }
+
     fn field_runs(
         &self,
         _executor: &Executor<'_, Context>,

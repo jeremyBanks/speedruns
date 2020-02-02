@@ -47,7 +47,7 @@ Initially, this will load a test fixture data set only intended for development.
 If you want to use the real data set, you'll need to import it.
 
 (Optional) You may want to start by downloading archived copies of `{runs,users,games}.jsonl.gz` from
-https://archive.org/download/speedrun.com-2019-04-27, and putting them in `data/api`, to reduce the amount you load through the API (which can take a long time).
+https://archive.org/download/speedrun.com-2020-02-01, and putting them in `data/api`, to reduce the amount you load through the API (which can take a long time).
 
 Download any new data by running:
 

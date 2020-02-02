@@ -7,13 +7,14 @@ import RunRank from "~/components/run-rank";
 
 const LeaderboardTable: React.FC<{
   runs: schema.GetGamePage_game_gameCategories_leaderboard[];
-}> = ({ runs }) => (
+  game: { timingMethod: string };
+}> = ({ runs, game }) => (
   <table className={styles.leaderboard}>
     <thead>
       <tr>
         <th className={styles.rank}>Rank</th>
         <th className={styles.player}>Player</th>
-        <th className={styles.time}>Time (RTA)</th>
+        <th className={styles.time}>Time ({game.timingMethod})</th>
         <th className={styles.date}>Date</th>
       </tr>
     </thead>

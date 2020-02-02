@@ -878,6 +878,10 @@ export interface GetGamePage_game {
    */
   name: string;
   /**
+   * primary run timing method used for this game
+   */
+  timingMethod: TimingMethod;
+  /**
    * full-game run categories
    */
   gameCategories: GetGamePage_game_gameCategories[];
@@ -1379,6 +1383,15 @@ export interface GameLeaderboardRun {
 //==============================================================
 // START Enums and Input Objects
 //==============================================================
+
+/**
+ * A timing method that can be used to time a run.
+ */
+export enum TimingMethod {
+  IGT = "IGT",
+  RTA = "RTA",
+  RTA_NL = "RTA_NL",
+}
 
 //==============================================================
 // END Enums and Input Objects
