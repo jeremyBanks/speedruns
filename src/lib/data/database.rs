@@ -1,6 +1,7 @@
 //! The world's worst in-memory database of normalized speedrun data.
 use std::{
     collections::{BTreeMap, HashMap},
+    default::Default,
     fmt::{Debug, Display},
     ops::Deref,
     sync::Arc,
@@ -94,12 +95,12 @@ pub struct Tables {
 #[derive(Clone)]
 pub struct Database {
     tables:                                   &'static Tables,
-    runs_by_game_id:                          HashMap<u64, Vec<&'static Run>>,
-    games_by_slug:                            HashMap<String, &'static Game>,
-    users_by_slug:                            HashMap<String, &'static User>,
-    per_game_categories_by_game_id_and_slug:  HashMap<(u64, String), &'static Category>,
-    per_level_categories_by_game_id_and_slug: HashMap<(u64, String), &'static Category>,
-    levels_by_game_id_and_slug:               HashMap<(u64, String), &'static Level>,
+    runs_by_game_id:                          BTreeMap<u64, Vec<&'static Run>>,
+    games_by_slug:                            BTreeMap<String, &'static Game>,
+    users_by_slug:                            BTreeMap<String, &'static User>,
+    per_game_categories_by_game_id_and_slug:  BTreeMap<(u64, String), &'static Category>,
+    per_level_categories_by_game_id_and_slug: BTreeMap<(u64, String), &'static Category>,
+    levels_by_game_id_and_slug:               BTreeMap<(u64, String), &'static Level>,
 }
 
 impl Tables {
@@ -151,19 +152,19 @@ impl Database {
 
     /// Creates a new Database indexing a collection of static tables.
     pub fn new(tables: &'static Tables) -> Result<Arc<Self>, IntegrityErrors> {
-        let mut runs_by_game_id: HashMap<u64, Vec<&'static Run>> = HashMap::new();
-        let mut games_by_slug: HashMap<String, &'static Game> = HashMap::new();
-        let mut users_by_slug: HashMap<String, &'static User> = HashMap::new();
-        let mut per_game_categories_by_game_id_and_slug: HashMap<
+        let mut runs_by_game_id: BTreeMap<u64, Vec<&'static Run>> = Default::default();
+        let mut games_by_slug: BTreeMap<String, &'static Game> = Default::default();
+        let mut users_by_slug: BTreeMap<String, &'static User> = Default::default();
+        let mut per_game_categories_by_game_id_and_slug: BTreeMap<
             (u64, String),
             &'static Category,
-        > = HashMap::new();
-        let mut per_level_categories_by_game_id_and_slug: HashMap<
+        > = Default::default();
+        let mut per_level_categories_by_game_id_and_slug: BTreeMap<
             (u64, String),
             &'static Category,
-        > = HashMap::new();
-        let mut levels_by_game_id_and_slug: HashMap<(u64, String), &'static Level> =
-            HashMap::new();
+        > = Default::default();
+        let mut levels_by_game_id_and_slug: BTreeMap<(u64, String), &'static Level> =
+            Default::default();
         let index_errored = 'indexing: {
             for game in tables.games().values() {
                 runs_by_game_id.insert(*game.id(), Vec::new());
