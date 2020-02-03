@@ -119,6 +119,14 @@ impl SpeedrunsFields for Speedruns {
         }
     }
 
+    fn field_games(
+        &self,
+        executor: &Executor<'_, Context>,
+        _trail: &QueryTrail<'_, Game, Walked>,
+    ) -> Vec<Game> {
+        executor.context().database.games().map(Game).collect()
+    }
+
     fn field_run(
         &self,
         executor: &Executor<'_, Context>,

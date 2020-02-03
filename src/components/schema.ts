@@ -1041,8 +1041,21 @@ export interface GetHomeStats_stats {
   games: number;
 }
 
+export interface GetHomeStats_games {
+  __typename: "Game";
+  /**
+   * name, in English if possible
+   */
+  name: string;
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+}
+
 export interface GetHomeStats {
   stats: GetHomeStats_stats;
+  games: GetHomeStats_games[];
 }
 
 /* tslint:disable */

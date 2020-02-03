@@ -198,6 +198,7 @@ type Run implements Node {
 type Speedruns {
   stats: Stats!
   game(slug: String!): Game
+  games: [Game!]!
   run(srcId: ID!): Run
   node(id: ID!): Node
 }
