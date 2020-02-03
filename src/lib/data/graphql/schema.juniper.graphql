@@ -6,6 +6,7 @@ schema {
 type Speedruns {
   stats: Stats! @juniper(ownership: "owned", infallible: true)
   game(slug: String!): Game @juniper(ownership: "owned", infallible: true)
+  games: [Game!]! @juniper(ownership: "owned", infallible: true)
   run(srcId: ID!): Run @juniper(ownership: "owned", infallible: true)
   node(id: ID!): Node @juniper(ownership: "owned", infallible: true)
 }

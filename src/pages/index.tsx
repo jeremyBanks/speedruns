@@ -2,14 +2,49 @@ import { NextPage } from "next";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Link from "next/link";
-import React from "react";
+import React, { useState, useMemo } from "react";
 
 import styles from "~/components/styles.module.scss";
 import * as schema from "~/components/schema";
 import { GRAPHQL_ENDPOINT, withApollo } from "~/components/hooks/with-apollo";
+import { useDebounced } from "~/components/hooks/use-debounced";
 
 export const HomePage: NextPage<{}> = () => {
   const { loading, error, data } = useQuery<schema.GetHomeStats>(GetHomeStats);
+
+  const [targetName, setTargetName] = useState<string>("WarCraft");
+  const debouncedTargetName = useDebounced(targetName, 250);
+  const [targetGames, orError] = useMemo(() => {
+    if (!data) {
+      return [null, "loading..."];
+    }
+
+    const slugify = (s: string) => {
+      return s.toLowerCase().replace(/[^a-z0-9+]/g, "");
+    };
+
+    const name = slugify(debouncedTargetName);
+
+    const matches = data.games
+      .filter(
+        game =>
+          slugify(game.name).includes(name) ||
+          slugify(game.srcSlug).includes(name),
+      )
+      .sort((a, b) => {
+        if (a.name < b.name) return -1;
+        else if (a.name > b.name) return +1;
+        else return 0;
+      });
+
+    if (matches.length > 64) {
+      return [null, `too many matches (${matches.length})`];
+    } else if (matches.length === 0) {
+      return [null, "no matches"];
+    } else {
+      return [matches, null];
+    }
+  }, [data, debouncedTargetName]);
 
   if (!data) {
     return <>{loading ? "loading..." : JSON.stringify(error)}</>;
@@ -23,38 +58,38 @@ export const HomePage: NextPage<{}> = () => {
 
       <h2>Games</h2>
 
-      <ul>
-        <li>
-          <Link href="/[game]?game=wc2" as="/wc2">
-            <a>/wc2</a>
-          </Link>{" "}
-          WarCraft II: Tides of Darkness
-        </li>
-        <li>
-          <Link href="/[game]?game=wc2btdp" as="/wc2btdp">
-            <a>/wc2btdp</a>
-          </Link>{" "}
-          WarCraft II: Beyond the Dark Portal
-        </li>
-        <li>
-          <Link href="/[game]?game=sc1" as="/sc1">
-            <a>/sc1</a>
-          </Link>{" "}
-          StarCraft
-        </li>
-        <li>
-          <Link href="/[game]?game=scbw" as="/scbw">
-            <a>/scbw</a>
-          </Link>{" "}
-          StarCraft: Brood War
-        </li>
-        <li>
-          <Link href="/[game]?game=celeste" as="/celeste">
-            <a>/celeste</a>
-          </Link>{" "}
-          Celeste
-        </li>
-      </ul>
+      <form>
+        <label>
+          Search:{" "}
+          <input
+            placeholder="WarCraft"
+            onChange={e => void setTargetName(e.target.value)}
+            style={{
+              fontSize: "18px",
+              padding: "4px 8px",
+            }}
+          />
+        </label>
+      </form>
+
+      {targetGames ? (
+        <ul>
+          {targetGames.map(({ srcSlug, name }) => (
+            <li key={srcSlug}>
+              <Link href={`/[game]?game=${srcSlug}`} as={`/${srcSlug}`}>
+                <a>/{srcSlug}</a>
+              </Link>{" "}
+              {name}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <>
+          <p>
+            <b>Search failed:</b> {orError}
+          </p>
+        </>
+      )}
 
       <h2>Internals</h2>
 
@@ -116,6 +151,11 @@ const GetHomeStats = gql`
       lastUpdated
       runs
       games
+    }
+
+    games {
+      name
+      srcSlug
     }
   }
 `;

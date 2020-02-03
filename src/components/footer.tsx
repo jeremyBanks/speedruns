@@ -5,11 +5,8 @@ import styles from "~/components/styles.module.scss";
 export const Footer: React.FC = () => (
   <footer className={styles.footer}>
     <p>
-      <strong>
-        The information on this site may be outdated or incomplete!
-      </strong>{" "}
-      The software is not entirely robust, stable, or consistent. Refer to
-      speedrun.com for certainty.
+      <strong>The information on this site may be incomplete.</strong> Refer to{" "}
+      <a href="https://www.speedrun.com/">speedrun.com</a> for certainty.
     </p>
 
     <p>
