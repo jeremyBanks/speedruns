@@ -9,7 +9,7 @@
 use std::{fs::File, io::BufReader, sync::Arc};
 
 use actix_cors::{self};
-use actix_web::{self, web, HttpResponse};
+use actix_web::{self, middleware, web, HttpResponse};
 
 use juniper::{self, http::GraphQLRequest};
 use lazy_static::lazy_static;
@@ -99,6 +99,7 @@ pub async fn main(args: Args) -> std::io::Result<()> {
     info!("Initializing server.");
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
+            .wrap(middleware::Compress::default())
             .data(schema.clone())
             .wrap(actix_cors::Cors::new().finish())
             .wrap(actix_web::middleware::Logger::default())

@@ -21,7 +21,7 @@ const RunPage: NextPage = () => {
       gameSrcSlug: router.query.game,
       runSrcId: router.query.runSrcId,
     },
-    fetchPolicy: DEBUG ? "no-cache" : "cache-and-network",
+    fetchPolicy: DEBUG ? "cache-and-network" : "cache-first",
     pollInterval: DEBUG ? 4000 : undefined,
   });
 

@@ -10,7 +10,10 @@ import { GRAPHQL_ENDPOINT, withApollo } from "~/components/hooks/with-apollo";
 import { useDebounced } from "~/components/hooks/use-debounced";
 
 export const HomePage: NextPage<{}> = () => {
-  const { loading, error, data } = useQuery<schema.GetHomeStats>(GetHomeStats);
+  const home = useQuery<schema.GetHomeStats>(GetHomeStats);
+  const gameIndex = useQuery<schema.GetGameIndex>(GetGameIndex, {
+    ssr: false,
+  });
 
   const [defaultSearch, _] = useState(() => {
     const options = [
@@ -32,7 +35,7 @@ export const HomePage: NextPage<{}> = () => {
   const [targetName, setTargetName] = useState<string>(defaultSearch);
   const debouncedTargetName = useDebounced(targetName, 250) || defaultSearch;
   const [targetGames, orError] = useMemo(() => {
-    if (!data) {
+    if (!gameIndex?.data) {
       return [null, "loading..."];
     }
 
@@ -42,13 +45,13 @@ export const HomePage: NextPage<{}> = () => {
 
     const name = slugify(debouncedTargetName);
 
-    const matches = data.games
+    const matches = gameIndex.data.games
       .filter(
-        game =>
+        (game: schema.GetGameIndex_games) =>
           slugify(game.name).includes(name) ||
           slugify(game.srcSlug).includes(name),
       )
-      .sort((a, b) => {
+      .sort((a: schema.GetGameIndex_games, b: schema.GetGameIndex_games) => {
         if (a.name.length < b.name.length) return -1;
         else if (a.name.length > b.name.length) return +1;
         else if (a.srcSlug < b.srcSlug) return -1;
@@ -63,33 +66,33 @@ export const HomePage: NextPage<{}> = () => {
     } else {
       return [matches, null];
     }
-  }, [data, debouncedTargetName]);
+  }, [gameIndex?.data, debouncedTargetName]);
 
   const input = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    const element = input.current;
-    if (!element) {
-      return;
-    }
+    setTimeout(() => {
+      const element = input.current;
+      if (!element) {
+        return;
+      }
 
-    element.focus();
+      element.focus();
 
-    // HACK: the non-deterministic defaultSearch above can produce an
-    // inconsistency with server-side rendered placeholder, so we "fix"
-    // it manually.
-    element.placeholder = defaultSearch;
-  }, [data]);
-
-  if (!data) {
-    return <>{loading ? "loading..." : JSON.stringify(error)}</>;
-  }
-
-  const { stats } = data;
+      // HACK: the non-deterministic defaultSearch above can produce an
+      // inconsistency with server-side rendered placeholder, so we "fix"
+      // it manually.
+      element.placeholder = defaultSearch;
+    }, 0);
+  }, []);
 
   return (
     <section className={styles.home}>
       <p>An unofficial mirror of speedrun.com.</p>
+
+      {gameIndex?.error || home?.error ? (
+        <pre>{JSON.stringify([gameIndex?.error, home?.error], null, 2)}</pre>
+      ) : null}
 
       <h2>Games</h2>
 
@@ -132,42 +135,59 @@ export const HomePage: NextPage<{}> = () => {
         </label>
       </form>
 
-      {targetGames ? (
-        <ul>
-          {targetGames.map(({ srcSlug, name }) => (
-            <li key={srcSlug}>
-              <Link href={`/[game]?game=${srcSlug}`} as={`/${srcSlug}`}>
-                <a>
-                  <code>
-                    <b>/{srcSlug}</b>
-                  </code>{" "}
-                  {name}
-                </a>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      ) : (
+      {gameIndex?.data ? (
         <>
-          <p>
-            <b>Search failed:</b> {orError}
-          </p>
+          {targetGames ? (
+            <ul>
+              {targetGames.map(({ srcSlug, name }) => (
+                <li key={srcSlug}>
+                  <Link href={`/[game]?game=${srcSlug}`} as={`/${srcSlug}`}>
+                    <a>
+                      <code>
+                        <b>/{srcSlug}</b>
+                      </code>{" "}
+                      {name}
+                    </a>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <>
+              <p style={{ paddingLeft: "2em" }}>
+                <i>
+                  <b>Search failed</b>: {orError}
+                </i>
+              </p>
+            </>
+          )}
         </>
+      ) : (
+        <p style={{ paddingLeft: "2em" }}>
+          <i>Loading...</i>
+        </p>
       )}
 
       <h2>Internals</h2>
 
-      <h3>Stats</h3>
+      {home?.data ? (
+        <>
+          <h3>Stats</h3>
 
-      <ul>
-        <li>Last Updated: {new Date(stats.lastUpdated).toISOString()}</li>
-        <li>
-          Games: <code>{stats.games}</code>
-        </li>
-        <li>
-          Runs: <code>{stats.runs}</code>
-        </li>
-      </ul>
+          <ul>
+            <li>
+              Last Updated:{" "}
+              {new Date(home.data.stats.lastUpdated).toISOString()}
+            </li>
+            <li>
+              Games: <code>{home.data.stats.games}</code>
+            </li>
+            <li>
+              Runs: <code>{home.data.stats.runs}</code>
+            </li>
+          </ul>
+        </>
+      ) : null}
 
       <h3>GraphQL Schema</h3>
 
@@ -216,7 +236,11 @@ const GetHomeStats = gql`
       runs
       games
     }
+  }
+`;
 
+const GetGameIndex = gql`
+  query GetGameIndex {
     games {
       name
       srcSlug
