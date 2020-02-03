@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Link from "next/link";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 
 import styles from "~/components/styles.module.scss";
 import * as schema from "~/components/schema";
@@ -17,7 +17,6 @@ export const HomePage: NextPage<{}> = () => {
       "WarCraft",
       "Celeste",
       "Super Mario World",
-      "Link to the Past",
       "Burnout",
       "Spyro",
       "Mario Kart",
@@ -50,7 +49,9 @@ export const HomePage: NextPage<{}> = () => {
           slugify(game.srcSlug).includes(name),
       )
       .sort((a, b) => {
-        if (a.srcSlug < b.srcSlug) return -1;
+        if (a.name.length < b.name.length) return -1;
+        else if (a.name.length > b.name.length) return +1;
+        else if (a.srcSlug < b.srcSlug) return -1;
         else if (a.srcSlug > b.srcSlug) return +1;
         else return 0;
       });
@@ -64,6 +65,22 @@ export const HomePage: NextPage<{}> = () => {
     }
   }, [data, debouncedTargetName]);
 
+  const input = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    const element = input.current;
+    if (!element) {
+      return;
+    }
+
+    element.focus();
+
+    // HACK: the non-deterministic defaultSearch above can produce an
+    // inconsistency with server-side rendered placeholder, so we "fix"
+    // it manually.
+    element.placeholder = defaultSearch;
+  }, [data]);
+
   if (!data) {
     return <>{loading ? "loading..." : JSON.stringify(error)}</>;
   }
@@ -76,7 +93,16 @@ export const HomePage: NextPage<{}> = () => {
 
       <h2>Games</h2>
 
-      <form>
+      <form
+        onSubmit={event => {
+          event.preventDefault();
+          // HACK: sue me
+          (event.target as any)
+            .closest("section")
+            .querySelector("ul a")
+            ?.click();
+        }}
+      >
         <label
           style={{
             display: "flex",
@@ -93,6 +119,7 @@ export const HomePage: NextPage<{}> = () => {
             Search:
           </span>
           <input
+            ref={input}
             placeholder={debouncedTargetName}
             onChange={e => void setTargetName(e.target.value)}
             style={{
