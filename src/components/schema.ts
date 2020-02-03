@@ -1041,7 +1041,19 @@ export interface GetHomeStats_stats {
   games: number;
 }
 
-export interface GetHomeStats_games {
+export interface GetHomeStats {
+  stats: GetHomeStats_stats;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: GetGameIndex
+// ====================================================
+
+export interface GetGameIndex_games {
   __typename: "Game";
   /**
    * name, in English if possible
@@ -1053,9 +1065,8 @@ export interface GetHomeStats_games {
   srcSlug: string;
 }
 
-export interface GetHomeStats {
-  stats: GetHomeStats_stats;
-  games: GetHomeStats_games[];
+export interface GetGameIndex {
+  games: GetGameIndex_games[];
 }
 
 /* tslint:disable */
