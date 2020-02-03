@@ -12,8 +12,26 @@ import { useDebounced } from "~/components/hooks/use-debounced";
 export const HomePage: NextPage<{}> = () => {
   const { loading, error, data } = useQuery<schema.GetHomeStats>(GetHomeStats);
 
-  const [targetName, setTargetName] = useState<string>("WarCraft");
-  const debouncedTargetName = useDebounced(targetName, 250);
+  const [defaultSearch, _] = useState(() => {
+    const options = [
+      "WarCraft",
+      "Celeste",
+      "Super Mario World",
+      "Link to the Past",
+      "Burnout",
+      "Spyro",
+      "Mario Kart",
+      "Shovel Knight",
+      "Resident Evil",
+      "Crash Bandicoot",
+      "Final Fantasy X",
+    ];
+    const index = Math.floor(Math.random() * options.length);
+    return options[index];
+  });
+
+  const [targetName, setTargetName] = useState<string>(defaultSearch);
+  const debouncedTargetName = useDebounced(targetName, 250) || defaultSearch;
   const [targetGames, orError] = useMemo(() => {
     if (!data) {
       return [null, "loading..."];
@@ -32,8 +50,8 @@ export const HomePage: NextPage<{}> = () => {
           slugify(game.srcSlug).includes(name),
       )
       .sort((a, b) => {
-        if (a.name < b.name) return -1;
-        else if (a.name > b.name) return +1;
+        if (a.srcSlug < b.srcSlug) return -1;
+        else if (a.srcSlug > b.srcSlug) return +1;
         else return 0;
       });
 
@@ -59,12 +77,27 @@ export const HomePage: NextPage<{}> = () => {
       <h2>Games</h2>
 
       <form>
-        <label>
-          Search:{" "}
+        <label
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <span
+            style={{
+              display: "flex",
+              flex: 0,
+              padding: "4px 8px",
+            }}
+          >
+            Search:
+          </span>
           <input
-            placeholder="WarCraft"
+            placeholder={debouncedTargetName}
             onChange={e => void setTargetName(e.target.value)}
             style={{
+              display: "flex",
+              flex: 1,
               fontSize: "18px",
               padding: "4px 8px",
             }}
@@ -77,9 +110,13 @@ export const HomePage: NextPage<{}> = () => {
           {targetGames.map(({ srcSlug, name }) => (
             <li key={srcSlug}>
               <Link href={`/[game]?game=${srcSlug}`} as={`/${srcSlug}`}>
-                <a>/{srcSlug}</a>
-              </Link>{" "}
-              {name}
+                <a>
+                  <code>
+                    <b>/{srcSlug}</b>
+                  </code>{" "}
+                  {name}
+                </a>
+              </Link>
             </li>
           ))}
         </ul>
