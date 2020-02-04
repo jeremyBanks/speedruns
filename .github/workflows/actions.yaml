@@ -69,15 +69,24 @@ jobs:
       - name: test - lint
         run: yarn lint
 
-      - name: bot - add master to ✔️ first-parent chain if we made it this far
+      - name: publish - add master to ✔️ first-parent chain if we made it this far
         if: github.ref == 'refs/heads/master'
         env:
           GIT_COMMITTER_NAME: autofix
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: bash scripts/merge-master-to-stable.bash
 
-      - name: bot - trigger zeit deploy of ✔️
+      - name: publish - publish node pre-release build of ✔️
         if: github.ref == 'refs/heads/master'
-        run: |
-          curl "${{secrets.ZEIT_DEPLOY_STABLE}}"
-          curl "${{secrets.GRAPHQL_DEPLOY_STABLE}}"
+        run: bash scripts/publish.bash
+        env:
+          NPM_PUBLISH_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
+          GITHUB_PUBLISH_TOKEN: ${{secrets.GITHUB_PUBLISH_TOKEN}}
+
+      - name: publish - trigger zeit deploy of ✔️
+        if: github.ref == 'refs/heads/master'
+        run: curl "${{secrets.ZEIT_DEPLOY_STABLE}}"
+
+      - name: publish - trigger graphql deploy of ✔️
+        if: github.ref == 'refs/heads/master'
+        run: curl "${{secrets.GRAPHQL_DEPLOY_STABLE}}"
