@@ -4014,9 +4014,9 @@ cssesc@^3.0.0:
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
 
 cssnano-preset-simple@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/cssnano-preset-simple/-/cssnano-preset-simple-1.0.2.tgz#0af821593cec5edf010e5ff0753fd89eb52d40de"
-  integrity sha512-FhAjiyAJoQOfvOZVSaNYkmmg2KE/SmaJVBNqglvvZ4QgwtTMVOaggozmRwfyO2QfeyKstRCpeRglziWym0Q9/w==
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/cssnano-preset-simple/-/cssnano-preset-simple-1.0.3.tgz#a6b00bebb457a79218443d345ba7e28e9d1e3e4a"
+  integrity sha512-TMtCiUf75Kw+RCyBcYSz14cEmjKb+QI9KDUZbuinqdaZvc7qOuTKU27FTIfnCorbekmA7EGMC3tgN7J4vt1N1Q==
   dependencies:
     postcss "^7.0.18"
 
