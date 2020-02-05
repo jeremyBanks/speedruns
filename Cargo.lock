@@ -2332,7 +2332,7 @@ dependencies = [
 
 [[package]]
 name = "speedruns"
-version = "0.20.20"
+version = "0.20.20-dev"
 dependencies = [
  "actix",
  "actix-cors",

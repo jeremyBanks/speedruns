@@ -52,10 +52,6 @@ module.exports = [
         test: /\.(png|svg|jpg|gif|jpeg)$/,
         use: ["file-loader"],
       },
-      {
-        test: /\.toml$/,
-        use: ["@lcdev/toml-loader"],
-      },
     );
     config.resolve.alias["~"] = path.resolve("./src");
     return config;

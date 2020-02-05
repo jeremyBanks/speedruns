@@ -2,7 +2,7 @@
 edition = "2018"
 license = "MIT"
 name = "speedruns"
-version = "0.20.20"
+version = "0.20.20-dev"
 
 autobins = false
 default-run = "speedruns"
