@@ -167,24 +167,29 @@ impl Spider {
 
                     let url = format!("https://www.speedrun.com/api/v1/{}?direction=desc&max=200&orderby={}&embed={}&offset={}", resource.id, resource. order, resource.embed, offset);
 
-                    let response: JsonValue;
+                    let response_data: JsonValue;
                     loop {
                         match client.get(&url).send() {
-                            Ok(mut ok) => {
-                                response = ok
-                                    .json()
-                                    .expect("if we get a response it should be json");
-                                break
-                            }
+                            Ok(mut response) => match response.json::<JsonValue>() {
+                                Ok(response) => {
+                                    response_data = response;
+                                    break
+                                }
+                                Err(error) => {
+                                    error!("response error: {:?}", error);
+                                    std::thread::sleep(std::time::Duration::from_secs(32));
+                                    continue
+                                }
+                            },
                             Err(error) => {
-                                error!("{:?}", error);
+                                error!("request error: {:?}", error);
                                 std::thread::sleep(std::time::Duration::from_secs(32));
                                 continue
                             }
                         }
                     }
 
-                    let response = response
+                    let response = response_data
                         .as_object()
                         .expect("json response to have expected structure");
                     let items = response["data"]
