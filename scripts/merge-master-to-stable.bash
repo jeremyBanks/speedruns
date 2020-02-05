@@ -22,4 +22,7 @@ git merge --ff $target
 
 if git push origin $current; then
   git push -f origin $target
+else
+  echo 'failed to push to -- maybe this has been superseded by a subsequent push?'
+  false
 fi
