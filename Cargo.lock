@@ -998,9 +998,9 @@ dependencies = [
 
 [[package]]
 name = "futures-channel"
-version = "0.3.2"
+version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c92c2137e8e1ebf1ac99453550ab46eb4f35c5c53476d57d75eb782fb4d71e84"
+checksum = "7264eb65b194d2fa6ec31b898ead7c332854bfa42521659226e72a585fca5b85"
 dependencies = [
  "futures-core",
  "futures-sink",
