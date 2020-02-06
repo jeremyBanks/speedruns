@@ -8,6 +8,7 @@ import styles from "~/components/styles.module.scss";
 import * as schema from "~/components/schema";
 import { GRAPHQL_ENDPOINT, withApollo } from "~/components/hooks/with-apollo";
 import { useDebounced } from "~/components/hooks/use-debounced";
+import { version as frontendVersion } from "~/../package.json";
 
 export const HomePage: NextPage<{}> = () => {
   const home = useQuery<schema.GetHomeStats>(GetHomeStats);
@@ -172,6 +173,15 @@ export const HomePage: NextPage<{}> = () => {
 
       {home?.data ? (
         <>
+          <ul>
+            <li>
+              Backend version: <code>{home.data.stats.version}</code>
+            </li>
+            <li>
+              Frontend version: <code>{frontendVersion}</code>
+            </li>
+          </ul>
+
           <h3>Stats</h3>
 
           <ul>
@@ -235,6 +245,7 @@ const GetHomeStats = gql`
       lastUpdated
       runs
       games
+      version
     }
   }
 `;
