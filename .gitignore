@@ -5,6 +5,7 @@
 /.next
 /out
 /package-lock.json
+.npmrc
 
 # dependencies
 /node_modules
