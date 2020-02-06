@@ -17,6 +17,10 @@ path = "src/lib/speedruns.rs"
 name = "speedruns"
 path = "src/bin/speedruns.rs"
 
+[[bin]]
+name = "dev-set-version"
+path = "src/bin/dev-set-version.rs"
+
 [profile.release.build-override]
 opt-level = 0
 
@@ -62,3 +66,4 @@ url_serde = "0.2.0"
 validator = "0.10.0"
 validator_derive = "0.10.0"
 heck = "0.3.1"
+toml_edit = "0.1.5"

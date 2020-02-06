@@ -2361,6 +2361,7 @@ dependencies = [
  "serde_json",
  "sha2",
  "tempfile",
+ "toml_edit",
  "unidecode",
  "url 2.1.1",
  "url_serde",
@@ -2693,6 +2694,17 @@ dependencies = [
  "log",
  "pin-project-lite",
  "tokio 0.2.6",
+]
+
+[[package]]
+name = "toml_edit"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "87f53b1aca7d5fe2e17498a38cac0e1f5a33234d5b980fb36b9402bb93b98ae4"
+dependencies = [
+ "chrono",
+ "combine",
+ "linked-hash-map",
 ]
 
 [[package]]
