@@ -15,7 +15,7 @@ echo "//npm.pkg.github.com/:_authToken=${GITHUB_PUBLISH_TOKEN}" > .npmrc
 echo "@jeremybanks:registry=https://npm.pkg.github.com" >> .npmrc
 echo "always-auth=true" >> .npmrc
 
-npm version prerelease --no-git-tag-version --preid="dev-r$(printf "%04d" "$(git rev-list --first-parent HEAD | wc -l)")"
+npm version prerelease --no-git-tag-version --preid="dev.$(git rev-list --first-parent HEAD | wc -l)"
 sed -i '0,/\.0"/ s/\.0"/"/' package.json
 
 version="$(cat package.json | $(yarn bin jqn) 'property("version")')";
