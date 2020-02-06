@@ -5726,10 +5726,10 @@ graphql-tag@^2.10.1, graphql-tag@^2.10.2:
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.10.2.tgz#e42214d0dde29e8db5d55b0107efdb2d461ed270"
   integrity sha512-7rUuJkVGyedBiVJ/hPaxndDnzxANUZ+QhTu0KUzgTGtP3ibY/hSUl9em21aVh5BNMJsmMc4nVuOTBoiAUJ2xBQ==
 
-graphql-voyager@^1.0.0-rc.28:
-  version "1.0.0-rc.28"
-  resolved "https://registry.yarnpkg.com/graphql-voyager/-/graphql-voyager-1.0.0-rc.28.tgz#287530922b180163e29d6aff42926db02461550d"
-  integrity sha512-TQLOPLIrPV4YyDim80b0zlP1AqJS8+ILZMRoWMuDWzESV537vQjezqJ3HhDmHS1O3R1V/gsMaSsKyftFgWMj4A==
+graphql-voyager@^1.0.0-rc.29:
+  version "1.0.0-rc.29"
+  resolved "https://registry.yarnpkg.com/graphql-voyager/-/graphql-voyager-1.0.0-rc.29.tgz#15339a9d21bc6d74d46bfb2c2daaee2cddf7c392"
+  integrity sha512-Lq9OSSa/6Bca6PL2SllIxfK/Rp3svGdhyZ4QCrbPUV58M4gSrlfNvBHPM545/SJxxGK9DEmLLGrJRgSa/SiBzA==
   dependencies:
     "@f/animate" "^1.0.1"
     "@material-ui/core" "^3.9.3"
