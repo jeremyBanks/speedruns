@@ -1039,6 +1039,10 @@ export interface GetHomeStats_stats {
    * number of games
    */
   games: number;
+  /**
+   * the version of this server package handling this request
+   */
+  version: string;
 }
 
 export interface GetHomeStats {

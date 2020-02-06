@@ -96,6 +96,12 @@ impl StatsFields for Stats {
         let n = executor.context().database.tables().games().len();
         n.try_into().expect("impossibly large number of runs")
     }
+
+    fn field_version(&self, _executor: &Executor<'_, Context>) -> String {
+        option_env!("CARGO_PKG_VERSION")
+            .unwrap_or("unknown")
+            .to_string()
+    }
 }
 
 impl SpeedrunsFields for Speedruns {
