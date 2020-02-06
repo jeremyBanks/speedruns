@@ -27,8 +27,8 @@ Install [rustup](https://rustup.rs/) to manage the Rust toolchain and [nvm](http
 Install and activate our expected version of npm using nvm, then install [the Yarn package manager](https://yarnpkg.com/):
 
 ```
-npm install .
-npm nvm .
+nvm install
+nvm use
 npm install -g yarn@1
 ```
 
