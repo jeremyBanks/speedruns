@@ -218,6 +218,11 @@ type Stats {
   number of runs
   """
   runs: Int!
+
+  """
+  the version of this server package handling this request
+  """
+  version: String!
 }
 
 """
