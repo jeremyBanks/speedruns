@@ -39,7 +39,7 @@ env_logger = "0.7.1"
 err-derive = "0.1.5"
 flate2 = "1.0.13"
 fs2 = "0.4.0"
-futures = { version = "0.3.3", features = ["compat"] }
+futures = { version = "0.3.4", features = ["compat"] }
 getset = "0.0.9"
 itertools = "0.8.2"
 juniper = "0.14.2"
