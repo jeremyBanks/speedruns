@@ -76,12 +76,13 @@ jobs:
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: bash scripts/merge-master-to-stable.bash
 
-      - name: publish - publish node pre-release build of ✔️
+      - name: publish - publish pre-release packages of ✔️
         if: github.ref == 'refs/heads/master'
         run: bash scripts/publish.bash
         env:
           NPM_PUBLISH_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
-          GITHUB_PUBLISH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_PUBLISH_TOKEN: ${{secrets.GITHUB_PUBLISH_TOKEN}}
+          CARGO_PUBLISH_TOKEN: ${{secrets.CARGO_PUBLISH_TOKEN}}
 
       - name: publish - trigger zeit deploy of ✔️
         if: github.ref == 'refs/heads/master'
