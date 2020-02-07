@@ -1,5 +1,5 @@
 #!/bin/bash
-set -veuo pipefail;
+set -veuo pipefail
 
 if [ "${GITHUB_ACTIONS:-}" = "true" ]; then
     publish_args=
@@ -18,11 +18,14 @@ echo "always-auth=true" >> .npmrc
 npm version prerelease --no-git-tag-version --preid="dev.$(git rev-list --first-parent HEAD | wc -l)"
 sed -i '0,/\.0"/ s/\.0"/"/' package.json
 
-version="$(cat package.json | $(yarn bin jqn) 'property("version")')";
+version="$(cat package.json | $(yarn bin jqn) 'property("version")')"
 
 sed -i '0,/version = ".*"/ s/version = ".*"/version = "'$version'"/' Cargo.toml
 
 git diff
+
+git tag "$version"
+git push origin "$version"
 
 npm --registry=https://npm.pkg.github.com/ publish $publish_args
 
@@ -36,7 +39,7 @@ git diff
 
 npm --registry=https://registry.npmjs.org/ publish $publish_args
 
-cargo publish $publish_args --token "$CARGO_PUBLISH_TOKEN" --allow-dirty
+cargo publish $publish_args --no-verify --token "$CARGO_PUBLISH_TOKEN" --allow-dirty
 
 rm .npmrc
 git checkout HEAD package.json Cargo.toml Cargo.lock
