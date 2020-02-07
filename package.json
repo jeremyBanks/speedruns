@@ -2,6 +2,9 @@
   "name": "@jeremybanks/speedruns",
   "version": "0.20.20-dev",
   "author": "Jeremy Banks <_@jeremy.ca>",
+  "bin": {
+    "speedruns-frontend": "src/bin/frontend.js"
+  },
   "license": "MIT",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
@@ -56,9 +59,11 @@
     "yarn": "^1.21.1"
   },
   "scripts": {
+    "start": "bash scripts/start.bash",
+    "dev": "next dev",
+    "frontend": "node src/bin/frontend.js",
     "generate": "bash scripts/generate.bash",
     "format": "bash scripts/format.bash",
-    "start": "bash scripts/start.bash",
     "export": "bash scripts/export.bash",
     "benchmark": "bash scripts/benchmark.bash",
     "fix": "bash scripts/fix.bash",
