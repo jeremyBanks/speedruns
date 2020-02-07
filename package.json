@@ -56,7 +56,7 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.5",
     "winston": "^3.2.1",
-    "yarn": "^1.21.1"
+    "yarn": "^1.22.0"
   },
   "scripts": {
     "start": "bash scripts/start.bash",
