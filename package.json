@@ -93,6 +93,7 @@
     ".nvmrc",
     "now.json",
     "next.config.js",
+    "src/bin/*.js",
     "src/pages/**/*",
     "src/components/**/*",
     "public/**/*"
