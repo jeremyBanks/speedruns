@@ -175,10 +175,20 @@ export const HomePage: NextPage<{}> = () => {
         <>
           <ul>
             <li>
-              Backend version: <code>{home.data.stats.version}</code>
+              backend:{" "}
+              <a
+                href={`https://crates.io/crates/speedruns/${home.data.stats.version}`}
+              >
+                <code>{home.data.stats.version}</code>
+              </a>
             </li>
             <li>
-              Frontend version: <code>{frontendVersion}</code>
+              frontend:{" "}
+              <a
+                href={`https://www.npmjs.com/package/speedruns/v/${frontendVersion}`}
+              >
+                <code>{frontendVersion}</code>
+              </a>
             </li>
           </ul>
 
@@ -186,14 +196,16 @@ export const HomePage: NextPage<{}> = () => {
 
           <ul>
             <li>
-              Last Updated:{" "}
-              {new Date(home.data.stats.lastUpdated).toISOString()}
+              updated:{" "}
+              {new Date(home.data.stats.lastUpdated)
+                .toISOString()
+                .slice(0, "YYYY-MM-DD".length)}
             </li>
             <li>
-              Games: <code>{home.data.stats.games}</code>
+              games: <code>{home.data.stats.games}</code>
             </li>
             <li>
-              Runs: <code>{home.data.stats.runs}</code>
+              runs: <code>{home.data.stats.runs}</code>
             </li>
           </ul>
         </>
