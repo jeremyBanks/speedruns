@@ -101,23 +101,27 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
+      - name: setup - install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 13.x
+
+      - name: setup - install rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+
       - name: validation - recall published version
         uses: actions/download-artifact@v1
         with:
           name: version
 
-      - name: setup - install node stable
-        uses: actions/setup-node@v1
-        with:
-          node-version: stable
-
-      - name: setup - install rust nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-
       - name: validation - verify published packages can be installed
         run: |
           version=$(cat .version)
-          npm install -g speedruns@$version
+
           cargo install speedruns --version $version
+          speedruns --help
+
+          npm install -g speedruns@$version
+          speedruns-frontend --help
