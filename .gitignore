@@ -3,6 +3,7 @@
 /.idea
 /.next
 /.npmrc
+/.version
 /coverage
 /node_modules
 /npm-debug.log*
