@@ -4016,9 +4016,9 @@ cssesc@^3.0.0:
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
 
 cssnano-preset-simple@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/cssnano-preset-simple/-/cssnano-preset-simple-1.0.2.tgz#0af821593cec5edf010e5ff0753fd89eb52d40de"
-  integrity sha512-FhAjiyAJoQOfvOZVSaNYkmmg2KE/SmaJVBNqglvvZ4QgwtTMVOaggozmRwfyO2QfeyKstRCpeRglziWym0Q9/w==
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/cssnano-preset-simple/-/cssnano-preset-simple-1.0.3.tgz#a6b00bebb457a79218443d345ba7e28e9d1e3e4a"
+  integrity sha512-TMtCiUf75Kw+RCyBcYSz14cEmjKb+QI9KDUZbuinqdaZvc7qOuTKU27FTIfnCorbekmA7EGMC3tgN7J4vt1N1Q==
   dependencies:
     postcss "^7.0.18"
 
@@ -6447,11 +6447,9 @@ is-extglob@^2.1.0, is-extglob@^2.1.1:
   integrity sha1-qIwCU1eR8C7TfHahueqXc8gz+MI=
 
 is-finite@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/is-finite/-/is-finite-1.0.2.tgz#cc6677695602be550ef11e8b4aa6305342b6d0aa"
-  integrity sha1-zGZ3aVYCvlUO8R6LSqYwU0K20Ko=
-  dependencies:
-    number-is-nan "^1.0.0"
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/is-finite/-/is-finite-1.1.0.tgz#904135c77fb42c0641d6aa1bcdbc4daa8da082f3"
+  integrity sha512-cdyMtqX/BOqqNBBiKlIVkytNHm49MtMlYyn1zxzvJKWmFMlGzm+ry5BBfYyeY9YmNKbRSo/o7OX9w9ale0wg3w==
 
 is-fullwidth-code-point@^1.0.0:
   version "1.0.0"
