@@ -2,11 +2,8 @@ name: Actions
 on: [push]
 
 jobs:
-  my-job:
-    name: Action
-
+  most-things:
     runs-on: ubuntu-latest
-
     steps:
       - name: preparation - checkout source
         uses: actions/checkout@v1
@@ -91,3 +88,36 @@ jobs:
       - name: publish - trigger graphql deploy from published package
         if: github.ref == 'refs/heads/master'
         run: curl "${{secrets.GRAPHQL_DEPLOY_STABLE}}"
+
+      - name: publish - record published version
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@v1
+        with:
+          name: version
+          path: .version
+
+  post-publish:
+    needs: most-things
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: validation - recall published version
+        uses: actions/download-artifact@v1
+        with:
+          name: version
+
+      - name: setup - install node stable
+        uses: actions/setup-node@v1
+        with:
+          node-version: stable
+
+      - name: setup - install rust nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+
+      - name: validation - verify published packages can be installed
+        run: |
+          version=$(cat .version)
+          npm install -g speedruns@$version
+          cargo install speedruns --version $version

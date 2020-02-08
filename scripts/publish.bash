@@ -27,6 +27,8 @@ git diff
 git tag "$version"
 git push origin "$version"
 
+echo "$version" > .version
+
 npm --registry=https://npm.pkg.github.com/ publish $publish_args
 
 echo "//registry.npmjs.org/:_authToken=${NPM_PUBLISH_TOKEN}" > .npmrc
