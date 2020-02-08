@@ -87,6 +87,16 @@ export const HomePage: NextPage<{}> = () => {
     }, 0);
   }, []);
 
+  const backendVersion = home?.data?.stats?.version;
+  const backendVersionLink =
+    !backendVersion || backendVersion?.endsWith("-dev")
+      ? "https://github.com/jeremyBanks/speedruns/"
+      : `https://crates.io/crates/speedruns/${frontendVersion}`;
+  const frontendVersionLink =
+    !frontendVersion || frontendVersion?.endsWith("-dev")
+      ? "https://github.com/jeremyBanks/speedruns/"
+      : `https://www.npmjs.com/package/speedruns/v/${frontendVersion}`;
+
   return (
     <section className={styles.home}>
       <p>An unofficial mirror of speedrun.com.</p>
@@ -176,17 +186,13 @@ export const HomePage: NextPage<{}> = () => {
           <ul>
             <li>
               backend:{" "}
-              <a
-                href={`https://crates.io/crates/speedruns/${home.data.stats.version}`}
-              >
-                <code>{home.data.stats.version}</code>
+              <a href={backendVersionLink}>
+                <code>{backendVersion}</code>
               </a>
             </li>
             <li>
               frontend:{" "}
-              <a
-                href={`https://www.npmjs.com/package/speedruns/v/${frontendVersion}`}
-              >
+              <a href={frontendVersionLink}>
                 <code>{frontendVersion}</code>
               </a>
             </li>
