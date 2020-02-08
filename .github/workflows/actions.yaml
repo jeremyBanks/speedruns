@@ -120,7 +120,7 @@ jobs:
         run: |
           version=$(cat version/.version)
 
-          cargo install speedruns --version $version
+          cargo +nightly install speedruns --version $version
           speedruns --help
 
           npm install -g speedruns@$version
