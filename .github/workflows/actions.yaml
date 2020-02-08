@@ -127,7 +127,8 @@ jobs:
           speedruns-frontend --help
 
           speedruns serve --no-data &
-          sleep 2
           speedruns-frontend &
-          sleep 2
-          curl http://localhost:3000
+
+          sleep 16
+
+          curl http://localhost:3000 | grep "$version"
