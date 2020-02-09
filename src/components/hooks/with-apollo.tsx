@@ -15,7 +15,9 @@ import React from "react";
 const onNode = typeof window === "undefined";
 const onNodeDev = onNode && process.env.NODE_ENV !== "production";
 const inBrowser = !onNode;
-const inBrowserDev = inBrowser && window.location.protocol !== "https:";
+const inBrowserDev =
+  inBrowser &&
+  ["localhost", "0.0.0.0", "127.0.0.1"].includes(window.location.hostname);
 export const DEBUG = inBrowserDev || onNodeDev;
 
 export const GRAPHQL_ENDPOINT =
