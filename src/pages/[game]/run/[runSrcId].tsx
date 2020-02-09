@@ -22,7 +22,6 @@ const RunPage: NextPage = () => {
       runSrcId: router.query.runSrcId,
     },
     fetchPolicy: DEBUG ? "cache-and-network" : "cache-first",
-    pollInterval: DEBUG ? 4000 : undefined,
   });
 
   if (!data) {

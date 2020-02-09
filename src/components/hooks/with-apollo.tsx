@@ -13,14 +13,16 @@ import Head from "next/head";
 import React from "react";
 
 const onNode = typeof window === "undefined";
-const onNodeDev = onNode && process.env.NODE_ENV === "development";
+const onNodeDev = onNode && process.env.NODE_ENV !== "production";
 const inBrowser = !onNode;
 const inBrowserDev = inBrowser && window.location.protocol !== "https:";
 export const DEBUG = inBrowserDev || onNodeDev;
 
-export const GRAPHQL_ENDPOINT = DEBUG
-  ? "http://localhost:3001/graphql"
-  : "https://graphql-v0.speedrun.ca/graphql";
+export const GRAPHQL_ENDPOINT =
+  (onNode && process.env.GRAPHQL_ENDPOINT) ||
+  (DEBUG
+    ? "http://localhost:3001/graphql"
+    : "https://graphql-v0.speedrun.ca/graphql");
 
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -42,7 +44,7 @@ const getApolloClient = (
       cache.restore(initialState);
     }
 
-    const policy = "cache-and-network";
+    const policy = DEBUG ? "cache-and-network" : "cache-first";
 
     globalApolloClient = new ApolloClient({
       cache,
