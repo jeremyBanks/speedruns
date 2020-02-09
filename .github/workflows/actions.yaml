@@ -39,6 +39,9 @@ jobs:
       - name: setup - install node dependencies
         run: yarn install
 
+      - name: setup - install hub
+        uses: geertvdc/setup-hub@master
+
       - name: test - cargo build
         run: cargo build --workspace
 
@@ -88,6 +91,15 @@ jobs:
         with:
           name: version
           path: .version
+
+      - name: publish - create github release and attach ubuntu x64 binary
+        if: github.ref == 'refs/heads/master'
+        env:
+          GITHUB_USER: ${{ secrets.GITHUB_USER }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version="$(cat .version)"
+          hub release create --prerelease "$version" --attach 'target/release/speedruns#speedruns-linux-x86_64'
 
   post-publish:
     name: "validate published packages"
