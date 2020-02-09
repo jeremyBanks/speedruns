@@ -59,10 +59,7 @@ const GamePage: NextPage = () => {
 
           <h4>Leaderboard</h4>
 
-          <LeaderboardTable
-            runs={category.leaderboard.slice(0, 16)}
-            game={game}
-          />
+          <LeaderboardTable runs={category.leaderboard} game={game} />
         </section>
       ))}
 
@@ -93,7 +90,7 @@ const GamePage: NextPage = () => {
 
               <h4>Leaderboard</h4>
 
-              <LeaderboardTable runs={leaderboard.slice(0, 16)} game={game} />
+              <LeaderboardTable runs={leaderboard} game={game} />
             </section>
           ))}
         </div>
@@ -186,7 +183,7 @@ const GetGamePage = gql`
         srcId
         srcSlug
         name
-        leaderboard {
+        leaderboard(limit: 32) {
           ...GameLeaderboardRun
         }
         progression {
@@ -204,7 +201,7 @@ const GetGamePage = gql`
         srcId
         srcSlug
         name
-        leaderboard {
+        leaderboard(limit: 32) {
           ...GameLeaderboardRun
         }
         progression {
@@ -223,7 +220,7 @@ const GetGamePage = gql`
             srcSlug
             name
           }
-          leaderboard {
+          leaderboard(limit: 32) {
             ...GameLeaderboardRun
           }
           progression {
