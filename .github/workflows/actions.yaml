@@ -144,7 +144,7 @@ jobs:
           set -veuo pipefail
           version="$(cat version/.version)"
 
-          curl -O speedruns-linux-x86_64 https://github.com/jeremyBanks/speedruns/releases/download/$version/speedruns-linux-x86_64
+          curl -L -O speedruns-linux-x86_64 https://github.com/jeremyBanks/speedruns/releases/download/$version/speedruns-linux-x86_64
           chmod +x speedruns-linux-x86_64
           ./speedruns-linux-x86_64 --help
 
