@@ -11,12 +11,10 @@ const argv = require("yargs").argv;
 
 const port = Number(argv.port || 3000);
 
-const dev = process.env.NODE_ENV !== "production";
+const dev = false;
 const dir = fs.realpathSync(
   path.dirname(path.dirname(path.dirname(__filename))),
 );
-process.chdir(dir);
-
 const conf = require(dir + "/next.config.js");
 
 const app = next({ dev, dir, conf });

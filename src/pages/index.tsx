@@ -91,7 +91,7 @@ export const HomePage: NextPage<{}> = () => {
   const backendVersionLink =
     !backendVersion || backendVersion?.endsWith("-dev")
       ? "https://github.com/jeremyBanks/speedruns/"
-      : `https://crates.io/crates/speedruns/${frontendVersion}`;
+      : `https://crates.io/crates/speedruns/${backendVersion}`;
   const frontendVersionLink =
     !frontendVersion || frontendVersion?.endsWith("-dev")
       ? "https://github.com/jeremyBanks/speedruns/"
@@ -99,7 +99,7 @@ export const HomePage: NextPage<{}> = () => {
 
   return (
     <section className={styles.home}>
-      <p>An unofficial mirror of speedrun.com.</p>
+      <p>an unofficial mirror of speedrun.com</p>
 
       {gameIndex?.error || home?.error ? (
         <pre>{JSON.stringify([gameIndex?.error, home?.error], null, 2)}</pre>
