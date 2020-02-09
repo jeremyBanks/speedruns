@@ -10,4 +10,6 @@ cargo build --release --workspace
 cargo run --release serve &
 trap "kill $!" EXIT
 
+sleep 8
+
 next dev
