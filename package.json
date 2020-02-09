@@ -99,6 +99,7 @@
     "/*.{json,js,toml,yaml,prettierrc,nvmrc,graphqlconfig}",
     "/src/**/*",
     "/public/**/*",
-    "/scripts/**/*"
+    "/scripts/**/*",
+    "/out/**/*"
   ]
 }
