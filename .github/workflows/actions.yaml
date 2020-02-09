@@ -3,6 +3,7 @@ on: [push]
 
 jobs:
   most-things:
+    name: "test, fix, lint, and if on master, publish"
     runs-on: ubuntu-latest
     steps:
       - name: preparation - checkout source
@@ -44,7 +45,7 @@ jobs:
       - name: bot - code generation
         run: yarn generate
 
-      - name: test - yarn build and export
+      - name: test - yarn export
         run: yarn export
 
       - name: bot - code formatting
@@ -81,14 +82,6 @@ jobs:
           GITHUB_PUBLISH_TOKEN: ${{secrets.GITHUB_PUBLISH_TOKEN}}
           CARGO_PUBLISH_TOKEN: ${{secrets.CARGO_PUBLISH_TOKEN}}
 
-      - name: publish - trigger zeit deploy from `deploy`
-        if: github.ref == 'refs/heads/master'
-        run: curl "${{secrets.ZEIT_DEPLOY_STABLE}}"
-
-      - name: publish - trigger graphql deploy from published package
-        if: github.ref == 'refs/heads/master'
-        run: curl "${{secrets.GRAPHQL_DEPLOY_STABLE}}"
-
       - name: publish - record published version
         if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
@@ -97,6 +90,7 @@ jobs:
           path: .version
 
   post-publish:
+    name: "validate published packages"
     needs: most-things
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
@@ -138,3 +132,17 @@ jobs:
           sleep 24
 
           curl http://localhost:3000 | grep "$version"
+
+  deploy-prod:
+    name: "deploy to prod"
+    needs: post-publish
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: publish - trigger zeit deploy from `deploy`
+        if: github.ref == 'refs/heads/master'
+        run: curl "${{secrets.ZEIT_DEPLOY_STABLE}}"
+
+      - name: publish - trigger graphql deploy from published package
+        if: github.ref == 'refs/heads/master'
+        run: curl "${{secrets.GRAPHQL_DEPLOY_STABLE}}"
