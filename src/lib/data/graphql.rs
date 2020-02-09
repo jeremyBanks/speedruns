@@ -180,12 +180,12 @@ impl GameFields for Game {
         base36(self.0.id)
     }
 
-    fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
-        self.0.name.clone()
+    fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
+        &self.0.name
     }
 
-    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        self.0.slug.clone()
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
+        &self.0.slug
     }
 
     fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
@@ -370,12 +370,12 @@ impl CategoryFields for Category {
         base36(self.0.id)
     }
 
-    fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
-        self.0.name.clone()
+    fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
+        &self.0.name
     }
 
-    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        self.0.slug.clone()
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
+        &self.0.slug
     }
 
     fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
@@ -472,8 +472,8 @@ impl UserFields for User {
         base36(self.0.id)
     }
 
-    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        self.0.slug.clone()
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
+        &self.0.slug
     }
 
     fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
@@ -482,10 +482,10 @@ impl UserFields for User {
 }
 
 impl PlayerFields for Player {
-    fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
+    fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
         match self {
-            Player::User(user) => user.0.name.clone(),
-            Player::Guest(name) => name.clone(),
+            Player::User(user) => &user.0.name,
+            Player::Guest(name) => &name,
         }
     }
 
@@ -517,12 +517,12 @@ impl LevelFields for Level {
         base36(self.0.id)
     }
 
-    fn field_name(&self, _executor: &Executor<'_, Context>) -> String {
-        self.0.name.clone()
+    fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
+        &self.0.name
     }
 
-    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        self.0.slug.clone()
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
+        &self.0.slug
     }
 
     fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
