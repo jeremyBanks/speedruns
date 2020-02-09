@@ -22,6 +22,8 @@ version="$(cat package.json | $(yarn bin jqn) 'property("version")')"
 
 sed -i '0,/version = ".*"/ s/version = ".*"/version = "'$version'"/' Cargo.toml
 
+yarn export
+
 git diff
 
 git tag "$version"
@@ -40,8 +42,6 @@ sed -i 's/@jeremybanks\///' package.json
 git diff
 
 npm --registry=https://registry.npmjs.org/ publish $publish_args
-
-yarn export
 
 cargo publish $publish_args --no-verify --token "$CARGO_PUBLISH_TOKEN" --allow-dirty
 
