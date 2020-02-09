@@ -388,6 +388,7 @@ impl CategoryFields for Category {
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
         level_slug: Option<String>,
         include_obsolete: bool,
+        limit: Option<i32>,
     ) -> Vec<LeaderboardRun> {
         let level_id = level_slug.map(|level_slug| {
             self.0
@@ -404,7 +405,11 @@ impl CategoryFields for Category {
             .cloned()
             .collect();
 
-        let ranked = leaderboard::leaderboard(&runs, include_obsolete);
+        let mut ranked = leaderboard::leaderboard(&runs, include_obsolete);
+
+        if let Some(limit) = limit {
+            ranked.truncate(limit.try_into().unwrap_or(0));
+        }
 
         ranked.iter().map(|r| LeaderboardRun(r.clone())).collect()
     }
@@ -547,6 +552,7 @@ impl CategoryLevelFields for CategoryLevel {
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
         include_obsolete: bool,
+        limit: Option<i32>,
     ) -> Vec<LeaderboardRun> {
         let runs: Vec<DbLinked<db::Run>> = executor
             .context()
@@ -559,7 +565,11 @@ impl CategoryLevelFields for CategoryLevel {
             .map(|run| executor.context().database.link(*run))
             .collect();
 
-        let ranked = leaderboard::leaderboard(&runs, include_obsolete);
+        let mut ranked = leaderboard::leaderboard(&runs, include_obsolete);
+
+        if let Some(limit) = limit {
+            ranked.truncate(limit.try_into().unwrap_or(0));
+        }
 
         ranked.iter().map(|r| LeaderboardRun(r.clone())).collect()
     }

@@ -116,9 +116,9 @@ jobs:
         with:
           name: version
 
-      - name: validation - verify published packages can be installed
+      - name: validation - installed published packages
         run: |
-          version=$(cat version/.version)
+          version="$(cat version/.version)"
 
           cargo +nightly install speedruns --version $version
           speedruns --help
@@ -126,6 +126,8 @@ jobs:
           npm install -g speedruns@$version
           speedruns-frontend --help
 
+      - name: validation - run published packages
+        run: |
           speedruns serve --no-data &
           speedruns-frontend &
 
