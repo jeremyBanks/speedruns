@@ -116,6 +116,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./target/release/speedruns
           asset_name: target/release/speedruns-linux-x86_64
+          asset_content_type: application/octet-stream
 
   post-publish:
     name: "validate published packages"
