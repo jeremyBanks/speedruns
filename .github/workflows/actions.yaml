@@ -92,14 +92,30 @@ jobs:
           name: version
           path: .version
 
-      - name: publish - create github release and attach ubuntu x64 binary
+      - name: setup - record published version
+        id: version
         if: github.ref == 'refs/heads/master'
+        run: echo "::set-output name=version::$(cat .version)"
+
+      - name: publish - create github (pre)release
+        id: create_release
+        uses: actions/create-release@v1
         env:
-          GITHUB_USER: ${{ secrets.GITHUB_USER }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          version="$(cat .version)"
-          hub release create --prerelease "$version" --attach 'target/release/speedruns#speedruns-linux-x86_64'
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          release_name: ${{ steps.version.outputs.version }}
+          draft: false
+          prerelease: true
+
+      - name: publish - upload linux binary to github releases
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./target/release/speedruns
+          asset_name: target/release/speedruns-linux-x86_64
 
   post-publish:
     name: "validate published packages"
