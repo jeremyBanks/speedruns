@@ -1,10 +1,7 @@
 ---
 name: Question/Support
 about: Do you have a question?
-title: ''
+title: ""
 labels: "\U0001F615 question"
 assignees: jeremyBanks
-
 ---
-
-
