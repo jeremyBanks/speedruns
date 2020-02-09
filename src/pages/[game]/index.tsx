@@ -17,8 +17,6 @@ const GamePage: NextPage = () => {
 
   const { loading, error, data } = useQuery<schema.GetGamePage>(GetGamePage, {
     variables: { slug: router.query.game },
-    fetchPolicy: DEBUG ? "cache-and-network" : "cache-first",
-    pollInterval: DEBUG ? 4000 : undefined,
   });
 
   if (!data) {
