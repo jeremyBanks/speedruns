@@ -144,6 +144,10 @@ jobs:
           set -veuo pipefail
           version="$(cat version/.version)"
 
+          curl -O speedruns-linux-x86_64 https://github.com/jeremyBanks/speedruns/releases/download/$version/speedruns-linux-x86_64
+          chmod +x speedruns-linux-x86_64
+          ./speedruns-linux-x86_64 --help
+
           cargo +nightly install speedruns --version $version
           speedruns --help
 
@@ -156,7 +160,7 @@ jobs:
           version="$(cat version/.version)"
 
           speedruns serve --no-data --port 4001 &
-          GRAPHQL_ENDPOINT=http://localhost:4001 speedruns-frontend &
+          GRAPHQL_ENDPOINT=http://localhost:4001/graphql speedruns-frontend &
 
           sleep 24
 
