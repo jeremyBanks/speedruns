@@ -7,10 +7,10 @@ cd ~/speedruns;
 
 export PATH="$PATH:/home/speedrun/.nvm/versions/node/v13.5.0/bin/";
 
-npm install -g speedruns@^0.20.20-dev.0;
+npm install -g --force speedruns@^0.20.20-dev.0;
 version="$(speedruns-frontend --version)"
 
-curl -O speedruns-linux-x86_64 https://github.com/jeremyBanks/speedruns/releases/download/$version/speedruns-linux-x86_64
+curl -L -o speedruns-linux-x86_64 https://github.com/jeremyBanks/speedruns/releases/download/$version/speedruns-linux-x86_64
 chmod +x speedruns-linux-x86_64
 
 GRAPHQL_ENDPOINT=http://localhost:3001/graphql speedruns-frontend &;
