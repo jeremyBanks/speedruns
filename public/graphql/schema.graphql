@@ -37,7 +37,11 @@ type Category implements Node {
   """
   leaderboards of ranked runs
   """
-  leaderboard(levelSlug: String, includeObsolete: Boolean): [LeaderboardRun!]!
+  leaderboard(
+    levelSlug: String
+    includeObsolete: Boolean
+    limit: Int
+  ): [LeaderboardRun!]!
 
   """
   progress of record over time
@@ -62,7 +66,7 @@ type CategoryLevel {
   """
   leaderboards of ranked runs
   """
-  leaderboard(includeObsolete: Boolean): [LeaderboardRun!]!
+  leaderboard(includeObsolete: Boolean, limit: Int): [LeaderboardRun!]!
 
   """
   progress of record over time

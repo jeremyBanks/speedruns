@@ -42,7 +42,7 @@ const getApolloClient = (
       cache.restore(initialState);
     }
 
-    const policy = DEBUG ? "cache-and-network" : "cache-first";
+    const policy = "cache-and-network";
 
     globalApolloClient = new ApolloClient({
       cache,
