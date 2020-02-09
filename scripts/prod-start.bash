@@ -5,12 +5,13 @@ source ~/.bashrc;
 source $HOME/.cargo/env;
 cd ~/speedruns;
 
-git pull --force;
-
 export PATH="$PATH:/home/speedrun/.nvm/versions/node/v13.5.0/bin/";
 
 npm install -g speedruns@^0.20.20-dev.0;
-cargo install speedruns --force --version '>0.20.20-dev.0';
+version="$(speedruns-frontend --version)"
 
-GRAPHQL_ENDPOINT=http://localhost:3001 speedruns-frontend &;
-speedruns serve
+curl -O speedruns-linux-x86_64 https://github.com/jeremyBanks/speedruns/releases/download/$version/speedruns-linux-x86_64
+chmod +x speedruns-linux-x86_64
+
+GRAPHQL_ENDPOINT=http://localhost:3001/graphql speedruns-frontend &;
+./speedruns-linux-x86_64 serve
