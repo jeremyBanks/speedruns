@@ -13,5 +13,5 @@ version="$(speedruns-frontend --version)"
 curl -O speedruns-linux-x86_64 https://github.com/jeremyBanks/speedruns/releases/download/$version/speedruns-linux-x86_64
 chmod +x speedruns-linux-x86_64
 
-GRAPHQL_ENDPOINT=http://localhost:3001 speedruns-frontend &;
+GRAPHQL_ENDPOINT=http://localhost:3001/graphql speedruns-frontend &;
 ./speedruns-linux-x86_64 serve
