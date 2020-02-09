@@ -125,3 +125,10 @@ jobs:
 
           npm install -g speedruns@$version
           speedruns-frontend --help
+
+          speedruns serve --no-data &
+          speedruns-frontend &
+
+          sleep 24
+
+          curl http://localhost:3000 | grep "$version"
