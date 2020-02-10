@@ -28,7 +28,7 @@ const RunPage: NextPage = () => {
   useNprogress(loading);
 
   if (!data) {
-    return <>{loading ? "loading..." : JSON.stringify(error)}</>;
+    return <>{error ? JSON.stringify(error) : ""}</>;
   }
 
   const game = data.game;
