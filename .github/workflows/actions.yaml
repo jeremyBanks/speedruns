@@ -99,6 +99,7 @@ jobs:
 
       - name: publish - create github (pre)release
         id: create_release
+        if: github.ref == 'refs/heads/master'
         uses: actions/create-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
