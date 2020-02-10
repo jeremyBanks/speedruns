@@ -119,10 +119,7 @@ impl SpeedrunsFields for Speedruns {
         _trail: &QueryTrail<'_, Game, Walked>,
         slug: String,
     ) -> Option<Game> {
-        match executor.context().database.game_by_slug(&slug) {
-            Some(game) => Some(Game(game)),
-            None => None,
-        }
+        executor.context().database.game_by_slug(&slug).map(Game)
     }
 
     fn field_games(
@@ -384,65 +381,86 @@ impl CategoryFields for Category {
 
     fn field_leaderboard(
         &self,
-        _executor: &Executor<'_, Context>,
+        executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
         level_slug: Option<String>,
         include_obsolete: bool,
         limit: Option<i32>,
     ) -> Vec<LeaderboardRun> {
-        let level_id = level_slug.map(|level_slug| {
-            self.0
-                .game()
-                .level_by_slug(&level_slug)
-                .expect("level not found")
-                .id
-        });
-        let runs: Vec<DbLinked<db::Run>> = self
-            .0
-            .runs()
-            .iter()
-            .filter(|run| run.level_id == level_id && run.category_id == self.0.id)
-            .cloned()
-            .collect();
-
-        let mut ranked = leaderboard::leaderboard(&runs, include_obsolete);
-
-        if let Some(limit) = limit {
-            ranked.truncate(limit.try_into().unwrap_or(0));
+        let level_id;
+        if let Some(level_slug) = level_slug {
+            let level = self.0.game().level_by_slug(&level_slug);
+            if let Some(level) = level {
+                level_id = Some(level.id);
+            } else {
+                // level specified but not found
+                return vec![]
+            }
+        } else {
+            level_id = None;
         }
 
-        ranked.iter().map(|r| LeaderboardRun(r.clone())).collect()
+        let runs = executor
+            .context()
+            .database
+            .runs_by_game_id_and_category_id_and_level_id()
+            .get(&(self.0.game_id, self.0.id, level_id));
+
+        if let Some(runs) = runs {
+            let runs: Vec<_> = runs
+                .iter()
+                .map(|run| executor.context().database.link(*run))
+                .collect();
+
+            let mut ranked = leaderboard::leaderboard(&runs, include_obsolete);
+
+            if let Some(limit) = limit {
+                ranked.truncate(limit.try_into().unwrap_or(0));
+            }
+
+            ranked.iter().map(|r| LeaderboardRun(r.clone())).collect()
+        } else {
+            vec![]
+        }
     }
 
     fn field_progression(
         &self,
-        _executor: &Executor<'_, Context>,
+        executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, ProgressionRun, Walked>,
         level_slug: Option<String>,
         _include_ties: bool,
     ) -> Vec<ProgressionRun> {
-        let level_id = level_slug.map(|level_slug| {
-            self.0
-                .game()
-                .level_by_slug(&level_slug)
-                .expect("level not found")
-                .id
-        });
-        let runs: Vec<DbLinked<db::Run>> = self
-            .0
-            .runs()
-            .iter()
-            // TODO
-            .filter(|run| {
-                run.category_id == self.0.id
-                    && (level_id == None || run.level_id == level_id)
-            })
-            .cloned()
-            .collect();
+        let level_id;
+        if let Some(level_slug) = level_slug {
+            let level = self.0.game().level_by_slug(&level_slug);
+            if let Some(level) = level {
+                level_id = Some(level.id);
+            } else {
+                // level specified but not found
+                return vec![]
+            }
+        } else {
+            level_id = None;
+        }
 
-        let progress = progression::progression(&runs);
+        let runs = executor
+            .context()
+            .database
+            .runs_by_game_id_and_category_id_and_level_id()
+            .get(&(self.0.game_id, self.0.id, level_id));
 
-        progress.iter().map(|r| ProgressionRun(r.clone())).collect()
+        if let Some(runs) = runs {
+            let runs: Vec<_> = runs
+                .iter()
+                .map(|run| executor.context().database.link(*run))
+                .collect();
+            let progress = progression::progression(&runs);
+
+            progress.iter().map(|r| ProgressionRun(r.clone())).collect()
+        } else {
+            return vec![]
+        }
     }
 
     fn field_levels(
