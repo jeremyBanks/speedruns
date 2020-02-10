@@ -11,6 +11,7 @@ class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           <link rel="icon" href="/icon.png" />
+          <link rel="stylesheet" href="/nprogress.css" />
         </Head>
         <body>
           <main>

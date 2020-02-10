@@ -11,6 +11,7 @@ import LeaderboardTable from "~/components/leaderboard-table";
 import * as schema from "~/components/schema";
 import styles from "~/components/styles.module.scss";
 import { withApollo, DEBUG } from "~/components/hooks/with-apollo";
+import useNprogress from "~/components/hooks/use-nprogress";
 
 const GamePage: NextPage = () => {
   const router = useRouter();
@@ -18,6 +19,8 @@ const GamePage: NextPage = () => {
   const { loading, error, data } = useQuery<schema.GetGamePage>(GetGamePage, {
     variables: { slug: router.query.game },
   });
+
+  useNprogress(loading);
 
   if (!data) {
     return <>{loading ? "loading..." : JSON.stringify(error)}</>;

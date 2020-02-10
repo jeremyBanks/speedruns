@@ -12,6 +12,7 @@ import { withApollo, DEBUG } from "~/components/hooks/with-apollo";
 import RunDuration from "~/components/duration";
 import RunPlayers from "~/components/run-players";
 import RunDate from "~/components/run-date";
+import useNprogress from "~/components/hooks/use-nprogress";
 
 const RunPage: NextPage = () => {
   const router = useRouter();
@@ -23,6 +24,8 @@ const RunPage: NextPage = () => {
     },
     fetchPolicy: DEBUG ? "cache-and-network" : "cache-first",
   });
+
+  useNprogress(loading);
 
   if (!data) {
     return <>{loading ? "loading..." : JSON.stringify(error)}</>;
