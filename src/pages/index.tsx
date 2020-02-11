@@ -54,7 +54,18 @@ export const HomePage: NextPage<{}> = () => {
           slugify(game.srcSlug).includes(name),
       )
       .sort((a: schema.GetGameIndex_games, b: schema.GetGameIndex_games) => {
-        if (a.name.length < b.name.length) return -1;
+        const aExact = slugify(a.srcSlug) === name || slugify(a.name) === name;
+        const bExact = slugify(b.srcSlug) === name || slugify(b.name) === name;
+        const aPrefix = name.startsWith(slugify(a.srcSlug));
+        const bPrefix = name.startsWith(slugify(b.srcSlug));
+
+        if (aExact && !bExact) return -1;
+        else if (bExact && !aExact) return +1;
+        else if (aPrefix && !bPrefix) return -1;
+        else if (bPrefix && !aPrefix) return +1;
+        else if (a.srcSlug.length < b.srcSlug.length) return -1;
+        else if (a.srcSlug.length > b.srcSlug.length) return +1;
+        else if (a.name.length < b.name.length) return -1;
         else if (a.name.length > b.name.length) return +1;
         else if (a.srcSlug < b.srcSlug) return -1;
         else if (a.srcSlug > b.srcSlug) return +1;
