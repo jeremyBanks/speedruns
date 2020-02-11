@@ -21,7 +21,7 @@ const NodePage: NextPage = () => {
   });
 
   if (!data) {
-    return <>{loading ? "loading..." : JSON.stringify(error)}</>;
+    return <>{error ? JSON.stringify(error) : ""}</>;
   }
 
   const node = data.node && { ...data.node };
