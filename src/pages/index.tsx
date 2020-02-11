@@ -9,6 +9,7 @@ import * as schema from "~/components/schema";
 import { GRAPHQL_ENDPOINT, withApollo } from "~/components/hooks/with-apollo";
 import { useDebounced } from "~/components/hooks/use-debounced";
 import { version as frontendVersion } from "~/../package.json";
+import useNprogress from "~/components/hooks/use-nprogress";
 
 export const HomePage: NextPage<{}> = () => {
   const home = useQuery<schema.GetHomeStats>(GetHomeStats);
@@ -86,6 +87,9 @@ export const HomePage: NextPage<{}> = () => {
       element.placeholder = defaultSearch;
     }, 0);
   }, []);
+
+  useNprogress(home.loading);
+  useNprogress(gameIndex.loading);
 
   const backendVersion = home?.data?.stats?.version;
   const backendVersionLink =
