@@ -7,7 +7,7 @@ import styles from "~/components/styles.module.scss";
 // this issue which is apparently fixed in the next release:
 // https://github.com/zeit/next-plugins/issues/282
 
-export const Header: React.FC = () => {
+const Header: React.FC = () => {
   return (
     <header className={styles.header}>
       <h1 className={styles.text}>
