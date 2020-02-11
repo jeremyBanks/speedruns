@@ -11,31 +11,49 @@ import { useDebounced } from "~/components/hooks/use-debounced";
 import { version as frontendVersion } from "~/../package.json";
 import useNprogress from "~/components/hooks/use-nprogress";
 
+const searchSuggestions = [
+  "Burnout",
+  "WarCraft",
+  "Pokemon",
+  "Portal",
+  "Metroid",
+  "Celeste",
+  "Super Mario World",
+  "Spyro",
+  "Mario Kart",
+  "Shovel Knight",
+  "Resident Evil",
+  "Zelda",
+  "Final Fantasy",
+  "Dark Souls",
+  "Quake",
+];
+
 export const HomePage: NextPage<{}> = () => {
   const home = useQuery<schema.GetHomeStats>(GetHomeStats);
   const gameIndex = useQuery<schema.GetGameIndex>(GetGameIndex, {
     ssr: false,
   });
 
-  const [defaultSearch, _] = useState(() => {
-    const options = [
-      "WarCraft",
-      "Celeste",
-      "Super Mario World",
-      "Burnout",
-      "Spyro",
-      "Mario Kart",
-      "Shovel Knight",
-      "Resident Evil",
-      "Crash Bandicoot",
-      "Final Fantasy X",
-    ];
-    const index = Math.floor(Math.random() * options.length);
-    return options[index];
-  });
+  const [searchSuggestion, setSearchSuggestion] = useState(
+    searchSuggestions[0],
+  );
 
-  const [targetName, setTargetName] = useState<string>(defaultSearch);
-  const debouncedTargetName = useDebounced(targetName, 250) || defaultSearch;
+  const [targetName, setTargetName] = useState<string>(searchSuggestion);
+  const debouncedTargetName = useDebounced(targetName, 250);
+  const debouncedTargetNameOrSuggestion =
+    debouncedTargetName || searchSuggestion;
+
+  useEffect(() => {
+    while (true) {
+      const index = Math.floor(Math.random() * searchSuggestions.length);
+      if (searchSuggestion !== searchSuggestions[index]) {
+        setSearchSuggestion(searchSuggestions[index]);
+        break;
+      }
+    }
+  }, [debouncedTargetName]);
+
   const [targetGames, orError] = useMemo(() => {
     if (!gameIndex?.data) {
       return [null, "loading..."];
@@ -45,7 +63,7 @@ export const HomePage: NextPage<{}> = () => {
       return s.toLowerCase().replace(/[^a-z0-9+]/g, "");
     };
 
-    const name = slugify(debouncedTargetName);
+    const name = slugify(debouncedTargetNameOrSuggestion);
 
     const matches = gameIndex.data.games
       .filter(
@@ -72,14 +90,12 @@ export const HomePage: NextPage<{}> = () => {
         else return 0;
       });
 
-    if (matches.length > 64) {
-      return [null, `too many matches (${matches.length})`];
-    } else if (matches.length === 0) {
+    if (matches.length === 0) {
       return [null, "no matches"];
     } else {
-      return [matches, null];
+      return [matches.slice(0, 16), null];
     }
-  }, [gameIndex?.data, debouncedTargetName]);
+  }, [gameIndex?.data, debouncedTargetNameOrSuggestion]);
 
   const input = useRef<HTMLInputElement | null>(null);
 
@@ -91,11 +107,6 @@ export const HomePage: NextPage<{}> = () => {
       }
 
       element.focus();
-
-      // HACK: the non-deterministic defaultSearch above can produce an
-      // inconsistency with server-side rendered placeholder, so we "fix"
-      // it manually.
-      element.placeholder = defaultSearch;
     }, 0);
   }, []);
 
@@ -149,7 +160,7 @@ export const HomePage: NextPage<{}> = () => {
           </span>
           <input
             ref={input}
-            placeholder={debouncedTargetName}
+            placeholder={debouncedTargetNameOrSuggestion}
             onChange={e => void setTargetName(e.target.value)}
             style={{
               display: "flex",

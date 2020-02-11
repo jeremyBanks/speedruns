@@ -10,20 +10,18 @@ const Footer: React.FC = () => (
     </p>
 
     <p>
-      <div className="legal">
-        This site is not affiliated with or endorsed by{" "}
-        <a href="https://www.speedrun.com/about">speedrun.com</a>. This site is
-        non-commercial and uses content from speedrun.com under{" "}
-        <a href="https://creativecommons.org/licenses/by-nc/4.0/">
-          the CC BY-NC license
-        </a>
-        .{" "}
-        <a href="https://github.com/jeremyBanks/speedruns">
-          This site's source code
-        </a>{" "}
-        is released under{" "}
-        <a href="https://choosealicense.com/licenses/mit/">the MIT license</a>.
-      </div>
+      This site is not affiliated with or endorsed by{" "}
+      <a href="https://www.speedrun.com/about">speedrun.com</a>. This site is
+      non-commercial and uses content from speedrun.com under{" "}
+      <a href="https://creativecommons.org/licenses/by-nc/4.0/">
+        the CC BY-NC license
+      </a>
+      .{" "}
+      <a href="https://github.com/jeremyBanks/speedruns">
+        This site's source code
+      </a>{" "}
+      is released under{" "}
+      <a href="https://choosealicense.com/licenses/mit/">the MIT license</a>.
     </p>
   </footer>
 );
