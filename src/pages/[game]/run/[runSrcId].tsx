@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import React from "react";
+import { FaYoutube } from "react-icons/fa";
 
 import * as schema from "~/components/schema";
 import styles from "~/components/styles.module.scss";
