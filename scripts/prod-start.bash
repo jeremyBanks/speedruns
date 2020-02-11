@@ -7,7 +7,7 @@ cd ~/speedruns
 
 export PATH="$PATH:/home/speedrun/.nvm/versions/node/v13.5.0/bin/"
 
-npm install -g --force speedruns@^0.21.6-dev.0
+npm install -g --force speedruns@latest
 version="$(speedruns-frontend --version)"
 
 curl -L -o speedruns-linux-x86_64 https://github.com/jeremyBanks/speedruns/releases/download/$version/speedruns-linux-x86_64
