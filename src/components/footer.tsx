@@ -2,7 +2,7 @@ import React from "react";
 
 import styles from "~/components/styles.module.scss";
 
-export const Footer: React.FC = () => (
+const Footer: React.FC = () => (
   <footer className={styles.footer}>
     <p>
       <strong>The information on this site may be incomplete.</strong> Refer to{" "}
