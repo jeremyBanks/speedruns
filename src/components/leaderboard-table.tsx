@@ -5,9 +5,11 @@ import RunDuration from "~/components/run-duration";
 import RunPlayers from "~/components/run-players";
 import RunRank from "~/components/run-rank";
 
+import Link from "next/link";
+
 const LeaderboardTable: React.FC<{
   runs: schema.GetGamePage_game_gameCategories_leaderboard[];
-  game: { timingMethod: string };
+  game: { timingMethod: string; srcSlug: string };
 }> = ({ runs, game }) => (
   <table className={styles.leaderboard}>
     <thead>
@@ -34,7 +36,14 @@ const LeaderboardTable: React.FC<{
             <RunDuration ms={leaderboardRun.run.timeMs} />
           </td>
           <td className={styles.date}>
-            <RunDate date={leaderboardRun.run.date} />
+            <Link
+              href="/[game]/run/[runSrcId]"
+              as={`/${game.srcSlug}/run/${leaderboardRun.run.srcId}`}
+            >
+              <a>
+                <RunDate date={leaderboardRun.run.date} />
+              </a>
+            </Link>
           </td>
         </tr>
       ))}

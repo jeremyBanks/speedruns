@@ -5,13 +5,14 @@ import RunDuration from "~/components/run-duration";
 import RunPlayers from "~/components/run-players";
 import RunRank from "~/components/run-rank";
 import AutoColor from "~/components/auto-color";
+import Link from "next/link";
 
 const ProgressionTable: React.FC<{
   runs: schema.GetGamePage_game_gameCategories_progression[];
   showLevels?: boolean;
   showSums?: boolean;
   showCategories?: boolean;
-  game: { timingMethod: string };
+  game: { timingMethod: string; srcSlug: string };
 }> = ({
   runs,
   showLevels = false,
@@ -48,7 +49,14 @@ const ProgressionTable: React.FC<{
             </td>
           ) : null}
           <td className={styles.date}>
-            <RunDate date={progress.run.date} />
+            <Link
+              href="/[game]/run/[runSrcId]"
+              as={`/${game.srcSlug}/run/${progress.run.srcId}`}
+            >
+              <a>
+                <RunDate date={progress.run.date} />
+              </a>
+            </Link>
           </td>
           <td className={styles.progress}>
             <RunDuration ms={progress.progressMs} />
