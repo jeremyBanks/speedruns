@@ -13,7 +13,7 @@ const Header: React.FC = () => {
       <h1 className={styles.text}>
         <span className={styles.inner}>
           <img src="/icon.png" />{" "}
-          <Link href="/index" as="/">
+          <Link href="/">
             <a>speedruns.ca</a>
           </Link>
         </span>

@@ -103,6 +103,10 @@ html.document {
     margin-right: auto;
   }
 
+  section.content {
+    min-height: 50vh;
+  }
+
   img {
     --max-size: calc(0.5em + 0.5ex);
     max-width: var(--max-size);

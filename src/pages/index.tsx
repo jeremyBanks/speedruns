@@ -10,6 +10,7 @@ import { GRAPHQL_ENDPOINT, withApollo } from "~/components/hooks/with-apollo";
 import { useDebounced } from "~/components/hooks/use-debounced";
 import { version as frontendVersion } from "~/../package.json";
 import useNprogress from "~/components/hooks/use-nprogress";
+import LoadingBlock from "~/components/loading-block";
 
 const searchSuggestions = [
   "Burnout",
@@ -125,7 +126,10 @@ export const HomePage: NextPage<{}> = () => {
 
   return (
     <section className={styles.home}>
-      <p>an unofficial mirror of speedrun.com</p>
+      <p>
+        an unofficial mirror of{" "}
+        <a href="https://www.speedrun.com">speedrun.com</a>
+      </p>
 
       {gameIndex?.error || home?.error ? (
         <pre>{JSON.stringify([gameIndex?.error, home?.error], null, 2)}</pre>
@@ -200,9 +204,7 @@ export const HomePage: NextPage<{}> = () => {
           )}
         </>
       ) : (
-        <p style={{ paddingLeft: "2em" }}>
-          <i>Loading...</i>
-        </p>
+        <LoadingBlock />
       )}
 
       <h2>Internals</h2>
