@@ -14,6 +14,7 @@ import RunDuration from "~/components/duration";
 import RunPlayers from "~/components/run-players";
 import RunDate from "~/components/run-date";
 import useNprogress from "~/components/hooks/use-nprogress";
+import LoadingBlock from "~/components/loading-block";
 
 const RunPage: NextPage = () => {
   const router = useRouter();
@@ -29,7 +30,7 @@ const RunPage: NextPage = () => {
   useNprogress(loading);
 
   if (!data) {
-    return <>{error ? JSON.stringify(error) : ""}</>;
+    return <>{error ? JSON.stringify(error) : <LoadingBlock />}</>;
   }
 
   const game = data.game;
