@@ -68,8 +68,7 @@ const RunPage: NextPage = () => {
       </h3>
       <p>
         in <RunDuration ms={run.timeMs} /> by{" "}
-        <RunPlayers players={run.players} />
-        on <RunDate date={run.date} />
+        <RunPlayers players={run.players} /> on <RunDate date={run.date} />
       </p>
     </section>
   );

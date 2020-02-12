@@ -5,8 +5,12 @@ import styles from "~/components/styles.module.scss";
 const Footer: React.FC = () => (
   <footer className={styles.footer}>
     <p>
-      <strong>The information on this site may be incomplete.</strong> Refer to{" "}
-      <a href="https://www.speedrun.com/">speedrun.com</a> for certainty.
+      <strong>
+        The information on this site may be incomplete or aggregated
+        incorrectly.
+      </strong>{" "}
+      Refer to <a href="https://www.speedrun.com/games">speedrun.com</a> for
+      certainty.
     </p>
 
     <p>

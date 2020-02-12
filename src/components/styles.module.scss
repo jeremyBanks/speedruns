@@ -27,46 +27,6 @@
 html.document {
   background: #222;
 
-  [id="nprogress"] {
-    pointer-events: none;
-  }
-
-  [id="nprogress"] [class~="bar"] {
-    background: #29d;
-
-    position: fixed;
-    z-index: 1031;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 2px;
-  }
-
-  /* Fancy blur effect */
-  [id="nprogress"] [class~="peg"] {
-    display: block;
-    position: absolute;
-    right: 0px;
-    width: 100px;
-    height: 100%;
-    box-shadow: 0 0 10px #29d, 0 0 5px #29d;
-    opacity: 1;
-
-    -webkit-transform: rotate(3deg) translate(0px, -4px);
-    -ms-transform: rotate(3deg) translate(0px, -4px);
-    transform: rotate(3deg) translate(0px, -4px);
-  }
-
-  [class~="nprogress-custom-parent"] {
-    overflow: hidden;
-    position: relative;
-  }
-
-  [class~="nprogress-custom-parent"] [id="nprogress"] [class~="bar"] {
-    position: absolute;
-  }
-
   pre,
   code,
   td.rank,
@@ -186,193 +146,285 @@ html.document {
       text-align: center;
     }
   }
-}
 
-.header {
-  text-align: left;
-
-  .text {
-    display: inline;
-    border-bottom: 2px solid #000;
-    border-bottom-left-radius: 10px 6px;
-    border-bottom-right-radius: 32px 2px;
-    position: relative;
-    top: -7px;
-    padding-right: 4px;
-
-    .inner {
-      position: relative;
-      top: 7px;
-    }
-  }
-}
-
-.home {
-  ul {
-    li {
-      margin-bottom: 0.3em;
-    }
-  }
-}
-
-.footer {
-  font-size: 0.75em;
-  margin-top: 128px;
-
-  a {
-    text-decoration: underline;
-  }
-}
-
-.voyagerFrame {
-  display: block;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: white;
-  color: black;
-  overflow: hidden;
-}
-
-.colored {
-  padding: 0 2px;
-  border-radius: 4px;
-}
-
-.gamePage {
-  font-size: 12px;
-
-  table {
-    &,
-    * {
-      box-sizing: border-box;
-    }
-
+  .header {
     text-align: left;
-    border-collapse: collapse;
-    margin: auto;
 
-    border-bottom: 3px double #f8f8f8;
-    margin-bottom: 32px;
+    .text {
+      display: inline;
+      border-bottom: 2px solid #000;
+      border-bottom-left-radius: 10px 6px;
+      border-bottom-right-radius: 32px 2px;
+      position: relative;
+      top: -7px;
+      padding-right: 4px;
 
-    th {
-      font: 10px sans-serif;
-      color: grey;
-      padding: 2px 10px;
-      vertical-align: bottom;
+      .inner {
+        position: relative;
+        top: 7px;
+      }
     }
+  }
 
-    tbody tr {
-      height: 20px;
+  .home {
+    ul {
+      li {
+        margin-bottom: 0.3em;
+      }
     }
+  }
 
-    td {
-      padding: 6px;
+  .footer {
+    font-size: 0.75em;
+    margin-top: 128px;
+
+    a {
+      text-decoration: underline;
     }
+  }
 
-    .level {
-      text-align: center;
-      font-size: 8px;
-      width: 100px;
-    }
+  .voyagerFrame {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    color: black;
+    overflow: hidden;
+  }
 
-    td.rank {
-      font-size: 14px;
-      padding: 2px;
-      text-align: center;
-      width: 35px;
-    }
+  .colored {
+    padding: 0 2px;
+    border-radius: 4px;
+  }
 
-    .player {
-      text-align: center;
-      width: 140px;
-    }
+  .gamePage {
+    font-size: 12px;
 
-    tbody {
-      tr:nth-child(odd) {
-        background: #f8f8f8;
+    table {
+      &,
+      * {
+        box-sizing: border-box;
+      }
+
+      text-align: left;
+      border-collapse: collapse;
+      margin: auto;
+
+      border-bottom: 3px double #f8f8f8;
+      margin-bottom: 32px;
+
+      th {
+        font: 10px sans-serif;
+        color: grey;
+        padding: 2px 10px;
+        vertical-align: bottom;
+      }
+
+      tbody tr {
+        height: 20px;
+      }
+
+      td {
+        padding: 6px;
+      }
+
+      .level {
+        text-align: center;
+        font-size: 8px;
+        width: 100px;
+      }
+
+      td.rank {
+        font-size: 14px;
+        padding: 2px;
+        text-align: center;
+        width: 35px;
+      }
+
+      .player {
+        text-align: center;
+        width: 140px;
+      }
+
+      tbody {
+        tr:nth-child(odd):not(.empty) {
+          background: #f8f8f8;
+        }
+
+        tr.empty {
+          text-align: center;
+          font-size: 12px;
+          color: #aaa;
+          border-top: 3px double #f8f8f8;
+
+          td {
+            padding: 8px;
+          }
+        }
+      }
+
+      .time,
+      .progress {
+        width: 100px;
+      }
+
+      th.time,
+      th.progress {
+        text-align: center;
+      }
+
+      td.time,
+      td.progress {
+        text-align: right;
+      }
+
+      .date {
+        text-align: center;
+        width: 140px;
+      }
+
+      td.rank {
+        color: grey;
+      }
+
+      tr[data-rank="1"] td.rank {
+        color: black;
+        font-weight: bold;
+        background: rgb(255, 210, 110);
+        border: 4px solid white;
+      }
+
+      tr[data-rank="2"] td.rank {
+        font-weight: bold;
+        color: black;
+        background: rgb(210, 230, 255);
+        border: 4px solid white;
+      }
+
+      tr[data-rank="3"] td.rank {
+        font-weight: bold;
+        color: black;
+        background: rgb(255, 175, 125);
+        border: 4px solid white;
       }
     }
 
-    .time,
-    .progress {
-      width: 100px;
+    section {
+      padding-top: 8px;
+      padding-bottom: 8px;
     }
 
-    th.time,
-    th.progress {
-      text-align: center;
+    section:target {
+      border-left: 4px dotted #234;
+      border-right: 4px dotted #234;
     }
-
-    td.time,
-    td.progress {
-      text-align: right;
+  }
+  .nodePage {
+    pre {
+      background: white !important;
+      color: black !important;
+      font-size: 16px !important;
     }
-
-    .date {
-      text-align: center;
-      width: 140px;
-    }
-
-    td.rank {
-      color: grey;
-    }
-
-    tr[data-rank="1"] td.rank {
-      color: black;
-      font-weight: bold;
-      background: rgb(255, 210, 110);
-      border: 4px solid white;
-    }
-
-    tr[data-rank="2"] td.rank {
-      font-weight: bold;
-      color: black;
-      background: rgb(210, 230, 255);
-      border: 4px solid white;
-    }
-
-    tr[data-rank="3"] td.rank {
-      font-weight: bold;
-      color: black;
-      background: rgb(255, 175, 125);
-      border: 4px solid white;
+    .typeName {
+      font-size: 200%;
+      vertical-align: -2px;
     }
   }
 
-  section {
-    padding-top: 8px;
-    padding-bottom: 8px;
+  .schemaFrame {
+    > * > * {
+      display: block !important;
+    }
   }
 
-  section:target {
-    border-left: 4px dotted #234;
-    border-right: 4px dotted #234;
+  span.obsolete {
+    cursor: help;
+    color: #ddd;
+    font-size: 8px;
   }
-}
 
-.nodePage {
-  pre {
-    background: white !important;
-    color: black !important;
-    font-size: 16px !important;
+  [id="nprogress"] {
+    pointer-events: none;
   }
-  .typeName {
-    font-size: 200%;
-    vertical-align: -2px;
-  }
-}
 
-.schemaFrame {
-  > * > * {
-    display: block !important;
-  }
-}
+  [id="nprogress"] [class~="bar"] {
+    background: #d92;
 
-span.obsolete {
-  cursor: help;
-  color: #ddd;
-  font-size: 8px;
+    position: fixed;
+    z-index: 1031;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 2px;
+  }
+
+  /* Fancy blur effect */
+  [id="nprogress"] [class~="peg"] {
+    display: block;
+    position: absolute;
+    right: 0px;
+    width: 100px;
+    height: 100%;
+    box-shadow: 0 0 10px #d92, 0 0 5px #d92;
+    opacity: 1;
+
+    -webkit-transform: rotate(3deg) translate(0px, -4px);
+    -ms-transform: rotate(3deg) translate(0px, -4px);
+    transform: rotate(3deg) translate(0px, -4px);
+  }
+
+  /* Remove these to get rid of the spinner */
+  [id="nprogress"] [class~="spinner"] {
+    display: block;
+    position: fixed;
+    z-index: 1031;
+    top: 32px;
+    right: 32px;
+  }
+
+  [id="nprogress"] [class~="spinner-icon"] {
+    width: 18px;
+    height: 18px;
+    box-sizing: border-box;
+
+    border: solid 2px transparent;
+    border-top-color: #d92;
+    border-left-color: #d92;
+    border-radius: 50%;
+
+    -webkit-animation: nprogress-spinner 400ms linear infinite;
+    animation: nprogress-spinner 400ms linear infinite;
+  }
+
+  [class~="nprogress-custom-parent"] {
+    overflow: hidden;
+    position: relative;
+  }
+
+  [class~="nprogress-custom-parent"] [id="nprogress"] [class~="spinner"],
+  [class~="nprogress-custom-parent"] [id="nprogress"] [class~="bar"] {
+    position: absolute;
+  }
+
+  @-webkit-keyframes nprogress-spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes nprogress-spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 }
