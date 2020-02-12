@@ -118,17 +118,21 @@ export const HomePage: NextPage<{}> = () => {
   const backendVersionLink =
     !backendVersion || backendVersion?.endsWith("-dev")
       ? "https://github.com/jeremyBanks/speedruns/"
+      : backendVersion.includes("-dev")
+      ? `https://github.com/jeremyBanks/speedruns/releases/tag/${backendVersion}`
       : `https://crates.io/crates/speedruns/${backendVersion}`;
   const frontendVersionLink =
     !frontendVersion || frontendVersion?.endsWith("-dev")
       ? "https://github.com/jeremyBanks/speedruns/"
+      : frontendVersion.includes("-dev")
+      ? `https://github.com/jeremyBanks/speedruns/releases/tag/${frontendVersion}`
       : `https://www.npmjs.com/package/speedruns/v/${frontendVersion}`;
 
   return (
     <section className={styles.home}>
       <p>
         an unofficial mirror of{" "}
-        <a href="https://www.speedrun.com">speedrun.com</a>
+        <a href="https://www.speedrun.com/about">speedrun.com</a>
       </p>
 
       {gameIndex?.error || home?.error ? (
