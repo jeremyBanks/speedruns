@@ -1469,6 +1469,11 @@
   dependencies:
     "@types/yargs-parser" "*"
 
+"@types/yt-player@^3.4.2":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@types/yt-player/-/yt-player-3.4.2.tgz#da9cbfa16e78105ba335bfc6f20146b60be1c433"
+  integrity sha512-Ih91CLyA7C2s502UM9BisgXjcvnyQI9P3/uweSn9TaaH98+G9cZ4ZQ4yW2+0JHbdOiSzE2MmUOAGF5uQAt3jqQ==
+
 "@types/zen-observable@0.8.0", "@types/zen-observable@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
@@ -7228,6 +7233,11 @@ load-json-file@^5.2.0:
     strip-bom "^3.0.0"
     type-fest "^0.3.0"
 
+load-script2@^2.0.1:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/load-script2/-/load-script2-2.0.4.tgz#b081952e4ccf4db2adddb7889507e2f0465dbfcf"
+  integrity sha512-WzZ2Df8QvWwGdjcJ7BYqcaojHGBC+Dg3oFsBg8gyz/mGyjCduBKdja+HkRo7BHoqt8sV5oil1Bc6Eyq6e40jfg==
+
 loader-runner@^2.3.1, loader-runner@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.4.0.tgz#ed47066bfe534d7e84c4c7b9998c2a75607d9357"
@@ -12384,6 +12394,13 @@ yn@3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
   integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
+
+yt-player@^3.4.3:
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/yt-player/-/yt-player-3.4.3.tgz#88c0f2fb9a5c7b85a75930dee81bf3aa21480393"
+  integrity sha512-Ke5oM+qW8CR6aaK40mTxBff3hS4DXjyfmFkjg3eoaGt8fWQGyKFOFIpZqzNTR5c7Lu+xAG9SIvxCvbBPhCBbPg==
+  dependencies:
+    load-script2 "^2.0.1"
 
 z-schema@^3.18.2:
   version "3.25.1"

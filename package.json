@@ -21,6 +21,7 @@
     "@types/react-no-ssr": "^1.1.1",
     "@types/react-redux": "^7.1.7",
     "@types/yargs": "^15.0.3",
+    "@types/yt-player": "^3.4.2",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "@zeit/next-source-maps": "^0.0.3",
@@ -63,7 +64,8 @@
     "typescript": "^3.7.5",
     "winston": "^3.2.1",
     "yargs": "^15.1.0",
-    "yarn": "^1.22.0"
+    "yarn": "^1.22.0",
+    "yt-player": "^3.4.3"
   },
   "scripts": {
     "start": "bash scripts/start.bash",

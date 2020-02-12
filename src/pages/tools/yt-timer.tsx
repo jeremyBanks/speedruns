@@ -2,28 +2,13 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
+import YTPlayer from "yt-player";
 
 import styles from "~/components/styles.module.scss";
-
-if (typeof window !== "undefined") {
-  (window as any).YTAPILoaded =
-    (window as any).YTAPILoaded ||
-    new Promise(resolve => {
-      (window as any).onYouTubeIframeAPIReady = () => {
-        resolve((window as any).YT);
-      };
-    });
-}
 
 const YtTimerPage: NextPage = () => {
   return (
     <section className={styles.timerPage}>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-    `,
-        }}
-      />
       <script
         dangerouslySetInnerHTML={{
           __html:
@@ -63,8 +48,7 @@ const YtTimerPage: NextPage = () => {
     if (!videoId) return;
     
     const YT = await window.YTAPILoaded;
-    const mainEl = document.querySelector('#main');
-
+    
     const startTime = document.querySelector('#startTime');
     const endTime = document.querySelector('#endTime');
     const elapsedTime = document.querySelector('#elapsedTime');
@@ -202,7 +186,6 @@ const YtTimerPage: NextPage = () => {
   });`,
         }}
       />
-      <script src="https://www.youtube.com/iframe_api"></script>
 
       <h1>YouTube Video Timer</h1>
 
@@ -214,130 +197,125 @@ const YtTimerPage: NextPage = () => {
         <button type="submit">⤦ Load Video</button>
       </form>
 
-      <main id="main">
-        <div id="player"></div>
+      <div id="player"></div>
 
-        <p>
-          <label className="ca13513">
-            Start Time:{" "}
-            <input
-              id="startTime"
-              type="number"
-              step="0.001"
-              placeholder="1.000"
-            />
-          </label>
-          <button id="startCap">↳ Get From Video</button>
-          <button id="gotoStart">⬑ Seek Video To</button>
-          <button id="resetStart">⇤ Reset</button>
-        </p>
+      <p>
+        <label className="ca13513">
+          Start Time:{" "}
+          <input
+            id="startTime"
+            type="number"
+            step="0.001"
+            placeholder="1.000"
+          />
+        </label>
+        <button id="startCap">↳ Get From Video</button>
+        <button id="gotoStart">⬑ Seek Video To</button>
+        <button id="resetStart">⇤ Reset</button>
+      </p>
 
-        <p>
-          <label className="ca13513">
-            End Time:{" "}
-            <input
-              id="endTime"
-              type="number"
-              step="0.001"
-              placeholder="120.000"
-            />
-          </label>
-          <button id="endCap">↳ Get From Video</button>
-          <button id="gotoEnd">⬑ Seek Video To</button>
-          <button id="resetEnd">⇥ Reset</button>
-        </p>
+      <p>
+        <label className="ca13513">
+          End Time:{" "}
+          <input
+            id="endTime"
+            type="number"
+            step="0.001"
+            placeholder="120.000"
+          />
+        </label>
+        <button id="endCap">↳ Get From Video</button>
+        <button id="gotoEnd">⬑ Seek Video To</button>
+        <button id="resetEnd">⇥ Reset</button>
+      </p>
 
-        <p>
-          <label className="ca13513">
-            Duration:{" "}
-            <input
-              id="elapsedTime"
-              type="number"
-              step="0.001"
-              placeholder="119.00"
-            />
-          </label>
-          <span id="elapsedDetail"></span>
-        </p>
+      <p>
+        <label className="ca13513">
+          Duration:{" "}
+          <input
+            id="elapsedTime"
+            type="number"
+            step="0.001"
+            placeholder="119.00"
+          />
+        </label>
+        <span id="elapsedDetail"></span>
+      </p>
 
-        <p>
-          <u>Tips:</u>
-          <ul>
-            <li>
-              After clicking/focusing on the YouTube video player you can use
-              the comma <kbd>,</kbd> and period <kbd>.</kbd> keys to seek
-              backwards and forwards by single frames.
-              <br />
-            </li>
-            <li>
-              After clicking/focusing outside the YouTube player, you can use
-              the <kbd>i</kbd> and <kbd>o</kbd> keys to capture the start and
-              end time and end times from the player.
-            </li>
-          </ul>
-        </p>
-      </main>
+      <p>
+        <u>Tips:</u>
+        <ul>
+          <li>
+            After clicking/focusing on the YouTube video player you can use the
+            comma <kbd>,</kbd> and period <kbd>.</kbd> keys to seek backwards
+            and forwards by single frames.
+            <br />
+          </li>
+          <li>
+            After clicking/focusing outside the YouTube player, you can use the{" "}
+            <kbd>i</kbd> and <kbd>o</kbd> keys to capture the start and end time
+            and end times from the player.
+          </li>
+        </ul>
+      </p>
 
-      <style>{`
-    body > main {
-      width: 640px;
-    }
-    
-    kbd {
-      border: 2px outset #CCC;
-      padding: 0px 2px;
-      background: #EEE
-    }
-    
-    .ca13513 {
-      display: inline-block;
-      width: 13em;
-      text-align: right;
-    }
-    
-    input {
-      width: 6em;
-      font-family: monospace;
-    }
-    
-    [name=v] {
-      width: 22em;
-    }
-    
-    button {
-      padding: 0 8px;
-      vertical-align: top;
-      height: 32px;
-    }
-    
-    button:focus {
-      box-shadow: 0 0 6px 1px black; 
-    }
-    
-    #player {
-      margin-top: 1em;
-    }
-    
-    button::first-letter {
-      font-family: monospace;
-      font-weight: bold;
-      font-size: 1.5em;
-    }
-    
-    .negative {
-      color: red;
-    }
-    
-    #elapsedDetail {
-      font-family: monospace;
-      user-select: all;
-    }
-    `}</style>
+      <style jsx>{`
+        :global(body > main) {
+          width: 640px;
+        }
+
+        kbd {
+          border: 2px outset #ccc;
+          padding: 0px 2px;
+          background: #eee;
+        }
+
+        .ca13513 {
+          display: inline-block;
+          width: 13em;
+          text-align: right;
+        }
+
+        input {
+          width: 6em;
+          font-family: monospace;
+        }
+
+        [name="v"] {
+          width: 22em;
+        }
+
+        button {
+          padding: 0 8px;
+          vertical-align: top;
+          height: 32px;
+        }
+
+        button:focus {
+          box-shadow: 0 0 6px 1px black;
+        }
+
+        #player {
+          margin-top: 1em;
+        }
+
+        button::first-letter {
+          font-family: monospace;
+          font-weight: bold;
+          font-size: 1.5em;
+        }
+
+        .negative {
+          color: red;
+        }
+
+        #elapsedDetail {
+          font-family: monospace;
+          user-select: all;
+        }
+      `}</style>
     </section>
   );
 };
-
-// disable next.js's static optimization
-YtTimerPage.getInitialProps = () => ({});
 
 export default YtTimerPage;
