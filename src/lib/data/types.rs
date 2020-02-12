@@ -4,6 +4,8 @@
 //! corrupt records and rejected or pending runs.
 #![allow(missing_docs)]
 use std::convert::From;
+use std::cmp::{Eq, Ord};
+use std::fmt::Display;
 
 use chrono::{DateTime, NaiveDate, Utc};
 use getset::Getters;
@@ -194,8 +196,6 @@ impl Level {
     Getters,
     Validate,
 )]
-// disabled for now to allow unused .video_url on supplemental data
-// #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Run {
     pub game_id:     u64,
@@ -208,6 +208,7 @@ pub struct Run {
     pub times_ms:    RunTimesMs,
     #[validate]
     pub players:     Vec<RunPlayer>,
+    pub videos:      Vec<RunVideo>,
 }
 
 impl Run {
@@ -216,6 +217,31 @@ impl Run {
         base36(*self.id())
     }
 }
+
+#[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
+#[serde(deny_unknown_fields)]
+pub enum RunVideo {
+    YouTube {
+        id:    String,
+        start: Option<i32>,
+        end:   Option<i32>,
+    },
+    Link {
+        url: String,
+    },
+}
+
+impl Display for RunVideo {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            RunVideo::YouTube { id, start, end} => {
+                write!(f, "https://youtu.be/")
+            },
+            RunVideo::Link { url } => {
+                write!(f, "{}", url)
+            }
+        }
+    }
 
 #[derive(
     Debug, Serialize, Deserialize, PartialEq, Hash, Clone, PartialOrd, Ord, Eq, Getters,
