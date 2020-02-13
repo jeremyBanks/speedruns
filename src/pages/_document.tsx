@@ -1,7 +1,5 @@
 import Document, { Head, Html, Main, NextScript } from "next/document";
 
-import Footer from "~/components/footer";
-import Header from "~/components/header";
 import styles from "~/components/styles.module.scss";
 
 class MyDocument extends Document {
@@ -14,10 +12,8 @@ class MyDocument extends Document {
         </Head>
         <body>
           <main>
-            <Header />
             <Main />
             <NextScript />
-            <Footer />
           </main>
         </body>
       </Html>

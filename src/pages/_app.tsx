@@ -2,7 +2,10 @@ import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
 
+import styles from "~/components/styles.module.scss";
 import { inc, dec } from "~/components/hooks/use-nprogress";
+import Header from "~/components/header";
+import Footer from "~/components/footer";
 
 Router.events.on("routeChangeStart", inc);
 Router.events.on("routeChangeComplete", dec);
@@ -15,7 +18,12 @@ const MyApp = (props: any) => {
       <Head>
         <meta name="viewport" content="width=640" />
       </Head>
-      <App {...props} />
+
+      <Header />
+      <section className={styles.content}>
+        <App {...props} />
+      </section>
+      <Footer />
     </>
   );
 };

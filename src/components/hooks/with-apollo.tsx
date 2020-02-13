@@ -20,11 +20,12 @@ const inBrowserDev =
   ["localhost", "0.0.0.0", "127.0.0.1"].includes(window.location.hostname);
 export const DEBUG = inBrowserDev || onNodeDev;
 
+export const prodEndpoint = "https://graphql-v0.speedrun.ca/graphql";
+export const devEndpoint = "http://localhost:3001/graphql";
+
 export const GRAPHQL_ENDPOINT =
   (onNode && process.env.GRAPHQL_ENDPOINT) ||
-  (DEBUG
-    ? "http://localhost:3001/graphql"
-    : "https://graphql-v0.speedrun.ca/graphql");
+  (DEBUG ? devEndpoint : prodEndpoint);
 
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -58,7 +59,32 @@ const getApolloClient = (
           fetchPolicy: policy,
         },
       } as any,
-      link: new HttpLink({ uri: GRAPHQL_ENDPOINT, fetch }),
+      link: new HttpLink({
+        uri: GRAPHQL_ENDPOINT,
+        fetch: async (
+          input: RequestInfo,
+          init?: RequestInit,
+        ): Promise<Response> => {
+          try {
+            return await fetch(input, init);
+          } catch (primaryError) {
+            if (input === devEndpoint) {
+              console.error(
+                "GraphQL request to dev server failed, falling back to prod.",
+                primaryError,
+              );
+              try {
+                return await fetch(prodEndpoint, init);
+              } catch (fallbackError) {
+                console.error("Prod fallback also failed.", fallbackError);
+                throw primaryError;
+              }
+            } else {
+              throw primaryError;
+            }
+          }
+        },
+      }),
       ssrMode: onNode,
     });
   }
