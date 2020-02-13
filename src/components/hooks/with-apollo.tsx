@@ -65,7 +65,6 @@ const getApolloClient = (
           input: RequestInfo,
           init?: RequestInit,
         ): Promise<Response> => {
-          // TODO: fallback from dev to prod
           try {
             return await fetch(input, init);
           } catch (primaryError) {
