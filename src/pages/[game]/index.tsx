@@ -108,6 +108,7 @@ const GameRun = gql`
     id
     srcId
     timeMs
+    videos
     category {
       id
       srcId
@@ -143,6 +144,7 @@ const GameLeaderboardRun = gql`
       id
       srcId
       timeMs
+      videos
       category {
         id
         srcId

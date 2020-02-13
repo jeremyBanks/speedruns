@@ -197,6 +197,7 @@ type Run implements Node {
   date: Float
   players: [Player!]!
   timeMs: Int!
+  videos: [String!]!
 }
 
 type Speedruns {

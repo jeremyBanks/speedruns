@@ -6,6 +6,7 @@ import RunPlayers from "~/components/run-players";
 import RunRank from "~/components/run-rank";
 import AutoColor from "~/components/auto-color";
 import Link from "next/link";
+import { FaYoutube } from "react-icons/fa";
 
 const ProgressionTable: React.FC<{
   runs: schema.GetGamePage_game_gameCategories_progression[];
@@ -26,6 +27,7 @@ const ProgressionTable: React.FC<{
         {showLevels ? <th className={styles.level}>Level</th> : null}
         {showCategories ? <th className={styles.category}>Category</th> : null}
         <th className={styles.date}>Date</th>
+        <th className={styles.videos}></th>
         <th className={styles.progress}>Progress</th>
         <th className={styles.time}>Time ({game.timingMethod})</th>
         <th className={styles.player}>Player</th>
@@ -58,6 +60,13 @@ const ProgressionTable: React.FC<{
                   <RunDate date={progress.run.date} />
                 </a>
               </Link>
+            </td>
+            <td className={styles.links}>
+              {progress.run.videos.map(video => (
+                <a href={video}>
+                  <FaYoutube />
+                </a>
+              ))}
             </td>
             <td className={styles.progress}>
               <RunDuration ms={progress.progressMs} />
