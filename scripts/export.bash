@@ -13,5 +13,5 @@ trap "kill $!" EXIT
 
 sleep 16
 
-yarn next build
+GRAPHQL_ENDPOINT=http://localhost:3001/graphql yarn next build
 GRAPHQL_ENDPOINT=http://localhost:3001/graphql yarn next export
