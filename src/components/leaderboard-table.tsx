@@ -6,6 +6,7 @@ import RunPlayers from "~/components/run-players";
 import RunRank from "~/components/run-rank";
 
 import Link from "next/link";
+import { FaYoutube } from "react-icons/fa";
 
 const LeaderboardTable: React.FC<{
   runs: schema.GetGamePage_game_gameCategories_leaderboard[];
@@ -18,6 +19,7 @@ const LeaderboardTable: React.FC<{
         <th className={styles.player}>Player</th>
         <th className={styles.time}>Time ({game.timingMethod})</th>
         <th className={styles.date}>Date</th>
+        <th className={styles.videos}></th>
       </tr>
     </thead>
     <tbody>
@@ -46,11 +48,18 @@ const LeaderboardTable: React.FC<{
                 </a>
               </Link>
             </td>
+            <td className={styles.links}>
+              {leaderboardRun.run.videos.map(video => (
+                <a href={video}>
+                  <FaYoutube />
+                </a>
+              ))}
+            </td>
           </tr>
         ))
       ) : (
         <tr className={styles.empty}>
-          <td colSpan={5}>no runs</td>
+          <td colSpan={6}>no runs</td>
         </tr>
       )}
     </tbody>

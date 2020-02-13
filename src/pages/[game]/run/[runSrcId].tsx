@@ -70,6 +70,13 @@ const RunPage: NextPage = () => {
         in <RunDuration ms={run.timeMs} /> by{" "}
         <RunPlayers players={run.players} /> on <RunDate date={run.date} />
       </p>
+      {run.videos.map(video => (
+        <p>
+          <a href={video}>
+            <FaYoutube /> video
+          </a>
+        </p>
+      ))}
     </section>
   );
 };
@@ -90,6 +97,7 @@ const GetRunPage = gql`
       id
       srcId
       timeMs
+      videos
       category {
         id
         srcId

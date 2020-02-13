@@ -150,6 +150,19 @@ impl Normalize for api::Run {
                         .map(Normalize::normalize)
                         .map(Result::unwrap)
                         .collect(),
+                    videos:      self
+                        .videos()
+                        .as_ref()
+                        .map(|video| {
+                            video
+                                .links()
+                                .clone()
+                                .unwrap_or_default()
+                                .iter()
+                                .map(|uri| uri.to_string().parse().unwrap())
+                                .collect()
+                        })
+                        .unwrap_or_default(),
                 };
                 run.validate()?;
                 Ok(Some(run))

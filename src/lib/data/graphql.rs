@@ -309,6 +309,10 @@ impl RunFields for Run {
             })
             .collect()
     }
+
+    fn field_videos(&self, _executor: &Executor<'_, Context>) -> Vec<String> {
+        self.0.videos().iter().map(|v| v.to_string()).collect()
+    }
 }
 
 impl LeaderboardRunFields for LeaderboardRun {

@@ -249,6 +249,12 @@ html.document {
         width: 140px;
       }
 
+      td.links {
+        width: 30px;
+        text-align: left;
+        vertical-align: middle;
+      }
+
       tbody {
         tr:nth-child(odd):not(.empty) {
           background: #f8f8f8;
