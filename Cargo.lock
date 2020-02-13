@@ -553,6 +553,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "bumpalo"
+version = "3.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1f359dc14ff8911330a51ef78022d376f25ed00248912803b58f00cb1c27f742"
+
+[[package]]
 name = "byte-tools"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2333,6 +2339,7 @@ dependencies = [
  "arrayvec",
  "async-std",
  "base64 0.11.0",
+ "bumpalo",
  "chrono",
  "clap",
  "derive_more",

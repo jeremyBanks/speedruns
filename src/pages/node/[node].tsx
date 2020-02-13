@@ -8,6 +8,7 @@ import React from "react";
 import * as schema from "~/components/schema";
 import styles from "~/components/styles.module.scss";
 import { withApollo } from "~/components/hooks/with-apollo";
+import LoadingBlock from "~/components/loading-block";
 
 const NodePage: NextPage = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const NodePage: NextPage = () => {
   });
 
   if (!data) {
-    return <>{error ? JSON.stringify(error) : ""}</>;
+    return <>{error ? JSON.stringify(error) : <LoadingBlock />}</>;
   }
 
   const node = data.node && { ...data.node };
