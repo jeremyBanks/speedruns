@@ -10,7 +10,7 @@ use std::error::Error;
 
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 
-mod normalize;
+mod import;
 mod scrape;
 mod serve;
 
@@ -34,7 +34,7 @@ pub struct Args {
 #[argh(subcommand)]
 pub enum Subcommand {
     Download(DownloadArgs),
-    Import(ImportArgs),
+    Import(import::Args),
     Serve(serve::Args),
 }
 
@@ -45,18 +45,6 @@ pub enum Subcommand {
 /// memory-efficient.
 #[argh(subcommand, name = "download")]
 pub struct DownloadArgs {}
-
-#[derive(argh::FromArgs, PartialEq, Debug)]
-/// Imports downloaded data (converting it to our internal representation, discarding weird
-/// records). existing data is removed/replaced. This is even less memory-efficient than
-/// `download` because it also stores everything in memory, and but also memory leaks on top
-/// of that!
-#[argh(subcommand, name = "import")]
-pub struct ImportArgs {
-    /// whether to skip most records and only import a small number, for faster testing.
-    #[argh(switch)]
-    skip_most: bool,
-}
 
 #[actix_rt::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -76,8 +64,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
         Subcommand::Download(_args) => {
             scrape::main()?;
         }
-        Subcommand::Import(_args) => {
-            normalize::main()?;
+        Subcommand::Import(args) => {
+            import::main(args)?;
         }
         Subcommand::Serve(args) => {
             serve::main(args).await?;

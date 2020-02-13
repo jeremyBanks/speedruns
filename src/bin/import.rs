@@ -26,19 +26,66 @@ use speedruns::{
     },
 };
 
-// TODO: include Run::videos()
-// TODO: include Run::comment()
-// TODO: include Game::variables() and Run::values()
+#[derive(argh::FromArgs, PartialEq, Debug)]
+/// Imports downloaded data (converting it to our internal representation, discarding weird
+/// records). existing data is removed/replaced. This is even less memory-efficient than
+/// `download` because it also stores everything in memory, and but also memory leaks on top
+/// of that!
+#[argh(subcommand, name = "import")]
+pub struct Args {
+    /// import a subset of the API data into our fixtures, instead of importing the full
+    /// data set into our database.
+    #[argh(switch)]
+    fixtures: bool,
+}
 
-pub fn main() -> Result<(), Box<dyn std::error::Error>> {
+pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
     let mut runs = Vec::new();
     let mut users = Vec::new();
     let mut games = Vec::new();
     let mut categories = Vec::new();
     let mut levels = Vec::new();
 
+    if args.fixtures {
+        info!("Generating fixture data, not importing into database.");
+    }
+
+    let fixture_game_slugs = ["wc1", "wc2", "wc2btdp", "bpr", "forza_horizon", "zoombinis"];
+    let mut fixture_game_ids = HashSet::new();
+    let mut fixture_run_ids = HashSet::new();
+    let mut fixture_user_ids = HashSet::new();
+
+    info!("Loading API games, with categories and levels...");
+    for api_game in load_api_type::<api::Game>("data/api/games.jsonl.gz")? {
+        if args.fixtures && !fixture_game_slugs.contains(&api_game.abbreviation().as_ref())
+        {
+            continue
+        } else {
+            fixture_game_ids.insert(api_game.id().clone());
+        }
+
+        let (game, mut game_categories, mut game_levels) = api_game
+            .normalize()
+            .expect("we should be able to handle all run game variations");
+
+        games.push(game);
+        categories.append(&mut game_categories);
+        levels.append(&mut game_levels);
+    }
+
     info!("Loading API runs...");
     for api_run in load_api_type::<api::Run>("data/api/runs.jsonl.gz")? {
+        if args.fixtures && !fixture_game_ids.contains(api_run.game()) {
+            continue
+        } else {
+            fixture_run_ids.insert(api_run.id().clone());
+            for player in api_run.players() {
+                if let api::RunPlayer::User { id, uri: _ } = player {
+                    fixture_user_ids.insert(id.clone());
+                }
+            }
+        }
+
         if let Some(run) = api_run
             .normalize()
             .expect("we should be able to handle all run data variations")
@@ -49,22 +96,15 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     info!("Loading API users...");
     for api_user in load_api_type::<api::User>("data/api/users.jsonl.gz")? {
+        if args.fixtures && !fixture_user_ids.contains(api_user.id()) {
+            continue
+        }
+
         let user = api_user
             .normalize()
             .expect("we should be able to handle all user data variations");
 
         users.push(user);
-    }
-
-    info!("Loading API games, with categories and levels...");
-    for api_game in load_api_type::<api::Game>("data/api/games.jsonl.gz")? {
-        let (game, mut game_categories, mut game_levels) = api_game
-            .normalize()
-            .expect("we should be able to handle all run game variations");
-
-        games.push(game);
-        categories.append(&mut game_categories);
-        levels.append(&mut game_levels);
     }
 
     info!("Validating and cleaning API data...");
@@ -219,16 +259,18 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
+    let dir = if args.fixtures { "fixture" } else { "imported" };
+
     info!("Dumping {} games...", games.len());
-    dump_table("data/imported/games", games)?;
+    dump_table(&format!("data/{}/games", dir), games)?;
     info!("Dumping {} users...", users.len());
-    dump_table("data/imported/users", users)?;
+    dump_table(&format!("data/{}/users", dir), users)?;
     info!("Dumping {} runs...", runs.len());
-    dump_table("data/imported/runs", runs)?;
+    dump_table(&format!("data/{}/runs", dir), runs)?;
     info!("Dumping {} categories...", categories.len());
-    dump_table("data/imported/categories", categories)?;
+    dump_table(&format!("data/{}/categories", dir), categories)?;
     info!("Dumping {} levels...", levels.len());
-    dump_table("data/imported/levels", levels)?;
+    dump_table(&format!("data/{}/levels", dir), levels)?;
 
     Ok(())
 }
