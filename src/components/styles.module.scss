@@ -249,10 +249,28 @@ html.document {
         width: 140px;
       }
 
-      td.links {
-        width: 30px;
+      .links {
         text-align: left;
+      }
+      td.links {
+        width: 50px;
         vertical-align: middle;
+        padding-left: 8px;
+
+        a {
+          position: relative;
+          display: inline-block;
+          position: relative;
+          bottom: 16px;
+          height: 0;
+          overflow: visible;
+
+          svg {
+            padding: 4px;
+            position: absolute;
+            font-size: 24px;
+          }
+        }
       }
 
       tbody {
@@ -288,8 +306,8 @@ html.document {
       }
 
       .date {
-        text-align: center;
-        width: 140px;
+        text-align: right;
+        width: 100px;
       }
 
       td.rank {

@@ -15,6 +15,7 @@ import RunPlayers from "~/components/run-players";
 import RunDate from "~/components/run-date";
 import useNprogress from "~/components/hooks/use-nprogress";
 import LoadingBlock from "~/components/loading-block";
+import RunLinks from "~/components/run-links";
 
 const RunPage: NextPage = () => {
   const router = useRouter();
@@ -67,16 +68,9 @@ const RunPage: NextPage = () => {
         </Link>
       </h3>
       <p>
-        in <RunDuration ms={run.timeMs} /> by{" "}
+        <RunLinks run={run} /> in <RunDuration ms={run.timeMs} /> by{" "}
         <RunPlayers players={run.players} /> on <RunDate date={run.date} />
       </p>
-      {run.videos.map(video => (
-        <p>
-          <a href={video}>
-            <FaYoutube /> video
-          </a>
-        </p>
-      ))}
     </section>
   );
 };
