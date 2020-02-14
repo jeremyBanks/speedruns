@@ -12,6 +12,7 @@ import * as schema from "~/components/schema";
 import styles from "~/components/styles.module.scss";
 import { withApollo, DEBUG } from "~/components/hooks/with-apollo";
 import useNprogress from "~/components/hooks/use-nprogress";
+import LoadingBlock from "~/components/loading-block";
 
 const GamePage: NextPage = () => {
   const router = useRouter();
@@ -23,7 +24,7 @@ const GamePage: NextPage = () => {
   useNprogress(loading);
 
   if (!data) {
-    return <>{error ? JSON.stringify(error) : ""}</>;
+    return <>{error ? JSON.stringify(error) : <LoadingBlock />}</>;
   }
 
   const game = data.game;
@@ -107,6 +108,7 @@ const GameRun = gql`
     id
     srcId
     timeMs
+    videos
     category {
       id
       srcId
@@ -142,6 +144,7 @@ const GameLeaderboardRun = gql`
       id
       srcId
       timeMs
+      videos
       category {
         id
         srcId

@@ -24,7 +24,7 @@
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "@zeit/next-source-maps": "^0.0.3",
-    "apollo": "^2.21.3",
+    "apollo": "^2.22.1",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-cache-persist": "^0.1.1",
     "apollo-client": "^2.6.8",
@@ -55,6 +55,7 @@
     "prettier": "^1.19.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-icons": "^3.9.0",
     "react-no-ssr": "^1.1.0",
     "react-redux": "^7.1.3",
     "remeda": "^0.0.14",
@@ -78,9 +79,6 @@
     "lint": "bash scripts/lint.bash",
     "precommit": "yarn install && yarn format && echo 'grep -q precommit package.json && (yarn precommit && git add .) || echo' > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit",
     "gl": "git fetch --all; git log --decorate --graph --first-parent --all  --format=short -m --stat -- . ':!*.lock' ':!Cargo.toml' ':!package.json' ':!.*'; git config alias.l '!yarn gl'"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
