@@ -1,13 +1,15 @@
 import { useEffect } from "react";
 import NProgress from "nprogress";
 
-const startDelay = 250;
-const doneDelay = 50;
+const startDelay = 50;
+const doneDelay = 10;
 
 // GLOBAL STATE!
 let progressStack = 0;
 let startTimeout: undefined | NodeJS.Timeout;
 let doneTimeout: undefined | NodeJS.Timeout;
+
+NProgress.configure({ trickle: false });
 
 export const inc = () => {
   progressStack += 1;
@@ -24,6 +26,8 @@ export const inc = () => {
     } else {
       NProgress.inc();
     }
+  } else {
+    NProgress.inc();
   }
 };
 

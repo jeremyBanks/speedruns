@@ -10,6 +10,25 @@ import { GRAPHQL_ENDPOINT, withApollo } from "~/components/hooks/with-apollo";
 import { useDebounced } from "~/components/hooks/use-debounced";
 import { version as frontendVersion } from "~/../package.json";
 import useNprogress from "~/components/hooks/use-nprogress";
+import LoadingBlock from "~/components/loading-block";
+
+const searchSuggestions = [
+  "Burnout",
+  "WarCraft",
+  "Pokemon",
+  "Portal",
+  "Metroid",
+  "Celeste",
+  "Super Mario World",
+  "Spyro",
+  "Mario Kart",
+  "Shovel Knight",
+  "Resident Evil",
+  "Zelda",
+  "Final Fantasy",
+  "Dark Souls",
+  "Quake",
+];
 
 export const HomePage: NextPage<{}> = () => {
   const home = useQuery<schema.GetHomeStats>(GetHomeStats);
@@ -17,25 +36,25 @@ export const HomePage: NextPage<{}> = () => {
     ssr: false,
   });
 
-  const [defaultSearch, _] = useState(() => {
-    const options = [
-      "WarCraft",
-      "Celeste",
-      "Super Mario World",
-      "Burnout",
-      "Spyro",
-      "Mario Kart",
-      "Shovel Knight",
-      "Resident Evil",
-      "Crash Bandicoot",
-      "Final Fantasy X",
-    ];
-    const index = Math.floor(Math.random() * options.length);
-    return options[index];
-  });
+  const [searchSuggestion, setSearchSuggestion] = useState(
+    searchSuggestions[0],
+  );
 
-  const [targetName, setTargetName] = useState<string>(defaultSearch);
-  const debouncedTargetName = useDebounced(targetName, 250) || defaultSearch;
+  const [targetName, setTargetName] = useState<string>(searchSuggestion);
+  const debouncedTargetName = useDebounced(targetName, 250);
+  const debouncedTargetNameOrSuggestion =
+    debouncedTargetName || searchSuggestion;
+
+  useEffect(() => {
+    while (true) {
+      const index = Math.floor(Math.random() * searchSuggestions.length);
+      if (searchSuggestion !== searchSuggestions[index]) {
+        setSearchSuggestion(searchSuggestions[index]);
+        break;
+      }
+    }
+  }, [debouncedTargetName]);
+
   const [targetGames, orError] = useMemo(() => {
     if (!gameIndex?.data) {
       return [null, "loading..."];
@@ -45,7 +64,7 @@ export const HomePage: NextPage<{}> = () => {
       return s.toLowerCase().replace(/[^a-z0-9+]/g, "");
     };
 
-    const name = slugify(debouncedTargetName);
+    const name = slugify(debouncedTargetNameOrSuggestion);
 
     const matches = gameIndex.data.games
       .filter(
@@ -54,21 +73,30 @@ export const HomePage: NextPage<{}> = () => {
           slugify(game.srcSlug).includes(name),
       )
       .sort((a: schema.GetGameIndex_games, b: schema.GetGameIndex_games) => {
-        if (a.name.length < b.name.length) return -1;
+        const aExact = slugify(a.srcSlug) === name || slugify(a.name) === name;
+        const bExact = slugify(b.srcSlug) === name || slugify(b.name) === name;
+        const aPrefix = name.startsWith(slugify(a.srcSlug));
+        const bPrefix = name.startsWith(slugify(b.srcSlug));
+
+        if (aExact && !bExact) return -1;
+        else if (bExact && !aExact) return +1;
+        else if (aPrefix && !bPrefix) return -1;
+        else if (bPrefix && !aPrefix) return +1;
+        else if (a.srcSlug.length < b.srcSlug.length) return -1;
+        else if (a.srcSlug.length > b.srcSlug.length) return +1;
+        else if (a.name.length < b.name.length) return -1;
         else if (a.name.length > b.name.length) return +1;
         else if (a.srcSlug < b.srcSlug) return -1;
         else if (a.srcSlug > b.srcSlug) return +1;
         else return 0;
       });
 
-    if (matches.length > 64) {
-      return [null, `too many matches (${matches.length})`];
-    } else if (matches.length === 0) {
+    if (matches.length === 0) {
       return [null, "no matches"];
     } else {
-      return [matches, null];
+      return [matches.slice(0, 16), null];
     }
-  }, [gameIndex?.data, debouncedTargetName]);
+  }, [gameIndex?.data, debouncedTargetNameOrSuggestion]);
 
   const input = useRef<HTMLInputElement | null>(null);
 
@@ -80,11 +108,6 @@ export const HomePage: NextPage<{}> = () => {
       }
 
       element.focus();
-
-      // HACK: the non-deterministic defaultSearch above can produce an
-      // inconsistency with server-side rendered placeholder, so we "fix"
-      // it manually.
-      element.placeholder = defaultSearch;
     }, 0);
   }, []);
 
@@ -95,15 +118,22 @@ export const HomePage: NextPage<{}> = () => {
   const backendVersionLink =
     !backendVersion || backendVersion?.endsWith("-dev")
       ? "https://github.com/jeremyBanks/speedruns/"
+      : backendVersion.includes("-dev")
+      ? `https://github.com/jeremyBanks/speedruns/releases/tag/${backendVersion}`
       : `https://crates.io/crates/speedruns/${backendVersion}`;
   const frontendVersionLink =
     !frontendVersion || frontendVersion?.endsWith("-dev")
       ? "https://github.com/jeremyBanks/speedruns/"
+      : frontendVersion.includes("-dev")
+      ? `https://github.com/jeremyBanks/speedruns/releases/tag/${frontendVersion}`
       : `https://www.npmjs.com/package/speedruns/v/${frontendVersion}`;
 
   return (
     <section className={styles.home}>
-      <p>an unofficial mirror of speedrun.com</p>
+      <p>
+        an unofficial mirror of{" "}
+        <a href="https://www.speedrun.com/about">speedrun.com</a>
+      </p>
 
       {gameIndex?.error || home?.error ? (
         <pre>{JSON.stringify([gameIndex?.error, home?.error], null, 2)}</pre>
@@ -138,7 +168,7 @@ export const HomePage: NextPage<{}> = () => {
           </span>
           <input
             ref={input}
-            placeholder={debouncedTargetName}
+            placeholder={debouncedTargetNameOrSuggestion}
             onChange={e => void setTargetName(e.target.value)}
             style={{
               display: "flex",
@@ -178,9 +208,7 @@ export const HomePage: NextPage<{}> = () => {
           )}
         </>
       ) : (
-        <p style={{ paddingLeft: "2em" }}>
-          <i>Loading...</i>
-        </p>
+        <LoadingBlock />
       )}
 
       <h2>Internals</h2>

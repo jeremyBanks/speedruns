@@ -3,7 +3,10 @@
 //! This doesn't include all of the metadata from speedrun.com, and excludes
 //! corrupt records and rejected or pending runs.
 #![allow(missing_docs)]
-use std::convert::From;
+use std::{
+    cmp::{Eq, Ord},
+    convert::From,
+};
 
 use chrono::{DateTime, NaiveDate, Utc};
 use getset::Getters;
@@ -194,8 +197,6 @@ impl Level {
     Getters,
     Validate,
 )]
-// disabled for now to allow unused .video_url on supplemental data
-// #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Run {
     pub game_id:     u64,
@@ -208,12 +209,40 @@ pub struct Run {
     pub times_ms:    RunTimesMs,
     #[validate]
     pub players:     Vec<RunPlayer>,
+    pub videos:      Vec<RunVideo>,
 }
 
 impl Run {
     /// This item's ID as it would be formatted for SpeedRun.Com.
     pub fn src_id(&self) -> String {
         base36(*self.id())
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq, Clone, PartialOrd, Eq, Ord, Hash)]
+#[serde(deny_unknown_fields)]
+pub enum RunVideo {
+    YouTube { id: String, start: Option<i32> },
+    Link { url: String },
+}
+
+impl std::fmt::Display for RunVideo {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use RunVideo::*;
+        match self {
+            YouTube { id, start } =>
+                write!(f, "https://youtu.be/{}?t={}", id, start.unwrap_or(0)),
+            Link { url } => write!(f, "{}", url),
+        }
+    }
+}
+
+impl std::str::FromStr for RunVideo {
+    type Err = !;
+
+    fn from_str(s: &str) -> Result<Self, !> {
+        // TODO: parse all youtube URL variants
+        Ok(RunVideo::Link { url: s.to_string() })
     }
 }
 

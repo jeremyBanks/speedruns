@@ -256,6 +256,7 @@ type Run implements Node {
   date: Float @juniper(ownership: "owned", infallible: true)
   players: [Player!]! @juniper(ownership: "owned", infallible: true)
   timeMs: Int! @juniper(ownership: "owned", infallible: true)
+  videos: [String!]! @juniper(ownership: "owned", infallible: true)
 }
 
 type Player {

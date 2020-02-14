@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -76,6 +77,7 @@ export interface GetGamePage_game_gameCategories_leaderboard_run {
    */
   srcId: string;
   timeMs: number;
+  videos: string[];
   category: GetGamePage_game_gameCategories_leaderboard_run_category;
   level: GetGamePage_game_gameCategories_leaderboard_run_level | null;
   date: number | null;
@@ -160,6 +162,7 @@ export interface GetGamePage_game_gameCategories_progression_run {
    */
   srcId: string;
   timeMs: number;
+  videos: string[];
   category: GetGamePage_game_gameCategories_progression_run_category;
   level: GetGamePage_game_gameCategories_progression_run_level | null;
   date: number | null;
@@ -236,6 +239,7 @@ export interface GetGamePage_game_gameCategories_progression_leaderboardRun_run 
    */
   srcId: string;
   timeMs: number;
+  videos: string[];
   category: GetGamePage_game_gameCategories_progression_leaderboardRun_run_category;
   level: GetGamePage_game_gameCategories_progression_leaderboardRun_run_level | null;
   date: number | null;
@@ -355,6 +359,7 @@ export interface GetGamePage_game_levelCategories_leaderboard_run {
    */
   srcId: string;
   timeMs: number;
+  videos: string[];
   category: GetGamePage_game_levelCategories_leaderboard_run_category;
   level: GetGamePage_game_levelCategories_leaderboard_run_level | null;
   date: number | null;
@@ -439,6 +444,7 @@ export interface GetGamePage_game_levelCategories_progression_run {
    */
   srcId: string;
   timeMs: number;
+  videos: string[];
   category: GetGamePage_game_levelCategories_progression_run_category;
   level: GetGamePage_game_levelCategories_progression_run_level | null;
   date: number | null;
@@ -515,6 +521,7 @@ export interface GetGamePage_game_levelCategories_progression_leaderboardRun_run
    */
   srcId: string;
   timeMs: number;
+  videos: string[];
   category: GetGamePage_game_levelCategories_progression_leaderboardRun_run_category;
   level: GetGamePage_game_levelCategories_progression_leaderboardRun_run_level | null;
   date: number | null;
@@ -626,6 +633,7 @@ export interface GetGamePage_game_levelCategories_levels_leaderboard_run {
    */
   srcId: string;
   timeMs: number;
+  videos: string[];
   category: GetGamePage_game_levelCategories_levels_leaderboard_run_category;
   level: GetGamePage_game_levelCategories_levels_leaderboard_run_level | null;
   date: number | null;
@@ -710,6 +718,7 @@ export interface GetGamePage_game_levelCategories_levels_progression_run {
    */
   srcId: string;
   timeMs: number;
+  videos: string[];
   category: GetGamePage_game_levelCategories_levels_progression_run_category;
   level: GetGamePage_game_levelCategories_levels_progression_run_level | null;
   date: number | null;
@@ -786,6 +795,7 @@ export interface GetGamePage_game_levelCategories_levels_progression_leaderboard
    */
   srcId: string;
   timeMs: number;
+  videos: string[];
   category: GetGamePage_game_levelCategories_levels_progression_leaderboardRun_run_category;
   level: GetGamePage_game_levelCategories_levels_progression_leaderboardRun_run_level | null;
   date: number | null;
@@ -901,6 +911,7 @@ export interface GetGamePageVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1001,6 +1012,7 @@ export interface GetRunPage_run {
    */
   srcId: string;
   timeMs: number;
+  videos: string[];
   category: GetRunPage_run_category;
   level: GetRunPage_run_level | null;
   date: number | null;
@@ -1019,6 +1031,7 @@ export interface GetRunPageVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1051,6 +1064,7 @@ export interface GetHomeStats {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1075,6 +1089,7 @@ export interface GetGameIndex {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1230,6 +1245,7 @@ export interface GetNodePageVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1306,6 +1322,7 @@ export interface GameRun {
    */
   srcId: string;
   timeMs: number;
+  videos: string[];
   category: GameRun_category;
   level: GameRun_level | null;
   date: number | null;
@@ -1314,6 +1331,7 @@ export interface GameRun {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1390,6 +1408,7 @@ export interface GameLeaderboardRun_run {
    */
   srcId: string;
   timeMs: number;
+  videos: string[];
   category: GameLeaderboardRun_run_category;
   level: GameLeaderboardRun_run_level | null;
   date: number | null;
@@ -1406,6 +1425,7 @@ export interface GameLeaderboardRun {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 //==============================================================

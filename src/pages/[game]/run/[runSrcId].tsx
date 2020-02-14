@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import React from "react";
+import { FaYoutube } from "react-icons/fa";
 
 import * as schema from "~/components/schema";
 import styles from "~/components/styles.module.scss";
@@ -13,6 +14,8 @@ import RunDuration from "~/components/duration";
 import RunPlayers from "~/components/run-players";
 import RunDate from "~/components/run-date";
 import useNprogress from "~/components/hooks/use-nprogress";
+import LoadingBlock from "~/components/loading-block";
+import RunLinks from "~/components/run-links";
 
 const RunPage: NextPage = () => {
   const router = useRouter();
@@ -28,7 +31,7 @@ const RunPage: NextPage = () => {
   useNprogress(loading);
 
   if (!data) {
-    return <>{error ? JSON.stringify(error) : ""}</>;
+    return <>{error ? JSON.stringify(error) : <LoadingBlock />}</>;
   }
 
   const game = data.game;
@@ -65,9 +68,8 @@ const RunPage: NextPage = () => {
         </Link>
       </h3>
       <p>
-        in <RunDuration ms={run.timeMs} /> by{" "}
-        <RunPlayers players={run.players} />
-        on <RunDate date={run.date} />
+        <RunLinks run={run} /> in <RunDuration ms={run.timeMs} /> by{" "}
+        <RunPlayers players={run.players} /> on <RunDate date={run.date} />
       </p>
     </section>
   );
@@ -89,6 +91,7 @@ const GetRunPage = gql`
       id
       srcId
       timeMs
+      videos
       category {
         id
         srcId

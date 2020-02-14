@@ -50,6 +50,7 @@ impl Display for IntegrityErrors {
     }
 }
 
+#[allow(clippy::large_enum_variant)]
 #[derive(Debug, Error, From)]
 pub enum IntegrityError {
     #[error(display = "integrity failure during indexing")]
