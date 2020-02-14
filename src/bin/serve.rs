@@ -150,22 +150,20 @@ fn unpack_tables() -> Tables {
 pub fn read_table<T: DeserializeOwned>(
     path: &str,
 ) -> Result<Vec<T>, Box<dyn std::error::Error>> {
-    let result: Result<Vec<T>, Box<dyn std::error::Error>> = try {
-        let file = File::open(path)?;
-        let buffer = BufReader::new(&file);
-        let deserializer = JsonDeserializer::from_reader(buffer);
-        let json_results = deserializer.into_iter::<JsonValue>();
-        json_results
-            .map(Result::unwrap)
-            .map(T::deserialize)
-            .map(Result::unwrap)
-            .collect()
-    };
-    match result {
-        Ok(result) => Ok(result),
+    Ok(match File::open(path) {
+        Ok(file) => {
+            let buffer = BufReader::new(&file);
+            let deserializer = JsonDeserializer::from_reader(buffer);
+            let json_results = deserializer.into_iter::<JsonValue>();
+            json_results
+                .map(Result::unwrap)
+                .map(T::deserialize)
+                .map(Result::unwrap)
+                .collect()
+        }
         Err(err) => {
             error!("Failed to load table: {:?}", err);
-            Ok(vec![])
+            vec![]
         }
-    }
+    })
 }
