@@ -43,12 +43,19 @@ html.document {
   }
 
   main {
+    box-sizing: border-box;
     display: block;
     color: #000;
     background: #fff;
     font: 16px "Fira Sans", sans-serif;
     padding: 24px 0;
     margin: 16px auto;
+
+    @media (max-width: 650px) {
+      margin-top: 0;
+    }
+    transition: margin-top 0.1s ease-in-out;
+
     width: 100%;
     max-width: 640px;
     min-width: 596px;
