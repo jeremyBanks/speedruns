@@ -1,31 +1,121 @@
-{"game_id":563270767820,"id":178250999013,"slug":"zerg-10-omega","name":"Zerg 10: Omega","rules":""}
-{"game_id":563270767820,"id":333383392544,"slug":"terran-08-to-chain-the-beast","name":"Terran 08: To Chain the Beast","rules":""}
-{"game_id":563270767820,"id":411566157680,"slug":"zerg-09-the-reckoning","name":"Zerg 09: The Reckoning","rules":""}
-{"game_id":563270767820,"id":420554302285,"slug":"zerg-02-reign-of-fire","name":"Zerg 02: Reign of Fire","rules":""}
-{"game_id":563270767820,"id":462691294952,"slug":"zerg-08-to-slay-the-beast","name":"Zerg 08: To Slay the Beast","rules":""}
-{"game_id":563270767820,"id":491938763953,"slug":"terran-05b-emperors-fall-birds-of-war","name":"Terran 05B: Emperor's Fall (Birds of War)","rules":""}
-{"game_id":563270767820,"id":1168309928912,"slug":"zerg-06-fury-of-the-swarm","name":"Zerg 06: Fury of the Swarm","rules":""}
-{"game_id":563270767820,"id":1283790231320,"slug":"terran-03-ruins-of-tarsonis","name":"Terran 03: Ruins of Tarsonis","rules":""}
-{"game_id":563270767820,"id":1638147433964,"slug":"zerg-03-the-kel-morian-combine","name":"Zerg 03: The Kel-Morian Combine","rules":""}
-{"game_id":563270767820,"id":1676025170924,"slug":"protoss-06-return-to-char","name":"Protoss 06: Return to Char","rules":""}
-{"game_id":563270767820,"id":1676025170960,"slug":"terran-02-the-dylarian-shipyards","name":"Terran 02: The Dylarian Shipyards","rules":""}
-{"game_id":563270767820,"id":1822148338437,"slug":"protoss-03-legacy-of-the-xelnaga","name":"Protoss 03: Legacy of the Xel'Naga","rules":""}
-{"game_id":563270767820,"id":1822148339013,"slug":"protoss-07-the-insurgent","name":"Protoss 07: The Insurgent","rules":""}
-{"game_id":563270767820,"id":1873313613392,"slug":"terran-04-assault-on-korhal","name":"Terran 04: Assault on Korhal","rules":""}
-{"game_id":563270767820,"id":1902330754016,"slug":"terran-07-patriots-blood","name":"Terran 07: Patriot's Blood","rules":""}
-{"game_id":563270767820,"id":1951882545037,"slug":"zerg-04-the-liberation-of-korhal","name":"Zerg 04: The Liberation of Korhal","rules":""}
-{"game_id":563270767820,"id":2136450693073,"slug":"terran-06-emperors-flight","name":"Terran 06: Emperor's Flight","rules":""}
-{"game_id":563270767820,"id":2145530684857,"slug":"protoss-05-the-battle-of-braxis","name":"Protoss 05: The Battle of Braxis","rules":""}
-{"game_id":563270767820,"id":2145530684965,"slug":"terran-01-first-strike","name":"Terran 01: First Strike","rules":""}
-{"game_id":563270767820,"id":2145703029440,"slug":"zerg-01-vile-disruption","name":"Zerg 01: Vile Disruption","rules":""}
-{"game_id":563270767820,"id":2185905268341,"slug":"protoss-02-dunes-of-shakuras","name":"Protoss 02: Dunes of Shakuras","rules":""}
-{"game_id":563270767820,"id":2614317074653,"slug":"protoss-01-escape-from-aiur","name":"Protoss 01: Escape from Aiur","rules":""}
-{"game_id":563270767820,"id":2614377541329,"slug":"zerg-05-true-colors","name":"Zerg 05: True Colors","rules":""}
-{"game_id":563270767820,"id":2614569004161,"slug":"secret-dark-origin","name":"Secret: Dark Origin","rules":""}
-{"game_id":563270767820,"id":2685327368161,"slug":"zerg-07-drawing-of-the-web","name":"Zerg 07: Drawing of the Web","rules":""}
-{"game_id":563270767820,"id":2734893520357,"slug":"terran-05a-emperors-fall-ground-zero","name":"Terran 05A: Emperor's Fall (Ground Zero)","rules":""}
-{"game_id":563270767820,"id":2762852549900,"slug":"protoss-04-the-quest-for-uraj","name":"Protoss 04: The Quest for Uraj","rules":""}
-{"game_id":563270767820,"id":2762852550224,"slug":"protoss-08-countdown","name":"Protoss 08: Countdown","rules":""}
+{"game_id":1581923987869,"id":178198720501,"slug":"adidas-lakeside-landslide","name":"Adidas Lakeside Landslide","rules":""}
+{"game_id":1581923987869,"id":178198729969,"slug":"main-street-drag","name":"Main Street Drag","rules":""}
+{"game_id":1581923987869,"id":178198741237,"slug":"ferrari-massimo","name":"Ferrari Massimo","rules":""}
+{"game_id":1581923987869,"id":178198750309,"slug":"g-shock-storm-run","name":"G-Shock Storm Run","rules":""}
+{"game_id":1581923987869,"id":178198765861,"slug":"oakley-blitz","name":"Oakley Blitz","rules":""}
+{"game_id":1581923987869,"id":333357495944,"slug":"buzz-the-hub","name":"Buzz the Hub","rules":""}
+{"game_id":1581923987869,"id":333357526472,"slug":"gopro-millennia-masters","name":"GoPro Millennia Masters","rules":""}
+{"game_id":1581923987869,"id":333357527048,"slug":"beaumont-main","name":"Beaumont Main","rules":""}
+{"game_id":1581923987869,"id":333357536840,"slug":"ferrari-campione","name":"Ferrari Campione","rules":""}
+{"game_id":1581923987869,"id":333357539432,"slug":"bbs-showdown","name":"BBS Showdown","rules":""}
+{"game_id":1581923987869,"id":411542177157,"slug":"recaro-rush","name":"Recaro Rush","rules":""}
+{"game_id":1581923987869,"id":411542190117,"slug":"oakley-juggernauts","name":"Oakley Juggernauts","rules":""}
+{"game_id":1581923987869,"id":411542198217,"slug":"highway-27","name":"Highway 27","rules":""}
+{"game_id":1581923987869,"id":411542200485,"slug":"goodyear-euro-raid","name":"Goodyear Euro Raid","rules":""}
+{"game_id":1581923987869,"id":411542206965,"slug":"horizon-megatune","name":"Horizon Megatune","rules":""}
+{"game_id":1581923987869,"id":420555925796,"slug":"outta-town","name":"Outta Town","rules":""}
+{"game_id":1581923987869,"id":420555957656,"slug":"audi-elite","name":"Audi Elite","rules":""}
+{"game_id":1581923987869,"id":420555958952,"slug":"lotus-championship","name":"Lotus Championship","rules":""}
+{"game_id":1581923987869,"id":420555968024,"slug":"recaro-70s-rockout","name":"Recaro '70s Rockout","rules":""}
+{"game_id":1581923987869,"id":462730290025,"slug":"lamborghini-presents-the-bullfight","name":"Lamborghini Presents the Bullfight","rules":""}
+{"game_id":1581923987869,"id":462730295209,"slug":"illest-speed-britannia","name":"Illest Speed Britannia","rules":""}
+{"game_id":1581923987869,"id":462730308169,"slug":"recaro-red-rock-rampage","name":"Recaro Red Rock Rampage","rules":""}
+{"game_id":1581923987869,"id":462730323721,"slug":"horizon-heats","name":"Horizon Heats","rules":""}
+{"game_id":1581923987869,"id":462730331857,"slug":"28-to-38","name":"28 to 38","rules":""}
+{"game_id":1581923987869,"id":491952021489,"slug":"melrose-avenue","name":"Melrose Avenue","rules":""}
+{"game_id":1581923987869,"id":491952023757,"slug":"oakley-heat-wave","name":"Oakley Heat Wave","rules":""}
+{"game_id":1581923987869,"id":491952025053,"slug":"rockstar-presents-the-rundown","name":"Rockstar Presents the Rundown","rules":""}
+{"game_id":1581923987869,"id":491952034125,"slug":"aston-martin-outrun","name":"Aston Martin Outrun","rules":""}
+{"game_id":1581923987869,"id":491952042225,"slug":"river-run","name":"River Run","rules":""}
+{"game_id":1581923987869,"id":1168313927089,"slug":"plains-rum","name":"Plains Rum","rules":""}
+{"game_id":1581923987869,"id":1168313928853,"slug":"rockstar-dirt-raid","name":"Rockstar Dirt Raid","rules":""}
+{"game_id":1581923987869,"id":1168313953477,"slug":"bondurant-enduro","name":"Bondurant Enduro","rules":""}
+{"game_id":1581923987869,"id":1168313954773,"slug":"mini-mayhem","name":"Mini Mayhem","rules":""}
+{"game_id":1581923987869,"id":1283761721961,"slug":"canyon-run","name":"Canyon Run","rules":""}
+{"game_id":1581923987869,"id":1283761729953,"slug":"bridgestone-speedball","name":"Bridgestone Speedball","rules":""}
+{"game_id":1581923987869,"id":1283761751769,"slug":"je-mappelle-awesome","name":"Je M'appelle Awesome","rules":""}
+{"game_id":1581923987869,"id":1283761753281,"slug":"old-spice-us-muscle-mash","name":"Old Spice US Muscle Mash","rules":""}
+{"game_id":1581923987869,"id":1283761757169,"slug":"old-spice-mega-muscle","name":"Old Spice Mega Muscle","rules":""}
+{"game_id":1581923987869,"id":1638132050912,"slug":"ultimate-horizon-mega-tune","name":"Ultimate Horizon Mega-Tune","rules":""}
+{"game_id":1581923987869,"id":1638132056096,"slug":"gillette-valley-sprint","name":"Gillette Valley Sprint","rules":""}
+{"game_id":1581923987869,"id":1638132058688,"slug":"bbs-japanese-trailblazers","name":"BBS Japanese Trailblazers","rules":""}
+{"game_id":1581923987869,"id":1638132072620,"slug":"desert-drag","name":"Desert Drag","rules":""}
+{"game_id":1581923987869,"id":1676005132388,"slug":"horizon-presents-the-gauntlet","name":"Horizon Presents the Gauntlet","rules":""}
+{"game_id":1581923987869,"id":1676005133684,"slug":"bmw-battle","name":"BMW Battle","rules":""}
+{"game_id":1581923987869,"id":1676005140164,"slug":"chevron-sixties-speedway","name":"Chevron Sixties Speedway","rules":""}
+{"game_id":1581923987869,"id":1676005141244,"slug":"valley-sprint","name":"Valley Sprint","rules":""}
+{"game_id":1581923987869,"id":1676005149020,"slug":"ruf-n-ready","name":"Ruf N Ready","rules":""}
+{"game_id":1581923987869,"id":1676005149236,"slug":"manic-mini","name":"Manic Mini","rules":""}
+{"game_id":1581923987869,"id":1822189179105,"slug":"mustang-vs-mustang","name":"Mustang vs. Mustang","rules":""}
+{"game_id":1581923987869,"id":1822189179285,"slug":"bi-plane-beatdown","name":"Bi-plane Beatdown","rules":""}
+{"game_id":1581923987869,"id":1822189203729,"slug":"bose-speed-strasse","name":"Bose Speed Straße","rules":""}
+{"game_id":1581923987869,"id":1822189205025,"slug":"brembo-midnight-blast","name":"Brembo Midnight Blast","rules":""}
+{"game_id":1581923987869,"id":1822189220757,"slug":"freeway-blast","name":"Freeway Blast","rules":""}
+{"game_id":1581923987869,"id":1822189223169,"slug":"goodyear-mountain-blast","name":"Goodyear Mountain Blast","rules":""}
+{"game_id":1581923987869,"id":1873307685056,"slug":"hailey-harper","name":"Hailey Harper","rules":""}
+{"game_id":1581923987869,"id":1873307690240,"slug":"g-shock-steel-slam","name":"G-Shock Steel Slam","rules":""}
+{"game_id":1581923987869,"id":1873307691572,"slug":"agent-of-speed","name":"Agent of Speed","rules":""}
+{"game_id":1581923987869,"id":1873307713604,"slug":"reservoir-drag","name":"Reservoir Drag","rules":""}
+{"game_id":1581923987869,"id":1873307730416,"slug":"ford-challenge","name":"Ford Challenge","rules":""}
+{"game_id":1581923987869,"id":1902334302553,"slug":"horizon-presents-the-viper-challenge","name":"Horizon Presents the Viper Challenge","rules":""}
+{"game_id":1581923987869,"id":1902334315621,"slug":"city-limits","name":"City Limits","rules":""}
+{"game_id":1581923987869,"id":1902334325881,"slug":"adidas-urban-avalanche","name":"Adidas Urban Avalanche","rules":""}
+{"game_id":1581923987869,"id":1902334329769,"slug":"g-shock-90s-classic","name":"G-Shock '90s Classic","rules":""}
+{"game_id":1581923987869,"id":1902334338949,"slug":"mountain-run","name":"Mountain Run","rules":""}
+{"game_id":1581923987869,"id":1951906347189,"slug":"zaki-malik","name":"Zaki Malik","rules":""}
+{"game_id":1581923987869,"id":1951906348485,"slug":"rockstar-cliff-run","name":"Rockstar Cliff Run","rules":""}
+{"game_id":1581923987869,"id":1951906352373,"slug":"advan-asphalt-attack","name":"Advan Asphalt Attack","rules":""}
+{"game_id":1581923987869,"id":1951906367061,"slug":"desert-run","name":"Desert Run","rules":""}
+{"game_id":1581923987869,"id":2136446599532,"slug":"oakley-high-rollers","name":"Oakley High Rollers","rules":""}
+{"game_id":1581923987869,"id":2136446619224,"slug":"route-20-run","name":"Route 20 Run","rules":""}
+{"game_id":1581923987869,"id":2136446620520,"slug":"dam-and-out","name":"Dam and Out","rules":""}
+{"game_id":1581923987869,"id":2136446621564,"slug":"fatlace-chase","name":"Fatlace Chase","rules":""}
+{"game_id":1581923987869,"id":2136446625452,"slug":"brembo-italiano","name":"Brembo Italiano","rules":""}
+{"game_id":1581923987869,"id":2145560331505,"slug":"bentley-charge","name":"Bentley Charge","rules":""}
+{"game_id":1581923987869,"id":2145560332801,"slug":"edifice-carson-challenge","name":"Edifice Carson Challenge","rules":""}
+{"game_id":1581923987869,"id":2145560336689,"slug":"the-wind-tunnel","name":"The Wind Tunnel","rules":""}
+{"game_id":1581923987869,"id":2145560337337,"slug":"the-stampede","name":"The Stampede","rules":""}
+{"game_id":1581923987869,"id":2145560356777,"slug":"beaumont-limits","name":"Beaumont Limits","rules":""}
+{"game_id":1581923987869,"id":2145560370385,"slug":"bondurant-valley-skirmish","name":"Bondurant Valley Skirmish","rules":""}
+{"game_id":1581923987869,"id":2145739259264,"slug":"oakley-british-elite","name":"Oakley British Elite","rules":""}
+{"game_id":1581923987869,"id":2145739264376,"slug":"carson-park-run","name":"Carson Park Run","rules":""}
+{"game_id":1581923987869,"id":2145739282520,"slug":"goliath","name":"Goliath","rules":""}
+{"game_id":1581923987869,"id":2145739285184,"slug":"gopro-euro-cross","name":"GoPro Euro Cross","rules":""}
+{"game_id":1581923987869,"id":2145739298144,"slug":"old-spice-brawl","name":"Old Spice Brawl","rules":""}
+{"game_id":1581923987869,"id":2185858844420,"slug":"darius-flynt","name":"Darius Flynt","rules":""}
+{"game_id":1581923987869,"id":2185858848308,"slug":"bondurant-super-gp","name":"Bondurant Super GP","rules":""}
+{"game_id":1581923987869,"id":2185858850828,"slug":"highway-28","name":"Highway 28","rules":""}
+{"game_id":1581923987869,"id":2185858862564,"slug":"dodge-brawl","name":"Dodge Brawl","rules":""}
+{"game_id":1581923987869,"id":2185858870340,"slug":"fatlace-hot-hatch-hustle","name":"Fatlace Hot Hatch Hustle","rules":""}
+{"game_id":1581923987869,"id":2614372605157,"slug":"ramona-cravache","name":"Ramona Cravache","rules":""}
+{"game_id":1581923987869,"id":2614372607749,"slug":"adidas-rock-rage","name":"Adidas Rock Rage","rules":""}
+{"game_id":1581923987869,"id":2614372617325,"slug":"highway-29","name":"Highway 29","rules":""}
+{"game_id":1581923987869,"id":2614372629781,"slug":"vw-dub-club","name":"VW Dub Club","rules":""}
+{"game_id":1581923987869,"id":2614372632373,"slug":"horizon-champion-of-champions","name":"Horizon Champion of Champions","rules":""}
+{"game_id":1581923987869,"id":2614432767237,"slug":"bridgestone-valley-rush","name":"Bridgestone Valley Rush","rules":""}
+{"game_id":1581923987869,"id":2614432768209,"slug":"highway-33","name":"Highway 33","rules":""}
+{"game_id":1581923987869,"id":2614432772421,"slug":"recaro-redline","name":"Recaro Redline","rules":""}
+{"game_id":1581923987869,"id":2614432784085,"slug":"duke-maguire","name":"Duke Maguire","rules":""}
+{"game_id":1581923987869,"id":2614614517017,"slug":"eagle-ridge","name":"Eagle Ridge","rules":""}
+{"game_id":1581923987869,"id":2614614529617,"slug":"g-shock-ridge-rave","name":"G-Shock Ridge Rave","rules":""}
+{"game_id":1581923987869,"id":2614614532209,"slug":"nissan-max","name":"Nissan Max","rules":""}
+{"game_id":1581923987869,"id":2614614537393,"slug":"g-shock-super-sprint","name":"G-Shock Super Sprint","rules":""}
+{"game_id":1581923987869,"id":2614614543873,"slug":"ruf-mayhem","name":"RUF Mayhem","rules":""}
+{"game_id":1581923987869,"id":2685316454329,"slug":"adidas-viva-red-rock","name":"Adidas Viva Red Rock!","rules":""}
+{"game_id":1581923987869,"id":2685316459513,"slug":"yokohama-pro-tune","name":"Yokohama Pro Tune","rules":""}
+{"game_id":1581923987869,"id":2685316461601,"slug":"kettle-drag","name":"Kettle Drag","rules":""}
+{"game_id":1581923987869,"id":2685316475065,"slug":"bondurant-pro-hatch","name":"Bondurant Pro Hatch","rules":""}
+{"game_id":1581923987869,"id":2734921159677,"slug":"yokohama-gtx","name":"Yokohama GTX","rules":""}
+{"game_id":1581923987869,"id":2734921163565,"slug":"ali-howard","name":"Ali Howard","rules":""}
+{"game_id":1581923987869,"id":2734921200033,"slug":"tunnel-charge","name":"Tunnel Charge","rules":""}
+{"game_id":1581923987869,"id":2734921202445,"slug":"bose-80s-frenzy","name":"Bose '80s Frenzy","rules":""}
+{"game_id":1581923987869,"id":2734921203921,"slug":"carson-town-loop","name":"Carson Town Loop","rules":""}
+{"game_id":1581923987869,"id":2762860362165,"slug":"scorpion-sting","name":"Scorpion Sting","rules":""}
+{"game_id":1581923987869,"id":2762860362885,"slug":"high-noon-balloon","name":"High Noon Balloon","rules":""}
+{"game_id":1581923987869,"id":2762860364181,"slug":"marko-baran","name":"Marko Baran","rules":""}
+{"game_id":1581923987869,"id":2762860365477,"slug":"illest-eastern-steel","name":"Illest Eastern Steel","rules":""}
+{"game_id":1581923987869,"id":2762860389381,"slug":"red-rock-to-dam","name":"Red Rock to Dam","rules":""}
+{"game_id":1581923987869,"id":2762860391397,"slug":"chevrolet-the-chevy-chase","name":"Chevrolet the Chevy Chase","rules":""}
 {"game_id":1674798710514,"id":178198818889,"slug":"young-avenue-road-rule","name":"Young Avenue Road Rule","rules":""}
 {"game_id":1674798710514,"id":178198831849,"slug":"touge-sport-burning-route","name":"Touge Sport Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
 {"game_id":1674798710514,"id":178198844809,"slug":"north-rouse-drive-road-rule","name":"North Rouse Drive Road Rule","rules":""}
@@ -140,14 +230,18 @@
 {"game_id":1674798710514,"id":2762860214925,"slug":"i-88-section-1-road-rule","name":"I-88 Section 1 Road Rule","rules":""}
 {"game_id":1674798710514,"id":2762860215069,"slug":"hawley-avenue-road-rule","name":"Hawley Avenue Road Rule","rules":""}
 {"game_id":1674798710514,"id":2762860216221,"slug":"pioneer-burning-route","name":"Pioneer Burning Route","rules":""}
-{"game_id":1884988586418,"id":333359901333,"slug":"mirror-temple","name":"Mirror Temple","rules":""}
-{"game_id":1884988586418,"id":420549295477,"slug":"the-summit","name":"The Summit","rules":""}
-{"game_id":1884988586418,"id":491896738377,"slug":"old-site","name":"Old Site","rules":""}
-{"game_id":1884988586418,"id":1638149088357,"slug":"core","name":"Core","rules":""}
-{"game_id":1884988586418,"id":1902339190561,"slug":"golden-ridge","name":"Golden Ridge","rules":""}
-{"game_id":1884988586418,"id":2136398591997,"slug":"celestial-resort","name":"Celestial Resort","rules":""}
-{"game_id":1884988586418,"id":2145714788673,"slug":"reflection","name":"Reflection","rules":""}
-{"game_id":1884988586418,"id":2734895205500,"slug":"forsaken-city","name":"Forsaken City","rules":""}
+{"game_id":1727525502902,"id":333384304977,"slug":"hotel-dimensia","name":"Hotel Dimensia","rules":"Practice mode. Timer starts when Hotel Dimensia loads. Timer ends when you click to the next screen."}
+{"game_id":1727525502902,"id":420600133633,"slug":"lions-lair","name":"Lion's Lair","rules":"Practice mode. Timer starts when Lion's Lair loads. Timer ends when you click to the next screen."}
+{"game_id":1727525502902,"id":491934410168,"slug":"titanic-tattooed-toads","name":"Titanic Tattooed Toads","rules":"Timer starts when Titanic Tattooed Toads loads. Timer ends when you click to the next screen."}
+{"game_id":1727525502902,"id":1283801011520,"slug":"stone-cold-caves","name":"Stone Cold Caves","rules":"Practice mode. Timer starts when Stone Cold Caves loads. Timer ends when you click to the next screen."}
+{"game_id":1727525502902,"id":1638101052860,"slug":"mirror-machine","name":"Mirror Machine","rules":"Practice mode. Timer starts when Mirror Machine loads. Timer ends when you click to the next screen."}
+{"game_id":1727525502902,"id":1676004275497,"slug":"allergic-cliffs","name":"Allergic Cliffs","rules":"Practice mode. Timer starts when Allergic Cliffs loads. Timer ends when the narrator congratulates you and you click to the next screen."}
+{"game_id":1727525502902,"id":1873329889437,"slug":"pizza-pass","name":"Pizza Pass","rules":"Timer starts when Pizza Pass loads. Timer ends when you click to the next screen."}
+{"game_id":1727525502902,"id":1902328935925,"slug":"fleens","name":"Fleens!","rules":"Practice mode. Timer starts when Fleens! loads. Timer ends when you click to the next screen."}
+{"game_id":1727525502902,"id":1951861180725,"slug":"bubble-wonder-abyss","name":"Bubble Wonder Abyss","rules":"Practice mode. Timer starts when Bubble Wonder Abyss loads. Timer ends when you click to the next screen."}
+{"game_id":1727525502902,"id":2136449204721,"slug":"stone-rise","name":"Stone Rise","rules":"Practice mode. Timer starts when Stone Rise loads. Timer ends when you click to the next screen."}
+{"game_id":1727525502902,"id":2145762164677,"slug":"mudball-wall","name":"Mudball Wall","rules":"Timer starts when Mudball Wall loads. Timer ends when you click to the next screen."}
+{"game_id":1727525502902,"id":2734889646344,"slug":"captain-cajuns-ferryboat","name":"Captain Cajun's Ferryboat","rules":"Practice mode. Timer starts when Captain Cajun's Ferryboat loads. Timer ends when you click to the next screen."}
 {"game_id":1885019509394,"id":178199556836,"slug":"orc-08-the-runestone-at-caer-darrow","name":"Orc 08: The Runestone at Caer Darrow","rules":""}
 {"game_id":1885019509394,"id":333361250365,"slug":"human-12-the-battle-at-crestfall","name":"Human 12: The Battle at Crestfall","rules":""}
 {"game_id":1885019509394,"id":411592327497,"slug":"orc-07-the-fall-of-stromgarde","name":"Orc 07: The Fall of Stromgarde","rules":""}
@@ -176,149 +270,6 @@
 {"game_id":1885019509394,"id":2734887759637,"slug":"human-08-tyrs-hand","name":"Human 08: Tyr's Hand","rules":""}
 {"game_id":1885019509394,"id":2762832062713,"slug":"orc-13-the-siege-of-dalaran","name":"Orc 13: The Siege of Dalaran","rules":""}
 {"game_id":1885019509394,"id":2762832063037,"slug":"human-03-southshore","name":"Human 03: Southshore","rules":""}
-{"game_id":1894825136342,"id":178250976909,"slug":"protoss-09-shadow-hunters","name":"Protoss 09: Shadow Hunters","rules":""}
-{"game_id":1894825136342,"id":178250983389,"slug":"terran-05-revolution","name":"Terran 05: Revolution","rules":""}
-{"game_id":1894825136342,"id":333365036085,"slug":"tutorial-boot-camp","name":"Tutorial: Boot Camp","rules":""}
-{"game_id":1894825136342,"id":333383393912,"slug":"zerg-09-the-invasion-of-aiur","name":"Zerg 09: The Invasion of Aiur","rules":""}
-{"game_id":1894825136342,"id":411566187200,"slug":"protoss-08-the-trial-of-tassadar","name":"Protoss 08: The Trial of Tassadar","rules":""}
-{"game_id":1894825136342,"id":411566198864,"slug":"terran-04-the-jacobs-installation","name":"Terran 04: The Jacobs Installation","rules":""}
-{"game_id":1894825136342,"id":420554296705,"slug":"protoss-01-first-strike","name":"Protoss 01: First Strike","rules":""}
-{"game_id":1894825136342,"id":462691292468,"slug":"protoss-07-homeland","name":"Protoss 07: Homeland","rules":""}
-{"game_id":1894825136342,"id":462691309316,"slug":"terran-03-desperate-alliance","name":"Terran 03: Desperate Alliance","rules":"> Because of the strictly auto-scroller nature of this mission, only runs at 20:11.500 real time/20:11 game time or better are accepted.\r\n> This leaderboard may change into how fast you can eliminate certain Zerg structures. Anyone in favor of such, mention so in the forums."}
-{"game_id":1894825136342,"id":491938720645,"slug":"zerg-06-the-dark-templar","name":"Zerg 06: The Dark Templar","rules":""}
-{"game_id":1894825136342,"id":1168309935428,"slug":"terran-01-wasteland","name":"Terran 01: Wasteland","rules":""}
-{"game_id":1894825136342,"id":1168309953572,"slug":"protoss-05-choosing-sides","name":"Protoss 05: Choosing Sides","rules":""}
-{"game_id":1894825136342,"id":1283790271568,"slug":"zerg-03-the-new-dominion","name":"Zerg 03: The New Dominion","rules":""}
-{"game_id":1894825136342,"id":1638147447068,"slug":"protoss-02-into-the-flames","name":"Protoss 02: Into the Flames","rules":""}
-{"game_id":1894825136342,"id":1676025189068,"slug":"zerg-02-egression","name":"Zerg 02: Egression","rules":""}
-{"game_id":1894825136342,"id":1822148312517,"slug":"terran-09-new-gettysberg","name":"Terran 09: New Gettysberg","rules":""}
-{"game_id":1894825136342,"id":1873313641508,"slug":"zerg-04-agent-of-the-swarm","name":"Zerg 04: Agent of the Swarm","rules":""}
-{"game_id":1894825136342,"id":1902330758120,"slug":"zerg-08-eye-for-an-eye","name":"Zerg 08: Eye for an Eye","rules":""}
-{"game_id":1894825136342,"id":1951882509001,"slug":"protoss-03-higher-ground","name":"Protoss 03: Higher Ground","rules":""}
-{"game_id":1894825136342,"id":2136450656245,"slug":"zerg-07-the-culling","name":"Zerg 07: The Culling","rules":""}
-{"game_id":1894825136342,"id":2145530700409,"slug":"zerg-01-among-the-ruins","name":"Zerg 01: Among the Ruins","rules":""}
-{"game_id":1894825136342,"id":2145703011368,"slug":"zerg-10-full-circle","name":"Zerg 10: Full Circle","rules":""}
-{"game_id":1894825136342,"id":2185905295557,"slug":"terran-08-the-big-push","name":"Terran 08: The Big Push","rules":""}
-{"game_id":1894825136342,"id":2614317065581,"slug":"terran-07-the-trump-card","name":"Terran 07: The Trump Card","rules":""}
-{"game_id":1894825136342,"id":2614377501585,"slug":"protoss-04-the-hunt-for-tassadar","name":"Protoss 04: The Hunt for Tassadar","rules":""}
-{"game_id":1894825136342,"id":2614568976873,"slug":"terran-06-norad-ii","name":"Terran 06: Norad II","rules":""}
-{"game_id":1894825136342,"id":2614569017049,"slug":"protoss-10-eye-of-the-storm","name":"Protoss 10: Eye of the Storm","rules":""}
-{"game_id":1894825136342,"id":2685327349297,"slug":"terran-02-backwater-station","name":"Terran 02: Backwater Station","rules":""}
-{"game_id":1894825136342,"id":2685327367441,"slug":"protoss-06-into-the-darkness","name":"Protoss 06: Into the Darkness","rules":""}
-{"game_id":1894825136342,"id":2734893499333,"slug":"zerg-05-the-amerigo","name":"Zerg 05: The Amerigo","rules":""}
-{"game_id":1894825136342,"id":2762852529164,"slug":"terran-10-the-hammer-falls","name":"Terran 10: The Hammer Falls","rules":""}
-{"game_id":1989309628868,"id":178199540708,"slug":"touge-sport-burning-route","name":"Touge Sport Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":178252080957,"slug":"i-88-section-4-road-rule","name":"I-88 Section 4 Road Rule","rules":""}
-{"game_id":1989309628868,"id":178252088733,"slug":"schembri-pass-road-rule","name":"Schembri Pass Road Rule","rules":""}
-{"game_id":1989309628868,"id":178252091325,"slug":"9th-street-road-rule","name":"9th Street Road Rule","rules":""}
-{"game_id":1989309628868,"id":333361269913,"slug":"hyperion-burning-route","name":"Hyperion Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":333364631625,"slug":"huntley-boulevard","name":"Huntley Boulevard","rules":""}
-{"game_id":1989309628868,"id":333382267760,"slug":"parr-avenue-road-rule","name":"Parr Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":333382297568,"slug":"hall-avenue-road-rule","name":"Hall Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":411566247752,"slug":"south-rouse-drive-road-rule","name":"South Rouse Drive Road Rule","rules":""}
-{"game_id":1989309628868,"id":411566273672,"slug":"7th-street-road-rule","name":"7th Street Road Rule","rules":""}
-{"game_id":1989309628868,"id":411566278856,"slug":"i-88-section-3-road-rule","name":"I-88 Section 3 Road Rule","rules":""}
-{"game_id":1989309628868,"id":411573855901,"slug":"griffin-boulevard","name":"Griffin Boulevard","rules":""}
-{"game_id":1989309628868,"id":411592337397,"slug":"x12-turbo-burning-route","name":"X12 Turbo Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":420548459913,"slug":"lipscomb-way","name":"Lipscomb Way","rules":""}
-{"game_id":1989309628868,"id":420555131653,"slug":"rack-way-road-rule","name":"Rack Way Road Rule","rules":""}
-{"game_id":1989309628868,"id":420555166645,"slug":"hans-way-road-rule","name":"Hans Way Road Rule","rules":""}
-{"game_id":1989309628868,"id":420595273669,"slug":"spur-burning-route","name":"Spur Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":462692152724,"slug":"i-88-section-2-road-rule","name":"I-88 Section 2 Road Rule","rules":""}
-{"game_id":1989309628868,"id":462692156612,"slug":"5th-street-road-rule","name":"5th Street Road Rule","rules":""}
-{"game_id":1989309628868,"id":462692165684,"slug":"south-mountain-drive-road-rule","name":"South Mountain Drive Road Rule","rules":""}
-{"game_id":1989309628868,"id":462720755137,"slug":"annihilator-burning-route","name":"Annihilator Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":491898534637,"slug":"wtr-burning-route","name":"WTR Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":491898543709,"slug":"manhattan-burning-route","name":"Manhattan Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":491899427780,"slug":"glover-way","name":"Glover Way","rules":""}
-{"game_id":1989309628868,"id":491938624669,"slug":"gabriel-avenue-road-rule","name":"Gabriel Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":491938664845,"slug":"nelson-way-road-rule","name":"Nelson Way Road Rule","rules":""}
-{"game_id":1989309628868,"id":1168299971708,"slug":"tempesta-burning-route","name":"Tempesta Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":1168309730048,"slug":"hudson-avenue-road-rule","name":"Hudson Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":1168309763744,"slug":"ross-drive-road-rule","name":"Ross Drive Road Rule","rules":""}
-{"game_id":1989309628868,"id":1168309767632,"slug":"3rd-street-road-rule","name":"3rd Street Road Rule","rules":""}
-{"game_id":1989309628868,"id":1168311738105,"slug":"pitt-avenue","name":"Pitt Avenue","rules":""}
-{"game_id":1989309628868,"id":1283781095037,"slug":"uberschall-8-burning-route","name":"Überschall 8 Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":1283781105405,"slug":"reliable-custom-burning-route","name":"Reliable Custom Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":1283789538464,"slug":"evans-boulevard-road-rule","name":"Evans Boulevard Road Rule","rules":""}
-{"game_id":1989309628868,"id":1283789569568,"slug":"north-mountain-drive-road-rule","name":"North Mountain Drive Road Rule","rules":""}
-{"game_id":1989309628868,"id":1638098562501,"slug":"gt-2400-burning-route","name":"GT 2400 Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":1638112717989,"slug":"maguire-road","name":"Maguire Road","rules":""}
-{"game_id":1989309628868,"id":1638147382628,"slug":"read-lane-road-rule","name":"Read Lane Road Rule","rules":""}
-{"game_id":1989309628868,"id":1638147389108,"slug":"harber-street-road-rule","name":"Harber Street Road Rule","rules":""}
-{"game_id":1989309628868,"id":1676026007708,"slug":"moore-avenue-road-rule","name":"Moore Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":1676026015484,"slug":"east-lake-road-rule","name":"East Lake Road Rule","rules":""}
-{"game_id":1989309628868,"id":1676026047884,"slug":"watt-street-road-rule","name":"Watt Street Road Rule","rules":""}
-{"game_id":1989309628868,"id":1676058907369,"slug":"hawker-burning-route","name":"Hawker Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":1676058925513,"slug":"hydros-custom-burning-route","name":"Hydros Custom Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":1822148498565,"slug":"lewis-pass-road-rule","name":"Lewis Pass Road Rule","rules":""}
-{"game_id":1989309628868,"id":1822148512821,"slug":"casey-pass-road-rule","name":"Casey Pass Road Rule","rules":""}
-{"game_id":1989309628868,"id":1822148518401,"slug":"webster-avenue-road-rule","name":"Webster Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":1822148527077,"slug":"west-crawford-drive-road-rule","name":"West Crawford Drive Road Rule","rules":""}
-{"game_id":1989309628868,"id":1822160215993,"slug":"vegas-burning-route","name":"Vegas Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":1822160235433,"slug":"gt-concept-burning-route","name":"GT Concept Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":1873313954816,"slug":"franke-avenue-road-rule","name":"Franke Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":1873313976848,"slug":"north-rouse-drive-road-rule","name":"North Rouse Drive Road Rule","rules":""}
-{"game_id":1989309628868,"id":1873339440584,"slug":"r-turbo-roadster-burning-route","name":"R-Turbo Roadster Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":1873339454840,"slug":"thunder-custom-burning-route","name":"Thunder Custom Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":1902330889052,"slug":"glancy-avenue-road-rule","name":"Glancy Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":1902330929228,"slug":"paradise-avenue-road-rule","name":"Paradise Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":1902365254436,"slug":"grand-marais-burning-route","name":"Grand Marais Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":1951848226832,"slug":"p12-burning-route","name":"P12 Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":1951851934813,"slug":"mcdonald-road","name":"McDonald Road","rules":""}
-{"game_id":1989309628868,"id":1951883416489,"slug":"1st-street-road-rule","name":"1st Street Road Rule","rules":""}
-{"game_id":1989309628868,"id":1951883426857,"slug":"riverside-avenue-road-rule","name":"Riverside Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":1951883429449,"slug":"hawley-avenue-road-rule","name":"Hawley Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2136394315201,"slug":"dust-storm-burning-route","name":"Dust Storm Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2136394325569,"slug":"fastback-burning-route","name":"Fastback Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2136396280532,"slug":"grange-hill","name":"Grange Hill","rules":""}
-{"game_id":1989309628868,"id":2136451173781,"slug":"geldard-drive-road-rule","name":"Geldard Drive Road Rule","rules":""}
-{"game_id":1989309628868,"id":2136451194517,"slug":"newton-drive-road-rule","name":"Newton Drive Road Rule","rules":""}
-{"game_id":1989309628868,"id":2145522236972,"slug":"25-v16-revenge-burning-route","name":"25 V16 Revenge Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2145522244748,"slug":"ikusa-gt-burning-route","name":"Ikusa GT Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2145530384869,"slug":"east-crawford-drive-road-rule","name":"East Crawford Drive Road Rule","rules":""}
-{"game_id":1989309628868,"id":2145530395237,"slug":"manners-avenue-road-rule","name":"Manners Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2145530414677,"slug":"warren-avenue-road-rule","name":"Warren Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2145704295488,"slug":"hamilton-avenue-road-rule","name":"Hamilton Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2145704301968,"slug":"patterson-avenue-road-rule","name":"Patterson Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2145706028361,"slug":"jacobs-street","name":"Jacobs Street","rules":""}
-{"game_id":1989309628868,"id":2145734748369,"slug":"616-sport-burning-route","name":"616 Sport Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2185860175065,"slug":"oval-champ-07-burning-route","name":"Oval Champ 07 Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2185860182841,"slug":"si-7-turbo-burning-route","name":"SI-7 Turbo Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2185905217185,"slug":"uphill-drive-road-rule","name":"Uphill Drive Road Rule","rules":""}
-{"game_id":1989309628868,"id":2185905259953,"slug":"cannon-pass-road-rule","name":"Cannon Pass Road Rule","rules":""}
-{"game_id":1989309628868,"id":2185905261249,"slug":"lawrence-road-road-rule","name":"Lawrence Road Road Rule","rules":""}
-{"game_id":1989309628868,"id":2614317243817,"slug":"sullivan-avenue-road-rule","name":"Sullivan Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2614317250297,"slug":"lambert-parkway-road-rule","name":"Lambert Parkway Road Rule","rules":""}
-{"game_id":1989309628868,"id":2614317263257,"slug":"angus-wharf-road-rule","name":"Angus Wharf Road Rule","rules":""}
-{"game_id":1989309628868,"id":2614343721872,"slug":"500-gt-burning-route","name":"500 GT Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2614343746496,"slug":"mesquite-burning-route","name":"Mesquite Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2614376800737,"slug":"hubbard-avenue-road-rule","name":"Hubbard Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2614376830545,"slug":"root-avenue-road-rule","name":"Root Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2614376834433,"slug":"2nd-street-road-rule","name":"2nd Street Road Rule","rules":""}
-{"game_id":1989309628868,"id":2614385647832,"slug":"paradise-keys-bridge","name":"Paradise Keys Bridge","rules":""}
-{"game_id":1989309628868,"id":2614388466289,"slug":"inferno-van-burning-route","name":"Inferno Van Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2614568751657,"slug":"king-avenue-road-rule","name":"King Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2614568769801,"slug":"shepherd-avenue-road-rule","name":"Shepherd Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2614568786649,"slug":"andersen-street-road-rule","name":"Andersen Street Road Rule","rules":""}
-{"game_id":1989309628868,"id":2614589720329,"slug":"cavalry-burning-route","name":"Cavalry Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2614589734585,"slug":"takedown-4x4-burning-route","name":"Takedown 4x4 Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2685327374461,"slug":"4th-street-road-rule","name":"4th Street Road Rule","rules":""}
-{"game_id":1989309628868,"id":2685327410749,"slug":"south-bay-expressway-road-rule","name":"South Bay Expressway Road Rule","rules":""}
-{"game_id":1989309628868,"id":2685327415933,"slug":"i-88-section-1-road-rule","name":"I-88 Section 1 Road Rule","rules":""}
-{"game_id":1989309628868,"id":2685336038109,"slug":"opus-burning-route","name":"Opus Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2685344897853,"slug":"shires-drive","name":"Shires Drive","rules":""}
-{"game_id":1989309628868,"id":2734887778105,"slug":"hot-rod-coupe-burning-route","name":"Hot Rod Coupe Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2734887783289,"slug":"lm-classic-burning-route","name":"LM Classic Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2734892148109,"slug":"nakamura-avenue-road-rule","name":"Nakamura Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2734892171437,"slug":"fry-avenue-road-rule","name":"Fry Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2734898587736,"slug":"daniell-way","name":"Daniell Way","rules":""}
-{"game_id":1989309628868,"id":2762832056881,"slug":"pioneer-burning-route","name":"Pioneer Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2762832084097,"slug":"citizen-burning-route","name":"Citizen Burning Route","rules":"(You are allowed to use the upgraded cars of the burning route for this run)"}
-{"game_id":1989309628868,"id":2762852473220,"slug":"west-lake-drive-road-rule","name":"West Lake Drive Road Rule","rules":""}
-{"game_id":1989309628868,"id":2762852500076,"slug":"young-avenue-road-rule","name":"Young Avenue Road Rule","rules":""}
-{"game_id":1989309628868,"id":2762852500436,"slug":"lucas-way-road-rule","name":"Lucas Way Road Rule","rules":""}
-{"game_id":1989309628868,"id":2762852506916,"slug":"chubb-lane-road-rule","name":"Chubb Lane Road Rule","rules":""}
 {"game_id":2677804982438,"id":178199538764,"slug":"orc-08-assault-on-kul-tiras","name":"Orc 08: Assault on Kul Tiras","rules":""}
 {"game_id":2677804982438,"id":333361236109,"slug":"human-10-siege-of-the-vanguard","name":"Human 10: Siege of the Vanguard","rules":""}
 {"game_id":2677804982438,"id":411592358889,"slug":"orc-07-the-seas-of-azeroth","name":"Orc 07: The Seas of Azeroth","rules":""}
