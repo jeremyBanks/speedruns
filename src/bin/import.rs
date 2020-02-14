@@ -80,7 +80,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
         } else {
             fixture_run_ids.insert(api_run.id().clone());
             for player in api_run.players() {
-                if let api::RunPlayer::User { id, uri: _ } = player {
+                if let api::RunPlayer::User { id, .. } = player {
                     fixture_user_ids.insert(id.clone());
                 }
             }
