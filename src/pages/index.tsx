@@ -13,8 +13,8 @@ import useNprogress from "~/components/hooks/use-nprogress";
 import LoadingBlock from "~/components/loading-block";
 
 const searchSuggestions = [
-  "Burnout",
   "WarCraft",
+  "Burnout",
   "Pokemon",
   "Portal",
   "Metroid",
