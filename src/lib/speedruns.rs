@@ -1,10 +1,7 @@
 //! Tools to download, search, and mirror https://speedrun.com leaderboards.
 #![feature(
     arbitrary_self_types,
-    associated_type_defaults,
-    proc_macro_hygiene,
     label_break_value,
-    slice_concat_ext,
     option_unwrap_none,
     never_type
 )]

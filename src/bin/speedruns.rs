@@ -1,4 +1,3 @@
-#![feature(try_blocks)]
 #![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
 #![warn(
     missing_debug_implementations,
