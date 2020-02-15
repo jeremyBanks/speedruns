@@ -4,7 +4,6 @@
     clippy::option_unwrap_used,
     clippy::result_unwrap_used
 )]
-#![deny(unconditional_recursion)]
 
 use std::{fs::File, io::BufReader, sync::Arc};
 
