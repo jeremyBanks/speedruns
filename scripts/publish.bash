@@ -11,9 +11,7 @@ else
     CARGO_PUBLISH_TOKEN=
 fi
 
-echo "//npm.pkg.github.com/:_authToken=${GITHUB_PUBLISH_TOKEN}" > .npmrc
-echo "@jeremybanks:registry=https://npm.pkg.github.com" >> .npmrc
-echo "always-auth=true" >> .npmrc
+### Versioning
 
 npm version prerelease --no-git-tag-version --preid="dev.$(($(git rev-list --first-parent 0.20.20...HEAD | wc -l) - 0))"
 sed -i '0,/\.0"/ s/\.0"/"/' package.json
@@ -33,6 +31,21 @@ git push origin "$version"
 
 echo "$version" > .version
 
+### Cargo
+
+(cd src/lib/utils && cargo publish $publish_args --token "$CARGO_PUBLISH_TOKEN" --allow-dirty && cd -)
+
+# give the registry a minute to process the publication
+sleep 60
+
+cargo publish $publish_args --token "$CARGO_PUBLISH_TOKEN" --allow-dirty
+
+### NPM
+
+echo "//npm.pkg.github.com/:_authToken=${GITHUB_PUBLISH_TOKEN}" > .npmrc
+echo "@jeremybanks:registry=https://npm.pkg.github.com" >> .npmrc
+echo "always-auth=true" >> .npmrc
+
 npm --registry=https://npm.pkg.github.com/ publish $publish_args
 
 echo "//registry.npmjs.org/:_authToken=${NPM_PUBLISH_TOKEN}" > .npmrc
@@ -44,9 +57,6 @@ sed -i 's/@jeremybanks\///' package.json
 git diff
 
 npm --registry=https://registry.npmjs.org/ publish $publish_args
-
-(cd src/lib/utils && cargo publish $publish_args --no-verify --token "$CARGO_PUBLISH_TOKEN" --allow-dirty && cd -)
-cargo publish $publish_args --no-verify --token "$CARGO_PUBLISH_TOKEN" --allow-dirty
 
 rm .npmrc
 git checkout HEAD package.json Cargo.toml Cargo.lock
