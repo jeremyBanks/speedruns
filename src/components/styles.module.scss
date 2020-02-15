@@ -48,19 +48,19 @@ html.document {
     font: 16px "Fira Sans", sans-serif;
     padding: 24px 0;
     margin: 16px auto;
-    transition: margin 0.1s ease-in-out, border-radius 0.1s ease-in-out,
-      padding 0.1s ease-in-out;
-    @media (max-width: 660px) {
-      margin: 0 auto;
-      border-radius: 0;
-      padding-top: 0px;
-    }
     width: 100%;
     max-width: 650px;
     min-width: 600px;
     border-top-right-radius: 8px;
     border-bottom-left-radius: 8px;
     box-shadow: 0 0 2px black, 0 0 4px rgba(255, 255, 255, 0.5);
+
+    @media (max-width: 660px) {
+      margin: 0 auto;
+      border-radius: 0;
+      padding-top: 0px;
+      box-shadow: none;
+    }
   }
 
   main > * {

@@ -29,7 +29,7 @@ Install and activate our expected version of npm using nvm, then install [the Ya
 ```
 nvm install
 nvm use
-npm install -g yarn@1
+npm install -g yarn@^1
 ```
 
 ### Run Server

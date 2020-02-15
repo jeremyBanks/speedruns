@@ -176,8 +176,18 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
+      - name: setup - recall published version
+        uses: actions/download-artifact@v1
+        with:
+          name: version
+
       - name: publish - trigger zeit deploy from `deploy`
         run: curl "${{secrets.ZEIT_DEPLOY_STABLE}}"
 
       - name: publish - trigger graphql deploy from published package
         run: curl "${{secrets.GRAPHQL_DEPLOY_STABLE}}"
+
+      - name: publish - notify chat
+        run: |
+          version="$(cat version/.version)"
+          curl "${{secrets.CHAT_NOTIFY_URL}}" -F content="Deploying speedruns@${version} to https://speedruns.ca/"
