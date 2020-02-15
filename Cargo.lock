@@ -2405,12 +2405,24 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "sha2",
+ "speedruns_utils",
  "tempfile",
  "unidecode",
  "url 2.1.1",
  "url_serde",
  "validator",
  "validator_derive",
+]
+
+[[package]]
+name = "speedruns_utils"
+version = "0.0.0"
+dependencies = [
+ "derive_more",
+ "err-derive",
+ "log",
+ "no-panic",
+ "unidecode",
 ]
 
 [[package]]
