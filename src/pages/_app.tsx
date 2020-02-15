@@ -16,7 +16,7 @@ const MyApp = (props: any) => {
   return (
     <>
       <Head>
-        <meta name="viewport" content="width=640" />
+        <meta name="viewport" content="width=600" />
       </Head>
 
       <Header />
