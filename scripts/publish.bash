@@ -45,6 +45,7 @@ git diff
 
 npm --registry=https://registry.npmjs.org/ publish $publish_args
 
+(cd src/lib/utils && cargo publish $publish_args --no-verify --token "$CARGO_PUBLISH_TOKEN" --allow-dirty && cd -)
 cargo publish $publish_args --no-verify --token "$CARGO_PUBLISH_TOKEN" --allow-dirty
 
 rm .npmrc
