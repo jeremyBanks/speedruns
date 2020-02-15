@@ -24,7 +24,7 @@ path = "src/bin/speedruns.rs"
 opt-level = 0
 
 [dependencies]
-speedruns_utils = {path = "src/lib/utils"}
+speedruns_utils = { path = "src/lib/utils", version = "0.21.6-dev" }
 actix = "0.9.0"
 actix-cors = "0.2.0"
 actix-rt = "1.0.0"
