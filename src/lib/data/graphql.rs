@@ -448,6 +448,7 @@ impl CategoryFields for Category {
             level_id = None;
         }
 
+        // TODO: https://github.com/jeremyBanks/speedruns/issues/267
         let runs = executor
             .context()
             .database
