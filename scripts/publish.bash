@@ -46,7 +46,7 @@ git diff
 npm --registry=https://registry.npmjs.org/ publish $publish_args
 
 cargo install cargo-publish-all
-cargo-publish-all $publish_args --yes --token "$CARGO_PUBLISH_TOKEN"
+cargo-publish-all $publish_args --no-verify --token "$CARGO_PUBLISH_TOKEN" --allow-dirty
 
 rm .npmrc
 git checkout HEAD package.json Cargo.toml Cargo.lock
