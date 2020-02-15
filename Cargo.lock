@@ -2367,7 +2367,7 @@ dependencies = [
 
 [[package]]
 name = "speedruns"
-version = "0.21.6-dev.16"
+version = "0.21.6-dev"
 dependencies = [
  "actix",
  "actix-cors",
@@ -2416,7 +2416,7 @@ dependencies = [
 
 [[package]]
 name = "speedruns_utils"
-version = "0.21.6-dev.16"
+version = "0.21.6-dev"
 dependencies = [
  "derive_more",
  "err-derive",
