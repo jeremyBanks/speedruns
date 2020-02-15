@@ -9,6 +9,10 @@ type Speedruns {
   games: [Game!]! @juniper(ownership: "owned", infallible: true)
   run(srcId: ID!): Run @juniper(ownership: "owned", infallible: true)
   node(id: ID!): Node @juniper(ownership: "owned", infallible: true)
+  """
+  a random value.
+  """
+  seed: Int! @juniper(ownership: "owned", infallible: true)
 }
 
 type Stats {

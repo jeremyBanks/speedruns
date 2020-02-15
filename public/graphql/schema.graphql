@@ -206,6 +206,11 @@ type Speedruns {
   games: [Game!]!
   run(srcId: ID!): Run
   node(id: ID!): Node
+
+  """
+  a random value.
+  """
+  seed: Int!
 }
 
 type Stats {
