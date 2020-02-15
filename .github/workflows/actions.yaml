@@ -190,4 +190,4 @@ jobs:
       - name: publish - notify chat
         run: |
           version="$(cat version/.version)"
-          curl "${{secrets.CHAT_NOTIFY_URL}}" -F content="https://github.com/${{ github.repository }}/runs/${{ github.run_id }} deploying speedruns@${version} to https://speedruns.ca/"
+          curl "${{secrets.CHAT_NOTIFY_URL}}" -F content="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} deploying speedruns@${version} to https://speedruns.ca/"
