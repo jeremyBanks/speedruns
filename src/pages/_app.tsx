@@ -17,6 +17,8 @@ const MyApp = (props: any) => {
     <>
       <Head>
         <meta name="viewport" content="width=600" />
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
       </Head>
 
       <Header />
