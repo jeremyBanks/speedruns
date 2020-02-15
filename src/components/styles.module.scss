@@ -1,27 +1,25 @@
 @font-face {
   font-family: "JetBrains Mono";
   font-weight: normal;
-  src: local("JetBrains Mono"),
-    url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  src: url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
 }
 
 @font-face {
   font-family: "JetBrains Mono";
   font-weight: bold;
-  src: local("JetBrains Mono"),
-    url("/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+  src: url("/fonts/JetBrainsMono-Bold.woff2") format("woff2");
 }
 
 @font-face {
   font-family: "Fira Sans";
   font-weight: normal;
-  src: local("Fira Sans"), url("/fonts/FiraSans-Regular.woff2") format("woff2");
+  src: url("/fonts/FiraSans-Regular.woff2") format("woff2");
 }
 
 @font-face {
   font-family: "Fira Sans";
   font-weight: bold;
-  src: local("Fira Sans"), url("/fonts/FiraSans-Bold.woff2") format("woff2");
+  src: url("/fonts/FiraSans-Bold.woff2") format("woff2");
 }
 
 html.document {
@@ -50,15 +48,16 @@ html.document {
     font: 16px "Fira Sans", sans-serif;
     padding: 24px 0;
     margin: 16px auto;
-
-    @media (max-width: 650px) {
-      margin-top: 0;
+    transition: margin 0.1s ease-in-out, border-radius 0.1s ease-in-out,
+      padding 0.1s ease-in-out;
+    @media (max-width: 660px) {
+      margin: 0 auto;
+      border-radius: 0;
+      padding-top: 0px;
     }
-    transition: margin-top 0.1s ease-in-out;
-
     width: 100%;
-    max-width: 640px;
-    min-width: 596px;
+    max-width: 650px;
+    min-width: 600px;
     border-top-right-radius: 8px;
     border-bottom-left-radius: 8px;
     box-shadow: 0 0 2px black, 0 0 4px rgba(255, 255, 255, 0.5);
@@ -256,20 +255,23 @@ html.document {
         width: 140px;
       }
 
-      .links {
+      td.links,
+      th.links {
         text-align: left;
+        padding-left: 0px;
       }
       td.links {
-        width: 50px;
+        width: 60px;
         vertical-align: middle;
-        padding-left: 8px;
 
         a {
           position: relative;
           display: inline-block;
           position: relative;
           bottom: 16px;
+          width: 18px;
           height: 0;
+          left: -2px;
           overflow: visible;
 
           svg {
