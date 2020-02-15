@@ -2,11 +2,10 @@
 edition = "2018"
 license = "MIT"
 name = "speedruns_utils"
-version = "0.21.6-dev.16"
+version = "0.21.6-dev"
 authors = ["Jeremy Banks <_@jeremy.ca>"]
 description = "subpackage"
 repository = "https://github.com/jeremybanks/speedruns"
-
 
 [lib]
 path = "mod.rs"
