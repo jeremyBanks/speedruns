@@ -2,7 +2,7 @@
 edition = "2018"
 license = "MIT"
 name = "speedruns_utils"
-version = "0.0.0"
+version = "0.21.6-dev"
 
 [lib]
 path = "mod.rs"
