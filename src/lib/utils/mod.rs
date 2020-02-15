@@ -1,4 +1,13 @@
 //! Shared utils.
+#![feature(
+    arbitrary_self_types,
+    label_break_value,
+    option_unwrap_none,
+    never_type
+)]
+#![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
+#![warn(missing_debug_implementations)]
+
 use derive_more::From;
 use err_derive::Error;
 #[allow(unused)] use log::{debug, error, info, trace, warn};

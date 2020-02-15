@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import React from "react";
-import { FaYoutube } from "react-icons/fa";
+import YouTube from "react-youtube";
 
 import * as schema from "~/components/schema";
 import styles from "~/components/styles.module.scss";
@@ -16,7 +16,6 @@ import RunDate from "~/components/run-date";
 import useNprogress from "~/components/hooks/use-nprogress";
 import LoadingBlock from "~/components/loading-block";
 import RunLinks from "~/components/run-links";
-
 const RunPage: NextPage = () => {
   const router = useRouter();
 
@@ -71,6 +70,17 @@ const RunPage: NextPage = () => {
         <RunLinks run={run} /> in <RunDuration ms={run.timeMs} /> by{" "}
         <RunPlayers players={run.players} /> on <RunDate date={run.date} />
       </p>
+
+      {run.videos
+        .filter(video => /youtu/.test(video))
+        .map(video => (
+          <div key={video}>
+            <YouTube
+              videoId={video.split(/=|\.be\//)[1].split(/[?&]/)[0]}
+              opts={{ width: "100%" }}
+            />
+          </div>
+        ))}
     </section>
   );
 };

@@ -1,0 +1,15 @@
+[package]
+edition = "2018"
+license = "MIT"
+name = "speedruns_utils"
+version = "0.21.6-dev"
+
+[lib]
+path = "mod.rs"
+
+[dependencies]
+derive_more = "0.99.2"
+err-derive = "0.1.5"
+log = "0.4.8"
+no-panic = "0.1.12"
+unidecode = "0.3.0"
