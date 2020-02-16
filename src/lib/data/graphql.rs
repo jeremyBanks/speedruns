@@ -166,6 +166,10 @@ impl SpeedrunsFields for Speedruns {
             Err(_) => None,
         }
     }
+
+    fn field_seed(&self, _executor: &Executor<'_, Context>) -> i32 {
+        rand::Rng::gen(&mut rand::thread_rng())
+    }
 }
 
 impl GameFields for Game {

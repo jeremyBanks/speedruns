@@ -13,6 +13,7 @@ import useNprogress from "~/components/hooks/use-nprogress";
 import LoadingBlock from "~/components/loading-block";
 
 const searchSuggestions = [
+  "Braid",
   "WarCraft",
   "Burnout",
   "Pokemon",
@@ -40,7 +41,7 @@ export const HomePage: NextPage<{}> = () => {
     searchSuggestions[0],
   );
 
-  const [targetName, setTargetName] = useState<string>(searchSuggestion);
+  const [targetName, setTargetName] = useState<string>("");
   const debouncedTargetName = useDebounced(targetName, 250);
   const debouncedTargetNameOrSuggestion =
     debouncedTargetName || searchSuggestion;
@@ -53,7 +54,7 @@ export const HomePage: NextPage<{}> = () => {
         break;
       }
     }
-  }, [debouncedTargetName]);
+  }, []);
 
   const [targetGames, orError] = useMemo(() => {
     if (!gameIndex?.data) {
@@ -297,6 +298,7 @@ const GetHomeStats = gql`
       games
       version
     }
+    seed
   }
 `;
 

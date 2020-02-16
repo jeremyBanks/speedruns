@@ -1060,6 +1060,10 @@ export interface GetHomeStats_stats {
 
 export interface GetHomeStats {
   stats: GetHomeStats_stats;
+  /**
+   * a random value.
+   */
+  seed: number;
 }
 
 /* tslint:disable */
