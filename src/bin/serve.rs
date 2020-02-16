@@ -36,7 +36,7 @@ async fn playground() -> HttpResponse {
 
 lazy_static! {
     static ref DATABASE: Arc<Database> = {
-        let tables: &'static Tables = Box::leak(Box::new(unpack_tables()));
+        let tables: Arc<Tables> = Arc::new(unpack_tables());
         Database::new(tables).expect("database should be valid")
     };
 }

@@ -63,9 +63,9 @@ pub enum IntegrityError {
         source
     )]
     ForeignKeyMissing {
-        target_type:       &'static str,
+        target_type:       Arc<str>,
         target_id:         u64,
-        foreign_key_field: &'static str,
+        foreign_key_field: Arc<str>,
         source:            AnyModel,
     },
     #[error(display = "row validation check failed: {:?} in {:?}", errors, source)]
@@ -97,19 +97,19 @@ pub struct Tables {
 #[derive(Getters, Clone)]
 pub struct Database {
     #[get = "pub"]
-    tables:                                       &'static Tables,
+    tables:                                       Arc<Tables>,
     #[get = "pub"]
     last_updated:                                 DateTime<Utc>,
     #[get = "pub"]
     runs_by_game_id_and_category_id_and_level_id:
-        BTreeMap<(u64, u64, Option<u64>), Vec<&'static Run>>,
-    games_by_slug:                                BTreeMap<String, &'static Game>,
-    users_by_slug:                                BTreeMap<String, &'static User>,
+        BTreeMap<(u64, u64, Option<u64>), Vec<Arc<Run>>>,
+    games_by_slug:                                BTreeMap<String, Arc<Game>>,
+    users_by_slug:                                BTreeMap<String, Arc<User>>,
     #[get = "pub"]
-    per_game_categories_by_game_id_and_slug: BTreeMap<(u64, String), &'static Category>,
+    per_game_categories_by_game_id_and_slug:      BTreeMap<(u64, String), Arc<Category>>,
     #[get = "pub"]
-    per_level_categories_by_game_id_and_slug: BTreeMap<(u64, String), &'static Category>,
-    levels_by_game_id_and_slug:                   BTreeMap<(u64, String), &'static Level>,
+    per_level_categories_by_game_id_and_slug:     BTreeMap<(u64, String), Arc<Category>>,
+    levels_by_game_id_and_slug:                   BTreeMap<(u64, String), Arc<Level>>,
 }
 
 impl Tables {
@@ -152,32 +152,29 @@ impl std::fmt::Debug for Database {
 }
 
 impl Database {
-    pub fn link<ModelType: Model>(
-        self: &Arc<Self>,
-        item: &'static ModelType,
-    ) -> Linked<ModelType> {
-        Linked::new(self.clone(), item)
+    pub fn link<ModelType: Model>(self: &Arc<Self>, item: ModelType) -> Linked<ModelType> {
+        Linked::new(self.clone(), Arc::new(item))
     }
 
     /// Creates a new Database indexing a collection of static tables.
-    pub fn new(tables: &'static Tables) -> Result<Arc<Self>, IntegrityErrors> {
+    pub fn new(tables: Arc<Tables>) -> Result<Arc<Self>, IntegrityErrors> {
         let mut last_updated: DateTime<Utc> =
             DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(0, 0), Utc);
         let mut runs_by_game_id_and_category_id_and_level_id: BTreeMap<
             (u64, u64, Option<u64>),
-            Vec<&'static Run>,
+            Vec<Arc<Run>>,
         > = Default::default();
-        let mut games_by_slug: BTreeMap<String, &'static Game> = Default::default();
-        let mut users_by_slug: BTreeMap<String, &'static User> = Default::default();
+        let mut games_by_slug: BTreeMap<String, Arc<Game>> = Default::default();
+        let mut users_by_slug: BTreeMap<String, Arc<User>> = Default::default();
         let mut per_game_categories_by_game_id_and_slug: BTreeMap<
             (u64, String),
-            &'static Category,
+            Arc<Category>,
         > = Default::default();
         let mut per_level_categories_by_game_id_and_slug: BTreeMap<
             (u64, String),
-            &'static Category,
+            Arc<Category>,
         > = Default::default();
-        let mut levels_by_game_id_and_slug: BTreeMap<(u64, String), &'static Level> =
+        let mut levels_by_game_id_and_slug: BTreeMap<(u64, String), Arc<Level>> =
             Default::default();
         let index_errored = '_indexing: {
             for game in tables.games().values() {
@@ -494,16 +491,16 @@ pub struct Linked<ModelType: 'static + Model + Debug> {
     #[serde(skip)]
     database: Arc<Database>,
     #[serde(flatten)]
-    item:     &'static ModelType,
+    item:     Arc<ModelType>,
 }
 
 impl<ModelType: Model> Linked<ModelType> {
-    pub fn new(database: Arc<Database>, item: &'static ModelType) -> Self {
+    pub fn new(database: Arc<Database>, item: Arc<ModelType>) -> Self {
         Self { database, item }
     }
 
     /// Returns the underlying static model instance reference.
-    pub fn as_static(&self) -> &'static ModelType {
+    pub fn as_static(&self) -> Arc<ModelType> {
         self.item
     }
 }
