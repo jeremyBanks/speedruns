@@ -5,48 +5,35 @@
     clippy::result_unwrap_used
 )]
 
-use std::error::Error;
-
 #[allow(unused)] use log::{debug, error, info, trace, warn};
 
-mod import;
-mod scrape;
-mod serve;
+use std::{collections::BTreeMap, rc::Rc, sync::Arc};
 
-#[derive(argh::FromArgs, PartialEq, Debug)]
-/// Tools for importing and serving some data from the speedrun.com API.
-pub struct Args {
-    #[argh(subcommand)]
-    subcommand: Subcommand,
-
-    /// silence log output except for errors. overrides --verbose and RUST_LOG.
-    #[argh(switch, short = 'q')]
-    quiet: bool,
-
-    /// enables maximum logging for our code and debug logging for dependencies. overrides
-    /// RUST_LOG.
-    #[argh(switch, short = 'v')]
-    verbose: bool,
+struct MyApp {
+    database: Arc<Database>,
 }
 
-#[derive(argh::FromArgs, PartialEq, Debug)]
-#[argh(subcommand)]
-pub enum Subcommand {
-    Download(DownloadArgs),
-    Import(import::Args),
-    Serve(serve::Args),
+impl MyApp {
+    // requirement: we need this to be able to keep running even if we update the
+    // database, ideally in a consistent way.
+    // so sleep for 5 seconds
+    async fn handle_request(self) -> String {
+        "hello world".to_string()
+    }
 }
 
-#[derive(argh::FromArgs, PartialEq, Debug)]
-/// Fetches/updates a local mirror of speedrun.com API content. This just stores the JSON
-/// representation of each item as-is, it doesn't make any assumptions about their structure
-/// beyond the existence of  a string "id" value. This stores everything in-memory, it's not
-/// memory-efficient.
-#[argh(subcommand, name = "download")]
-pub struct DownloadArgs {}
+struct Database {
+    table_user:         BTreeMap<u64, User>,
+    index_user_by_name: BTreeMap<String, u64>,
+}
+
+struct User {
+    id:   u64,
+    name: String,
+}
 
 #[actix_rt::main]
-async fn main() -> Result<(), Box<dyn Error>> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Args = argh::from_env();
 
     if args.quiet {
@@ -59,17 +46,22 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     pretty_env_logger::init();
 
-    match args.subcommand {
-        Subcommand::Download(_args) => {
-            scrape::main()?;
-        }
-        Subcommand::Import(args) => {
-            import::main(args)?;
-        }
-        Subcommand::Serve(args) => {
-            serve::main(args).await?;
-        }
-    }
+    let mut app = MyApp::new();
+
+    //
 
     Ok(())
+}
+
+#[derive(argh::FromArgs, PartialEq, Debug)]
+/// Tools for importing and serving some data from the speedrun.com API.
+pub struct Args {
+    /// silence log output except for errors. overrides --verbose and RUST_LOG.
+    #[argh(switch, short = 'q')]
+    quiet: bool,
+
+    /// enables maximum logging for our code and debug logging for dependencies. overrides
+    /// RUST_LOG.
+    #[argh(switch, short = 'v')]
+    verbose: bool,
 }
