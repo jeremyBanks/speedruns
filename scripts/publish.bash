@@ -18,7 +18,7 @@ sed -i '0,/\.0"/ s/\.0"/"/' package.json
 
 version="$(cat package.json | $(yarn bin jqn) 'property("version")')"
 
-sed -i '0,/speedruns_utils/ s/version = ".*"/version = "'$version'"/' Cargo.toml
+sed -i '0,/speedruns_utils/ s/version = ".*"/version = "='$version'"/' Cargo.toml
 sed -i '0,/version = ".*"/ s/version = ".*"/version = "'$version'"/' Cargo.toml
 sed -i '0,/version = ".*"/ s/version = ".*"/version = "'$version'"/' src/lib/utils/Cargo.toml
 

@@ -57,8 +57,7 @@ pub struct LeaderboardRun(leaderboard::LeaderboardRun);
 #[derive(Debug, Clone)]
 pub struct ProgressionRun(progression::ProgressionRun);
 
-#[derive(Debug, Clone)]
-pub struct Category(DbLinked<db::Category>);
+use db::Category;
 
 #[derive(Debug, Clone)]
 pub struct User(DbLinked<db::User>);
@@ -159,9 +158,8 @@ impl SpeedrunsFields for Speedruns {
                 NodeType::Run => database.run_by_id(id).map(|r| Node::Run(Run(r))),
                 NodeType::User => database.user_by_id(id).map(|u| Node::User(User(u))),
                 NodeType::Level => database.level_by_id(id).map(|l| Node::Level(Level(l))),
-                NodeType::Category => database
-                    .category_by_id(id)
-                    .map(|c| Node::Category(Category(c))),
+                NodeType::Category =>
+                    database.category_by_id(id).map(|c| Node::Category(*c)),
             },
             Err(_) => None,
         }
@@ -231,7 +229,7 @@ impl GameFields for Game {
             .range((self.0.id, "".to_string())..(self.0.id + 1, "".to_string()))
             .map(|(_key, value)| value)
             .sorted_by(|a, b| (&a.name, a.id).cmp(&(&b.name, b.id)))
-            .map(|c| Category(executor.context().database.link(c)))
+            .map(|c| **c)
             .collect()
     }
 
@@ -247,7 +245,7 @@ impl GameFields for Game {
             .range((self.0.id, "".to_string())..(self.0.id + 1, "".to_string()))
             .map(|(_key, value)| value)
             .sorted_by(|a, b| (&a.name, a.id).cmp(&(&b.name, b.id)))
-            .map(|c| Category(executor.context().database.link(c)))
+            .map(|c| **c)
             .collect()
     }
 }
@@ -270,7 +268,7 @@ impl RunFields for Run {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Category, Walked>,
     ) -> Category {
-        Category(self.0.category())
+        *self.0.category()
     }
 
     fn field_level(
@@ -364,23 +362,23 @@ impl ProgressionRunFields for ProgressionRun {
 
 impl CategoryFields for Category {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
-        global_id(self.0.id, NodeType::Category)
+        global_id(self.id, NodeType::Category)
     }
 
     fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
-        base36(self.0.id)
+        base36(self.id)
     }
 
     fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.name
+        &self.name
     }
 
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.slug
+        &self.slug
     }
 
     fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        src_slugify(&self.0.name)
+        src_slugify(&self.name)
     }
 
     fn field_leaderboard(
@@ -393,7 +391,12 @@ impl CategoryFields for Category {
     ) -> Vec<LeaderboardRun> {
         let level_id;
         if let Some(level_slug) = level_slug {
-            let level = self.0.game().level_by_slug(&level_slug);
+            let level = executor
+                .context()
+                .database
+                .link(self.clone())
+                .game()
+                .level_by_slug(&level_slug);
             if let Some(level) = level {
                 level_id = Some(level.id);
             } else {
@@ -408,7 +411,7 @@ impl CategoryFields for Category {
             .context()
             .database
             .runs_by_game_id_and_category_id_and_level_id()
-            .get(&(self.0.game_id, self.0.id, level_id));
+            .get(&(self.game_id, self.id, level_id));
 
         if let Some(runs) = runs {
             let runs: Vec<_> = runs
@@ -437,7 +440,12 @@ impl CategoryFields for Category {
     ) -> Vec<ProgressionRun> {
         let level_id;
         if let Some(level_slug) = level_slug {
-            let level = self.0.game().level_by_slug(&level_slug);
+            let level = executor
+                .context()
+                .database
+                .link(self.clone())
+                .game()
+                .level_by_slug(&level_slug);
             if let Some(level) = level {
                 level_id = Some(level.id);
             } else {
@@ -453,7 +461,7 @@ impl CategoryFields for Category {
             .context()
             .database
             .runs_by_game_id_and_category_id_and_level_id()
-            .get(&(self.0.game_id, self.0.id, level_id));
+            .get(&(self.game_id, self.id, level_id));
 
         if let Some(runs) = runs {
             let runs: Vec<_> = runs
@@ -476,10 +484,10 @@ impl CategoryFields for Category {
         executor
             .context()
             .database
-            .levels_by_game_id(self.0.game_id)
+            .levels_by_game_id(self.game_id)
             .into_iter()
             .map(|level| CategoryLevel {
-                category: self.0.clone(),
+                category: self.clone(),
                 level,
             })
             .collect()
@@ -567,7 +575,7 @@ impl CategoryLevelFields for CategoryLevel {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Category, Walked>,
     ) -> Category {
-        Category(self.category.clone())
+        *self.category
     }
 
     fn field_leaderboard(
