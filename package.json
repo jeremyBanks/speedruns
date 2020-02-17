@@ -46,7 +46,7 @@
     "graphql-docs": "^0.2.0",
     "graphql-tag": "^2.10.3",
     "graphql-voyager": "^1.0.0-rc.28",
-    "io-ts": "^2.1.0",
+    "io-ts": "^2.1.1",
     "isomorphic-unfetch": "^3.0.0",
     "jq": "^1.7.2",
     "jq.node": "^2.1.2",
