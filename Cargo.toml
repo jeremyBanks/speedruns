@@ -7,24 +7,8 @@ authors = ["Jeremy Banks <_@jeremy.ca>"]
 description = "Unofficial tools for mirroring speedrun.com API data"
 repository = "https://github.com/jeremybanks/speedruns"
 
-autobins = false
-default-run = "speedruns"
-
-[workspace]
-
-[lib]
-name = "speedruns"
-path = "src/lib/speedruns.rs"
-
-[[bin]]
-name = "speedruns"
-path = "src/bin/speedruns.rs"
-
-[profile.release.build-override]
-opt-level = 0
 
 [dependencies]
-speedruns_utils = { path = "src/lib/utils", version = "0.21.6-dev" }
 actix = "0.9.0"
 actix-cors = "0.2.0"
 actix-rt = "1.0.0"

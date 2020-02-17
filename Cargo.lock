@@ -931,7 +931,6 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "sha2",
- "speedruns_utils",
  "tempfile",
  "unidecode",
  "url 2.1.1",
@@ -2424,17 +2423,6 @@ dependencies = [
  "libc",
  "redox_syscall",
  "winapi 0.3.8",
-]
-
-[[package]]
-name = "speedruns_utils"
-version = "0.21.6-dev"
-dependencies = [
- "derive_more",
- "err-derive",
- "log",
- "no-panic",
- "unidecode",
 ]
 
 [[package]]

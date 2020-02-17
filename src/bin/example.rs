@@ -4,10 +4,12 @@ use async_std::prelude::*;
 use log::{debug, error, info, trace, warn};
 use rand::prelude::*;
 use std::{
+    cell::Cell,
     collections::{BTreeMap, HashSet},
+    io::Write,
     rc::Rc,
     sync::Arc,
-    time::Duration,
+    time::{Duration, Instant},
 };
 
 #[derive(Debug)]
@@ -61,22 +63,31 @@ impl Database {
 
 #[async_std::main]
 async fn main() {
-    std::env::set_var("RUST_LOG", "trace");
-    env_logger::init();
+    let start = Instant::now();
+
+    env_logger::Builder::new()
+        .filter_level(log::LevelFilter::Trace)
+        .format(move |buf, record| {
+            let elapsed = (Instant::now() - start).from_secs_f64();
+            writeln!(buf, "{:>6.1}: {}", elapsed, record.args())
+        })
+        .init();
+
+    debug!("foo");
 
     let app = Arc::new(WebApp::new());
 
     loop {
         // For some variety, let's say that every one second...
         async_std::task::sleep(Duration::from_secs(1)).await;
-        // ...we have a 20% probability...
-        if 0.20 > rand::thread_rng().gen_range(0.0, 1.0) {
+        // ...we have a 40% probability...
+        if 40 >= rand::thread_rng().gen_range(1, 100) {
             // ...of simulating a request.
             let request = Request {
                 names_to_add:    vec![],
                 names_to_remove: vec![],
             };
-            debug!(" request: {:?}", request);
+            debug!("request: {:?}", request);
 
             let app_for_task = app.clone();
             async_std::task::spawn(async {
