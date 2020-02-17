@@ -1,58 +1,48 @@
-#![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec, unused)]
-#![warn(missing_debug_implementations)]
-
+#![feature(arbitrary_self_types)]
+#![allow(unused)]
 use async_std::prelude::*;
-
+use rand::prelude::*;
 use std::{collections::BTreeMap, rc::Rc, sync::Arc, time::Duration};
+
+#[derive(Debug)]
+struct Request {}
+
+#[derive(Debug)]
+struct Response {}
+
+#[derive(Debug)]
+struct WebApp {}
+
+impl WebApp {
+    fn new() -> WebApp {
+        WebApp {}
+    }
+
+    async fn handle(self: Arc<Self>, request: Request) -> Response {
+        // Pretend we're waiting for a slow backend.
+        async_std::task::sleep(Duration::from_secs(5)).await;
+        Response {}
+    }
+}
 
 #[async_std::main]
 async fn main() {
-    #[allow(unused_mut)]
-    let mut app = MyApp::new();
+    let app = Arc::new(WebApp::new());
 
     loop {
-        sleep(Duration::from_secs(5)).await;
+        // For some variety, let's say that every one second...
+        async_std::task::sleep(Duration::from_secs(1)).await;
+        // ...we have a 20% probability...
+        if 0.20 > rand::thread_rng().gen_range(0.0, 1.0) {
+            // ...of simulating a request.
+            let request = Request {};
+            println!(" request: {:?}", request);
 
-        let request = "hello";
-
-        async_std::task::spawn(app.handle_request(request));
-    }
-}
-
-struct MyApp {
-    database: Arc<Database>,
-}
-
-impl MyApp {
-    fn new() -> Self {
-        MyApp {
-            database: Arc::new(Database::new()),
+            let app_for_task = app.clone();
+            async_std::task::spawn(async {
+                let response = app_for_task.handle(request).await;
+                println!("response: {:?}", response);
+            });
         }
     }
-
-    // requirement: we need this to be able to keep running even if we update the
-    // database, ideally in a consistent way.
-    async fn handle_request(&self, request: &str) -> String {
-        sleep(Duration::from_secs(5)).await;
-        request.to_string()
-    }
-}
-
-struct Database {
-    table_user:         BTreeMap<u64, User>,
-    index_user_by_name: BTreeMap<String, u64>,
-}
-
-impl Database {
-    fn new() -> Self {
-        Database {
-            table_user:         Default::default(),
-            index_user_by_name: Default::default(),
-        }
-    }
-}
-
-struct User {
-    id:   u64,
-    name: String,
 }
