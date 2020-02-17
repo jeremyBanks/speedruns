@@ -891,6 +891,56 @@ dependencies = [
 ]
 
 [[package]]
+name = "example"
+version = "0.21.6-dev"
+dependencies = [
+ "actix",
+ "actix-cors",
+ "actix-rt",
+ "actix-web",
+ "argh",
+ "arrayvec",
+ "async-std",
+ "base64 0.11.0",
+ "bumpalo",
+ "chrono",
+ "clap",
+ "derive_more",
+ "env_logger",
+ "err-derive",
+ "flate2",
+ "fs2",
+ "futures 0.3.4",
+ "getset",
+ "heck",
+ "itertools",
+ "juniper",
+ "juniper-from-schema",
+ "juniper_hyper",
+ "lazy_static",
+ "libc",
+ "log",
+ "no-panic",
+ "percent-encoding 2.1.0",
+ "pretty_env_logger",
+ "rand 0.7.3",
+ "regex",
+ "remain",
+ "reqwest",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "sha2",
+ "speedruns_utils",
+ "tempfile",
+ "unidecode",
+ "url 2.1.1",
+ "url_serde",
+ "validator",
+ "validator_derive",
+]
+
+[[package]]
 name = "failure"
 version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2374,56 +2424,6 @@ dependencies = [
  "libc",
  "redox_syscall",
  "winapi 0.3.8",
-]
-
-[[package]]
-name = "speedruns"
-version = "0.21.6-dev"
-dependencies = [
- "actix",
- "actix-cors",
- "actix-rt",
- "actix-web",
- "argh",
- "arrayvec",
- "async-std",
- "base64 0.11.0",
- "bumpalo",
- "chrono",
- "clap",
- "derive_more",
- "env_logger",
- "err-derive",
- "flate2",
- "fs2",
- "futures 0.3.4",
- "getset",
- "heck",
- "itertools",
- "juniper",
- "juniper-from-schema",
- "juniper_hyper",
- "lazy_static",
- "libc",
- "log",
- "no-panic",
- "percent-encoding 2.1.0",
- "pretty_env_logger",
- "rand 0.7.3",
- "regex",
- "remain",
- "reqwest",
- "serde",
- "serde_derive",
- "serde_json",
- "sha2",
- "speedruns_utils",
- "tempfile",
- "unidecode",
- "url 2.1.1",
- "url_serde",
- "validator",
- "validator_derive",
 ]
 
 [[package]]

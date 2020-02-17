@@ -160,6 +160,8 @@ async fn main() {
 
 With these changes, it works, and we can see that the slow responses aren't blocking new requests:
 
+TODO: timestamps?
+
 ```
  request: Request
 response: Response
