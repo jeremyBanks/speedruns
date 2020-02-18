@@ -1,21 +1,24 @@
-#![feature(arbitrary_self_types)]
+#![feature(arbitrary_self_types, assoc_int_consts)]
 #![allow(unused)]
-use async_std::prelude::*;
+use async_std::{
+    prelude::*,
+    sync::{channel, Arc, RwLock},
+    task::{sleep, spawn},
+};
 use log::{debug, error, info, trace, warn};
-use rand::prelude::*;
 use std::{
-    cell::Cell,
+    cell::{Cell, RefCell},
     collections::{BTreeMap, HashSet},
     io::Write,
     rc::Rc,
-    sync::Arc,
     time::{Duration, Instant},
 };
 
 #[derive(Debug)]
-struct Request {
-    names_to_add:    Vec<String>,
-    names_to_remove: Vec<String>,
+enum Request {
+    GetNames,
+    AddName(String),
+    RemoveName(String),
 }
 
 #[derive(Debug)]
@@ -43,9 +46,10 @@ impl WebApp {
 
     async fn handle(self: Arc<Self>, request: Request) -> Response {
         // Pretend we're waiting for a slow backend.
-        async_std::task::sleep(Duration::from_secs(5)).await;
+        sleep(Duration::from_secs_f64(2.5)).await;
+
         Response {
-            names: self.database().names().cloned().collect(),
+            names: self.database().names().cloned().collect()
         }
     }
 }
@@ -63,37 +67,45 @@ impl Database {
 
 #[async_std::main]
 async fn main() {
-    let start = Instant::now();
-
-    env_logger::Builder::new()
-        .filter_level(log::LevelFilter::Trace)
-        .format(move |buf, record| {
-            let elapsed = (Instant::now() - start).from_secs_f64();
-            writeln!(buf, "{:>6.1}: {}", elapsed, record.args())
-        })
-        .init();
-
-    debug!("foo");
+    init_logger();
 
     let app = Arc::new(WebApp::new());
 
-    loop {
-        // For some variety, let's say that every one second...
-        async_std::task::sleep(Duration::from_secs(1)).await;
-        // ...we have a 40% probability...
-        if 40 >= rand::thread_rng().gen_range(1, 100) {
-            // ...of simulating a request.
-            let request = Request {
-                names_to_add:    vec![],
-                names_to_remove: vec![],
-            };
-            debug!("request: {:?}", request);
+    let (sender, receiver) = channel(32);
+
+    let client = spawn(async move {
+        loop {
+            sleep(Duration::from_secs_f64(1.0)).await;
+
+            let request = Request::GetNames;
+            sender.send(request).await;
+        }
+    });
+
+    let server = spawn(async move {
+        loop {
+            let request = receiver.recv().await.unwrap();
+            debug!(" request: {:?}", request);
 
             let app_for_task = app.clone();
-            async_std::task::spawn(async {
+            spawn(async {
                 let response = app_for_task.handle(request).await;
                 debug!("response: {:?}", response);
             });
         }
-    }
+    });
+
+    client.join(server).await;
+}
+
+fn init_logger() {
+    // Configure logger to display relative instead of absolute time.
+    let start = Instant::now();
+    env_logger::Builder::new()
+        .parse_filters("example=debug")
+        .format(move |buffer, record| {
+            let elapsed = (Instant::now() - start).as_secs_f64(); 
+            writeln!(buffer, "[t={:>6.1}s] {}", elapsed, record.args())
+        })
+        .init();
 }
