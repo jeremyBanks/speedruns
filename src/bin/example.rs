@@ -45,12 +45,19 @@ impl WebApp {
     }
 
     async fn handle(self: Arc<Self>, request: Request) -> Response {
-        // Pretend we're waiting for a slow backend.
-        sleep(Duration::from_secs_f64(2.5)).await;
-
-        Response {
-            names: self.database().names().cloned().collect()
+        match request {
+            Request::GetNames => {}
+            Request::AddName(name) => {
+                self.database().add_name(name).await;
+            }
+            Request::RemoveName(name) => {
+                self.database().remove_name(name).await;
+            }
         }
+
+        let names = self.database().get_names().await;
+
+        Response { names }
     }
 }
 
@@ -60,8 +67,19 @@ struct Database {
 }
 
 impl Database {
-    fn names(&self) -> impl Iterator<Item = &String> {
-        self.names.iter()
+    pub async fn get_names(&self) -> Vec<String> {
+        sleep(Duration::from_secs_f64(0.25)).await;
+        self.names.iter().cloned().collect()
+    }
+
+    pub async fn add_name(&mut self, name: String) {
+        sleep(Duration::from_secs_f64(2.25)).await;
+        self.names.insert(name);
+    }
+
+    pub async fn remove_name(&mut self, name: String) {
+        sleep(Duration::from_secs_f64(4.5)).await;
+        self.names.remove(&name);
     }
 }
 
