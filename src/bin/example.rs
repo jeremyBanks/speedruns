@@ -6,13 +6,13 @@ use async_std::{
     task::{sleep, spawn},
 };
 use log::{debug, error, info, trace, warn};
+use rand::prelude::*;
 use std::{
     collections::{BTreeMap, HashSet},
     io::Write,
     rc::Rc,
     time::{Duration, Instant},
 };
-use rand::prelude::*;
 
 #[derive(Debug)]
 enum Request {
@@ -63,7 +63,7 @@ impl WebApp {
 
 #[derive(Debug)]
 struct Database {
-    names: RwLock<HashSet<String>>,
+    names: RwLock<Arc<HashSet<String>>>,
 }
 
 impl Database {
@@ -79,16 +79,20 @@ impl Database {
         debug!("database: add_name({:?}) requesting write lock", name);
         let mut names = self.names.write().await;
         debug!("database: add_name({:?}) got write lock", name);
+        let mut new_names = (**names).clone();
+        new_names.insert(name);
+        *names = Arc::new(new_names);
         sleep(Duration::from_secs_f64(2.25)).await;
-        names.insert(name);
     }
 
     pub async fn remove_name(&self, name: String) {
         debug!("database: remove_name({:?}) requesting write lock", name);
         let mut names = self.names.write().await;
         debug!("database: remove_name({:?}) got write lock", name);
-        sleep(Duration::from_secs_f64(4.5)).await;
-        names.remove(&name);
+        let mut new_names = (**names).clone();
+        new_names.remove(&name);
+        *names = Arc::new(new_names);
+        sleep(Duration::from_secs_f64(4.25)).await;
     }
 }
 
@@ -107,7 +111,7 @@ async fn main() {
         sleep(Duration::from_secs_f64(0.0125)).await;
         sender.send(Request::RemoveName("Banks".to_string())).await;
 
-        loop {
+        for _ in 0..2 {
             sleep(Duration::from_secs_f64(1.0)).await;
 
             let request = Request::GetNames;
@@ -116,17 +120,39 @@ async fn main() {
     });
 
     let server = spawn(async move {
+        let mut tasks: Vec<Box<dyn Future<Output = ()>>> = Vec::new();
+
         loop {
-            let request = receiver.recv().await.unwrap();
+            let request = match receiver.recv().await {
+                Some(request) => request,
+                None => {
+                    debug!("server: connection channel closed");
+                    break
+                }
+            };
             debug!("server: got request {:?}", request);
 
             let app_for_task = app.clone();
-            spawn(async {
+            tasks.push(Box::new(spawn(async {
                 let request_s = format!("{:?}", request);
 
                 let response = app_for_task.handle(request).await;
-                debug!("server: sent response {:?} for request {}", response, request_s);
-            });
+                debug!(
+                    "server: sent response {:?} for request {}",
+                    response, request_s
+                );
+            })));
+        }
+
+        debug!("server shutting down, now blocking on remaining tasks");
+        let mut all_tasks: Option<Box<dyn Future<Output = ()>>> = None;
+        for task in tasks {
+            let new_tasks = if let Some(prev_tasks) = all_tasks.take() {
+                prev_tasks.join(task)
+            } else {
+                task
+            };
+            all_tasks = Some(new_tasks);
         }
     });
 
@@ -139,7 +165,7 @@ fn init_logger() {
     env_logger::Builder::new()
         .parse_filters("example=debug")
         .format(move |buffer, record| {
-            let elapsed = (Instant::now() - start).as_secs_f64(); 
+            let elapsed = (Instant::now() - start).as_secs_f64();
             writeln!(buffer, "[t={:>6.1}s] {}", elapsed, record.args())
         })
         .init();
