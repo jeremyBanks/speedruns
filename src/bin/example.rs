@@ -1,5 +1,4 @@
 #![feature(arbitrary_self_types, assoc_int_consts)]
-#![allow(unused)]
 use async_std::{
     prelude::*,
     sync::{channel, Arc, RwLock},
@@ -13,6 +12,7 @@ use std::{
     rc::Rc,
     time::{Duration, Instant},
 };
+use rand::prelude::*;
 
 #[derive(Debug)]
 enum Request {
@@ -35,7 +35,7 @@ impl WebApp {
     fn new() -> WebApp {
         WebApp {
             database: Database {
-                names: vec!["Seed".to_string()].into_iter().collect(),
+                names: RwLock::new(Default::default()),
             },
         }
     }
@@ -63,23 +63,32 @@ impl WebApp {
 
 #[derive(Debug)]
 struct Database {
-    names: HashSet<String>,
+    names: RwLock<HashSet<String>>,
 }
 
 impl Database {
     pub async fn get_names(&self) -> Vec<String> {
+        debug!("database: get_names() requesting read lock");
+        let names = self.names.read().await;
+        debug!("database: get_names() got read lock");
         sleep(Duration::from_secs_f64(0.25)).await;
-        self.names.iter().cloned().collect()
+        names.iter().cloned().collect()
     }
 
-    pub async fn add_name(&mut self, name: String) {
+    pub async fn add_name(&self, name: String) {
+        debug!("database: add_name({:?}) requesting write lock", name);
+        let mut names = self.names.write().await;
+        debug!("database: add_name({:?}) got write lock", name);
         sleep(Duration::from_secs_f64(2.25)).await;
-        self.names.insert(name);
+        names.insert(name);
     }
 
-    pub async fn remove_name(&mut self, name: String) {
+    pub async fn remove_name(&self, name: String) {
+        debug!("database: remove_name({:?}) requesting write lock", name);
+        let mut names = self.names.write().await;
+        debug!("database: remove_name({:?}) got write lock", name);
         sleep(Duration::from_secs_f64(4.5)).await;
-        self.names.remove(&name);
+        names.remove(&name);
     }
 }
 
@@ -92,6 +101,10 @@ async fn main() {
     let (sender, receiver) = channel(32);
 
     let client = spawn(async move {
+        sender.send(Request::AddName("Jeremy".to_string())).await;
+        sender.send(Request::AddName("Banks".to_string())).await;
+        sender.send(Request::RemoveName("Banks".to_string())).await;
+
         loop {
             sleep(Duration::from_secs_f64(1.0)).await;
 
@@ -103,12 +116,14 @@ async fn main() {
     let server = spawn(async move {
         loop {
             let request = receiver.recv().await.unwrap();
-            debug!(" request: {:?}", request);
+            debug!("server: got request {:?}", request);
 
             let app_for_task = app.clone();
             spawn(async {
+                let request_s = format!("{:?}", request);
+
                 let response = app_for_task.handle(request).await;
-                debug!("response: {:?}", response);
+                debug!("server: sent response {:?} for request {}", response, request_s);
             });
         }
     });
@@ -117,7 +132,7 @@ async fn main() {
 }
 
 fn init_logger() {
-    // Configure logger to display relative instead of absolute time.
+    // Configure a logger displaying elapsed time since now.
     let start = Instant::now();
     env_logger::Builder::new()
         .parse_filters("example=debug")
