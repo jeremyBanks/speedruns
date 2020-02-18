@@ -1,4 +1,5 @@
 #![feature(arbitrary_self_types, assoc_int_consts)]
+#![allow(unused_imports)]
 use async_std::{
     prelude::*,
     sync::{channel, Arc, RwLock},
@@ -6,7 +7,6 @@ use async_std::{
 };
 use log::{debug, error, info, trace, warn};
 use std::{
-    cell::{Cell, RefCell},
     collections::{BTreeMap, HashSet},
     io::Write,
     rc::Rc,
@@ -102,7 +102,9 @@ async fn main() {
 
     let client = spawn(async move {
         sender.send(Request::AddName("Jeremy".to_string())).await;
+        sleep(Duration::from_secs_f64(0.0125)).await;
         sender.send(Request::AddName("Banks".to_string())).await;
+        sleep(Duration::from_secs_f64(0.0125)).await;
         sender.send(Request::RemoveName("Banks".to_string())).await;
 
         loop {
