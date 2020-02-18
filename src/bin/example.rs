@@ -82,7 +82,7 @@ impl Database {
         let mut new_names = (**names).clone();
         new_names.insert(name);
         *names = Arc::new(new_names);
-        sleep(Duration::from_secs_f64(2.25)).await;
+        sleep(Duration::from_secs_f64(0.75)).await;
     }
 
     pub async fn remove_name(&self, name: String) {
@@ -92,7 +92,7 @@ impl Database {
         let mut new_names = (**names).clone();
         new_names.remove(&name);
         *names = Arc::new(new_names);
-        sleep(Duration::from_secs_f64(4.25)).await;
+        sleep(Duration::from_secs_f64(1.25)).await;
     }
 }
 
@@ -120,7 +120,7 @@ async fn main() {
     });
 
     let server = spawn(async move {
-        let mut tasks: Vec<Box<dyn Future<Output = ()>>> = Vec::new();
+        let mut tasks = Vec::new();
 
         loop {
             let request = match receiver.recv().await {
@@ -133,7 +133,7 @@ async fn main() {
             debug!("server: got request {:?}", request);
 
             let app_for_task = app.clone();
-            tasks.push(Box::new(spawn(async {
+            tasks.push(spawn(async {
                 let request_s = format!("{:?}", request);
 
                 let response = app_for_task.handle(request).await;
@@ -141,19 +141,14 @@ async fn main() {
                     "server: sent response {:?} for request {}",
                     response, request_s
                 );
-            })));
+            }));
         }
 
-        debug!("server shutting down, now blocking on remaining tasks");
-        let mut all_tasks: Option<Box<dyn Future<Output = ()>>> = None;
+        debug!("server ready to shut down, now blocking on remaining tasks");
         for task in tasks {
-            let new_tasks = if let Some(prev_tasks) = all_tasks.take() {
-                prev_tasks.join(task)
-            } else {
-                task
-            };
-            all_tasks = Some(new_tasks);
+            task.await
         }
+        debug!("server shut down");
     });
 
     client.join(server).await;
