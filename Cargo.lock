@@ -1396,9 +1396,9 @@ dependencies = [
 
 [[package]]
 name = "juniper-from-schema-code-gen"
-version = "0.5.1"
+version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e649da12ab5f491cd015c46ee50741e6e925412a48f7a69d9af30fc0ab092426"
+checksum = "ca83b4fd2f19063d5744e7b39ff541996efa21d8b48e35a52ee0237c4bb57e9b"
 dependencies = [
  "colored",
  "graphql-parser",
