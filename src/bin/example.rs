@@ -120,6 +120,7 @@ async fn main() {
     });
 
     let server = spawn(async move {
+        // this grows inefficienty
         let mut tasks = Vec::new();
 
         loop {
@@ -145,9 +146,7 @@ async fn main() {
         }
 
         debug!("server ready to shut down, now blocking on remaining tasks");
-        for task in tasks {
-            task.await
-        }
+        futures::future::join_all(tasks).await;
         debug!("server shut down");
     });
 
