@@ -284,3 +284,13 @@ async fn main() {
 # TODO
 
 database updates! first as a batch, then per-row?
+
+---
+
+Context: I have a web server that's serving almost-static data from a `HashMap`. Ocassionally I need to replace the data, all at once, so I currently using an `RwLock<Arc<HashMap<_, _>>>`, where each request handler takes a read lock, and ocassionally a different thread takes a write lock to replace the `Arc<HashMap<_, _>>` with a different one. (I am _not_ mutating the existing HashMap, not mutating it.)
+
+Question: It feels like using a lock here might be overkill, since I don't need to mutate the data in-place. I just need to replace reference with another, which seems like it should be able to use a single atomic swap instead of a full lock. (Followed by dropping) Is there an alternative to `RwLock` that would provide it? Or in this case, should an `RwLock` be as efficient as a atomic swap, anyway.
+
+Ahh but that requires I have no outstanding readers....
+
+Unless they're all cloning the Arc, which is more overhead than I'd be avoiding. Huh.
