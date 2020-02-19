@@ -156,11 +156,12 @@ html.document {
   .header {
     text-align: left;
 
+    img {
+      font-size: 33px;
+    }
+
     .text {
       display: inline;
-      border-bottom: 2px solid #000;
-      border-bottom-left-radius: 10px 6px;
-      border-bottom-right-radius: 32px 2px;
       position: relative;
       top: -7px;
       padding-right: 4px;
