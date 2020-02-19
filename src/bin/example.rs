@@ -62,8 +62,27 @@ impl WebApp {
 }
 
 #[derive(Debug)]
-struct Database {
+pub struct Database {
     names: RwLock<Arc<HashSet<String>>>,
+}
+
+pub struct Index<'a> {
+    database: &'a Database,
+}
+
+#[macro_use] extern crate rental;
+rental! {
+    pub mod rent_index {
+        #[rental]
+        pub struct IndexedDatabase {
+            database: Box<super::Database>,
+            index: super::Index<'database>,
+        }
+    }
+}
+
+fn indexed() -> rent_index::IndexedDatabase {
+    rent_index::IndexedDatabase::new()
 }
 
 impl Database {
