@@ -104,6 +104,6 @@
     "/public/**/*",
     "/scripts/**/*",
     "/out/**/*",
-    "/.next/{*,{static,server}/**/*}"
+    "/.next/**/*"
   ]
 }

@@ -8,7 +8,7 @@ class MyDocument extends Document {
       <Html className={styles.document}>
         <Head>
           <meta charSet="utf-8" />
-          <link rel="icon" href="/illufinch.png" />
+          <link rel="icon" href="/icon.png" />
         </Head>
         <body>
           <main>
