@@ -22,9 +22,13 @@ const MyApp = (props: any) => {
       </Head>
 
       <Header />
-      <section className={styles.content}>
-        <App {...props} />
-      </section>
+
+      <main>
+        <section className={styles.content}>
+          <App {...props} />
+        </section>
+      </main>
+
       <Footer />
     </>
   );
