@@ -9,8 +9,9 @@ import * as schema from "~/components/schema";
 import { GRAPHQL_ENDPOINT, withApollo } from "~/components/hooks/with-apollo";
 import { useDebounced } from "~/components/hooks/use-debounced";
 import { version as frontendVersion } from "~/../package.json";
-import useNprogress from "~/components/hooks/use-nprogress";
+import useProgressIndicator from "~/components/hooks/use-nprogress";
 import LoadingBlock from "~/components/loading-block";
+import Head from "next/head";
 
 const searchSuggestions = [
   "Braid",
@@ -115,8 +116,8 @@ export const HomePage: NextPage<{}> = () => {
     }, 0);
   }, []);
 
-  useNprogress(home.loading);
-  useNprogress(gameIndex.loading);
+  useProgressIndicator(home.loading);
+  useProgressIndicator(gameIndex.loading);
 
   const backendVersion = home?.data?.stats?.version;
   const backendVersionLink =
@@ -134,6 +135,9 @@ export const HomePage: NextPage<{}> = () => {
 
   return (
     <section className={styles.home}>
+      <Head>
+        <title>Speedruns</title>
+      </Head>
       {gameIndex?.error || home?.error ? (
         <pre>{JSON.stringify([gameIndex?.error, home?.error], null, 2)}</pre>
       ) : null}
@@ -303,8 +307,8 @@ const GetHomeStats = gql`
 const GetGameIndex = gql`
   query GetGameIndex {
     games {
-      name
       srcSlug
+      name
     }
   }
 `;
