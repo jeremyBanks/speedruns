@@ -44,7 +44,10 @@ const RunPage: NextPage = () => {
   return (
     <section className={styles.runPage} id={game.id}>
       <Head>
-        <title>{game.name}</title>
+        <title>
+          {game.name} Speedrun by {run.players.map(p => p.name).join(" & ")} (
+          {run.srcId})
+        </title>
         <link
           rel="canonical"
           href={`https://www.speedrun.com/${game.srcSlug}/run/${run.srcId}`}

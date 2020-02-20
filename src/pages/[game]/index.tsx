@@ -36,7 +36,7 @@ const GamePage: NextPage = () => {
   return (
     <section className={styles.gamePage} id={game.id}>
       <Head>
-        <title>{game.name}</title>
+        <title>{game.name} Speedruns</title>
         <link
           rel="canonical"
           href={`https://www.speedrun.com/${game.srcSlug}`}
