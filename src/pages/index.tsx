@@ -134,11 +134,6 @@ export const HomePage: NextPage<{}> = () => {
 
   return (
     <section className={styles.home}>
-      <p>
-        an unofficial mirror of{" "}
-        <a href="https://www.speedrun.com/about">speedrun.com</a>
-      </p>
-
       {gameIndex?.error || home?.error ? (
         <pre>{JSON.stringify([gameIndex?.error, home?.error], null, 2)}</pre>
       ) : null}
