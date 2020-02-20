@@ -62,7 +62,10 @@ export const HomePage: NextPage<{}> = () => {
     }
 
     const slugify = (s: string) => {
-      return s.toLowerCase().replace(/[^a-z0-9+]/g, "");
+      return s
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[^a-z0-9+]/g, "");
     };
 
     const name = slugify(debouncedTargetNameOrSuggestion);
