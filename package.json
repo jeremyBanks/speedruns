@@ -97,13 +97,13 @@
     ]
   },
   "files": [
-    "data/**/.gitignore",
-    "/rust-toolchain",
     "/*.{json,js,toml,yaml,prettierrc,nvmrc,graphqlconfig}",
-    "/src/**/*",
-    "/public/**/*",
-    "/scripts/**/*",
+    "/.next/**/*",
     "/out/**/*",
-    "/.next/**/*"
+    "/public/**/*",
+    "/rust-toolchain",
+    "/scripts/**/*",
+    "/src/**/*",
+    "data/**/.gitignore"
   ]
 }

@@ -42,6 +42,8 @@ cargo publish $publish_args --token "$CARGO_PUBLISH_TOKEN" --allow-dirty
 
 ### NPM
 
+rm -r .next/{cache,*.flow}
+
 echo "//npm.pkg.github.com/:_authToken=${GITHUB_PUBLISH_TOKEN}" > .npmrc
 echo "@jeremybanks:registry=https://npm.pkg.github.com" >> .npmrc
 echo "always-auth=true" >> .npmrc
