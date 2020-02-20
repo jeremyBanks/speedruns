@@ -1,19 +1,8 @@
 #![feature(arbitrary_self_types, assoc_int_consts)]
-#![allow(unused_imports)]
-use async_std::{
-    prelude::*,
-    sync::{channel, Arc, RwLock},
-    task::{sleep, spawn},
-};
 use itertools::Itertools;
-use log::{debug, error, info, trace, warn};
-use rand::prelude::*;
-use std::{
-    collections::{BTreeMap, HashSet},
-    io::Write,
-    rc::Rc,
-    time::{Duration, Instant},
-};
+#[allow(unused)] use log::{debug, error, info, trace, warn};
+use owning_ref::ArcRef;
+use std::{collections::HashSet, io::Write, sync::Arc, time::Instant};
 
 #[derive(Debug)]
 pub struct Database {
@@ -26,41 +15,27 @@ pub struct Index<'database> {
     alphabetically_first: &'database String,
 }
 
-#[macro_use] extern crate rental;
-rental! {
-    pub mod rent_index {
-        #[rental(covariant, debug, covariant)]
-        pub struct IndexedDatabase {
-            database: Box<super::Database>,
-            index: super::Index<'database>,
-        }
-    }
-}
-use rent_index::*;
-
-impl IndexedDatabase {
-    pub fn default() -> Self {
-        IndexedDatabase::new(
-            Box::new(Database {
-                names: vec!["Chris", "Jeremy", "Katz", "Manish"]
-                    .iter()
-                    .map(|s| s.to_string())
-                    .collect(),
-            }),
-            |db| Index {
-                alphabetically_first: db.names.iter().sorted().next().expect("empty? oops"),
-            },
-        )
-    }
-}
-
 #[async_std::main]
 async fn main() {
     init_logger();
 
-    let idb = IndexedDatabase::default();
+    let idb = ArcRef::new(Arc::new(Database {
+        names: vec!["Chris", "Jeremy", "Katz", "Manish"]
+            .iter()
+            .map(|s| s.to_string())
+            .collect(),
+    }));
 
-    debug!("{:#?}", idb.all().database);
+    let alphabetically_first = idb
+        .clone()
+        .map(|db| db.names.iter().sorted().next().expect("empty? oops"));
+
+    let alphabetically_last = idb
+        .clone()
+        .map(|db| db.names.iter().sorted().rev().next().expect("empty? oops"));
+
+    debug!("{:#?}", alphabetically_first);
+    debug!("{:#?}", alphabetically_last);
 }
 
 fn init_logger() {
