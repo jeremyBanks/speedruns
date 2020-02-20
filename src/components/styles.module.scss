@@ -48,11 +48,11 @@ html.document {
     font: 16px "Fira Sans", sans-serif;
     padding: 24px 0;
     margin: 16px auto;
+    margin-top: 0;
     width: 100%;
     max-width: 650px;
     min-width: 600px;
     border-top-right-radius: 8px;
-    border-bottom-left-radius: 8px;
     box-shadow: 0 0 2px black, 0 0 4px rgba(255, 255, 255, 0.5);
 
     @media (max-width: 660px) {
@@ -68,8 +68,12 @@ html.document {
     margin-right: auto;
   }
 
+  main :first-child {
+    margin-top: 0;
+  }
+
   section.content {
-    min-height: 70vh;
+    min-height: 90vh;
   }
 
   a {
@@ -144,16 +148,48 @@ html.document {
     }
   }
 
-  .header {
-    text-align: center;
+  .header,
+  .footer {
+    display: block;
+    width: 100%;
+    max-width: 650px;
+    min-width: 600px;
+    margin: 0 auto;
+    font-family: "Fira Sans";
+    color: white;
+    a:hover {
+      color: yellow;
+    }
+    h1 {
+      padding: 2px;
+      font-size: 14px;
+      margin: 0 auto;
+      margin-top: 8px;
+      @media (max-width: 660px) {
+        margin-top: 0;
+      }
+      text-align: left;
+      font-weight: normal;
+
+      .subtitle {
+        font-size: 12px;
+      }
+    }
 
     img {
       vertical-align: bottom;
     }
+  }
+  .footer {
+    font-size: 10px;
+    margin-bottom: 32px;
 
-    h1 {
-      margin-top: -8px;
-      margin-bottom: 32px;
+    p {
+      margin: 16px;
+    }
+
+    a {
+      text-decoration: underline;
     }
   }
 
@@ -162,15 +198,6 @@ html.document {
       li {
         margin-bottom: 0.3em;
       }
-    }
-  }
-
-  .footer {
-    font-size: 0.75em;
-    margin-top: 128px;
-
-    a {
-      text-decoration: underline;
     }
   }
 
@@ -383,8 +410,6 @@ html.document {
     box-shadow: 0 0 10px #d92, 0 0 5px #d92;
     opacity: 1;
 
-    -webkit-transform: rotate(3deg) translate(0px, -4px);
-    -ms-transform: rotate(3deg) translate(0px, -4px);
     transform: rotate(3deg) translate(0px, -4px);
   }
 
@@ -407,7 +432,6 @@ html.document {
     border-left-color: #d92;
     border-radius: 50%;
 
-    -webkit-animation: nprogress-spinner 400ms linear infinite;
     animation: nprogress-spinner 400ms linear infinite;
   }
 
@@ -416,18 +440,8 @@ html.document {
     position: relative;
   }
 
-  [class~="nprogress-custom-parent"] [id="nprogress"] [class~="spinner"],
-  [class~="nprogress-custom-parent"] [id="nprogress"] [class~="bar"] {
+  [class~="nprogress-custom-parent"] [id="nprogress"] [class~="spinner"] {
     position: absolute;
-  }
-
-  @-webkit-keyframes nprogress-spinner {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
   }
 
   @keyframes nprogress-spinner {

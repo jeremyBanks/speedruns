@@ -8,13 +8,11 @@ class MyDocument extends Document {
       <Html className={styles.document}>
         <Head>
           <meta charSet="utf-8" />
-          <link rel="icon" href="/icon.png" />
+          <link rel="icon" href="/finch.png" />
         </Head>
         <body>
-          <main>
-            <Main />
-            <NextScript />
-          </main>
+          <Main />
+          <NextScript />
         </body>
       </Html>
     );
