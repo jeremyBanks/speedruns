@@ -22,6 +22,7 @@ sed -i '0,/speedruns_utils/ s/version = ".*"/version = "'$version'"/' Cargo.toml
 sed -i '0,/version = ".*"/ s/version = ".*"/version = "'$version'"/' Cargo.toml
 sed -i '0,/version = ".*"/ s/version = ".*"/version = "'$version'"/' src/lib/utils/Cargo.toml
 
+yarn build
 yarn export
 
 git diff
