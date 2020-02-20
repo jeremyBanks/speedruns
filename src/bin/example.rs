@@ -5,6 +5,7 @@ use async_std::{
     sync::{channel, Arc, RwLock},
     task::{sleep, spawn},
 };
+use itertools::Itertools;
 use log::{debug, error, info, trace, warn};
 use rand::prelude::*;
 use std::{
@@ -15,103 +16,41 @@ use std::{
 };
 
 #[derive(Debug)]
-enum Request {
-    GetNames,
-    AddName(String),
-    RemoveName(String),
-}
-
-#[derive(Debug)]
-struct Response {
-    names: Vec<String>,
-}
-
-#[derive(Debug)]
-struct WebApp {
-    database: Database,
-}
-
-impl WebApp {
-    fn new() -> WebApp {
-        WebApp {
-            database: Database {
-                names: RwLock::new(Default::default()),
-            },
-        }
-    }
-
-    fn database(&self) -> &Database {
-        &self.database
-    }
-
-    async fn handle(self: Arc<Self>, request: Request) -> Response {
-        match request {
-            Request::GetNames => {}
-            Request::AddName(name) => {
-                self.database().add_name(name).await;
-            }
-            Request::RemoveName(name) => {
-                self.database().remove_name(name).await;
-            }
-        }
-
-        let names = self.database().get_names().await;
-
-        Response { names }
-    }
-}
-
-#[derive(Debug)]
 pub struct Database {
-    names: RwLock<Arc<HashSet<String>>>,
+    names: HashSet<String>,
 }
 
-pub struct Index<'a> {
-    database: &'a Database,
+#[derive(Debug)]
+pub struct Index<'database> {
+    /// a reference to name that's alphabetically first in the .names set
+    alphabetically_first: &'database String,
 }
 
 #[macro_use] extern crate rental;
 rental! {
     pub mod rent_index {
-        #[rental]
+        #[rental(covariant, debug, covariant)]
         pub struct IndexedDatabase {
             database: Box<super::Database>,
             index: super::Index<'database>,
         }
     }
 }
+use rent_index::*;
 
-fn indexed() -> rent_index::IndexedDatabase {
-    rent_index::IndexedDatabase::new()
-}
-
-impl Database {
-    pub async fn get_names(&self) -> Vec<String> {
-        debug!("database: get_names() requesting read lock");
-        let names = self.names.read().await;
-        debug!("database: get_names() got read lock");
-        sleep(Duration::from_secs_f64(0.25)).await;
-        names.iter().cloned().collect()
-    }
-
-    pub async fn add_name(&self, name: String) {
-        debug!("database: add_name({:?}) requesting write lock", name);
-        let mut names = self.names.write().await;
-        debug!("database: add_name({:?}) got write lock", name);
-        let mut new_names = (**names).clone();
-        new_names.insert(name);
-        *names = Arc::new(new_names);
-        sleep(Duration::from_secs_f64(0.75)).await;
-    }
-
-    pub async fn remove_name(&self, name: String) {
-        debug!("database: remove_name({:?}) requesting write lock", name);
-        let mut names = self.names.write().await;
-        debug!("database: remove_name({:?}) got write lock", name);
-        let mut new_names = (**names).clone();
-        new_names.remove(&name);
-        *names = Arc::new(new_names);
-        sleep(Duration::from_secs_f64(1.25)).await;
+impl IndexedDatabase {
+    pub fn default() -> Self {
+        IndexedDatabase::new(
+            Box::new(Database {
+                names: vec!["Chris", "Jeremy", "Katz", "Manish"]
+                    .iter()
+                    .map(|s| s.to_string())
+                    .collect(),
+            }),
+            |db| Index {
+                alphabetically_first: db.names.iter().sorted().next().expect("empty? oops"),
+            },
+        )
     }
 }
 
@@ -119,57 +58,9 @@ impl Database {
 async fn main() {
     init_logger();
 
-    let app = Arc::new(WebApp::new());
+    let idb = IndexedDatabase::default();
 
-    let (sender, receiver) = channel(32);
-
-    let client = spawn(async move {
-        sender.send(Request::AddName("Jeremy".to_string())).await;
-        sleep(Duration::from_secs_f64(0.0125)).await;
-        sender.send(Request::AddName("Banks".to_string())).await;
-        sleep(Duration::from_secs_f64(0.0125)).await;
-        sender.send(Request::RemoveName("Banks".to_string())).await;
-
-        for _ in 0..2 {
-            sleep(Duration::from_secs_f64(1.0)).await;
-
-            let request = Request::GetNames;
-            sender.send(request).await;
-        }
-    });
-
-    let server = spawn(async move {
-        // this grows inefficienty
-        let mut tasks = Vec::new();
-
-        loop {
-            let request = match receiver.recv().await {
-                Some(request) => request,
-                None => {
-                    debug!("server: connection channel closed");
-                    break
-                }
-            };
-            debug!("server: got request {:?}", request);
-
-            let app_for_task = app.clone();
-            tasks.push(spawn(async {
-                let request_s = format!("{:?}", request);
-
-                let response = app_for_task.handle(request).await;
-                debug!(
-                    "server: sent response {:?} for request {}",
-                    response, request_s
-                );
-            }));
-        }
-
-        debug!("server ready to shut down, now blocking on remaining tasks");
-        futures::future::join_all(tasks).await;
-        debug!("server shut down");
-    });
-
-    client.join(server).await;
+    debug!("{:#?}", idb.all().database);
 }
 
 fn init_logger() {
