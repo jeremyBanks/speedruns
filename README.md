@@ -10,7 +10,7 @@ This project is not associated with or endorsed by speedrun.com.
 
 ### Code License
 
-Copyright Jeremy Banks, released under [the MIT License](./LICENSE).
+Copyright Jeremy Banks, released under [the MIT License](LICENSE).
 
 ### Content License
 

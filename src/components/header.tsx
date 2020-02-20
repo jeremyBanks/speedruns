@@ -14,9 +14,14 @@ const Header: React.FC = () => {
         <span className={styles.inner}>
           <Link href="/">
             <a>
-              <img src="/icon.png" /> speedruns.ca
+              <img src="/finch.png" width="13" /> <b>speedruns.ca</b>
             </a>
           </Link>
+          :{" "}
+          <span className={styles.subtitle}>
+            an unofficial mirror of{" "}
+            <a href="https://www.speedrun.com/">speedrun.com</a>
+          </span>
         </span>
       </h1>
     </header>
