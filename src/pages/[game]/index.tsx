@@ -22,6 +22,7 @@ const GamePage: NextPage = () => {
     GetGamePagePreview,
     {
       variables: { slug: router.query.game },
+      fetchPolicy: "cache-only",
     },
   );
 
