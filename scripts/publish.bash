@@ -22,8 +22,8 @@ sed -i '0,/speedruns_utils/ s/version = ".*"/version = "'$version'"/' Cargo.toml
 sed -i '0,/version = ".*"/ s/version = ".*"/version = "'$version'"/' Cargo.toml
 sed -i '0,/version = ".*"/ s/version = ".*"/version = "'$version'"/' src/lib/utils/Cargo.toml
 
+export NODE_ENV=production
 yarn build
-yarn export
 
 git diff
 
@@ -43,7 +43,7 @@ cargo publish $publish_args --token "$CARGO_PUBLISH_TOKEN" --allow-dirty
 
 ### NPM
 
-rm -r .next/{cache,*.flow}
+rm -r .next/cache
 
 echo "//npm.pkg.github.com/:_authToken=${GITHUB_PUBLISH_TOKEN}" > .npmrc
 echo "@jeremybanks:registry=https://npm.pkg.github.com" >> .npmrc
