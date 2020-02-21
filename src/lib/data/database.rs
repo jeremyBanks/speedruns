@@ -117,6 +117,8 @@ rental! {
 }
 use rentals::*;
 
+// Dereference Database -> Indicies -> Tables
+
 impl Tables {
     pub fn new(
         runs: Vec<Run>,
