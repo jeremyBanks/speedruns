@@ -11,6 +11,7 @@ import { useDebounced } from "~/components/hooks/use-debounced";
 import { version as frontendVersion } from "~/../package.json";
 import useNprogress from "~/components/hooks/use-nprogress";
 import LoadingBlock from "~/components/loading-block";
+import Head from "next/head";
 
 const searchSuggestions = [
   "Braid",
@@ -134,6 +135,9 @@ export const HomePage: NextPage<{}> = () => {
 
   return (
     <section className={styles.home}>
+      <Head>
+        <title>Speedruns</title>
+      </Head>
       {gameIndex?.error || home?.error ? (
         <pre>{JSON.stringify([gameIndex?.error, home?.error], null, 2)}</pre>
       ) : null}
