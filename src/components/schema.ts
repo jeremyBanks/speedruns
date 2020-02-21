@@ -10,6 +10,10 @@
 export interface GetGamePagePreview_game {
   __typename: "Game";
   /**
+   * GraphQL node ID
+   */
+  id: string;
+  /**
    * URL slug used on speedrun.com
    */
   srcSlug: string;
@@ -1106,6 +1110,10 @@ export interface GetHomeStats {
 
 export interface GetGameIndex_games {
   __typename: "Game";
+  /**
+   * GraphQL node ID
+   */
+  id: string;
   /**
    * URL slug used on speedrun.com
    */

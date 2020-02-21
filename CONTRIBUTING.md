@@ -63,10 +63,10 @@ for convenience if I want to put up a branch at a memorable URL.
 An Action attempts to publish a `-dev` prerelease of this package for every
 green commit on `master`, and then promotes it to `prod` if successful.
 
-The backend is published to as
+The backend is published as
 [`speedruns` on crates.io](https://crates.io/crates/speedruns).
 
 The frontend is published as
 [`speedruns` on NPM](https://www.npmjs.com/package/speedruns) and as
-[`@jeremybanks/speedruns` on NPM](https://www.npmjs.com/package/speedruns), and
+[`@jeremybanks/speedruns` on NPM](https://www.npmjs.com/package/@jeremybanks/speedruns), and
 [on the GitHub Package Registry](https://github.com/jeremyBanks/speedruns/packages/120812).

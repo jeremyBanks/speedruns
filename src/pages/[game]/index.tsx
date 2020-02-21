@@ -17,6 +17,7 @@ import LoadingBlock from "~/components/loading-block";
 const GamePage: NextPage = () => {
   const router = useRouter();
 
+  // TODO: make this use a cached value from the home page, instead of a second query
   const { data: previewData } = useQuery<schema.GetGamePagePreview>(
     GetGamePagePreview,
     {
@@ -114,6 +115,7 @@ export default withApollo(GamePage);
 const GetGamePagePreview = gql`
   query GetGamePagePreview($slug: String!) {
     game(slug: $slug) {
+      id
       srcSlug
       name
     }

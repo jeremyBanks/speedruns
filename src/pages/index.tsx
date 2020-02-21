@@ -307,6 +307,7 @@ const GetHomeStats = gql`
 const GetGameIndex = gql`
   query GetGameIndex {
     games {
+      id
       srcSlug
       name
     }
