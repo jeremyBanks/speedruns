@@ -13,7 +13,8 @@ use std::{
 
 use flate2::read::GzDecoder;
 use itertools::Itertools;
-#[allow(unused)] use log::{debug, error, info, trace, warn};
+#[allow(unused)]
+use log::{debug, error, info, trace, warn};
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use tempfile::NamedTempFile;
@@ -59,7 +60,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
     for api_game in load_api_type::<api::Game>("data/api/games.jsonl.gz")? {
         if args.fixtures && !fixture_game_slugs.contains(&api_game.abbreviation().as_ref())
         {
-            continue
+            continue;
         } else {
             fixture_game_ids.insert(api_game.id().clone());
         }
@@ -76,7 +77,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
     info!("Loading API runs...");
     for api_run in load_api_type::<api::Run>("data/api/runs.jsonl.gz")? {
         if args.fixtures && !fixture_game_ids.contains(api_run.game()) {
-            continue
+            continue;
         } else {
             fixture_run_ids.insert(api_run.id().clone());
             for player in api_run.players() {
@@ -97,7 +98,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
     info!("Loading API users...");
     for api_user in load_api_type::<api::User>("data/api/users.jsonl.gz")? {
         if args.fixtures && !fixture_user_ids.contains(api_user.id()) {
-            continue
+            continue;
         }
 
         let user = api_user
@@ -120,7 +121,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
         )))) {
             Ok(_) => {
                 info!("Database validation successful.");
-                break
+                break;
             }
             Err(errors) => {
                 error!("Database validation failed: {}", errors);
@@ -142,8 +143,9 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
                                 User(user) => dead_user_ids.insert(*user.id()),
                                 Game(game) => dead_game_ids.insert(*game.id()),
                                 Level(level) => dead_level_ids.insert(*level.id()),
-                                Category(category) =>
-                                    dead_category_ids.insert(*category.id()),
+                                Category(category) => {
+                                    dead_category_ids.insert(*category.id())
+                                }
                             };
                         }
                         IntegrityError::CheckFailed { .. } => {

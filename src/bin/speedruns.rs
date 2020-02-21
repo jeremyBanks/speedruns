@@ -7,7 +7,8 @@
 
 use std::error::Error;
 
-#[allow(unused)] use log::{debug, error, info, trace, warn};
+#[allow(unused)]
+use log::{debug, error, info, trace, warn};
 
 mod import;
 mod scrape;
