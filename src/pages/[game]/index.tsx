@@ -11,32 +11,40 @@ import LeaderboardTable from "~/components/leaderboard-table";
 import * as schema from "~/components/schema";
 import styles from "~/components/styles.module.scss";
 import { withApollo, DEBUG } from "~/components/hooks/with-apollo";
-import useNprogress from "~/components/hooks/use-nprogress";
+import useProgressIndicator from "~/components/hooks/use-nprogress";
 import LoadingBlock from "~/components/loading-block";
 
 const GamePage: NextPage = () => {
   const router = useRouter();
 
+  const { data: previewData } = useQuery<schema.GetGamePagePreview>(
+    GetGamePagePreview,
+    {
+      variables: { slug: router.query.game },
+    },
+  );
+
   const { loading, error, data } = useQuery<schema.GetGamePage>(GetGamePage, {
     variables: { slug: router.query.game },
   });
 
-  useNprogress(loading);
+  useProgressIndicator(loading);
 
-  if (!data) {
+  if (error || !(data || previewData)) {
     return <>{error ? JSON.stringify(error) : <LoadingBlock />}</>;
   }
 
-  const game = data.game;
+  const fullGame = data?.game;
+  const game = fullGame || previewData?.game;
 
   if (!game) {
     return <>game not found</>;
   }
 
   return (
-    <section className={styles.gamePage} id={game.id}>
+    <section className={styles.gamePage}>
       <Head>
-        <title>{game.name}</title>
+        <title>{game.name} Speedruns</title>
         <link
           rel="canonical"
           href={`https://www.speedrun.com/${game.srcSlug}`}
@@ -44,12 +52,12 @@ const GamePage: NextPage = () => {
       </Head>
 
       <h2>
-        <Link href={`/[game]?game=${game.slug}`} as={`/${game.slug}`}>
+        <Link href={`/[game]?game=${game.srcSlug}`} as={`/${game.srcSlug}`}>
           <a>{game.name}</a>
         </Link>
       </h2>
 
-      {game.gameCategories.map(category => (
+      {fullGame?.gameCategories.map(category => (
         <section key={category.id} id={`${category.id}`}>
           <h3>
             <a href={`#${category.id}`}>{category.name}</a>
@@ -57,15 +65,15 @@ const GamePage: NextPage = () => {
 
           <h4>Progress</h4>
 
-          <ProgressionTable runs={category.progression} game={game} />
+          <ProgressionTable runs={category.progression} game={fullGame} />
 
           <h4>Leaderboard</h4>
 
-          <LeaderboardTable runs={category.leaderboard} game={game} />
+          <LeaderboardTable runs={category.leaderboard} game={fullGame} />
         </section>
       ))}
 
-      {game.levelCategories.map(levelCategory => (
+      {fullGame?.levelCategories.map(levelCategory => (
         <div key={levelCategory.id} id={levelCategory.id}>
           <h2>
             <a href={`#${levelCategory.id}`}>{levelCategory.name}</a>
@@ -77,7 +85,7 @@ const GamePage: NextPage = () => {
             runs={levelCategory.progression}
             showLevels={true}
             showSums={true}
-            game={game}
+            game={fullGame}
           />
 
           {levelCategory.levels.map(({ level, leaderboard, progression }) => (
@@ -88,11 +96,11 @@ const GamePage: NextPage = () => {
 
               <h4>Progress</h4>
 
-              <ProgressionTable runs={progression} game={game} />
+              <ProgressionTable runs={progression} game={fullGame} />
 
               <h4>Leaderboard</h4>
 
-              <LeaderboardTable runs={leaderboard} game={game} />
+              <LeaderboardTable runs={leaderboard} game={fullGame} />
             </section>
           ))}
         </div>
@@ -102,6 +110,15 @@ const GamePage: NextPage = () => {
 };
 
 export default withApollo(GamePage);
+
+const GetGamePagePreview = gql`
+  query GetGamePagePreview($slug: String!) {
+    game(slug: $slug) {
+      srcSlug
+      name
+    }
+  }
+`;
 
 const GameRun = gql`
   fragment GameRun on Run {

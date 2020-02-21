@@ -13,7 +13,7 @@ import { withApollo, DEBUG } from "~/components/hooks/with-apollo";
 import RunDuration from "~/components/duration";
 import RunPlayers from "~/components/run-players";
 import RunDate from "~/components/run-date";
-import useNprogress from "~/components/hooks/use-nprogress";
+import useProgressIndicator from "~/components/hooks/use-nprogress";
 import LoadingBlock from "~/components/loading-block";
 import RunLinks from "~/components/run-links";
 const RunPage: NextPage = () => {
@@ -27,7 +27,7 @@ const RunPage: NextPage = () => {
     fetchPolicy: DEBUG ? "cache-and-network" : "cache-first",
   });
 
-  useNprogress(loading);
+  useProgressIndicator(loading);
 
   if (!data) {
     return <>{error ? JSON.stringify(error) : <LoadingBlock />}</>;
@@ -44,7 +44,10 @@ const RunPage: NextPage = () => {
   return (
     <section className={styles.runPage} id={game.id}>
       <Head>
-        <title>{game.name}</title>
+        <title>
+          {game.name} Speedrun by {run.players.map(p => p.name).join(" & ")} (
+          {run.srcId})
+        </title>
         <link
           rel="canonical"
           href={`https://www.speedrun.com/${game.srcSlug}/run/${run.srcId}`}

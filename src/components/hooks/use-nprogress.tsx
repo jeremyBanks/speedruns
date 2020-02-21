@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import NProgress from "nprogress";
 
-const startDelay = 50;
+const startDelay = 10;
 const doneDelay = 10;
 
 // GLOBAL STATE!
@@ -56,7 +56,7 @@ export const dec = () => {
   }
 };
 
-const useNprogress = (loading: boolean) => {
+const useProgressIndicator = (loading: boolean) => {
   useEffect(() => {
     if (loading) {
       inc();
@@ -66,4 +66,4 @@ const useNprogress = (loading: boolean) => {
   }, [loading]);
 };
 
-export default useNprogress;
+export default useProgressIndicator;
