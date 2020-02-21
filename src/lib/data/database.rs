@@ -93,24 +93,29 @@ pub struct Tables {
     levels:     BTreeMap<u64, Level>,
 }
 
-/// A collection of [Tables] with various generated indexes.
-#[derive(Getters, Clone)]
-pub struct Database {
-    #[get = "pub"]
-    tables:                                       &'static Tables,
-    #[get = "pub"]
+#[derive(Debug, Clone)]
+pub struct Indicies<'tables> {
     last_updated:                                 DateTime<Utc>,
-    #[get = "pub"]
     runs_by_game_id_and_category_id_and_level_id:
-        BTreeMap<(u64, u64, Option<u64>), Vec<&'static Run>>,
-    games_by_slug:                                BTreeMap<String, &'static Game>,
-    users_by_slug:                                BTreeMap<String, &'static User>,
-    #[get = "pub"]
-    per_game_categories_by_game_id_and_slug: BTreeMap<(u64, String), &'static Category>,
-    #[get = "pub"]
-    per_level_categories_by_game_id_and_slug: BTreeMap<(u64, String), &'static Category>,
-    levels_by_game_id_and_slug:                   BTreeMap<(u64, String), &'static Level>,
+        BTreeMap<(u64, u64, Option<u64>), Vec<&'tables Run>>,
+    games_by_slug:                                BTreeMap<String, &'tables Game>,
+    users_by_slug:                                BTreeMap<String, &'tables User>,
+    per_game_categories_by_game_id_and_slug: BTreeMap<(u64, String), &'tables Category>,
+    per_level_categories_by_game_id_and_slug: BTreeMap<(u64, String), &'tables Category>,
+    levels_by_game_id_and_slug:                   BTreeMap<(u64, String), &'tables Level>,
 }
+
+rental! {
+    mod rentals {
+        use super::*;
+        #[rental(debug, clone, covariant)]
+        pub struct Database {
+            tables: Arc<Tables>,
+            indicies: Indicies<'tables>,
+        }
+    }
+}
+use rentals::*;
 
 impl Tables {
     pub fn new(
@@ -145,12 +150,6 @@ impl Tables {
 /// key lookups.
 const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validation?!";
 
-impl std::fmt::Debug for Database {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "Database {{ .. }}")
-    }
-}
-
 impl Database {
     pub fn link<ModelType: Model>(
         self: &Arc<Self>,
@@ -160,89 +159,100 @@ impl Database {
     }
 
     /// Creates a new Database indexing a collection of static tables.
-    pub fn new(tables: &'static Tables) -> Result<Arc<Self>, IntegrityErrors> {
-        let mut last_updated: DateTime<Utc> =
-            DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(0, 0), Utc);
-        let mut runs_by_game_id_and_category_id_and_level_id: BTreeMap<
-            (u64, u64, Option<u64>),
-            Vec<&'static Run>,
-        > = Default::default();
-        let mut games_by_slug: BTreeMap<String, &'static Game> = Default::default();
-        let mut users_by_slug: BTreeMap<String, &'static User> = Default::default();
-        let mut per_game_categories_by_game_id_and_slug: BTreeMap<
-            (u64, String),
-            &'static Category,
-        > = Default::default();
-        let mut per_level_categories_by_game_id_and_slug: BTreeMap<
-            (u64, String),
-            &'static Category,
-        > = Default::default();
-        let mut levels_by_game_id_and_slug: BTreeMap<(u64, String), &'static Level> =
-            Default::default();
-        let index_errored = '_indexing: {
-            for game in tables.games().values() {
-                games_by_slug.insert(game.slug().to_string(), game);
-            }
+    pub fn from_tables(tables: Arc<Tables>) -> Result<Arc<Self>, IntegrityErrors> {
+        let maybe_self: Result<Self, _> = Self::try_new(tables, |tables| {
+            let mut last_updated: DateTime<Utc> =
+                DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(0, 0), Utc);
+            let mut runs_by_game_id_and_category_id_and_level_id: BTreeMap<
+                (u64, u64, Option<u64>),
+                Vec<&'_ Run>,
+            > = Default::default();
+            let mut games_by_slug: BTreeMap<String, &'_ Game> = Default::default();
+            let mut users_by_slug: BTreeMap<String, &'_ User> = Default::default();
+            let mut per_game_categories_by_game_id_and_slug: BTreeMap<
+                (u64, String),
+                &'_ Category,
+            > = Default::default();
+            let mut per_level_categories_by_game_id_and_slug: BTreeMap<
+                (u64, String),
+                &'_ Category,
+            > = Default::default();
+            let mut levels_by_game_id_and_slug: BTreeMap<(u64, String), &'_ Level> =
+                Default::default();
+            let index_errored = '_indexing: {
+                for game in tables.games().values() {
+                    games_by_slug.insert(game.slug().to_string(), game);
+                }
 
-            for run in tables.runs().values() {
-                if let Some(created) = run.created {
-                    if created > last_updated {
-                        last_updated = created;
+                for run in tables.runs().values() {
+                    if let Some(created) = run.created {
+                        if created > last_updated {
+                            last_updated = created;
+                        }
+                    }
+
+                    let key = (*run.game_id(), *run.category_id(), *run.level_id());
+                    if let Some(runs) =
+                        runs_by_game_id_and_category_id_and_level_id.get_mut(&key)
+                    {
+                        runs.push(run);
+                    } else {
+                        runs_by_game_id_and_category_id_and_level_id
+                            .insert(key, vec![run])
+                            .unwrap_none();
                     }
                 }
 
-                let key = (*run.game_id(), *run.category_id(), *run.level_id());
-                if let Some(runs) =
-                    runs_by_game_id_and_category_id_and_level_id.get_mut(&key)
-                {
-                    runs.push(run);
-                } else {
-                    runs_by_game_id_and_category_id_and_level_id
-                        .insert(key, vec![run])
-                        .unwrap_none();
+                for user in tables.users().values() {
+                    users_by_slug.insert(user.slug().to_string(), user);
                 }
-            }
 
-            for user in tables.users().values() {
-                users_by_slug.insert(user.slug().to_string(), user);
-            }
-
-            for category in tables.categories().values() {
-                match category.per() {
-                    CategoryType::PerGame => &mut per_game_categories_by_game_id_and_slug,
-                    CategoryType::PerLevel => &mut per_level_categories_by_game_id_and_slug,
+                for category in tables.categories().values() {
+                    match category.per() {
+                        CategoryType::PerGame =>
+                            &mut per_game_categories_by_game_id_and_slug,
+                        CategoryType::PerLevel =>
+                            &mut per_level_categories_by_game_id_and_slug,
+                    }
+                    .insert((*category.game_id(), category.slug().to_string()), category);
                 }
-                .insert((*category.game_id(), category.slug().to_string()), category);
+
+                for level in tables.levels().values() {
+                    levels_by_game_id_and_slug
+                        .insert((*level.game_id(), level.slug().to_string()), level);
+                }
+
+                for game_runs in runs_by_game_id_and_category_id_and_level_id.values_mut() {
+                    game_runs.sort();
+                }
+
+                false
+            };
+
+            let mut errors = Vec::new();
+            if index_errored {
+                error!("indexing failed, database must have validity errors");
+                errors.push(IntegrityError::IndexingError)
             }
 
-            for level in tables.levels().values() {
-                levels_by_game_id_and_slug
-                    .insert((*level.game_id(), level.slug().to_string()), level);
-            }
-
-            for game_runs in runs_by_game_id_and_category_id_and_level_id.values_mut() {
-                game_runs.sort();
-            }
-
-            false
-        };
+            IntegrityErrors::try_from(errors).map(|_| Indicies {
+                last_updated,
+                runs_by_game_id_and_category_id_and_level_id,
+                games_by_slug,
+                users_by_slug,
+                per_game_categories_by_game_id_and_slug,
+                per_level_categories_by_game_id_and_slug,
+                levels_by_game_id_and_slug,
+            })
+        });
 
         let mut errors = Vec::new();
-        if index_errored {
-            error!("indexing failed, database must have validity errors");
-            errors.push(IntegrityError::IndexingError)
-        }
+        let self_: Result<Arc<Self>, IntegrityErrors> = match maybe_self {
+            Ok(self_) => Ok(Arc::new(self_)),
+            Err(error) => unimplemented!("TODO: copy these errors"),
+        };
 
-        let self_ = Arc::new(Self {
-            tables,
-            last_updated,
-            runs_by_game_id_and_category_id_and_level_id,
-            games_by_slug,
-            users_by_slug,
-            per_game_categories_by_game_id_and_slug,
-            per_level_categories_by_game_id_and_slug,
-            levels_by_game_id_and_slug,
-        });
+        let self_ = self_.unwrap();
 
         if let Err(mut errors_) = self_.validate() {
             errors.append(&mut errors_.errors);
@@ -251,17 +261,25 @@ impl Database {
         IntegrityErrors::try_from(errors).map(|_| self_)
     }
 
+    pub fn tables(&self) -> &Tables {
+        self.all().tables
+    }
+
+    pub fn indicies(&self) -> &Indicies {
+        self.all().indicies
+    }
+
     pub fn validate(self: &Arc<Self>) -> Result<(), IntegrityErrors> {
         let mut errors = vec![];
 
-        trace!("Validating {} runs.", self.tables.runs().len());
+        trace!("Validating {} runs.", self.tables().runs().len());
         for run in self.runs() {
             if let Err(mut error) = run.validate() {
                 errors.append(&mut error.errors);
             }
         }
 
-        trace!("Validating {} users.", self.tables.users().len());
+        trace!("Validating {} users.", self.tables().users().len());
         let mut user_slugs = HashMap::<String, Vec<User>>::new();
         for user in self.users() {
             if let Err(mut error) = user.validate() {
@@ -282,7 +300,7 @@ impl Database {
             }
         }
 
-        trace!("Validating {} games.", self.tables.games().len());
+        trace!("Validating {} games.", self.tables().games().len());
         let mut game_slugs = HashMap::<String, Vec<Game>>::new();
         for game in self.games() {
             if let Err(mut error) = game.validate() {
@@ -303,7 +321,10 @@ impl Database {
             }
         }
 
-        trace!("Validating {} categories.", self.tables.categories().len());
+        trace!(
+            "Validating {} categories.",
+            self.tables().categories().len()
+        );
         let mut category_slugs = HashMap::<String, Vec<Category>>::new();
         for category in self.categories() {
             if let Err(mut error) = category.validate() {
@@ -330,7 +351,7 @@ impl Database {
             }
         }
 
-        trace!("Validating {} levels.", self.tables.levels().len());
+        trace!("Validating {} levels.", self.tables().levels().len());
         let mut level_slugs = HashMap::<String, Vec<Level>>::new();
         for level in self.levels() {
             if let Err(mut error) = level.validate() {
@@ -358,12 +379,15 @@ impl Database {
     /// Iterator over all Linked<Run>s.
     pub fn runs(self: &Arc<Self>) -> impl Iterator<Item = Linked<Run>> {
         let self_ = self.clone();
-        self.tables.runs().values().map(move |run| self_.link(run))
+        self.tables()
+            .runs()
+            .values()
+            .map(move |run| self_.link(run))
     }
 
     /// Finds a Linked<Run> by id.
     pub fn run_by_id(self: &Arc<Self>, id: u64) -> Option<Linked<Run>> {
-        self.tables.runs().get(&id).map(|run| self.link(run))
+        self.tables().runs().get(&id).map(|run| self.link(run))
     }
 
     /// Returns a Vec of Linked<Run> for a given game ID, sorted by category,
@@ -387,7 +411,7 @@ impl Database {
 
     /// Finds a Linked<Run> by id.
     pub fn user_by_id(self: &Arc<Self>, id: u64) -> Option<Linked<User>> {
-        self.tables.users().get(&id).map(|user| self.link(user))
+        self.tables().users().get(&id).map(|user| self.link(user))
     }
 
     /// Finds a Linked<User> by name.
@@ -407,7 +431,7 @@ impl Database {
 
     /// Finds a Game<Run> by id.
     pub fn game_by_id(self: &Arc<Self>, id: u64) -> Option<Linked<Game>> {
-        self.tables.games().get(&id).map(|game| self.link(game))
+        self.tables().games().get(&id).map(|game| self.link(game))
     }
 
     /// Finds a Linked<Game> by slug.
@@ -444,7 +468,10 @@ impl Database {
 
     /// Finds a Level<Run> by id.
     pub fn level_by_id(self: &Arc<Self>, id: u64) -> Option<Linked<Level>> {
-        self.tables.levels().get(&id).map(|level| self.link(level))
+        self.tables()
+            .levels()
+            .get(&id)
+            .map(|level| self.link(level))
     }
 
     /// An iterator over all Linked<Category>s.
