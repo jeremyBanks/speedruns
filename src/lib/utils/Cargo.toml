@@ -11,7 +11,7 @@ repository = "https://github.com/jeremybanks/speedruns"
 path = "mod.rs"
 
 [dependencies]
-derive_more = "0.99.2"
+derive_more = "0.99.3"
 err-derive = "0.1.5"
 log = "0.4.8"
 no-panic = "0.1.12"
