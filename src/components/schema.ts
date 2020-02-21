@@ -4,6 +4,35 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: GetGamePagePreview
+// ====================================================
+
+export interface GetGamePagePreview_game {
+  __typename: "Game";
+  /**
+   * URL slug used on speedrun.com
+   */
+  srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
+}
+
+export interface GetGamePagePreview {
+  game: GetGamePagePreview_game | null;
+}
+
+export interface GetGamePagePreviewVariables {
+  slug: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: GetGamePage
 // ====================================================
 
@@ -1078,13 +1107,13 @@ export interface GetHomeStats {
 export interface GetGameIndex_games {
   __typename: "Game";
   /**
-   * name, in English if possible
-   */
-  name: string;
-  /**
    * URL slug used on speedrun.com
    */
   srcSlug: string;
+  /**
+   * name, in English if possible
+   */
+  name: string;
 }
 
 export interface GetGameIndex {
