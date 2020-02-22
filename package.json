@@ -63,7 +63,7 @@
     "remeda": "^0.0.15",
     "tslint": "^6.0.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.7.5",
+    "typescript": "^3.8.2",
     "winston": "^3.2.1",
     "yargs": "^15.1.0",
     "yarn": "^1.22.0"
