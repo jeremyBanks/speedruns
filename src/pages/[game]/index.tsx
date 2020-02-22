@@ -51,6 +51,12 @@ const GamePage: NextPage = () => {
           rel="canonical"
           href={`https://www.speedrun.com/${game.srcSlug}`}
         />
+        <meta property="og:title" content={`${game.name} Speedruns`} />
+        <meta property="og:image" content="/finch.png" />
+        <meta
+          property="og:description"
+          content={`speedrun leaderboards for ${game.srcSlug}`}
+        />
       </Head>
 
       <h2>
