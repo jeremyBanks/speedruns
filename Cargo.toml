@@ -20,9 +20,6 @@ path = "src/lib/speedruns.rs"
 name = "speedruns"
 path = "src/bin/speedruns.rs"
 
-[profile.release.build-override]
-opt-level = 0
-
 [dependencies]
 speedruns_utils = { path = "src/lib/utils", version = "0.21.6-dev" }
 actix = "0.9.0"
