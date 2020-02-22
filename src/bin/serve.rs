@@ -12,7 +12,8 @@ use actix_web::{self, middleware, web, HttpResponse};
 
 use juniper::{self, http::GraphQLRequest};
 use lazy_static::lazy_static;
-#[allow(unused)] use log::{debug, error, info, trace, warn};
+#[allow(unused)]
+use log::{debug, error, info, trace, warn};
 use serde::de::DeserializeOwned;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use speedruns::data::{
@@ -81,7 +82,7 @@ async fn diediedie() -> HttpResponse {
 pub struct Args {
     /// port to run server on
     #[argh(option)]
-    port:    Option<u32>,
+    port: Option<u32>,
     /// whether to skip the database import (such as if you only need to run the server to
     /// briefly download the schema)
     #[argh(switch)]
@@ -120,7 +121,7 @@ fn unpack_tables() -> Tables {
     if let crate::Subcommand::Serve(args) = args.subcommand {
         if args.no_data {
             info!("Skipping database import, will run with no data!");
-            return Tables::new(vec![], vec![], vec![], vec![], vec![])
+            return Tables::new(vec![], vec![], vec![], vec![], vec![]);
         }
     }
 

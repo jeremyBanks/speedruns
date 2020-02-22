@@ -66,7 +66,7 @@ pub struct User(DbLinked<db::User>);
 #[derive(Debug, Clone)]
 pub struct CategoryLevel {
     category: DbLinked<db::Category>,
-    level:    DbLinked<db::Level>,
+    level: DbLinked<db::Level>,
 }
 
 #[derive(Debug, Clone)]
@@ -402,7 +402,7 @@ impl CategoryFields for Category {
                 level_id = Some(level.id);
             } else {
                 // level specified but not found
-                return vec![]
+                return vec![];
             }
         } else {
             level_id = None;
@@ -446,7 +446,7 @@ impl CategoryFields for Category {
                 level_id = Some(level.id);
             } else {
                 // level specified but not found
-                return vec![]
+                return vec![];
             }
         } else {
             level_id = None;
@@ -468,7 +468,7 @@ impl CategoryFields for Category {
 
             progress.iter().map(|r| ProgressionRun(r.clone())).collect()
         } else {
-            return vec![]
+            return vec![];
         }
     }
 

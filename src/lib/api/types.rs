@@ -12,15 +12,15 @@ use std::collections::HashMap;
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct Category {
-    id:            String,
-    links:         Vec<Link>,
+    id: String,
+    links: Vec<Link>,
     miscellaneous: bool,
-    name:          String,
-    players:       CategoryPlayers,
-    rules:         Option<String>,
+    name: String,
+    players: CategoryPlayers,
+    rules: Option<String>,
     #[serde(rename = "type")]
-    type_:         CategoryType,
-    weblink:       String,
+    type_: CategoryType,
+    weblink: String,
 }
 
 #[remain::sorted]
@@ -63,27 +63,27 @@ pub struct Data<T> {
 #[get = "pub"]
 pub struct Game {
     abbreviation: String,
-    assets:       HashMap<String, Option<GameAsset>>,
-    categories:   Data<Vec<Category>>,
-    created:      Option<DateTime<Utc>>,
-    developers:   Data<Vec<GameDeveloper>>,
-    engines:      Data<Vec<GameEngine>>,
-    gametypes:    Data<Vec<GameType>>,
-    genres:       Data<Vec<GameGenre>>,
-    id:           String,
-    levels:       Data<Vec<Level>>,
-    links:        Vec<Link>,
-    moderators:   HashMap<String, GameModeratorType>,
-    names:        Names,
-    platforms:    Data<Vec<Platform>>,
-    publishers:   Data<Vec<GamePublisher>>,
-    regions:      Data<Vec<Region>>,
+    assets: HashMap<String, Option<GameAsset>>,
+    categories: Data<Vec<Category>>,
+    created: Option<DateTime<Utc>>,
+    developers: Data<Vec<GameDeveloper>>,
+    engines: Data<Vec<GameEngine>>,
+    gametypes: Data<Vec<GameType>>,
+    genres: Data<Vec<GameGenre>>,
+    id: String,
+    levels: Data<Vec<Level>>,
+    links: Vec<Link>,
+    moderators: HashMap<String, GameModeratorType>,
+    names: Names,
+    platforms: Data<Vec<Platform>>,
+    publishers: Data<Vec<GamePublisher>>,
+    regions: Data<Vec<Region>>,
     release_date: NaiveDate,
-    released:     u32,
-    romhack:      bool,
-    ruleset:      GameRuleset,
-    variables:    Data<Vec<Variable>>,
-    weblink:      String,
+    released: u32,
+    romhack: bool,
+    ruleset: GameRuleset,
+    variables: Data<Vec<Variable>>,
+    weblink: String,
 }
 
 #[remain::sorted]
@@ -92,8 +92,8 @@ pub struct Game {
 #[get = "pub"]
 pub struct GameAsset {
     height: Option<u32>,
-    uri:    String,
-    width:  Option<u32>,
+    uri: String,
+    width: Option<u32>,
 }
 
 #[remain::sorted]
@@ -101,9 +101,9 @@ pub struct GameAsset {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct GameDeveloper {
-    id:    String,
+    id: String,
     links: Vec<Link>,
-    name:  String,
+    name: String,
 }
 
 #[remain::sorted]
@@ -111,9 +111,9 @@ pub struct GameDeveloper {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct GameEngine {
-    id:    String,
+    id: String,
     links: Vec<Link>,
-    name:  String,
+    name: String,
 }
 
 #[remain::sorted]
@@ -121,9 +121,9 @@ pub struct GameEngine {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct GameGenre {
-    id:    String,
+    id: String,
     links: Vec<Link>,
-    name:  String,
+    name: String,
 }
 
 #[remain::sorted]
@@ -139,9 +139,9 @@ pub enum GameModeratorType {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct GamePublisher {
-    id:    String,
+    id: String,
     links: Vec<Link>,
-    name:  String,
+    name: String,
 }
 
 #[remain::sorted]
@@ -149,12 +149,12 @@ pub struct GamePublisher {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct GameRuleset {
-    default_time:         GameRulesetTiming,
-    emulators_allowed:    bool,
+    default_time: GameRulesetTiming,
+    emulators_allowed: bool,
     require_verification: bool,
-    require_video:        bool,
-    run_times:            Vec<GameRulesetTiming>,
-    show_milliseconds:    bool,
+    require_video: bool,
+    run_times: Vec<GameRulesetTiming>,
+    show_milliseconds: bool,
 }
 
 #[remain::sorted]
@@ -176,9 +176,9 @@ pub enum GameRulesetTiming {
 #[get = "pub"]
 pub struct GameType {
     allows_base_game: Option<bool>,
-    id:               String,
-    links:            Vec<Link>,
-    name:             String,
+    id: String,
+    links: Vec<Link>,
+    name: String,
 }
 
 #[remain::sorted]
@@ -186,10 +186,10 @@ pub struct GameType {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct Level {
-    id:      String,
-    links:   Vec<Link>,
-    name:    String,
-    rules:   Option<String>,
+    id: String,
+    links: Vec<Link>,
+    name: String,
+    rules: Option<String>,
     weblink: String,
 }
 
@@ -230,8 +230,8 @@ pub enum Link {
 #[get = "pub"]
 pub struct Names {
     international: Option<String>,
-    japanese:      Option<String>,
-    twitch:        Option<String>,
+    japanese: Option<String>,
+    twitch: Option<String>,
 }
 
 #[remain::sorted]
@@ -239,9 +239,9 @@ pub struct Names {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct Platform {
-    id:       String,
-    links:    Vec<Link>,
-    name:     String,
+    id: String,
+    links: Vec<Link>,
+    name: String,
     released: u32,
 }
 
@@ -250,9 +250,9 @@ pub struct Platform {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct Region {
-    id:    String,
+    id: String,
     links: Vec<Link>,
-    name:  String,
+    name: String,
 }
 
 #[remain::sorted]
@@ -260,22 +260,22 @@ pub struct Region {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct Run {
-    category:  String,
-    comment:   Option<String>,
-    date:      Option<NaiveDate>,
-    game:      String,
-    id:        String,
-    level:     Option<String>,
-    links:     Vec<Link>,
-    players:   Vec<RunPlayer>,
-    splits:    Option<RunSplitsOrBuggyValue>,
-    status:    RunStatus,
+    category: String,
+    comment: Option<String>,
+    date: Option<NaiveDate>,
+    game: String,
+    id: String,
+    level: Option<String>,
+    links: Vec<Link>,
+    players: Vec<RunPlayer>,
+    splits: Option<RunSplitsOrBuggyValue>,
+    status: RunStatus,
     submitted: Option<DateTime<Utc>>,
-    system:    RunSystem,
-    times:     RunTimes,
-    values:    HashMap<String, String>,
-    videos:    Option<RunVideos>,
-    weblink:   Option<String>,
+    system: RunSystem,
+    times: RunTimes,
+    values: HashMap<String, String>,
+    videos: Option<RunVideos>,
+    weblink: Option<String>,
 }
 
 #[remain::sorted]
@@ -309,10 +309,10 @@ pub enum RunStatus {
     New,
     Rejected {
         examiner: Option<String>,
-        reason:   Option<String>,
+        reason: Option<String>,
     },
     Verified {
-        examiner:    Option<String>,
+        examiner: Option<String>,
         #[serde(rename = "verify-date")]
         verify_date: Option<DateTime<Utc>>,
     },
@@ -325,7 +325,7 @@ pub enum RunStatus {
 pub struct RunSystem {
     emulated: bool,
     platform: Option<String>,
-    region:   Option<String>,
+    region: Option<String>,
 }
 
 #[remain::sorted]
@@ -333,14 +333,14 @@ pub struct RunSystem {
 #[serde(deny_unknown_fields, rename_all = "snake_case")]
 #[get = "pub"]
 pub struct RunTimes {
-    ingame:             Option<String>,
-    ingame_t:           Option<f32>,
-    primary:            Option<String>,
-    primary_t:          Option<f32>,
-    realtime:           Option<String>,
-    realtime_noloads:   Option<String>,
+    ingame: Option<String>,
+    ingame_t: Option<f32>,
+    primary: Option<String>,
+    primary_t: Option<f32>,
+    realtime: Option<String>,
+    realtime_noloads: Option<String>,
     realtime_noloads_t: Option<f32>,
-    realtime_t:         Option<f32>,
+    realtime_t: Option<f32>,
 }
 
 #[remain::sorted]
@@ -349,7 +349,7 @@ pub struct RunTimes {
 #[get = "pub"]
 pub struct RunVideos {
     links: Option<Vec<Uri>>,
-    text:  Option<String>,
+    text: Option<String>,
 }
 
 #[remain::sorted]
@@ -365,19 +365,19 @@ pub struct Uri {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct User {
-    hitbox:        Option<Uri>,
-    id:            String,
-    links:         Vec<Link>,
-    location:      Option<UserLocation>,
-    name_style:    UserNameStyle,
-    names:         Names,
-    role:          UserRole,
-    signup:        Option<DateTime<Utc>>,
+    hitbox: Option<Uri>,
+    id: String,
+    links: Vec<Link>,
+    location: Option<UserLocation>,
+    name_style: UserNameStyle,
+    names: Names,
+    role: UserRole,
+    signup: Option<DateTime<Utc>>,
     speedrunslive: Option<Uri>,
-    twitch:        Option<Uri>,
-    twitter:       Option<Uri>,
-    weblink:       Option<String>,
-    youtube:       Option<Uri>,
+    twitch: Option<Uri>,
+    twitter: Option<Uri>,
+    weblink: Option<String>,
+    youtube: Option<Uri>,
 }
 
 #[remain::sorted]
@@ -386,7 +386,7 @@ pub struct User {
 #[get = "pub"]
 pub struct UserLocation {
     country: UserLocationCountry,
-    region:  Option<UserLocationRegion>,
+    region: Option<UserLocationRegion>,
 }
 
 #[remain::sorted]
@@ -394,7 +394,7 @@ pub struct UserLocation {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct UserLocationCountry {
-    code:  Option<String>,
+    code: Option<String>,
     names: Names,
 }
 
@@ -403,7 +403,7 @@ pub struct UserLocationCountry {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct UserLocationRegion {
-    code:  Option<String>,
+    code: Option<String>,
     names: Names,
 }
 
@@ -415,7 +415,7 @@ pub enum UserNameStyle {
         #[serde(rename = "color-from")]
         color_from: UserNameStyleColor,
         #[serde(rename = "color-to")]
-        color_to:   UserNameStyleColor,
+        color_to: UserNameStyleColor,
     },
     Solid {
         color: UserNameStyleColor,
@@ -427,7 +427,7 @@ pub enum UserNameStyle {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct UserNameStyleColor {
-    dark:  String,
+    dark: String,
     light: String,
 }
 
@@ -450,16 +450,16 @@ pub enum UserRole {
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 #[get = "pub"]
 pub struct Variable {
-    category:       Option<String>,
-    id:             String,
+    category: Option<String>,
+    id: String,
     is_subcategory: bool,
-    links:          Vec<Link>,
-    mandatory:      bool,
-    name:           String,
-    obsoletes:      bool,
-    scope:          VariableScope,
-    user_defined:   bool,
-    values:         VariableValues,
+    links: Vec<Link>,
+    mandatory: bool,
+    name: String,
+    obsoletes: bool,
+    scope: VariableScope,
+    user_defined: bool,
+    values: VariableValues,
 }
 
 #[remain::sorted]
@@ -478,10 +478,10 @@ pub enum VariableScope {
 #[get = "pub"]
 pub struct VariableValues {
     #[serde(rename = "_note")]
-    _note:   String,
+    _note: String,
     choices: HashMap<String, String>,
     default: Option<String>,
-    values:  HashMap<String, VariableValue>,
+    values: HashMap<String, VariableValue>,
 }
 
 #[remain::sorted]
