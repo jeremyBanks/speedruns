@@ -22,4 +22,5 @@ pub use crate::data::{
     types::{self, *},
 };
 
-#[macro_use] extern crate rental;
+#[macro_use]
+extern crate rental;

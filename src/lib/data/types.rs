@@ -10,7 +10,8 @@ use std::{
 
 use chrono::{DateTime, NaiveDate, Utc};
 use getset::Getters;
-#[allow(unused)] use log::{debug, error, info, trace, warn};
+#[allow(unused)]
+use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationError, ValidationErrors};
 use validator_derive::Validate;
@@ -41,12 +42,12 @@ use crate::utils::{base36, src_slugify};
 pub struct Category {
     pub game_id: u64,
     #[validate(length(min = 1))]
-    pub slug:    String,
+    pub slug: String,
     #[validate(length(min = 1))]
-    pub name:    String,
-    pub id:      u64,
-    pub per:     CategoryType,
-    pub rules:   String,
+    pub name: String,
+    pub id: u64,
+    pub per: CategoryType,
+    pub rules: String,
 }
 
 impl Category {
@@ -86,10 +87,10 @@ pub enum CategoryType {
 pub struct User {
     pub created: Option<DateTime<Utc>>,
     #[validate(length(min = 1))]
-    pub slug:    String,
+    pub slug: String,
     #[validate(length(min = 1))]
-    pub name:    String,
-    pub id:      u64,
+    pub name: String,
+    pub id: u64,
 }
 
 impl User {
@@ -120,14 +121,14 @@ impl User {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct Game {
-    pub id:             u64,
-    pub created:        Option<DateTime<Utc>>,
+    pub id: u64,
+    pub created: Option<DateTime<Utc>>,
     #[validate(length(min = 1))]
-    pub slug:           String,
+    pub slug: String,
     #[validate(length(min = 1))]
-    pub src_slug:       String,
+    pub src_slug: String,
     #[validate(length(min = 1))]
-    pub name:           String,
+    pub name: String,
     pub primary_timing: TimingMethod,
 }
 
@@ -164,12 +165,12 @@ pub enum TimingMethod {
 #[get = "pub"]
 pub struct Level {
     pub game_id: u64,
-    pub id:      u64,
+    pub id: u64,
     #[validate(length(min = 1))]
-    pub slug:    String,
+    pub slug: String,
     #[validate(length(min = 1))]
-    pub name:    String,
-    pub rules:   String,
+    pub name: String,
+    pub rules: String,
 }
 
 impl Level {
@@ -199,17 +200,17 @@ impl Level {
 )]
 #[get = "pub"]
 pub struct Run {
-    pub game_id:     u64,
+    pub game_id: u64,
     pub category_id: u64,
-    pub level_id:    Option<u64>,
-    pub id:          u64,
-    pub created:     Option<DateTime<Utc>>,
-    pub date:        Option<NaiveDate>,
+    pub level_id: Option<u64>,
+    pub id: u64,
+    pub created: Option<DateTime<Utc>>,
+    pub date: Option<NaiveDate>,
     #[validate]
-    pub times_ms:    RunTimesMs,
+    pub times_ms: RunTimesMs,
     #[validate]
-    pub players:     Vec<RunPlayer>,
-    pub videos:      Vec<RunVideo>,
+    pub players: Vec<RunPlayer>,
+    pub videos: Vec<RunVideo>,
 }
 
 impl Run {
@@ -230,8 +231,9 @@ impl std::fmt::Display for RunVideo {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         use RunVideo::*;
         match self {
-            YouTube { id, start } =>
-                write!(f, "https://youtu.be/{}?t={}", id, start.unwrap_or(0)),
+            YouTube { id, start } => {
+                write!(f, "https://youtu.be/{}?t={}", id, start.unwrap_or(0))
+            }
             Link { url } => write!(f, "{}", url),
         }
     }
@@ -252,8 +254,8 @@ impl std::str::FromStr for RunVideo {
 #[serde(deny_unknown_fields)]
 #[get = "pub"]
 pub struct RunTimesMs {
-    pub igt:    Option<u64>,
-    pub rta:    Option<u64>,
+    pub igt: Option<u64>,
+    pub rta: Option<u64>,
     pub rta_nl: Option<u64>,
 }
 
@@ -272,7 +274,7 @@ impl Validate for RunTimesMs {
         if self.igt == None && self.rta == None && self.rta_nl == None {
             let mut errors = ValidationErrors::new();
             errors.add("", ValidationError::new("all times were None"));
-            return Err(errors)
+            return Err(errors);
         }
         Ok(())
     }
@@ -291,7 +293,7 @@ impl Validate for RunPlayer {
             if name.is_empty() {
                 let mut errors = ValidationErrors::new();
                 errors.add("GuestName.0", ValidationError::new("name is empty"));
-                return Err(errors)
+                return Err(errors);
             }
         }
         Ok(())

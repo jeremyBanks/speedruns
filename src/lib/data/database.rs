@@ -11,7 +11,8 @@ use chrono::{DateTime, NaiveDateTime, Utc};
 use derive_more::From;
 use err_derive::Error;
 use getset::Getters;
-#[allow(unused)] use log::{debug, error, info, trace, warn};
+#[allow(unused)]
+use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationErrors};
 
@@ -41,7 +42,7 @@ impl Display for IntegrityErrors {
         for (i, error) in self.errors.iter().enumerate() {
             if i >= 16 {
                 writeln!(f, "     ...and more!")?;
-                break
+                break;
             }
 
             writeln!(f, "{:4}. {}", i + 1, error)?;
@@ -63,10 +64,10 @@ pub enum IntegrityError {
         source
     )]
     ForeignKeyMissing {
-        target_type:       &'static str,
-        target_id:         u64,
+        target_type: &'static str,
+        target_id: u64,
         foreign_key_field: &'static str,
-        source:            AnyModel,
+        source: AnyModel,
     },
     #[error(display = "row validation check failed: {:?} in {:?}", errors, source)]
     CheckFailed {
@@ -74,10 +75,7 @@ pub enum IntegrityError {
         source: AnyModel,
     },
     #[error(display = "duplicate {:?} slug for {:?}", slug, sources)]
-    NonUniqueSlug {
-        slug:    String,
-        sources: AnyModelVec,
-    },
+    NonUniqueSlug { slug: String, sources: AnyModelVec },
     #[error(display = "run is missing primary timing: {:?}", _0)]
     MissingPrimaryTiming(Run),
 }
@@ -86,23 +84,23 @@ pub enum IntegrityError {
 #[derive(Debug, Default, Serialize, Deserialize, Clone, Getters)]
 #[get = "pub"]
 pub struct Tables {
-    runs:       BTreeMap<u64, Run>,
-    users:      BTreeMap<u64, User>,
-    games:      BTreeMap<u64, Game>,
+    runs: BTreeMap<u64, Run>,
+    users: BTreeMap<u64, User>,
+    games: BTreeMap<u64, Game>,
     categories: BTreeMap<u64, Category>,
-    levels:     BTreeMap<u64, Level>,
+    levels: BTreeMap<u64, Level>,
 }
 
 #[derive(Debug, Clone)]
 pub struct Indicies<'tables> {
-    last_updated:                                 DateTime<Utc>,
+    last_updated: DateTime<Utc>,
     runs_by_game_id_and_category_id_and_level_id:
         BTreeMap<(u64, u64, Option<u64>), Vec<&'tables Run>>,
-    games_by_slug:                                BTreeMap<String, &'tables Game>,
-    users_by_slug:                                BTreeMap<String, &'tables User>,
+    games_by_slug: BTreeMap<String, &'tables Game>,
+    users_by_slug: BTreeMap<String, &'tables User>,
     per_game_categories_by_game_id_and_slug: BTreeMap<(u64, String), &'tables Category>,
     per_level_categories_by_game_id_and_slug: BTreeMap<(u64, String), &'tables Category>,
-    levels_by_game_id_and_slug:                   BTreeMap<(u64, String), &'tables Level>,
+    levels_by_game_id_and_slug: BTreeMap<(u64, String), &'tables Level>,
 }
 
 rental! {
@@ -211,10 +209,12 @@ impl Database {
 
                 for category in tables.categories().values() {
                     match category.per() {
-                        CategoryType::PerGame =>
-                            &mut per_game_categories_by_game_id_and_slug,
-                        CategoryType::PerLevel =>
-                            &mut per_level_categories_by_game_id_and_slug,
+                        CategoryType::PerGame => {
+                            &mut per_game_categories_by_game_id_and_slug
+                        }
+                        CategoryType::PerLevel => {
+                            &mut per_level_categories_by_game_id_and_slug
+                        }
                     }
                     .insert((*category.game_id(), category.slug().to_string()), category);
                 }
@@ -523,7 +523,7 @@ pub struct Linked<ModelType: 'static + Model + Debug> {
     #[serde(skip)]
     database: Arc<Database>,
     #[serde(flatten)]
-    item:     &'static ModelType,
+    item: &'static ModelType,
 }
 
 impl<ModelType: Model> Linked<ModelType> {
@@ -623,10 +623,10 @@ impl Linked<Run> {
 
         if self.database.game_by_id(*self.game_id()).is_none() {
             errors.push(IntegrityError::ForeignKeyMissing {
-                target_type:       "game",
-                target_id:         *self.game_id(),
+                target_type: "game",
+                target_id: *self.game_id(),
                 foreign_key_field: "game_id",
-                source:            (*self.item).clone().into(),
+                source: (*self.item).clone().into(),
             });
         } else {
             let game = self.game();
@@ -644,20 +644,20 @@ impl Linked<Run> {
             .is_none()
         {
             errors.push(IntegrityError::ForeignKeyMissing {
-                target_type:       "category",
-                target_id:         *self.category_id(),
+                target_type: "category",
+                target_id: *self.category_id(),
                 foreign_key_field: "category_id",
-                source:            (*self.item).clone().into(),
+                source: (*self.item).clone().into(),
             });
         }
 
         if let Some(level_id) = self.level_id() {
             if self.database.level_by_id(*level_id).is_none() {
                 errors.push(IntegrityError::ForeignKeyMissing {
-                    target_type:       "level",
-                    target_id:         *level_id,
+                    target_type: "level",
+                    target_id: *level_id,
                     foreign_key_field: "level_id",
-                    source:            (*self.item).clone().into(),
+                    source: (*self.item).clone().into(),
                 });
             }
         }
@@ -666,10 +666,10 @@ impl Linked<Run> {
             if let RunPlayer::UserId(user_id) = player {
                 if self.database.user_by_id(*user_id).is_none() {
                     errors.push(IntegrityError::ForeignKeyMissing {
-                        target_type:       "user",
-                        target_id:         *user_id,
+                        target_type: "user",
+                        target_id: *user_id,
                         foreign_key_field: "players[…].0",
-                        source:            (*self.item).clone().into(),
+                        source: (*self.item).clone().into(),
                     });
                 }
             }
@@ -760,10 +760,10 @@ impl Linked<Level> {
 
         if self.database.game_by_id(*self.game_id()).is_none() {
             errors.push(IntegrityError::ForeignKeyMissing {
-                target_type:       "game",
-                target_id:         *self.game_id(),
+                target_type: "game",
+                target_id: *self.game_id(),
                 foreign_key_field: "game_id",
-                source:            (*self.item).clone().into(),
+                source: (*self.item).clone().into(),
             });
         }
 
@@ -814,10 +814,10 @@ impl Linked<Category> {
 
         if self.database.game_by_id(*self.game_id()).is_none() {
             errors.push(IntegrityError::ForeignKeyMissing {
-                target_type:       "game",
-                target_id:         *self.game_id(),
+                target_type: "game",
+                target_id: *self.game_id(),
                 foreign_key_field: "game_id",
-                source:            (*self.item).clone().into(),
+                source: (*self.item).clone().into(),
             });
         }
 
