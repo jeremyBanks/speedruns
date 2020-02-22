@@ -133,10 +133,10 @@ jobs:
         with:
           node-version: 13.x
 
-      - name: setup - install rust nightly
+      - name: setup - install rust
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: stable
 
       - name: setup - recall published version
         uses: actions/download-artifact@v1
@@ -152,7 +152,7 @@ jobs:
           chmod +x speedruns-linux-x86_64
           ./speedruns-linux-x86_64 --help
 
-          cargo +nightly install speedruns --version $version
+          cargo install speedruns --version $version
           speedruns --help
 
           npm install -g speedruns@$version
