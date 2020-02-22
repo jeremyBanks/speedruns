@@ -18,9 +18,8 @@ sed -i '0,/\.0"/ s/\.0"/"/' package.json
 
 version="$(cat package.json | $(yarn bin jqn) 'property("version")')"
 
-sed -i '0,/speedruns_utils/ s/version = ".*"/version = "'$version'"/' Cargo.toml
-sed -i '0,/version = ".*"/ s/version = ".*"/version = "'$version'"/' Cargo.toml
-sed -i '0,/version = ".*"/ s/version = ".*"/version = "'$version'"/' src/lib/utils/Cargo.toml
+yarn replace-in-files --regex='\nversion = "(.*)"\n' --replacement='\nversion = "'$version'"\n' Cargo.toml src/lib/*/Cargo.toml
+yarn replace-in-files --regex='(\nspeedruns_[a-z]+ = .*?version = )".*?"(.*\n)' --replacement='$1"'$version'"$2' Cargo.toml src/lib/*/Cargo.toml
 
 export NODE_ENV=production
 yarn build
