@@ -3,7 +3,8 @@ use std::{convert::TryFrom, fmt::Debug, hash::Hash};
 
 use chrono::{DateTime, Utc};
 use derive_more::{From, TryInto};
-#[allow(unused)] use log::{debug, error, info, trace, warn};
+#[allow(unused)]
+use log::{debug, error, info, trace, warn};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 use crate::data::types::*;

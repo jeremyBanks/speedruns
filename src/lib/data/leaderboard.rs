@@ -8,11 +8,11 @@ use crate::data::{database::Linked, types::*};
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
 pub struct LeaderboardRun {
-    rank:      u64,
-    time_ms:   u64,
-    is_tied:   bool,
+    rank: u64,
+    time_ms: u64,
+    is_tied: bool,
     tied_rank: u64,
-    run:       Linked<Run>,
+    run: Linked<Run>,
 }
 
 /// Ranks a set of runs (all for the same game/category/level) using the
@@ -21,7 +21,7 @@ pub struct LeaderboardRun {
 /// unless rank_obsoletes is true.
 pub fn leaderboard(runs: &[Linked<Run>], rank_obsoletes: bool) -> Vec<LeaderboardRun> {
     if runs.is_empty() {
-        return vec![]
+        return vec![];
     }
 
     let mut runs: Vec<Linked<Run>> = runs.to_vec();
@@ -55,7 +55,7 @@ pub fn leaderboard(runs: &[Linked<Run>], rank_obsoletes: bool) -> Vec<Leaderboar
     for run in runs.iter() {
         if !rank_obsoletes && !ranked_players.insert(run.players()) {
             // this run is obsolete, skip it
-            continue
+            continue;
         }
 
         n += 1;

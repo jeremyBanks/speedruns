@@ -1,16 +1,11 @@
 //! Shared utils.
-#![feature(
-    arbitrary_self_types,
-    label_break_value,
-    option_unwrap_none,
-    never_type
-)]
 #![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
 #![warn(missing_debug_implementations)]
 
 use derive_more::From;
 use err_derive::Error;
-#[allow(unused)] use log::{debug, error, info, trace, warn};
+#[allow(unused)]
+use log::{debug, error, info, trace, warn};
 use unidecode::unidecode;
 /// Errors for [u64_from_base36].
 #[derive(Debug, Error, From, PartialEq)]
@@ -60,7 +55,7 @@ pub fn slugify(s: &str) -> String {
                 this_was_spacing = true;
             }
             // escaped at ends, entirely ignored elsewhere
-            '\'' =>
+            '\'' => {
                 if first_or_last {
                     if !last_was_spacing {
                         slug.push('-');
@@ -69,7 +64,8 @@ pub fn slugify(s: &str) -> String {
                         slug.push_str("prime-");
                     }
                     this_was_spacing = true;
-                },
+                }
+            }
             // escaped at ends, converted to spacing elsewhere
             '.' => {
                 if !last_was_spacing {
@@ -176,7 +172,7 @@ pub fn u64_from_base36(digits: &str) -> Result<u64, Base36DecodingError> {
     let mut value = 0;
 
     if digits.len() != 8 {
-        return Err(Base36DecodingError::WrongLength)
+        return Err(Base36DecodingError::WrongLength);
     }
 
     for digit in digits.chars() {
