@@ -52,7 +52,8 @@ html.document {
     width: 100%;
     max-width: 650px;
     min-width: 600px;
-    border-top-right-radius: 8px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
     box-shadow: 0 0 2px black, 0 0 4px rgba(255, 255, 255, 0.5);
 
     @media (max-width: 660px) {
