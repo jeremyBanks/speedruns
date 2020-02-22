@@ -55,7 +55,7 @@ const GamePage: NextPage = () => {
         <meta property="og:image" content="/finch.png" />
         <meta
           property="og:description"
-          content={`speedrun leaderboards for ${game.srcSlug}`}
+          content={`speedrun leaderboards and progression for ${game.name}`}
         />
       </Head>
 
