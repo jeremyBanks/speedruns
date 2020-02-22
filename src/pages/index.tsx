@@ -136,7 +136,14 @@ export const HomePage: NextPage<{}> = () => {
   return (
     <section className={styles.home}>
       <Head>
-        <title>Speedruns</title>
+        <title>speedruns.ca</title>
+
+        <meta property="og:title" content="Speedruns" />
+        <meta property="og:image" content="/finch.png" />
+        <meta
+          property="og:description"
+          content="speedruns.ca: an unofficial mirror of speedrun.com"
+        />
       </Head>
       {gameIndex?.error || home?.error ? (
         <pre>{JSON.stringify([gameIndex?.error, home?.error], null, 2)}</pre>
