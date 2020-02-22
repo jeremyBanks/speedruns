@@ -13,14 +13,14 @@ use crate::data::{
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
 pub struct ProgressionRun {
-    progress_ms:     u64,
-    run:             Linked<Run>,
+    progress_ms: u64,
+    run: Linked<Run>,
     leaderboard_run: Option<LeaderboardRun>,
 }
 
 pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
     if runs.is_empty() {
-        return vec![]
+        return vec![];
     }
 
     let game_id = runs[0].game_id;

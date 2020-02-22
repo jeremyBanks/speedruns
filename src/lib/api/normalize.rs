@@ -1,7 +1,8 @@
 use derive_more::From;
 use err_derive::Error;
 use lazy_static::lazy_static;
-#[allow(unused)] use log::{debug, error, info, trace, warn};
+#[allow(unused)]
+use log::{debug, error, info, trace, warn};
 use regex::Regex;
 use validator::Validate;
 
@@ -54,17 +55,17 @@ impl Normalize for api::Names {
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         if let Some(name) = self.international() {
             if !name.is_empty() {
-                return Ok(name.to_string())
+                return Ok(name.to_string());
             }
         }
         if let Some(name) = self.international() {
             if !name.is_empty() {
-                return Ok(name.to_string())
+                return Ok(name.to_string());
             }
         }
         if let Some(name) = self.japanese() {
             if !name.is_empty() {
-                return Ok(name.to_string())
+                return Ok(name.to_string());
             }
         }
         Err(Error::NoNames)
@@ -76,11 +77,11 @@ impl Normalize for api::Game {
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         let game = Game {
-            id:             u64_from_base36(self.id())?,
-            name:           self.names().normalize()?,
-            slug:           slugify(self.abbreviation()),
-            src_slug:       self.abbreviation().to_string(),
-            created:        *self.created(),
+            id: u64_from_base36(self.id())?,
+            name: self.names().normalize()?,
+            slug: slugify(self.abbreviation()),
+            src_slug: self.abbreviation().to_string(),
+            created: *self.created(),
             primary_timing: self.ruleset().default_time().normalize()?,
         };
         game.validate()?;
@@ -91,11 +92,11 @@ impl Normalize for api::Game {
             .map(|api_category| -> Result<Category, Error> {
                 let category = Category {
                     game_id: u64_from_base36(self.id())?,
-                    id:      u64_from_base36(api_category.id())?,
-                    slug:    slugify(api_category.name()),
-                    name:    api_category.name().to_string(),
-                    rules:   api_category.rules().clone().unwrap_or_else(String::new),
-                    per:     api_category.type_().normalize()?,
+                    id: u64_from_base36(api_category.id())?,
+                    slug: slugify(api_category.name()),
+                    name: api_category.name().to_string(),
+                    rules: api_category.rules().clone().unwrap_or_else(String::new),
+                    per: api_category.type_().normalize()?,
                 };
 
                 category.validate()?;
@@ -110,10 +111,10 @@ impl Normalize for api::Game {
             .map(|api_level| -> Result<Level, Error> {
                 let level = Level {
                     game_id: u64_from_base36(self.id())?,
-                    id:      u64_from_base36(api_level.id())?,
-                    slug:    slugify(api_level.name()),
-                    name:    api_level.name().to_string(),
-                    rules:   api_level.rules().clone().unwrap_or_default(),
+                    id: u64_from_base36(api_level.id())?,
+                    slug: slugify(api_level.name()),
+                    name: api_level.name().to_string(),
+                    rules: api_level.rules().clone().unwrap_or_default(),
                 };
 
                 level.validate()?;
@@ -134,23 +135,23 @@ impl Normalize for api::Run {
         match self.status() {
             api::RunStatus::Verified { .. } => {
                 let run = Run {
-                    game_id:     u64_from_base36(self.game())?,
-                    id:          u64_from_base36(self.id())?,
-                    created:     *self.submitted(),
-                    date:        *self.date(),
+                    game_id: u64_from_base36(self.game())?,
+                    id: u64_from_base36(self.id())?,
+                    created: *self.submitted(),
+                    date: *self.date(),
                     category_id: u64_from_base36(self.category())?,
-                    level_id:    match self.level() {
+                    level_id: match self.level() {
                         None => None,
                         Some(level_id) => Some(u64_from_base36(level_id)?),
                     },
-                    times_ms:    self.times().normalize()?,
-                    players:     self
+                    times_ms: self.times().normalize()?,
+                    players: self
                         .players()
                         .iter()
                         .map(Normalize::normalize)
                         .map(Result::unwrap)
                         .collect(),
-                    videos:      self
+                    videos: self
                         .videos()
                         .as_ref()
                         .map(|video| {
@@ -254,8 +255,8 @@ impl Normalize for api::RunTimes {
         }
 
         Ok(RunTimesMs {
-            igt:    self.ingame().as_ref().map(|s| parse_duration_ms(s)),
-            rta:    self.realtime().as_ref().map(|s| parse_duration_ms(s)),
+            igt: self.ingame().as_ref().map(|s| parse_duration_ms(s)),
+            rta: self.realtime().as_ref().map(|s| parse_duration_ms(s)),
             rta_nl: self
                 .realtime_noloads()
                 .as_ref()

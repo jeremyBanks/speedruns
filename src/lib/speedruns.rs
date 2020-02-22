@@ -1,10 +1,4 @@
 //! Tools to download, search, and mirror https://speedrun.com leaderboards.
-#![feature(
-    arbitrary_self_types,
-    label_break_value,
-    option_unwrap_none,
-    never_type
-)]
 #![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
 #![warn(missing_debug_implementations)]
 

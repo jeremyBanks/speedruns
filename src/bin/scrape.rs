@@ -1,7 +1,8 @@
 #![allow(clippy::useless_attribute, clippy::useless_vec)]
 
 use flate2::{read::GzDecoder, write::GzEncoder};
-#[allow(unused)] use log::{debug, error, info, trace, warn};
+#[allow(unused)]
+use log::{debug, error, info, trace, warn};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use std::{
     collections::BTreeMap,
@@ -12,7 +13,7 @@ use tempfile::NamedTempFile;
 
 #[derive(PartialEq, Eq, Hash)]
 struct Resource {
-    id:    &'static str,
+    id: &'static str,
     order: &'static str,
     embed: &'static str,
 }
@@ -39,7 +40,7 @@ const RESOURCES: [Resource; 3] = [
 struct Spider {
     games_by_id: BTreeMap<String, JsonValue>,
     users_by_id: BTreeMap<String, JsonValue>,
-    runs_by_id:  BTreeMap<String, JsonValue>,
+    runs_by_id: BTreeMap<String, JsonValue>,
 }
 
 impl Spider {
@@ -173,18 +174,18 @@ impl Spider {
                             Ok(mut response) => match response.json::<JsonValue>() {
                                 Ok(response) => {
                                     response_data = response;
-                                    break
+                                    break;
                                 }
                                 Err(error) => {
                                     error!("response error: {:?}", error);
                                     std::thread::sleep(std::time::Duration::from_secs(32));
-                                    continue
+                                    continue;
                                 }
                             },
                             Err(error) => {
                                 error!("request error: {:?}", error);
                                 std::thread::sleep(std::time::Duration::from_secs(32));
-                                continue
+                                continue;
                             }
                         }
                     }
@@ -212,11 +213,11 @@ impl Spider {
                     if from_start {
                         if self.resource_by_id(resource).len() == previous {
                             // no new items at beginning of list
-                            break
+                            break;
                         }
                     } else if items.len() < 200 {
                         // end of entire run list
-                        break
+                        break;
                     };
 
                     // save progress
