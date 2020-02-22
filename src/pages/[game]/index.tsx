@@ -17,27 +17,17 @@ import LoadingBlock from "~/components/loading-block";
 const GamePage: NextPage = () => {
   const router = useRouter();
 
-  // TODO: make this use a cached value from the home page, instead of a second query
-  const { data: previewData } = useQuery<schema.GetGamePagePreview>(
-    GetGamePagePreview,
-    {
-      variables: { slug: router.query.game },
-      fetchPolicy: "cache-only",
-    },
-  );
-
   const { loading, error, data } = useQuery<schema.GetGamePage>(GetGamePage, {
     variables: { slug: router.query.game },
   });
 
   useProgressIndicator(loading);
 
-  if (error || !(data || previewData)) {
+  if (error || !data) {
     return <>{error ? JSON.stringify(error) : <LoadingBlock />}</>;
   }
 
-  const fullGame = data?.game;
-  const game = fullGame || previewData?.game;
+  const game = data?.game;
 
   if (!game) {
     return <>game not found</>;
@@ -65,7 +55,7 @@ const GamePage: NextPage = () => {
         </Link>
       </h2>
 
-      {fullGame?.gameCategories.map(category => (
+      {game.gameCategories.map(category => (
         <section key={category.id} id={`${category.id}`}>
           <h3>
             <a href={`#${category.id}`}>{category.name}</a>
@@ -73,15 +63,15 @@ const GamePage: NextPage = () => {
 
           <h4>Progress</h4>
 
-          <ProgressionTable runs={category.progression} game={fullGame} />
+          <ProgressionTable runs={category.progression} game={game} />
 
           <h4>Leaderboard</h4>
 
-          <LeaderboardTable runs={category.leaderboard} game={fullGame} />
+          <LeaderboardTable runs={category.leaderboard} game={game} />
         </section>
       ))}
 
-      {fullGame?.levelCategories.map(levelCategory => (
+      {game.levelCategories.map(levelCategory => (
         <div key={levelCategory.id} id={levelCategory.id}>
           <h2>
             <a href={`#${levelCategory.id}`}>{levelCategory.name}</a>
@@ -93,7 +83,7 @@ const GamePage: NextPage = () => {
             runs={levelCategory.progression}
             showLevels={true}
             showSums={true}
-            game={fullGame}
+            game={game}
           />
 
           {levelCategory.levels.map(({ level, leaderboard, progression }) => (
@@ -104,11 +94,11 @@ const GamePage: NextPage = () => {
 
               <h4>Progress</h4>
 
-              <ProgressionTable runs={progression} game={fullGame} />
+              <ProgressionTable runs={progression} game={game} />
 
               <h4>Leaderboard</h4>
 
-              <LeaderboardTable runs={leaderboard} game={fullGame} />
+              <LeaderboardTable runs={leaderboard} game={game} />
             </section>
           ))}
         </div>
