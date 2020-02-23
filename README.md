@@ -66,3 +66,40 @@ cargo run import
 Any records that don't match our expected format (missing now-required fields, inconsistent timing methods, or niche options we don't support) **will be discarded**, so our leaderboards might not match speedrun.com (whose software robustly accomidates old data of varied shapes).
 
 Restart the server to load the new data.
+
+## `speedruns` crate structure
+
+Note that this is being developed as a service first, and a library secondarily.
+
+### `pub ::api` (crate: `speedruns_api`)
+
+- `pub ::types` API response data types.
+- `pub ::normalize` Converting API data to our model.
+- `pub ::cli` The downloader and CLI implementation.
+
+### `pub ::types` (crate: `speedruns_types`)
+
+- `pub ::types` The data types for our speedrun model.
+- `pub ::validation` Single-record validation logic.
+
+### `pub ::database` (crate: `speedruns_database`)
+
+- `pub ::database` Our in-memory "database"'s core data model.
+- `::integrity` Inter-record integrity validation logic.
+
+### `pub ::juniper` (crate: `speedruns_juniper`)
+
+- `pub ::juniper` A Juniper GraphQL model on top of our database.
+- `pub ::cli` The HTTP server and CLI implementation.
+
+### `pub ::utils` (crate: `speedruns_utils`)
+
+Grab bag.
+
+### `pub ::cli` (crate: `speedruns_cli`)
+
+- `pub ::main()` Implementation of the binary target CLI.
+
+### crate: `speedruns_build`
+
+Do I need my own prod macros for anything?
