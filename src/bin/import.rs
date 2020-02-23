@@ -149,7 +149,8 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
                             };
                         }
                         IntegrityError::CheckFailed { .. } => {
-                            panic!("value incorrectly normalized and fails validation?!");
+                            // validation errors shouldn't be possible, they're a sanity check.
+                            unreachable!("validation failure?! import bug?");
                         }
                         IntegrityError::NonUniqueSlug { sources, .. } => {
                             use AnyModelVec::*;

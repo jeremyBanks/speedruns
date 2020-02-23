@@ -17,70 +17,7 @@ pub mod data;
 pub mod types;
 
 /// Validating, indexing, and serializing our data.
-pub mod database {
-    use std::collections::{BTreeMap as SortedMap, HashMap};
-    use std::sync::Arc;
-
-    use crate::types::{Category, Game, Level, Run, User};
-
-    #[derive(Debug, Clone)]
-    pub struct Tables {
-        games: HashMap<u64, Game>,
-        categories: HashMap<u64, Category>,
-        runs: HashMap<u64, Run>,
-        users: HashMap<u64, User>,
-        levels: HashMap<u64, Level>,
-    }
-
-    #[derive(Debug, Clone)]
-    pub struct Indicies<'tables> {
-        tables: &'tables Tables,
-        games_by_slug: SortedMap<String, &'tables Game>,
-    }
-
-    impl<'tables> Indicies<'tables> {
-        pub fn from_tables<'a>(tables: &'a Tables) -> Indicies<'a> {
-            Indicies {
-                tables,
-                games_by_slug: tables
-                    .games
-                    .values()
-                    .map(|game| (game.slug.clone(), game))
-                    .collect(),
-            }
-        }
-    }
-
-    rental! {
-        mod rentals {
-            use super::*;
-            #[rental(debug, clone, covariant)]
-            pub struct Database {
-                tables: Arc<Tables>,
-                indicies: Indicies<'tables>,
-            }
-        }
-    }
-
-    #[derive(Debug, Clone)]
-    pub struct Database(rentals::Database);
-
-    impl Database {
-        pub fn new(tables: Arc<Tables>) -> Database {
-            Database(rentals::Database::new(tables, |tables| {
-                Indicies::from_tables(tables)
-            }))
-        }
-
-        pub fn tables(&self) -> &Tables {
-            self.0.head()
-        }
-
-        pub fn indicies(&self) -> &Indicies {
-            self.0.suffix()
-        }
-    }
-}
+pub mod database;
 
 /// Functions for leaderboards, progression, etc.
 pub mod aggregation {
