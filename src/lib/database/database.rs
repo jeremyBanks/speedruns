@@ -14,6 +14,20 @@ use crate::types::{Category, CategoryType, Game, Level, Run, User};
 
 use super::integrity::{validate, IntegrityErrors};
 
+#[derive(Debug, Clone)]
+pub struct Database(rentals::Database);
+
+rental! {
+    mod rentals {
+        use super::*;
+        #[rental(debug, clone, covariant)]
+        pub struct Database {
+            tables: Arc<Tables>,
+            indicies: Indicies<'tables>,
+        }
+    }
+}
+
 #[derive(Debug, Default, Serialize, Deserialize, Clone, Getters)]
 #[get = "pub"]
 pub struct Tables {
@@ -39,43 +53,165 @@ pub struct Indicies<'tables> {
         SortedMap<(u64, u64, Option<u64>), Vec<&'tables Run>>,
 }
 
-/// Index rows by some unique key. (Uniqueness not validated.)
-fn index<'tables, Value, OldKey: 'tables + Hash + Eq, NewKey: 'tables + Ord + Eq>(
-    original: HashMap<OldKey, Value>,
-    key: fn(&'tables Value) -> NewKey,
-) -> BTreeMap<NewKey, &'tables Value> {
-    index_where(original, key, |_| true)
-}
+impl Database {
+    /// Initialize a Database from table data.
+    ///
+    /// If any data fails validation, the tables will be cloned with
+    /// validation-failing rows filtered out.
+    pub fn new(tables: Arc<Tables>) -> Database {
+        let mut tables = tables;
+        loop {
+            match Self::try_new(tables.clone()) {
+                Ok(self_) => return self_,
+                Err(errors) => {
+                    let mut invalid_games = HashSet::<&Game>::new();
+                    let mut invalid_categories = HashSet::<&Category>::new();
+                    let mut invalid_levels = HashSet::<&Level>::new();
+                    let mut invalid_runs = HashSet::<&Run>::new();
+                    let mut invalid_users = HashSet::<&User>::new();
 
-/// Index rows passing some filter by some unique key. (Uniqueness not validated.)
-fn index_where<'tables, Value, OldKey: 'tables + Hash + Eq, NewKey: 'tables + Ord + Eq>(
-    original: HashMap<OldKey, Value>,
-    key: fn(&'tables Value) -> NewKey,
-    filter: fn(&Value) -> bool,
-) -> BTreeMap<NewKey, &'tables Value> {
-    original
-        .values()
-        .filter(|x| filter(x))
-        .map(|value| (key(value), value))
-        .collect()
-}
+                    for error in errors.errors {
+                        let invalid_rows = error.invalid_rows();
+                        invalid_games.extend(invalid_rows.games);
+                        invalid_categories.extend(invalid_rows.categories);
+                        invalid_levels.extend(invalid_rows.levels);
+                        invalid_runs.extend(invalid_rows.runs);
+                        invalid_users.extend(invalid_rows.users);
+                    }
 
-/// Index groups of rows by some non-unique key.
-fn index_group<'tables, Value, OldKey: 'tables + Hash + Eq, NewKey: 'tables + Ord + Eq>(
-    original: HashMap<OldKey, Value>,
-    key: fn(&'tables Value) -> NewKey,
-) -> BTreeMap<NewKey, &'tables Value> {
-    unimplemented!("these lifetimes confuse me");
-    // original
-    //     .values()
-    //     .group_by(|x| key(x))
-    //     .into_iter()
-    //     .map(|(key, values)| (key, values.collect()))
-    //     .collect()
+                    fn filter_invalid<T: Hash + Eq + Clone>(
+                        table: &HashMap<u64, T>,
+                        invalid: HashSet<&T>,
+                    ) -> HashMap<u64, T> {
+                        table
+                            .iter()
+                            .filter(|(_id, row)| !invalid.contains(row))
+                            .map(|(id, row)| (id.clone(), T::clone(row)))
+                            .collect()
+                    }
+
+                    error!(
+                        "{:6} ({:3}%) invalid runs",
+                        invalid_runs.len(),
+                        (invalid_runs.len() * 100) / tables.runs().len().max(1)
+                    );
+                    error!(
+                        "{:6} ({:3}%) invalid users",
+                        invalid_users.len(),
+                        (invalid_users.len() * 100) / tables.users().len().max(1)
+                    );
+                    error!(
+                        "{:6} ({:3}%) invalid games",
+                        invalid_games.len(),
+                        (invalid_games.len() * 100) / tables.games().len().max(1)
+                    );
+                    error!(
+                        "{:6} ({:3}%) invalid categories",
+                        invalid_categories.len(),
+                        (invalid_categories.len() * 100) / tables.categories().len().max(1)
+                    );
+                    error!(
+                        "{:6} ({:3}%) invalid levels",
+                        invalid_levels.len(),
+                        (invalid_levels.len() * 100) / tables.levels().len().max(1)
+                    );
+
+                    tables = Arc::new(Tables {
+                        games: filter_invalid(&tables.games, invalid_games),
+                        categories: filter_invalid(&tables.categories, invalid_categories),
+                        levels: filter_invalid(&tables.levels, invalid_levels),
+                        runs: filter_invalid(&tables.runs, invalid_runs),
+                        users: filter_invalid(&tables.users, invalid_users),
+                    })
+                }
+            }
+        }
+    }
+
+    /// Attempt to initialize a Database from table data.
+    ///
+    /// If any data fails validation, this will return an Err of
+    /// IntegrityErrors indicating the records that caused the failure.
+    pub fn try_new(tables: Arc<Tables>) -> Result<Database, IntegrityErrors> {
+        let self_ = Self::new_unvalidated(tables);
+        validate(&self_).map(move |()| self_)
+    }
+
+    /// Initialize a Database from table data, assuming it to be valid.
+    fn new_unvalidated(tables: Arc<Tables>) -> Database {
+        Database(rentals::Database::new(tables, |tables| {
+            Indicies::from_tables(tables)
+        }))
+    }
+
+    /// The tables of the database, with all rows hash-indexed by ID.
+    pub fn tables(&self) -> &Tables {
+        self.0.head()
+    }
+
+    /// With indicies of the database, with references to rows tree-indexed
+    /// in different ways, and some aggregated values.
+    pub fn indicies(&self) -> &Indicies {
+        self.0.suffix()
+    }
 }
 
 impl<'tables> Indicies<'tables> {
     pub fn from_tables(tables: &'tables Tables) -> Indicies<'tables> {
+        /// Index rows by some unique key. (Uniqueness not validated.)
+        fn index<
+            'tables,
+            Value,
+            OldKey: 'tables + Hash + Eq,
+            NewKey: 'tables + Ord + Eq,
+        >(
+            original: HashMap<OldKey, Value>,
+            key: fn(&'tables Value) -> NewKey,
+        ) -> BTreeMap<NewKey, &'tables Value> {
+            index_where(original, key, |_| true)
+        }
+
+        /// Index rows passing some filter by some unique key. (Uniqueness not validated.)
+        fn index_where<
+            'tables,
+            Value,
+            OldKey: 'tables + Hash + Eq,
+            NewKey: 'tables + Ord + Eq,
+        >(
+            original: HashMap<OldKey, Value>,
+            key: fn(&'tables Value) -> NewKey,
+            filter: fn(&Value) -> bool,
+        ) -> BTreeMap<NewKey, &'tables Value> {
+            // TODO: Should this use rayon?
+            original
+                .values()
+                .filter(|x| filter(x))
+                .map(|value| (key(value), value))
+                .collect()
+        }
+
+        /// Index groups of rows by some non-unique key.
+        fn index_group<
+            'tables,
+            Value,
+            OldKey: 'tables + Hash + Eq,
+            NewKey: 'tables + Ord + Eq,
+        >(
+            original: HashMap<OldKey, Value>,
+            key: fn(&'tables Value) -> NewKey,
+        ) -> BTreeMap<NewKey, &'tables Value> {
+            unimplemented!(
+                "these lifetimes confuse me
+
+            original
+                .values()
+                .group_by(|x| key(x))
+                .into_iter()
+                .map(|(key, values)| (key, values.collect()))
+                .collect()"
+            );
+        }
+
         Indicies {
             last_updated: tables
                 .runs
@@ -116,139 +252,5 @@ impl<'tables> Indicies<'tables> {
                 .map(|(key, runs)| (key, runs.collect()))
                 .collect(),
         }
-    }
-}
-
-rental! {
-    mod rentals {
-        use super::*;
-        #[rental(debug, clone, covariant)]
-        pub struct Database {
-            tables: Arc<Tables>,
-            indicies: Indicies<'tables>,
-        }
-    }
-}
-
-#[derive(Debug, Clone)]
-pub struct Database(rentals::Database);
-
-impl Database {
-    /// Initialize a Database from table data.
-    ///
-    /// If any data fails validation, the tables will be cloned with
-    /// validation-failing rows filtered out.
-    pub fn new(tables: Arc<Tables>) -> Database {
-        let mut tables = tables;
-        loop {
-            match Self::try_new(tables.clone()) {
-                Ok(self_) => return self_,
-                Err(errors) => {
-                    let mut invalid_runs = HashSet::<&Run>::new();
-                    let mut invalid_games = HashSet::<&Game>::new();
-                    let mut invalid_users = HashSet::<&User>::new();
-                    let mut invalid_levels = HashSet::<&Level>::new();
-                    let mut invalid_categories = HashSet::<&Category>::new();
-
-                    for error in errors.errors {
-                        let invalid_rows = errors.invalid_rows();
-                        invalid_runs.extend(invalid_rows.runs);
-                        invalid_games.extend(invalid_rows.games);
-                        invalid_users.extend(invalid_rows.users);
-                        invalid_levels.extend(invalid_rows.levels);
-                        invalid_categories.extend(invalid_rows.categories);
-
-                        error!(
-                            "{:6} ({:3}%) invalid runs",
-                            invalid_runs.len(),
-                            (invalid_runs.len() * 100) / tables.runs().len().max(1)
-                        );
-                        error!(
-                            "{:6} ({:3}%) invalid users",
-                            invalid_users.len(),
-                            (invalid_users.len() * 100) / tables.users().len().max(1)
-                        );
-                        error!(
-                            "{:6} ({:3}%) invalid games",
-                            invalid_games.len(),
-                            (invalid_games.len() * 100) / tables.games().len().max(1)
-                        );
-                        error!(
-                            "{:6} ({:3}%) invalid categories",
-                            invalid_categories.len(),
-                            (invalid_categories.len() * 100)
-                                / tables.categories().len().max(1)
-                        );
-                        error!(
-                            "{:6} ({:3}%) invalid levels",
-                            invalid_levels.len(),
-                            (invalid_levels.len() * 100) / tables.levels().len().max(1)
-                        );
-
-                        tables = Arc::new(Tables {
-                            games: tables
-                                .games()
-                                .iter()
-                                .filter(|(_id, game)| !invalid_games.contains(game))
-                                .map(|(id, game)| (id.clone(), game.clone()))
-                                .collect(),
-                            categories: tables
-                                .categories()
-                                .iter()
-                                .filter(|(_id, category)| {
-                                    !invalid_categories.contains(category)
-                                })
-                                .map(|(id, category)| (id.clone(), category.clone()))
-                                .collect(),
-                            levels: tables
-                                .levels()
-                                .iter()
-                                .filter(|(_id, level)| !invalid_levels.contains(level))
-                                .map(|(id, level)| (id.clone(), level.clone()))
-                                .collect(),
-                            runs: tables
-                                .runs()
-                                .iter()
-                                .filter(|(_id, run)| !invalid_runs.contains(run))
-                                .map(|(id, run)| (id.clone(), run.clone()))
-                                .collect(),
-                            users: tables
-                                .users()
-                                .iter()
-                                .filter(|(_id, user)| !invalid_users.contains(user))
-                                .map(|(id, user)| (id.clone(), user.clone()))
-                                .collect(),
-                        })
-                    }
-                }
-            }
-        }
-    }
-
-    /// Attempt to initialize a Database from table data.
-    ///
-    /// If any data fails validation, this will return an Err of
-    /// IntegrityErrors indicating the records that caused the failure.
-    pub fn try_new(tables: Arc<Tables>) -> Result<Database, IntegrityErrors> {
-        let self_ = Self::new_unvalidated(tables);
-        validate(&self_).map(move |()| self_)
-    }
-
-    /// Initialize a Database from table data, assuming it to be valid.
-    fn new_unvalidated(tables: Arc<Tables>) -> Database {
-        Database(rentals::Database::new(tables, |tables| {
-            Indicies::from_tables(tables)
-        }))
-    }
-
-    /// The tables of the database, with all rows hash-indexed by ID.
-    pub fn tables(&self) -> &Tables {
-        self.0.head()
-    }
-
-    /// With indicies of the database, with references to rows tree-indexed
-    /// in different ways, and some aggregated values.
-    pub fn indicies(&self) -> &Indicies {
-        self.0.suffix()
     }
 }
