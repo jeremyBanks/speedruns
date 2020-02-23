@@ -1,5 +1,6 @@
+use std::collections::BTreeMap;
 use std::collections::{BTreeMap as SortedMap, HashMap, HashSet};
-use std::sync::Arc;
+use std::{hash::Hash, sync::Arc};
 
 use chrono::{DateTime, NaiveDateTime, Utc};
 use getset::Getters;
@@ -38,9 +39,43 @@ pub struct Indicies<'tables> {
         SortedMap<(u64, u64, Option<u64>), Vec<&'tables Run>>,
 }
 
+/// Index rows by some unique key. (Uniqueness not validated.)
+fn index<'tables, Value, OldKey: 'tables + Hash + Eq, NewKey: 'tables + Ord + Eq>(
+    original: HashMap<OldKey, Value>,
+    key: fn(&'tables Value) -> NewKey,
+) -> BTreeMap<NewKey, &'tables Value> {
+    index_where(original, key, |_| true)
+}
+
+/// Index rows passing some filter by some unique key. (Uniqueness not validated.)
+fn index_where<'tables, Value, OldKey: 'tables + Hash + Eq, NewKey: 'tables + Ord + Eq>(
+    original: HashMap<OldKey, Value>,
+    key: fn(&'tables Value) -> NewKey,
+    filter: fn(&Value) -> bool,
+) -> BTreeMap<NewKey, &'tables Value> {
+    original
+        .values()
+        .filter(|x| filter(x))
+        .map(|value| (key(value), value))
+        .collect()
+}
+
+/// Index groups of rows by some non-unique key.
+fn index_group<'tables, Value, OldKey: 'tables + Hash + Eq, NewKey: 'tables + Ord + Eq>(
+    original: HashMap<OldKey, Value>,
+    key: fn(&'tables Value) -> NewKey,
+) -> BTreeMap<NewKey, &'tables Value> {
+    unimplemented!("these lifetimes confuse me");
+    // original
+    //     .values()
+    //     .group_by(|x| key(x))
+    //     .into_iter()
+    //     .map(|(key, values)| (key, values.collect()))
+    //     .collect()
+}
+
 impl<'tables> Indicies<'tables> {
     pub fn from_tables(tables: &'tables Tables) -> Indicies<'tables> {
-        // Repeatedly iterating like this is slower but the code's simpler.
         Indicies {
             last_updated: tables
                 .runs
@@ -53,37 +88,25 @@ impl<'tables> Indicies<'tables> {
                     Utc,
                 )),
 
-            games_by_slug: tables
-                .games
-                .values()
-                .map(|game| (game.slug().as_ref(), game))
-                .collect(),
+            games_by_slug: index(tables.games, |game| game.slug().as_ref()),
 
-            users_by_slug: tables
-                .users
-                .values()
-                .map(|user| (user.slug().as_ref(), user))
-                .collect(),
+            users_by_slug: index(tables.users, |user| user.slug().as_ref()),
 
-            levels_by_game_id_and_slug: tables
-                .levels
-                .values()
-                .map(|level| ((*level.game_id(), level.slug().as_ref()), level))
-                .collect(),
+            levels_by_game_id_and_slug: index(tables.levels, |level| {
+                (*level.game_id(), level.slug().as_ref())
+            }),
 
-            per_game_categories_by_game_id_and_slug: tables
-                .categories
-                .values()
-                .filter(|category| *category.per() == CategoryType::PerGame)
-                .map(|category| ((*category.game_id(), category.slug().as_ref()), category))
-                .collect(),
+            per_game_categories_by_game_id_and_slug: index_where(
+                tables.categories,
+                |category| (*category.game_id(), category.slug().as_ref()),
+                |category| *category.per() == CategoryType::PerGame,
+            ),
 
-            per_level_categories_by_game_id_and_slug: tables
-                .categories
-                .values()
-                .filter(|category| *category.per() == CategoryType::PerLevel)
-                .map(|category| ((*category.game_id(), category.slug().as_ref()), category))
-                .collect(),
+            per_level_categories_by_game_id_and_slug: index_where(
+                tables.categories,
+                |category| (*category.game_id(), category.slug().as_ref()),
+                |category| *category.per() == CategoryType::PerLevel,
+            ),
 
             runs_by_game_id_and_category_id_and_level_id: tables
                 .runs
@@ -130,10 +153,10 @@ impl Database {
                     for error in errors.errors {
                         let invalid_rows = errors.invalid_rows();
                         invalid_runs.extend(invalid_rows.runs);
-                        invalid_runs.extend(invalid_rows.runs);
-                        invalid_runs.extend(invalid_rows.runs);
-                        invalid_runs.extend(invalid_rows.runs);
-                        invalid_runs.extend(invalid_rows.runs);
+                        invalid_games.extend(invalid_rows.games);
+                        invalid_users.extend(invalid_rows.users);
+                        invalid_levels.extend(invalid_rows.levels);
+                        invalid_categories.extend(invalid_rows.categories);
 
                         error!(
                             "{:6} ({:3}%) invalid runs",
