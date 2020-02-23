@@ -150,7 +150,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
                         }
                         IntegrityError::CheckFailed { .. } => {
                             // validation errors shouldn't be possible, they're a sanity check.
-                            unreachable!("validation failure?! import bug?");
+                            panic!("validation failure?! import bug?");
                         }
                         IntegrityError::NonUniqueSlug { sources, .. } => {
                             use AnyModelVec::*;
@@ -226,32 +226,6 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
                         }
                     }
                 }
-
-                error!(
-                    "{:6} ({:3}%) invalid runs",
-                    dead_run_ids.len(),
-                    (dead_run_ids.len() * 100) / runs.len().max(1)
-                );
-                error!(
-                    "{:6} ({:3}%) invalid users",
-                    dead_user_ids.len(),
-                    (dead_user_ids.len() * 100) / users.len().max(1)
-                );
-                error!(
-                    "{:6} ({:3}%) invalid games",
-                    dead_game_ids.len(),
-                    (dead_game_ids.len() * 100) / games.len().max(1)
-                );
-                error!(
-                    "{:6} ({:3}%) invalid categories",
-                    dead_category_ids.len(),
-                    (dead_category_ids.len() * 100) / categories.len().max(1)
-                );
-                error!(
-                    "{:6} ({:3}%) invalid levels",
-                    dead_level_ids.len(),
-                    (dead_level_ids.len() * 100) / levels.len().max(1)
-                );
 
                 runs.retain(|x| !dead_run_ids.contains(x.id()));
                 users.retain(|x| !dead_user_ids.contains(x.id()));
