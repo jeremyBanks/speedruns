@@ -3,7 +3,7 @@ use std::{collections::HashSet, convert::TryFrom};
 use getset::Getters;
 use serde::Serialize;
 
-use crate::data::{database::Linked, types::*};
+use speedruns_types::*;
 
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]

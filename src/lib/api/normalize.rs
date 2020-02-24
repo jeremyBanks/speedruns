@@ -6,18 +6,15 @@ use log::{debug, error, info, trace, warn};
 use regex::Regex;
 use validator::Validate;
 
-use crate::{
-    api,
-    types::*,
-    utils::{slugify, u64_from_base36},
-};
+use speedruns_types::*;
+use speedruns_utils::{self as utils, slugify, u64_from_base36};
 
 #[derive(Debug, Error, From)]
 pub enum Error {
     #[error(display = "all names were None or zero-length")]
     NoNames,
     #[error(display = "an ID was invalid and could not be decoded: {:?}", _0)]
-    InvalidId(crate::utils::Base36DecodingError),
+    InvalidId(utils::Base36DecodingError),
     #[error(display = "internal error: invalid object created. {:?}", _0)]
     InternalValidationErrors(validator::ValidationErrors),
 }
