@@ -10,7 +10,7 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use crate::data::types::*;
 
 /// A core types we store in a Database.
-pub trait Model:
+pub trait Model:;
     Into<AnyModel>
     + TryFrom<AnyModel>
     + Debug
