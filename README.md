@@ -71,34 +71,37 @@ Restart the server to load the new data.
 
 Note that this is being developed as a service first, and a library secondarily.
 
-### `pub ::api` (crate: `speedruns_api`)
+### `::api` (crate: `speedruns_api`)
 
-- `pub ::types` API response data types.
-- `pub ::normalize` Converting API data to our model.
-- `pub ::cli` The downloader and CLI implementation.
+- `::types` API response data types.
+- `::normalize` Converting API data to our model.
+- `::cli` The downloader and CLI implementation.
 
-### `pub ::types` (crate: `speedruns_types`)
+### `::types` (crate: `speedruns_types`)
 
-- `pub ::types` The data types for our speedrun model.
-- `pub ::validation` Single-record validation logic.
+- `::types` The data types for our speedrun model.
+- `::validation` Single-record validation logic.
+- `::aggregations` Functions for aggregating collections of records.
+  - `::leaderboard(Run[]) -> Leaderboard { game, category, level?, {...}[] }`
+  - `::progression(Run[]) -> Progression { game, category, level?, {...}[] }`
 
-### `pub ::database` (crate: `speedruns_database`)
+### `::database` (crate: `speedruns_database`)
 
-- `pub ::database` Our in-memory "database"'s core data model.
+- `::database` Our in-memory "database"'s core data model.
 - `::integrity` Inter-record integrity validation logic.
 
-### `pub ::juniper` (crate: `speedruns_juniper`)
+### `::juniper` (crate: `speedruns_juniper`)
 
-- `pub ::juniper` A Juniper GraphQL model on top of our database.
-- `pub ::cli` The HTTP server and CLI implementation.
+- `::juniper` A Juniper GraphQL model on top of our database.
+- `::cli` The HTTP server and CLI implementation.
 
-### `pub ::utils` (crate: `speedruns_utils`)
+### `::utils` (crate: `speedruns_utils`)
 
 Grab bag.
 
-### `pub ::cli` (crate: `speedruns_cli`)
+### `::cli` (crate: `speedruns_cli`)
 
-- `pub ::main()` Implementation of the binary target CLI.
+- `::main()` Implementation of the binary target CLI.
 
 ### crate: `speedruns_build`
 

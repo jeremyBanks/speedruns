@@ -8,11 +8,6 @@ extern crate rental;
 /// Types for the speedrun.com API data we consume, and utilities for normalizing it.  
 pub mod api;
 
-/// Our normalized data types, a frozen in-memory database, and leaderboard logic.
-///
-/// TODO: refactor this out of existence
-pub mod data;
-
 /// The core types of our data model.
 pub mod types;
 
