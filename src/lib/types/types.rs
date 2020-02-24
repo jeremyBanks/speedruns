@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationError, ValidationErrors};
 use validator_derive::Validate;
 
-use crate::utils::{base36, src_slugify};
+use speedruns_utils::{base36, src_slugify};
 
 // We currently represent all ids as u64s for efficiency.
 // You can use [crate::utils] to convert to and from speedrun.com's

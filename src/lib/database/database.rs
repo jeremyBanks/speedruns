@@ -10,9 +10,10 @@ use serde::{Deserialize, Serialize};
 #[allow(unused)]
 use log::{debug, error, info, trace, warn};
 
-use crate::types::{Category, CategoryType, Game, Level, Run, User};
+use speedruns_types::{Category, CategoryType, Game, Level, Run, User};
 
-use super::integrity::{validate, IntegrityErrors};
+mod integrity;
+use integrity::{validate, IntegrityErrors};
 
 #[derive(Debug, Clone)]
 pub struct Database(rentals::Database);

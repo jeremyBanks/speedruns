@@ -7,7 +7,7 @@ use derive_more::{From, TryInto};
 use log::{debug, error, info, trace, warn};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
-use crate::data::types::*;
+use speedruns_types::*;
 
 /// A core types we store in a Database.
 pub trait Model:;

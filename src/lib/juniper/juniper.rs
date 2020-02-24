@@ -15,16 +15,12 @@ use juniper::{
 use juniper::{Executor, ID};
 use juniper_from_schema::graphql_schema_from_file;
 
-use crate::{
-    data::{
-        database::{Database, Linked as DbLinked},
-        graphql::global_id::{global_id, parse_global_id, NodeType},
-        leaderboard, progression, types as db,
-    },
-    utils::{base36, src_slugify, u64_from_base36},
-};
+use speedruns_database::{Database};
+use speedruns_types::{leaderboard, progression, types as db};
+use speedruns_utils::{base36, src_slugify, u64_from_base36};
 
 mod global_id;
+use global_id::{global_id, parse_global_id, NodeType};
 
 graphql_schema_from_file!("src/lib/data/graphql/schema.juniper.graphql");
 
@@ -195,9 +191,9 @@ impl GameFields for Game {
 
     fn field_timing_method(&self, _executor: &Executor<'_, Context>) -> TimingMethod {
         match self.0.primary_timing() {
-            crate::data::types::TimingMethod::IGT => TimingMethod::Igt,
-            crate::data::types::TimingMethod::RTA => TimingMethod::Rta,
-            crate::data::types::TimingMethod::RTA_NL => TimingMethod::RtaNl,
+            speedruns_types::TimingMethod::IGT => TimingMethod::Igt,
+            speedruns_types::TimingMethod::RTA => TimingMethod::Rta,
+            speedruns_types::TimingMethod::RTA_NL => TimingMethod::RtaNl,
         }
     }
 

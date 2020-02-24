@@ -4,11 +4,8 @@ use getset::Getters;
 use itertools::Itertools;
 use serde::Serialize;
 
-use crate::data::{
-    database::Linked,
-    leaderboard::{leaderboard, LeaderboardRun},
-    types::*,
-};
+use speedruns_data::aggregations::{leaderboard, LeaderboardRun};
+use speedruns_types::types::*;
 
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
