@@ -2285,11 +2285,71 @@ dependencies = [
  "serde",
  "serde_derive",
  "serde_json",
+ "speedruns_api",
+ "speedruns_cli",
+ "speedruns_database",
+ "speedruns_juniper",
+ "speedruns_types",
  "speedruns_utils",
  "tempfile",
  "unidecode",
  "validator",
  "validator_derive",
+]
+
+[[package]]
+name = "speedruns_api"
+version = "0.21.6-dev"
+dependencies = [
+ "derive_more",
+ "err-derive",
+ "log",
+ "no-panic",
+ "unidecode",
+]
+
+[[package]]
+name = "speedruns_cli"
+version = "0.21.6-dev"
+dependencies = [
+ "derive_more",
+ "err-derive",
+ "log",
+ "no-panic",
+ "unidecode",
+]
+
+[[package]]
+name = "speedruns_database"
+version = "0.21.6-dev"
+dependencies = [
+ "derive_more",
+ "err-derive",
+ "log",
+ "no-panic",
+ "unidecode",
+]
+
+[[package]]
+name = "speedruns_juniper"
+version = "0.21.6-dev"
+dependencies = [
+ "derive_more",
+ "err-derive",
+ "log",
+ "no-panic",
+ "unidecode",
+]
+
+[[package]]
+name = "speedruns_types"
+version = "0.21.6-dev"
+dependencies = [
+ "derive_more",
+ "err-derive",
+ "log",
+ "no-panic",
+ "unidecode",
 ]
 
 [[package]]

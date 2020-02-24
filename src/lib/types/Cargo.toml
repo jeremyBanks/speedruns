@@ -1,14 +1,14 @@
 [package]
 edition = "2018"
 license = "MIT"
-name = "speedruns_utils"
+name = "speedruns_types"
 version = "0.21.6-dev"
 authors = ["Jeremy Banks <_@jeremy.ca>"]
 description = "subpackage of speedruns"
 repository = "https://github.com/jeremybanks/speedruns"
 
 [lib]
-path = "utils.rs"
+path = "types.rs"
 
 [dependencies]
 derive_more = "0.99.3"

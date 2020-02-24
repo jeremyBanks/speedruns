@@ -67,6 +67,9 @@ jobs:
       - name: test - cargo test
         run: cargo test --workspace
 
+      - name: test - cargo doc
+        run: cargo doc --workspace
+
       - name: test - lint
         run: yarn lint
 
