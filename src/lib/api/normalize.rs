@@ -6,7 +6,7 @@ use log::{debug, error, info, trace, warn};
 use regex::Regex;
 use validator::Validate;
 
-use speedruns_types::*;
+use speedruns_models::*;
 use speedruns_utils::{self as utils, slugify, u64_from_base36};
 
 #[derive(Debug, Error, From)]

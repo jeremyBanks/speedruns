@@ -2289,7 +2289,7 @@ dependencies = [
  "speedruns_cli",
  "speedruns_database",
  "speedruns_juniper",
- "speedruns_types",
+ "speedruns_models",
  "speedruns_utils",
  "tempfile",
  "unidecode",
@@ -2330,7 +2330,7 @@ dependencies = [
  "serde",
  "serde_derive",
  "serde_json",
- "speedruns_types",
+ "speedruns_models",
  "speedruns_utils",
  "tempfile",
  "unidecode",
@@ -2374,7 +2374,7 @@ dependencies = [
  "speedruns_api",
  "speedruns_database",
  "speedruns_juniper",
- "speedruns_types",
+ "speedruns_models",
  "speedruns_utils",
  "tempfile",
  "unidecode",
@@ -2415,7 +2415,7 @@ dependencies = [
  "serde",
  "serde_derive",
  "serde_json",
- "speedruns_types",
+ "speedruns_models",
  "speedruns_utils",
  "tempfile",
  "unidecode",
@@ -2458,7 +2458,7 @@ dependencies = [
  "serde_json",
  "speedruns_api",
  "speedruns_database",
- "speedruns_types",
+ "speedruns_models",
  "speedruns_utils",
  "tempfile",
  "unidecode",
@@ -2467,7 +2467,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "speedruns_types"
+name = "speedruns_models"
 version = "0.21.6-dev"
 dependencies = [
  "chrono",

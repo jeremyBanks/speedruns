@@ -53,7 +53,7 @@ speedruns_api = { path = "src/lib/api", version = "0.21.6-dev" }
 speedruns_cli = { path = "src/lib/cli", version = "0.21.6-dev" }
 speedruns_database = { path = "src/lib/database", version = "0.21.6-dev" }
 speedruns_juniper = { path = "src/lib/juniper", version = "0.21.6-dev" }
-speedruns_types = { path = "src/lib/types", version = "0.21.6-dev" }
+speedruns_models = { path = "src/lib/models", version = "0.21.6-dev" }
 speedruns_utils = { path = "src/lib/utils", version = "0.21.6-dev" }
 tempfile = "3.1.0"
 unidecode = "0.3.0"

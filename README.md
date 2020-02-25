@@ -92,7 +92,7 @@ service first, a library second.
 
 Grab bag of shared code.
 
-### `::model` (crate: `speedruns_model`) depends on `utils`
+### `::models` (crate: `speedruns_models`) depends on `utils`
 
 - `::model` The data types for our speedrun model.
 - `::validation` Single-record validation logic.

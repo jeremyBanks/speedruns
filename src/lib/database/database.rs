@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 #[allow(unused)]
 use log::{debug, error, info, trace, warn};
 
-use speedruns_types::{Category, CategoryType, Game, Level, Run, User};
+use speedruns_models::{Category, CategoryType, Game, Level, Run, User};
 
 #[macro_use]
 extern crate rental;
