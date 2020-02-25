@@ -11,17 +11,17 @@ use crate::{
 
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
-pub struct ProgressionRun<'run> {
+pub struct ProgressionRun {
     progress_ms: u64,
-    run: &'run Run,
-    leaderboard_run: Option<LeaderboardRun<'run>>,
+    run: Run,
+    leaderboard_run: Option<LeaderboardRun>,
 }
 
 pub fn progression<'runs>(
     game: &'_ Game,
     runs: impl Iterator<Item = &'runs Run>,
-) -> Vec<ProgressionRun<'runs>> {
-    let mut runs: Vec<&Run> = runs.collect();
+) -> Vec<ProgressionRun> {
+    let runs: Vec<&Run> = runs.collect();
 
     if runs.is_empty() {
         return vec![];
@@ -80,7 +80,7 @@ pub fn progression<'runs>(
             if is_progress {
                 progression.push(ProgressionRun {
                     progress_ms,
-                    run: run.clone(),
+                    run: Run::clone(run),
                     leaderboard_run: leaderboard_runs_by_id.remove(run.id()),
                 });
                 best_ms = Some(run_time);

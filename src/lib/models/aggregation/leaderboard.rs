@@ -7,12 +7,12 @@ use crate::{Game, Level, Run, RunPlayer, User};
 
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
-pub struct LeaderboardRun<'run> {
+pub struct LeaderboardRun {
     rank: u64,
     time_ms: u64,
     is_tied: bool,
     tied_rank: u64,
-    run: &'run Run,
+    run: Run,
 }
 
 /// Ranks a set of runs (all for the same game/category/level) using the
@@ -23,7 +23,7 @@ pub fn leaderboard<'runs>(
     game: &'_ Game,
     runs: impl Iterator<Item = &'runs Run>,
     rank_obsoletes: bool,
-) -> Vec<LeaderboardRun<'runs>> {
+) -> Vec<LeaderboardRun> {
     let mut runs: Vec<&Run> = runs.collect();
 
     if runs.is_empty() {
@@ -83,7 +83,7 @@ pub fn leaderboard<'runs>(
             time_ms,
             is_tied,
             tied_rank,
-            run: run.clone(),
+            run: Run::clone(run),
         };
 
         leaderboard.push(new);

@@ -1981,17 +1981,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b28dfe3fe9badec5dbf0a79a9cccad2cfc2ab5484bdb3e44cbd1ae8b3ba2be06"
 
 [[package]]
-name = "remain"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "99c861227fc40c8da6fdaa3d58144ac84c0537080a43eb1d7d45c28f88dcb888"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "remove_dir_all"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2279,7 +2268,6 @@ dependencies = [
  "pretty_env_logger",
  "rand 0.7.3",
  "regex",
- "remain",
  "rental",
  "reqwest",
  "serde",
@@ -2324,7 +2312,6 @@ dependencies = [
  "pretty_env_logger",
  "rand 0.7.3",
  "regex",
- "remain",
  "rental",
  "reqwest",
  "serde",
@@ -2365,7 +2352,6 @@ dependencies = [
  "pretty_env_logger",
  "rand 0.7.3",
  "regex",
- "remain",
  "rental",
  "reqwest",
  "serde",
@@ -2409,7 +2395,6 @@ dependencies = [
  "pretty_env_logger",
  "rand 0.7.3",
  "regex",
- "remain",
  "rental",
  "reqwest",
  "serde",
@@ -2450,7 +2435,6 @@ dependencies = [
  "pretty_env_logger",
  "rand 0.7.3",
  "regex",
- "remain",
  "rental",
  "reqwest",
  "serde",
