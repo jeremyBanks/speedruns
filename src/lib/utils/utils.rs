@@ -15,36 +15,34 @@ pub enum Base36DecodingError {
 }
 
 // Converts a name to a slug as speedrun.com would.
-pub fn src_slugify(s: &str) -> String {
-    let mut src_slug = String::new();
-
-    // TODO: check against API URLs during normalization
+pub fn slugify(s: &str) -> String {
+    let mut slug = String::new();
 
     let mut last_was_spacing = true;
     for c in s.chars() {
         let mut this_was_spacing = false;
         match c {
-            'a'..='z' | 'A'..='Z' | '0'..='9' | '+' | '-' => src_slug.push(c),
+            'a'..='z' | 'A'..='Z' | '0'..='9' | '+' | '-' => slug.push(c),
             '/' | '\'' => {}
             _ => {
                 this_was_spacing = true;
                 if !last_was_spacing {
-                    src_slug.push('_');
+                    slug.push('_');
                 }
             }
         }
         last_was_spacing = this_was_spacing;
     }
 
-    if last_was_spacing && !src_slug.is_empty() {
-        src_slug.truncate(src_slug.len() - 1);
+    if last_was_spacing && !slug.is_empty() {
+        slug.truncate(slug.len() - 1);
     }
 
-    if src_slug.is_empty() {
-        src_slug.push('_');
+    if slug.is_empty() {
+        slug.push('_');
     }
 
-    src_slug
+    slug
 }
 
 /// Decodes a nonzero lowercase base 36 string to an [u64].

@@ -17,7 +17,10 @@ use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationErrors};
 
-use speedruns_types::*;
+use speedruns_types::{
+    any::{AnyModel, AnyModelVec},
+    Category, Game, Level, Run, RunPlayer, User,
+};
 use speedruns_utils::slugify;
 
 // We're using the validator::Validator trait in our data model, but
@@ -33,17 +36,17 @@ const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validat
 pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
     let mut errors = vec![];
 
-    trace!("Validating {} runs.", self.tables.runs().len());
-    for run in self.runs() {
-        if let Err(mut error) = run.validate() {
+    trace!("Validating {} runs.", database.runs().len());
+    for run in database.runs().values() {
+        if let Err(mut error) = validate_run(database, &run) {
             errors.append(&mut error.errors);
         }
     }
 
-    trace!("Validating {} users.", self.tables.users().len());
+    trace!("Validating {} users.", database.users().len());
     let mut user_slugs = HashMap::<String, Vec<User>>::new();
-    for user in self.users() {
-        if let Err(mut error) = user.validate() {
+    for user in database.users().values() {
+        if let Err(mut error) = validate_user(database, &user) {
             errors.append(&mut error.errors);
         } else {
             user_slugs
@@ -61,10 +64,10 @@ pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
         }
     }
 
-    trace!("Validating {} games.", self.tables.games().len());
+    trace!("Validating {} games.", database.games().len());
     let mut game_slugs = HashMap::<String, Vec<Game>>::new();
-    for game in self.games() {
-        if let Err(mut error) = game.validate() {
+    for game in database.games().values() {
+        if let Err(mut error) = validate_game(database, &game) {
             errors.append(&mut error.errors);
         } else {
             game_slugs
@@ -82,15 +85,16 @@ pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
         }
     }
 
-    trace!("Validating {} categories.", self.tables.categories().len());
+    trace!("Validating {} categories.", database.categories().len());
     let mut category_slugs = HashMap::<String, Vec<Category>>::new();
-    for category in self.categories() {
-        if let Err(mut error) = category.validate() {
+    for category in database.categories().values() {
+        if let Err(mut error) = validate_category(database, &category) {
             errors.append(&mut error.errors);
         } else {
+            let game = &database.games()[&category.game_id];
             let slug = format!(
                 "{}/{}/{}",
-                category.game().slug(),
+                game.slug(),
                 slugify(&format!("{:?}", category.per())),
                 category.slug()
             );
@@ -109,13 +113,14 @@ pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
         }
     }
 
-    trace!("Validating {} levels.", self.tables.levels().len());
+    trace!("Validating {} levels.", database.levels().len());
     let mut level_slugs = HashMap::<String, Vec<Level>>::new();
-    for level in self.levels() {
-        if let Err(mut error) = level.validate() {
+    for level in database.levels().values() {
+        if let Err(mut error) = validate_level(database, &level) {
             errors.append(&mut error.errors);
         } else {
-            let slug = format!("{}/{}", level.game().slug(), level.slug());
+            let game = &database.games()[&level.game_id];
+            let slug = format!("{}/{}", game.slug(), level.slug());
             level_slugs
                 .entry(slug)
                 .or_insert_with(Vec::new)
@@ -134,7 +139,7 @@ pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
     IntegrityErrors::try_from(errors)
 }
 
-fn validate_game(game: &Game, database: &super::Database) -> Result<(), IntegrityErrors> {
+fn validate_game(database: &super::Database, game: &Game) -> Result<(), IntegrityErrors> {
     let mut errors = Vec::new();
 
     if let Err(validation_errors) = game.validate() {
@@ -148,8 +153,8 @@ fn validate_game(game: &Game, database: &super::Database) -> Result<(), Integrit
 }
 
 fn validate_category(
-    category: Category,
     database: &super::Database,
+    category: &Category,
 ) -> Result<(), IntegrityErrors> {
     let mut errors = Vec::new();
 
@@ -160,10 +165,10 @@ fn validate_category(
         });
     }
 
-    if database.game_by_id(category.game_id()).is_none() {
+    if database.games().get(&category.game_id).is_none() {
         errors.push(IntegrityError::ForeignKeyMissing {
             target_type: "game",
-            target_id: category.game_id(),
+            target_id: category.game_id,
             foreign_key_field: "game_id",
             source: category.clone().into(),
         });
@@ -172,118 +177,106 @@ fn validate_category(
     IntegrityErrors::try_from(errors)
 }
 
-fn validate_level(level: &Level, database: super::Database) -> Result<(), IntegrityErrors> {
+fn validate_level(
+    database: &super::Database,
+    level: &Level,
+) -> Result<(), IntegrityErrors> {
     let mut errors = Vec::new();
 
-    if let Err(validation_errors) = self.item.validate() {
+    if let Err(validation_errors) = level.validate() {
         errors.push(IntegrityError::CheckFailed {
             errors: validation_errors,
-            source: (*self.item).clone().into(),
+            source: level.clone().into(),
         });
     }
 
-    if self.database.game_by_id(*self.game_id()).is_none() {
+    if database.games().get(&level.game_id).is_none() {
         errors.push(IntegrityError::ForeignKeyMissing {
             target_type: "game",
-            target_id: *self.game_id(),
+            target_id: level.game_id,
             foreign_key_field: "game_id",
-            source: (*self.item).clone().into(),
+            source: level.clone().into(),
         });
     }
 
     IntegrityErrors::try_from(errors)
 }
 
-fn validate_run(run: Run, database: super::Database) -> Result<(), IntegrityErrors> {
+fn validate_run(database: &super::Database, run: &Run) -> Result<(), IntegrityErrors> {
     let mut errors = Vec::new();
 
-    if self.database.game_by_id(*self.game_id()).is_none() {
-        errors.push(IntegrityError::ForeignKeyMissing {
-            target_type: "game",
-            target_id: *self.game_id(),
-            foreign_key_field: "game_id",
-            source: (*self.item).clone().into(),
-        });
-    } else {
-        let game = self.game();
-        let primary_timing = game.primary_timing();
-        let times = self.times_ms();
-        if times.get(primary_timing).is_none() {
-            errors.push(IntegrityError::MissingPrimaryTiming((**self).clone()))
+    match database.games().get(&run.game_id) {
+        Some(game) => {
+            let primary_timing = game.primary_timing();
+            let times = run.times_ms();
+            if times.get(primary_timing).is_none() {
+                errors.push(IntegrityError::MissingPrimaryTiming(run.clone()))
+            }
         }
-    }
-
-    if self
-        .database
-        .clone()
-        .category_by_id(*self.category_id())
-        .is_none()
-    {
-        errors.push(IntegrityError::ForeignKeyMissing {
-            target_type: "category",
-            target_id: *self.category_id(),
-            foreign_key_field: "category_id",
-            source: (*self.item).clone().into(),
-        });
-    }
-
-    if let Some(level_id) = self.level_id() {
-        if self.database.level_by_id(*level_id).is_none() {
+        None => {
             errors.push(IntegrityError::ForeignKeyMissing {
-                target_type: "level",
-                target_id: *level_id,
-                foreign_key_field: "level_id",
-                source: (*self.item).clone().into(),
+                target_type: "game",
+                target_id: run.game_id,
+                foreign_key_field: "game_id",
+                source: run.clone().into(),
             });
         }
     }
 
-    for player in self.players() {
+    if database.categories().get(&run.category_id()).is_none() {
+        errors.push(IntegrityError::ForeignKeyMissing {
+            target_type: "category",
+            target_id: run.category_id,
+            foreign_key_field: "category_id",
+            source: run.clone().into(),
+        });
+    }
+
+    if let Some(level_id) = run.level_id {
+        if database.levels().get(&level_id).is_none() {
+            errors.push(IntegrityError::ForeignKeyMissing {
+                target_type: "level",
+                target_id: level_id,
+                foreign_key_field: "level_id",
+                source: run.clone().into(),
+            });
+        }
+    }
+
+    for player in run.players() {
         if let RunPlayer::UserId(user_id) = player {
-            if self.database.user_by_id(*user_id).is_none() {
+            if database.users().get(&user_id).is_none() {
                 errors.push(IntegrityError::ForeignKeyMissing {
                     target_type: "user",
                     target_id: *user_id,
                     foreign_key_field: "players[…].0",
-                    source: (*self.item).clone().into(),
+                    source: run.clone().into(),
                 });
             }
         }
     }
 
-    if let Err(validation_errors) = self.item.validate() {
+    if let Err(validation_errors) = run.validate() {
         errors.push(IntegrityError::CheckFailed {
             errors: validation_errors,
-            source: (*self.item).clone().into(),
+            source: run.clone().into(),
         });
     }
 
     IntegrityErrors::try_from(errors)
 }
 
-fn validate_user(user: &User, database: &super::Database) -> Result<(), IntegrityErrors> {
-    fn validate(&self) -> Result<(), IntegrityErrors> {
-        let mut errors = Vec::new();
+fn validate_user(database: &super::Database, user: &User) -> Result<(), IntegrityErrors> {
+    let mut errors = Vec::new();
 
-        if let Err(validation_errors) = self.item.validate() {
-            errors.push(IntegrityError::CheckFailed {
-                errors: validation_errors,
-                source: (*self.item).clone().into(),
-            });
-        }
-
-        Ok(())
-    }}
-
-impl IntegrityErrors {
-    // TODO: rename this!
-    fn try_from(errors: Vec<IntegrityError>) -> Result<(), IntegrityErrors> {
-        if errors.is_empty() {
-            Ok(())
-        } else {
-            Err(IntegrityErrors { errors })
-        }
+    if let Err(validation_errors) = user.validate() {
+        errors.push(IntegrityError::CheckFailed {
+            errors: validation_errors,
+            source: user.clone().into(),
+        });
     }
+
+    Ok(())
 }
 
 impl Display for IntegrityErrors {
@@ -330,17 +323,17 @@ pub enum IntegrityError {
     MissingPrimaryTiming(Run),
 }
 #[derive(Debug, Clone, Default)]
-pub struct RowRefs<'tables> {
-    pub games: HashSet<&'tables Game>,
-    pub categories: HashSet<&'tables Category>,
-    pub levels: HashSet<&'tables Level>,
-    pub runs: HashSet<&'tables Run>,
-    pub users: HashSet<&'tables User>,
+pub struct Rows {
+    pub games: HashSet<Game>,
+    pub categories: HashSet<Category>,
+    pub levels: HashSet<Level>,
+    pub runs: HashSet<Run>,
+    pub users: HashSet<User>,
 }
 
 impl IntegrityError {
-    pub fn invalid_rows<'tables>(&self) -> RowRefs<'tables> {
-        let mut refs = RowRefs::default();
+    pub fn invalid_rows<'tables>(&self) -> Rows {
+        let mut invalids = Rows::default();
 
         match self {
             IntegrityError::IndexingError => {
@@ -349,11 +342,11 @@ impl IntegrityError {
             IntegrityError::ForeignKeyMissing { source, .. } => {
                 use AnyModel::*;
                 match source {
-                    Game(game) => refs.games.insert(game),
-                    Category(category) => refs.categories.insert(category),
-                    Level(level) => refs.levels.insert(level),
-                    Run(run) => refs.runs.insert(run),
-                    User(user) => refs.users.insert(user),
+                    Game(game) => invalids.games.insert(game.clone()),
+                    Category(category) => invalids.categories.insert(category.clone()),
+                    Level(level) => invalids.levels.insert(level.clone()),
+                    Run(run) => invalids.runs.insert(run.clone()),
+                    User(user) => invalids.users.insert(user.clone()),
                 };
             }
             IntegrityError::CheckFailed { .. } => {
@@ -372,7 +365,7 @@ impl IntegrityError {
                             })
                             .skip(1);
                         for dupe in dead_dupes {
-                            refs.categories.insert(dupe);
+                            invalids.categories.insert(dupe.clone());
                         }
                     }
                     Levels(levels) => {
@@ -383,7 +376,7 @@ impl IntegrityError {
                             })
                             .skip(1);
                         for dupe in dead_dupes {
-                            refs.levels.insert(dupe);
+                            invalids.levels.insert(dupe.clone());
                         }
                     }
                     Runs(_) => unreachable!("runs don't have slugs?!"),
@@ -402,7 +395,7 @@ impl IntegrityError {
                             })
                             .skip(1);
                         for dupe in dead_dupes {
-                            refs.games.insert(dupe);
+                            invalids.games.insert(dupe.clone());
                         }
                     }
                     Users(users) => {
@@ -414,17 +407,17 @@ impl IntegrityError {
                             })
                             .skip(1);
                         for dupe in dead_dupes {
-                            refs.users.insert(dupe);
+                            invalids.users.insert(dupe.clone());
                         }
                     }
                 };
             }
             IntegrityError::MissingPrimaryTiming(run) => {
-                refs.runs.insert(run);
+                invalids.runs.insert(run.clone());
             }
         }
 
-        refs
+        invalids
     }
 }
 
@@ -440,20 +433,5 @@ impl IntegrityErrors {
         } else {
             Err(IntegrityErrors { errors })
         }
-    }
-}
-
-impl Display for IntegrityErrors {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        writeln!(f, "{} IntegrityErrors:", self.errors.len())?;
-        for (i, error) in self.errors.iter().enumerate() {
-            if i >= 16 {
-                writeln!(f, "     ...and more!")?;
-                break;
-            }
-
-            writeln!(f, "{:4}. {}", i + 1, error)?;
-        }
-        Ok(())
     }
 }

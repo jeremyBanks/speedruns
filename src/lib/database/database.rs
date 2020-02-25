@@ -12,6 +12,9 @@ use log::{debug, error, info, trace, warn};
 
 use speedruns_types::{Category, CategoryType, Game, Level, Run, User};
 
+#[macro_use]
+extern crate rental;
+
 mod integrity;
 use integrity::{validate, IntegrityErrors};
 
@@ -65,11 +68,11 @@ impl Database {
             match Self::try_new(tables.clone()) {
                 Ok(self_) => return self_,
                 Err(errors) => {
-                    let mut invalid_games = HashSet::<&Game>::new();
-                    let mut invalid_categories = HashSet::<&Category>::new();
-                    let mut invalid_levels = HashSet::<&Level>::new();
-                    let mut invalid_runs = HashSet::<&Run>::new();
-                    let mut invalid_users = HashSet::<&User>::new();
+                    let mut invalid_games = HashSet::<Game>::new();
+                    let mut invalid_categories = HashSet::<Category>::new();
+                    let mut invalid_levels = HashSet::<Level>::new();
+                    let mut invalid_runs = HashSet::<Run>::new();
+                    let mut invalid_users = HashSet::<User>::new();
 
                     for error in errors.errors {
                         let invalid_rows = error.invalid_rows();
@@ -82,7 +85,7 @@ impl Database {
 
                     fn filter_invalid<T: Hash + Eq + Clone>(
                         table: &HashMap<u64, T>,
-                        invalid: HashSet<&T>,
+                        invalid: HashSet<T>,
                     ) -> HashMap<u64, T> {
                         table
                             .iter()
@@ -146,7 +149,7 @@ impl Database {
     }
 
     /// The tables of the database, with all rows hash-indexed by ID.
-    pub fn tables(&self) -> &Tables {
+    fn tables(&self) -> &Tables {
         self.0.head()
     }
 
@@ -154,6 +157,26 @@ impl Database {
     /// in different ways, and some aggregated values.
     pub fn indicies(&self) -> &Indicies {
         self.0.suffix()
+    }
+
+    pub fn games(&self) -> &HashMap<u64, Game> {
+        self.tables().games()
+    }
+
+    pub fn categories(&self) -> &HashMap<u64, Category> {
+        self.tables().categories()
+    }
+
+    pub fn levels(&self) -> &HashMap<u64, Level> {
+        self.tables().levels()
+    }
+
+    pub fn runs(&self) -> &HashMap<u64, Run> {
+        self.tables().runs()
+    }
+
+    pub fn users(&self) -> &HashMap<u64, User> {
+        self.tables().users()
     }
 }
 
@@ -166,20 +189,15 @@ impl<'tables> Indicies<'tables> {
             OldKey: 'tables + Hash + Eq,
             NewKey: 'tables + Ord + Eq,
         >(
-            original: HashMap<OldKey, Value>,
+            original: &'tables HashMap<OldKey, Value>,
             key: fn(&'tables Value) -> NewKey,
         ) -> BTreeMap<NewKey, &'tables Value> {
             index_where(original, key, |_| true)
         }
 
         /// Index rows passing some filter by some unique key. (Uniqueness not validated.)
-        fn index_where<
-            'tables,
-            Value,
-            OldKey: 'tables + Hash + Eq,
-            NewKey: 'tables + Ord + Eq,
-        >(
-            original: HashMap<OldKey, Value>,
+        fn index_where<'tables, Value, OldKey: 'tables + Hash + Eq, NewKey: Ord + Eq>(
+            original: &'tables HashMap<OldKey, Value>,
             key: fn(&'tables Value) -> NewKey,
             filter: fn(&Value) -> bool,
         ) -> BTreeMap<NewKey, &'tables Value> {
@@ -198,7 +216,7 @@ impl<'tables> Indicies<'tables> {
             OldKey: 'tables + Hash + Eq,
             NewKey: 'tables + Ord + Eq,
         >(
-            original: HashMap<OldKey, Value>,
+            original: &HashMap<OldKey, Value>,
             key: fn(&'tables Value) -> NewKey,
         ) -> BTreeMap<NewKey, &'tables Value> {
             unimplemented!(
@@ -215,7 +233,7 @@ impl<'tables> Indicies<'tables> {
 
         Indicies {
             last_updated: tables
-                .runs
+                .runs()
                 .values()
                 .map(|run| run.created)
                 .flatten()
@@ -225,28 +243,28 @@ impl<'tables> Indicies<'tables> {
                     Utc,
                 )),
 
-            games_by_slug: index(tables.games, |game| game.slug().as_ref()),
+            games_by_slug: index(tables.games(), |game| game.slug().as_ref()),
 
-            users_by_slug: index(tables.users, |user| user.slug().as_ref()),
+            users_by_slug: index(tables.users(), |user| user.slug().as_ref()),
 
-            levels_by_game_id_and_slug: index(tables.levels, |level| {
+            levels_by_game_id_and_slug: index(tables.levels(), |level| {
                 (*level.game_id(), level.slug().as_ref())
             }),
 
             per_game_categories_by_game_id_and_slug: index_where(
-                tables.categories,
+                tables.categories(),
                 |category| (*category.game_id(), category.slug().as_ref()),
                 |category| *category.per() == CategoryType::PerGame,
             ),
 
             per_level_categories_by_game_id_and_slug: index_where(
-                tables.categories,
+                tables.categories(),
                 |category| (*category.game_id(), category.slug().as_ref()),
                 |category| *category.per() == CategoryType::PerLevel,
             ),
 
             runs_by_game_id_and_category_id_and_level_id: tables
-                .runs
+                .runs()
                 .values()
                 .group_by(|run| (*run.game_id(), *run.category_id(), *run.level_id()))
                 .into_iter()

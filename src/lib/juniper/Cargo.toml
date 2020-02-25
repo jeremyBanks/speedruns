@@ -41,6 +41,7 @@ serde = { features = ["derive"], version = "1.0.104" }
 serde_derive = "1.0.104"
 serde_json = "1.0.48"
 speedruns_api = { path = "../api", version = "0.21.6-dev" }
+speedruns_database = { path = "../database", version = "0.21.6-dev" }
 speedruns_types = { path = "../types", version = "0.21.6-dev" }
 speedruns_utils = { path = "../utils", version = "0.21.6-dev" }
 tempfile = "3.1.0"

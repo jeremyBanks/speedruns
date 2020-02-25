@@ -24,7 +24,7 @@ pub trait Normalize {
     fn normalize(&self) -> Result<Self::Normalized, Error>;
 }
 
-impl Normalize for api::User {
+impl Normalize for crate::types::User {
     type Normalized = User;
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
@@ -46,7 +46,7 @@ impl Normalize for api::User {
     }
 }
 
-impl Normalize for api::Names {
+impl Normalize for crate::types::Names {
     type Normalized = String;
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
@@ -69,15 +69,14 @@ impl Normalize for api::Names {
     }
 }
 
-impl Normalize for api::Game {
+impl Normalize for crate::types::Game {
     type Normalized = (Game, Vec<Category>, Vec<Level>);
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         let game = Game {
             id: u64_from_base36(self.id())?,
             name: self.names().normalize()?,
-            slug: slugify(self.abbreviation()),
-            src_slug: self.abbreviation().to_string(),
+            slug: self.abbreviation().to_string(),
             created: *self.created(),
             primary_timing: self.ruleset().default_time().normalize()?,
         };
@@ -124,13 +123,13 @@ impl Normalize for api::Game {
     }
 }
 
-impl Normalize for api::Run {
+impl Normalize for crate::types::Run {
     // Option because we drop runs that aren't verified.
     type Normalized = Option<Run>;
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         match self.status() {
-            api::RunStatus::Verified { .. } => {
+            crate::types::RunStatus::Verified { .. } => {
                 let run = Run {
                     game_id: u64_from_base36(self.game())?,
                     id: u64_from_base36(self.id())?,
@@ -170,41 +169,45 @@ impl Normalize for api::Run {
     }
 }
 
-impl Normalize for api::RunPlayer {
+impl Normalize for crate::types::RunPlayer {
     type Normalized = RunPlayer;
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         Ok(match self {
-            api::RunPlayer::Guest { name, .. } => RunPlayer::GuestName(name.to_string()),
-            api::RunPlayer::User { id, .. } => RunPlayer::UserId(u64_from_base36(id)?),
+            crate::types::RunPlayer::Guest { name, .. } => {
+                RunPlayer::GuestName(name.to_string())
+            }
+            crate::types::RunPlayer::User { id, .. } => {
+                RunPlayer::UserId(u64_from_base36(id)?)
+            }
         })
     }
 }
 
-impl Normalize for api::CategoryType {
+impl Normalize for crate::types::CategoryType {
     type Normalized = CategoryType;
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         Ok(match self {
-            api::CategoryType::PerLevel => CategoryType::PerLevel,
-            api::CategoryType::PerGame => CategoryType::PerGame,
+            crate::types::CategoryType::PerLevel => CategoryType::PerLevel,
+            crate::types::CategoryType::PerGame => CategoryType::PerGame,
         })
     }
 }
 
-impl Normalize for api::GameRulesetTiming {
+impl Normalize for crate::types::GameRulesetTiming {
     type Normalized = TimingMethod;
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
         Ok(match self {
-            api::GameRulesetTiming::IGT => TimingMethod::IGT,
-            api::GameRulesetTiming::RTA => TimingMethod::RTA,
-            api::GameRulesetTiming::RTA_NL => TimingMethod::RTA_NL,
+            crate::types::GameRulesetTiming::IGT => TimingMethod::IGT,
+            crate::types::GameRulesetTiming::RTA => TimingMethod::RTA,
+            crate::types::GameRulesetTiming::RTA_NL => TimingMethod::RTA_NL,
         })
     }
 }
 
-impl Normalize for api::RunTimes {
+impl Normalize for crate::types::RunTimes {
     type Normalized = RunTimesMs;
 
     fn normalize(&self) -> Result<Self::Normalized, Error> {
