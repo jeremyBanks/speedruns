@@ -8,7 +8,7 @@ description = "subpackage of speedruns"
 repository = "https://github.com/jeremybanks/speedruns"
 
 [lib]
-path = "types.rs"
+path = "models.rs"
 
 [dependencies]
 chrono = { features = ["serde"], version = "0.4.10" }
@@ -16,7 +16,6 @@ derive_more = "0.99.3"
 getset = "0.1.0"
 itertools = "0.8.2"
 log = "0.4.8"
-reqwest = "0.9.24,<0.10"
 serde = { features = ["derive"], version = "1.0.104" }
 speedruns_utils = { path = "../utils", version = "0.21.6-dev" }
 validator = "0.10.0"

@@ -16,7 +16,7 @@ use speedruns_models::{Category, CategoryType, Game, Level, Run, User};
 extern crate rental;
 
 mod integrity;
-use integrity::{validate, IntegrityErrors};
+pub use integrity::{validate, IntegrityError, IntegrityErrors};
 
 #[derive(Debug, Clone)]
 pub struct Database(rentals::Database);
@@ -55,6 +55,24 @@ pub struct Indicies<'tables> {
     levels_by_game_id_and_slug: SortedMap<(u64, &'tables str), &'tables Level>,
     runs_by_game_id_and_category_id_and_level_id:
         SortedMap<(u64, u64, Option<u64>), Vec<&'tables Run>>,
+}
+
+impl Tables {
+    pub fn new(
+        games: impl IntoIterator<Item = Game>,
+        categories: impl IntoIterator<Item = Category>,
+        levels: impl IntoIterator<Item = Level>,
+        runs: impl IntoIterator<Item = Run>,
+        users: impl IntoIterator<Item = User>,
+    ) -> Tables {
+        Tables {
+            games: games.into_iter().map(|x| (*x.id(), x)).collect(),
+            categories: categories.into_iter().map(|x| (*x.id(), x)).collect(),
+            runs: runs.into_iter().map(|x| (*x.id(), x)).collect(),
+            users: users.into_iter().map(|x| (*x.id(), x)).collect(),
+            levels: levels.into_iter().map(|x| (*x.id(), x)).collect(),
+        }
+    }
 }
 
 impl Database {

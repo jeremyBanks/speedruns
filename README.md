@@ -3,21 +3,23 @@
 Unofficial tools for mirroring [speedrun.com](https://www.speedrun.com/) API
 data. Using Rust, TypeScript, GraphQL, and React.
 
+Live at [speedruns.ca](https://speedruns.ca).
+
 ## Legal
 
 ### Disclosure
 
 This project is not associated with or endorsed by speedrun.com.
 
-### Code License
-
-Copyright Jeremy Banks, released under [the MIT License](LICENSE).
-
 ### Content License
 
 See <https://www.speedrun.com/legal> for details. All data is from speedrun.com
 contributors, and is used and distributed under the Creative Commons
 Attribution-NonCommercial 4.0 International license.
+
+### Code License
+
+Copyright Jeremy Banks, released under [the MIT License](LICENSE).
 
 ## Development
 
@@ -61,7 +63,7 @@ time).
 Download any new data by running:
 
 ```
-cargo run download
+cargo run api download
 ```
 
 This can take a long time (potentially a full day if you're starting from
@@ -73,7 +75,7 @@ Validate and convert the downloaded API data into our internal format by
 running:
 
 ```
-cargo run import
+cargo run api import
 ```
 
 Any records that don't match our expected format (missing now-required fields,
@@ -83,10 +85,16 @@ robustly accomidates old data of varied shapes).
 
 Restart the server to load the new data.
 
-## `speedruns` crate structure
+## Installation
 
-Interface probably won't be stable until 1.0.0. This is being developed as a
-service first, a library second.
+`cargo install speedruns` to install or update `speedruns`.
+
+`npm install --global speedruns` to install or update `speedruns-frontened`.
+
+## Crate structure
+
+The `speedruns` interface probably won't be stable until 1.0.0. This is being
+developed as a service first, a library second.
 
 ### `::utils` (crate: `speedruns_utils`)
 
