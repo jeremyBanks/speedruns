@@ -5,6 +5,7 @@ use std::{
     sync::Arc,
 };
 
+use derive_more::Deref;
 use itertools::Itertools;
 #[allow(unused)]
 use juniper::{
@@ -17,10 +18,12 @@ use juniper_from_schema::graphql_schema_from_file;
 
 use speedruns_database::Database;
 use speedruns_models::{
-    aggregation::{leaderboard, progression},
-    types::{Category, Game, Level, Run, User},
+    self as models,
+    aggregation::{leaderboard::leaderboard, progression::progression},
 };
 use speedruns_utils::{base36, slugify, u64_from_base36};
+
+pub mod cli;
 
 mod global_id;
 use global_id::{global_id, parse_global_id, NodeType};
@@ -31,7 +34,7 @@ pub fn schema() -> Schema {
     Schema::new(Speedruns {}, Speedruns {})
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Deref)]
 pub struct Context {
     pub database: Arc<Database>,
 }
@@ -44,13 +47,34 @@ pub struct Speedruns {}
 #[derive(Debug)]
 pub struct Stats {}
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Deref)]
+pub struct Game(models::Game);
+
+#[derive(Debug, Deref)]
+pub struct Category(models::Category);
+
+#[derive(Debug, Deref)]
+pub struct Level(models::Level);
+
+#[derive(Debug, Deref)]
+pub struct Run(models::Run);
+
+#[derive(Debug, Deref)]
+pub struct User(models::User);
+
+#[derive(Debug, Deref)]
+pub struct LeaderboardRun(models::aggregation::leaderboard::LeaderboardRun);
+
+#[derive(Debug, Deref)]
+pub struct ProgressionRun(models::aggregation::progression::ProgressionRun);
+
+#[derive(Debug)]
 pub struct CategoryLevel {
     category: Category,
     level: Level,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum Player {
     User(User),
     Guest(String),
@@ -60,18 +84,18 @@ impl StatsFields for Stats {
     fn field_last_updated(&self, executor: &Executor<'_, Context>) -> f64 {
         executor
             .context()
-            .database
+            .indicies()
             .last_updated()
             .timestamp_millis() as f64
     }
 
     fn field_runs(&self, executor: &Executor<'_, Context>) -> i32 {
-        let n = executor.context().database.tables().runs().len();
+        let n = executor.context().database.runs().len();
         n.try_into().expect("impossibly large number of runs")
     }
 
     fn field_games(&self, executor: &Executor<'_, Context>) -> i32 {
-        let n = executor.context().database.tables().games().len();
+        let n = executor.context().database.games().len();
         n.try_into().expect("impossibly large number of runs")
     }
 
@@ -97,7 +121,12 @@ impl SpeedrunsFields for Speedruns {
         _trail: &QueryTrail<'_, Game, Walked>,
         slug: String,
     ) -> Option<Game> {
-        executor.context().database.game_by_slug(&slug).map(Game)
+        executor
+            .context()
+            .indicies()
+            .games_by_slug()
+            .get(&slug[..])
+            .map(|game| Game(*game.clone()))
     }
 
     fn field_games(
@@ -105,7 +134,12 @@ impl SpeedrunsFields for Speedruns {
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Game, Walked>,
     ) -> Vec<Game> {
-        executor.context().database.games().map(Game).collect()
+        executor
+            .context()
+            .games()
+            .values()
+            .map(|game| Game(game.clone()))
+            .collect()
     }
 
     fn field_run(
@@ -116,7 +150,7 @@ impl SpeedrunsFields for Speedruns {
     ) -> Option<Run> {
         let db_id = u64_from_base36(&src_id.to_string());
         match db_id {
-            Ok(db_id) => match executor.context().database.run_by_id(db_id) {
+            Ok(db_id) => match executor.context().database.runs().get(db_id) {
                 Some(run) => Some(Run(run)),
                 None => None,
             },
@@ -133,12 +167,13 @@ impl SpeedrunsFields for Speedruns {
         let database = &executor.context().database;
         match parse_global_id(&id) {
             Ok((id, node_type)) => match node_type {
-                NodeType::Game => database.game_by_id(id).map(|g| Node::Game(Game(g))),
-                NodeType::Run => database.run_by_id(id).map(|r| Node::Run(Run(r))),
-                NodeType::User => database.user_by_id(id).map(|u| Node::User(User(u))),
-                NodeType::Level => database.level_by_id(id).map(|l| Node::Level(Level(l))),
+                NodeType::Game => database.games().get(id).map(|g| Node::Game(Game(g))),
+                NodeType::Run => database.runs().get(id).map(|r| Node::Run(Run(r))),
+                NodeType::User => database.users().get(id).map(|u| Node::User(User(u))),
+                NodeType::Level => database.levels().get(id).map(|l| Node::Level(Level(l))),
                 NodeType::Category => database
-                    .category_by_id(id)
+                    .categories()
+                    .get(id)
                     .map(|c| Node::Category(Category(c))),
             },
             Err(_) => None,
@@ -190,7 +225,6 @@ impl GameFields for Game {
     ) -> Vec<Level> {
         executor
             .context()
-            .database
             .levels_by_game_id(self.0.id)
             .into_iter()
             .map(Level)
@@ -204,7 +238,6 @@ impl GameFields for Game {
     ) -> Vec<Category> {
         executor
             .context()
-            .database
             .per_game_categories_by_game_id_and_slug()
             .range((self.0.id, "".to_string())..(self.0.id + 1, "".to_string()))
             .map(|(_key, value)| value)
@@ -220,7 +253,6 @@ impl GameFields for Game {
     ) -> Vec<Category> {
         executor
             .context()
-            .database
             .per_level_categories_by_game_id_and_slug()
             .range((self.0.id, "".to_string())..(self.0.id + 1, "".to_string()))
             .map(|(_key, value)| value)
@@ -279,7 +311,8 @@ impl RunFields for Run {
                     let user = executor
                         .context()
                         .database
-                        .user_by_id(*user_id)
+                        .users()
+                        .get(*user_id)
                         .expect("database integrity");
                     Player::User(User(user))
                 }
@@ -380,7 +413,6 @@ impl CategoryFields for Category {
 
         let runs = executor
             .context()
-            .database
             .runs_by_game_id_and_category_id_and_level_id()
             .get(&(self.0.game_id, self.0.id, level_id));
 
@@ -425,7 +457,6 @@ impl CategoryFields for Category {
         // TODO: https://github.com/jeremyBanks/speedruns/issues/267
         let runs = executor
             .context()
-            .database
             .runs_by_game_id_and_category_id_and_level_id()
             .get(&(self.0.game_id, self.0.id, level_id));
 
@@ -449,7 +480,6 @@ impl CategoryFields for Category {
     ) -> Vec<CategoryLevel> {
         executor
             .context()
-            .database
             .levels_by_game_id(self.0.game_id)
             .into_iter()
             .map(|level| CategoryLevel {
@@ -545,7 +575,6 @@ impl CategoryLevelFields for CategoryLevel {
     ) -> Vec<LeaderboardRun> {
         let runs: Vec<DbLinked<db::Run>> = executor
             .context()
-            .database
             .runs_by_game_id_and_category_id_and_level_id()
             .get(&(self.category.game_id, self.category.id, Some(self.level.id)))
             .map(Clone::clone)
@@ -571,7 +600,6 @@ impl CategoryLevelFields for CategoryLevel {
     ) -> Vec<ProgressionRun> {
         let runs: Vec<DbLinked<db::Run>> = executor
             .context()
-            .database
             .runs_by_game_id_and_category_id_and_level_id()
             .get(&(self.category.game_id, self.category.id, Some(self.level.id)))
             .map(Clone::clone)

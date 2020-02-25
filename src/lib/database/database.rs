@@ -273,11 +273,9 @@ impl<'tables> Indicies<'tables> {
         }
     }
 }
-
 pub trait TableUtils {}
 
 impl<Row> TableUtils for HashMap<u64, Row> {}
-
 pub trait IndexUtils {}
 
 impl<Key: Ord + Eq, RowRef> IndexUtils for BTreeMap<Key, RowRef> {}
