@@ -15,14 +15,17 @@ use juniper::{
 use juniper::{Executor, ID};
 use juniper_from_schema::graphql_schema_from_file;
 
-use speedruns_database::{Database};
-use speedruns_types::{leaderboard, progression, types as db};
-use speedruns_utils::{base36, src_slugify, u64_from_base36};
+use speedruns_database::Database;
+use speedruns_types::{
+    aggregation::{leaderboard, progression},
+    types as db,
+};
+use speedruns_utils::{base36, slugify, u64_from_base36};
 
 mod global_id;
 use global_id::{global_id, parse_global_id, NodeType};
 
-graphql_schema_from_file!("src/lib/data/graphql/schema.juniper.graphql");
+graphql_schema_from_file!("./schema.juniper.graphql");
 
 pub fn schema() -> Schema {
     Schema::new(Speedruns {}, Speedruns {})
@@ -181,12 +184,8 @@ impl GameFields for Game {
         &self.0.name
     }
 
-    fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.slug
-    }
-
-    fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        src_slugify(&self.0.slug)
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        slugify(&self.0.slug)
     }
 
     fn field_timing_method(&self, _executor: &Executor<'_, Context>) -> TimingMethod {
@@ -375,12 +374,8 @@ impl CategoryFields for Category {
         &self.0.name
     }
 
-    fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.slug
-    }
-
-    fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        src_slugify(&self.0.name)
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        slugify(&self.0.name)
     }
 
     fn field_leaderboard(
@@ -495,12 +490,8 @@ impl UserFields for User {
         base36(self.0.id)
     }
 
-    fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.slug
-    }
-
-    fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        src_slugify(&self.0.name)
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        slugify(&self.0.name)
     }
 }
 
@@ -544,12 +535,8 @@ impl LevelFields for Level {
         &self.0.name
     }
 
-    fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.slug
-    }
-
-    fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        src_slugify(&self.0.name)
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        slugify(&self.0.name)
     }
 }
 

@@ -77,13 +77,13 @@
     "format": "bash scripts/format.bash",
     "export": "bash scripts/export.bash",
     "benchmark": "bash scripts/benchmark.bash",
+    "benchmark-build": "cargo +nightly clean && cargo +nightly build --workspace -Z timings=info,html,json",
     "fix": "bash scripts/fix.bash",
     "build": "cp -f node_modules/graphql-voyager/dist/voyager.worker.js public/graphql/voyager.worker.js && cp -f node_modules/graphql-voyager/dist/voyager.css public/graphql/voyager.css && next build",
     "lint": "bash scripts/lint.bash",
     "precommit": "yarn install && yarn format && echo 'grep -q precommit package.json && (yarn precommit && git add .) || echo' > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit",
     "gl": "git fetch --all; git log --decorate --graph --first-parent --all  --format=short -m --stat -- . ':!*.lock' ':!Cargo.toml' ':!package.json' ':!.*'; git config alias.l '!yarn gl'",
-    "try-package": "export NODE_ENV=production; rm -rf tmp && mkdir tmp && yarn export && yarn pack --filename tmp/package.tgz && cd tmp && yarn init --yes && yarn add ./package.tgz && yarn speedruns-frontend",
-    "cargo-timings": "cargo +nightly build --workspace -Z timings"
+    "try-package": "export NODE_ENV=production; rm -rf tmp && mkdir tmp && yarn export && yarn pack --filename tmp/package.tgz && cd tmp && yarn init --yes && yarn add ./package.tgz && yarn speedruns-frontend"
   },
   "browserslist": {
     "production": [
