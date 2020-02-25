@@ -16,9 +16,9 @@ use juniper::{Executor, ID};
 use juniper_from_schema::graphql_schema_from_file;
 
 use speedruns_database::Database;
-use speedruns_types::{
+use speedruns_models::{
     aggregation::{leaderboard, progression},
-    types as db,
+    types::{Category, Game, Level, Run, User},
 };
 use speedruns_utils::{base36, slugify, u64_from_base36};
 
@@ -45,27 +45,9 @@ pub struct Speedruns {}
 pub struct Stats {}
 
 #[derive(Debug, Clone)]
-pub struct Game(DbLinked<db::Game>);
-
-#[derive(Debug, Clone)]
-pub struct Run(DbLinked<db::Run>);
-
-#[derive(Debug, Clone)]
-pub struct LeaderboardRun(leaderboard::LeaderboardRun);
-
-#[derive(Debug, Clone)]
-pub struct ProgressionRun(progression::ProgressionRun);
-
-#[derive(Debug, Clone)]
-pub struct Category(DbLinked<db::Category>);
-
-#[derive(Debug, Clone)]
-pub struct User(DbLinked<db::User>);
-
-#[derive(Debug, Clone)]
 pub struct CategoryLevel {
-    category: DbLinked<db::Category>,
-    level: DbLinked<db::Level>,
+    category: Category,
+    level: Level,
 }
 
 #[derive(Debug, Clone)]
@@ -73,9 +55,6 @@ pub enum Player {
     User(User),
     Guest(String),
 }
-
-#[derive(Debug, Clone)]
-pub struct Level(DbLinked<db::Level>);
 
 impl StatsFields for Stats {
     fn field_last_updated(&self, executor: &Executor<'_, Context>) -> f64 {
@@ -190,9 +169,9 @@ impl GameFields for Game {
 
     fn field_timing_method(&self, _executor: &Executor<'_, Context>) -> TimingMethod {
         match self.0.primary_timing() {
-            speedruns_types::TimingMethod::IGT => TimingMethod::Igt,
-            speedruns_types::TimingMethod::RTA => TimingMethod::Rta,
-            speedruns_types::TimingMethod::RTA_NL => TimingMethod::RtaNl,
+            speedruns_models::TimingMethod::IGT => TimingMethod::Igt,
+            speedruns_models::TimingMethod::RTA => TimingMethod::Rta,
+            speedruns_models::TimingMethod::RTA_NL => TimingMethod::RtaNl,
         }
     }
 

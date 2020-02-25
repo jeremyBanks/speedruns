@@ -17,7 +17,7 @@ use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationErrors};
 
-use speedruns_types::{
+use speedruns_models::{
     any::{AnyModel, AnyModelVec},
     Category, Game, Level, Run, RunPlayer, User,
 };

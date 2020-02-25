@@ -40,7 +40,7 @@ reqwest = "0.9.24,<0.10"
 serde = { features = ["derive"], version = "1.0.104" }
 serde_derive = "1.0.104"
 serde_json = "1.0.48"
-speedruns_types = { path = "../types", version = "0.21.6-dev" }
+speedruns_models = { path = "../models", version = "0.21.6-dev" }
 speedruns_utils = { path = "../utils", version = "0.21.6-dev" }
 tempfile = "3.1.0"
 unidecode = "0.3.0"
