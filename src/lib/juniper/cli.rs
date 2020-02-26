@@ -13,7 +13,7 @@ use actix_web::{self, middleware, web, HttpResponse};
 
 use juniper::{self, http::GraphQLRequest};
 use lazy_static::lazy_static;
-#[allow(unused)]
+
 use log::{debug, error, info, trace, warn};
 use serde::de::DeserializeOwned;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
@@ -143,7 +143,7 @@ fn unpack_tables(no_data: bool) -> Tables {
 
     runs.extend(supplemental.into_iter());
 
-    Tables::new(runs, users, games, categories, levels)
+    Tables::new(games, categories, levels, runs, users)
 }
 
 pub fn read_table<T: DeserializeOwned>(

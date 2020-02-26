@@ -3,7 +3,7 @@
 
 use derive_more::From;
 use err_derive::Error;
-#[allow(unused)]
+
 use log::{debug, error, info, trace, warn};
 /// Errors for [u64_from_base36].
 #[derive(Debug, Error, From, PartialEq)]

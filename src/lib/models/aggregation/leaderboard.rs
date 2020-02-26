@@ -3,7 +3,7 @@ use std::{collections::HashSet, convert::TryFrom};
 use getset::Getters;
 use serde::Serialize;
 
-use crate::{Game, Level, Run, RunPlayer, User};
+use crate::{Game, Run, RunPlayer};
 
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]

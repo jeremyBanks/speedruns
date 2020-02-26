@@ -6,7 +6,7 @@ use serde::Serialize;
 
 use crate::{
     aggregation::leaderboard::{leaderboard, LeaderboardRun},
-    Game, Level, Run, RunPlayer, User,
+    Game, Run,
 };
 
 #[derive(Debug, Clone, Getters, Serialize)]

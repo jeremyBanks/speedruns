@@ -7,7 +7,6 @@ use getset::Getters;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 
-#[allow(unused)]
 use log::{debug, error, info, trace, warn};
 
 use speedruns_models::{Category, CategoryType, Game, Level, Run, User};
