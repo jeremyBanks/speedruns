@@ -7,7 +7,6 @@ use std::{
 use chrono::{DateTime, NaiveDate, Utc};
 use getset::Getters;
 
-
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationError, ValidationErrors};
 use validator_derive::Validate;
