@@ -9,11 +9,7 @@ use derive_more::{Deref, From, Into};
 use getset::Getters;
 use itertools::Itertools;
 
-use juniper::{
-    graphql_interface, graphql_object, graphql_scalar, graphql_union, graphql_value,
-    object, GraphQLEnum, GraphQLInputObject, GraphQLObject, GraphQLScalarValue,
-    ScalarValue,
-};
+
 use juniper::{Executor, ID};
 use juniper_from_schema::graphql_schema_from_file;
 
@@ -102,7 +98,7 @@ impl StatsFields for Stats {
         n.try_into().expect("impossibly large number of runs")
     }
 
-    fn field_version(&self, executor: &Executor<'_, Context>) -> String {
+    fn field_version(&self, _executor: &Executor<'_, Context>) -> String {
         option_env!("CARGO_PKG_VERSION")
             .unwrap_or("unknown")
             .to_string()
@@ -112,7 +108,7 @@ impl StatsFields for Stats {
 impl SpeedrunsFields for Speedruns {
     fn field_stats(
         &self,
-        executor: &Executor<'_, Context>,
+        _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Stats, Walked>,
     ) -> Stats {
         Stats {}
@@ -195,29 +191,29 @@ impl SpeedrunsFields for Speedruns {
         }
     }
 
-    fn field_seed(&self, executor: &Executor<'_, Context>) -> i32 {
+    fn field_seed(&self, _executor: &Executor<'_, Context>) -> i32 {
         rand::Rng::gen(&mut rand::thread_rng())
     }
 }
 
 impl GameFields for Game {
-    fn field_id(&self, executor: &Executor<'_, Context>) -> ID {
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
         global_id(*self.id(), NodeType::Game)
     }
 
-    fn field_src_id(&self, executor: &Executor<'_, Context>) -> String {
+    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
         base36(*self.id())
     }
 
-    fn field_name(&self, executor: &Executor<'_, Context>) -> &String {
+    fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
         self.name()
     }
 
-    fn field_slug(&self, executor: &Executor<'_, Context>) -> &String {
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
         self.slug()
     }
 
-    fn field_timing_method(&self, executor: &Executor<'_, Context>) -> TimingMethod {
+    fn field_timing_method(&self, _executor: &Executor<'_, Context>) -> TimingMethod {
         match self.primary_timing() {
             speedruns_models::TimingMethod::IGT => TimingMethod::Igt,
             speedruns_models::TimingMethod::RTA => TimingMethod::Rta,
@@ -289,11 +285,11 @@ impl GameFields for Game {
 }
 
 impl RunFields for Run {
-    fn field_id(&self, executor: &Executor<'_, Context>) -> ID {
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
         global_id(*self.id(), NodeType::Run)
     }
 
-    fn field_src_id(&self, executor: &Executor<'_, Context>) -> String {
+    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
         base36(*self.id())
     }
 
@@ -326,7 +322,7 @@ impl RunFields for Run {
             .map(|level_id| (&executor.context().levels()[&level_id]).clone().into())
     }
 
-    fn field_date(&self, executor: &Executor<'_, Context>) -> Option<f64> {
+    fn field_date(&self, _executor: &Executor<'_, Context>) -> Option<f64> {
         // not sure if this cast is potentially lossy in practice
         self.date().map(|c| c.and_hms(12, 8, 4).timestamp() as f64)
     }
@@ -353,7 +349,7 @@ impl RunFields for Run {
             .collect()
     }
 
-    fn field_videos(&self, executor: &Executor<'_, Context>) -> Vec<String> {
+    fn field_videos(&self, _executor: &Executor<'_, Context>) -> Vec<String> {
         self.videos().iter().map(|v| v.to_string()).collect()
     }
 }
@@ -361,21 +357,21 @@ impl RunFields for Run {
 impl LeaderboardRunFields for LeaderboardRun {
     fn field_run(
         &self,
-        executor: &Executor<'_, Context>,
+        _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Run, Walked>,
     ) -> Run {
         Run(self.run().clone())
     }
 
-    fn field_rank(&self, executor: &Executor<'_, Context>) -> i32 {
+    fn field_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
         i32::try_from(*self.rank()).expect("impossible number of runs")
     }
 
-    fn field_is_tied(&self, executor: &Executor<'_, Context>) -> bool {
+    fn field_is_tied(&self, _executor: &Executor<'_, Context>) -> bool {
         *self.is_tied()
     }
 
-    fn field_tied_rank(&self, executor: &Executor<'_, Context>) -> i32 {
+    fn field_tied_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
         i32::try_from(*self.tied_rank()).expect("impossible number of runs")
     }
 }
@@ -383,19 +379,19 @@ impl LeaderboardRunFields for LeaderboardRun {
 impl ProgressionRunFields for ProgressionRun {
     fn field_run(
         &self,
-        executor: &Executor<'_, Context>,
+        _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Run, Walked>,
     ) -> Run {
         Run(self.run().clone())
     }
 
-    fn field_progress_ms(&self, executor: &Executor<'_, Context>) -> i32 {
+    fn field_progress_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
         i32::try_from(*self.progress_ms()).expect("impossibly long run")
     }
 
     fn field_leaderboard_run(
         &self,
-        executor: &Executor<'_, Context>,
+        _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
     ) -> Option<LeaderboardRun> {
         self.leaderboard_run()
@@ -405,19 +401,19 @@ impl ProgressionRunFields for ProgressionRun {
 }
 
 impl CategoryFields for Category {
-    fn field_id(&self, executor: &Executor<'_, Context>) -> ID {
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
         global_id(*self.id(), NodeType::Category)
     }
 
-    fn field_src_id(&self, executor: &Executor<'_, Context>) -> String {
+    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
         base36(*self.id())
     }
 
-    fn field_name(&self, executor: &Executor<'_, Context>) -> &String {
+    fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
         &*self.name()
     }
 
-    fn field_slug(&self, executor: &Executor<'_, Context>) -> String {
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
         slugify(&*self.name())
     }
 
@@ -541,21 +537,21 @@ impl CategoryFields for Category {
 }
 
 impl UserFields for User {
-    fn field_id(&self, executor: &Executor<'_, Context>) -> ID {
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
         global_id(*self.id(), NodeType::User)
     }
 
-    fn field_src_id(&self, executor: &Executor<'_, Context>) -> String {
+    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
         base36(*self.id())
     }
 
-    fn field_slug(&self, executor: &Executor<'_, Context>) -> String {
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
         slugify(&*self.name())
     }
 }
 
 impl PlayerFields for Player {
-    fn field_name(&self, executor: &Executor<'_, Context>) -> &String {
+    fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
         match self {
             Player::User(user) => &user.name,
             Player::Guest(name) => &name,
@@ -564,7 +560,7 @@ impl PlayerFields for Player {
 
     fn field_user(
         &self,
-        executor: &Executor<'_, Context>,
+        _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, User, Walked>,
     ) -> Option<User> {
         match self {
@@ -573,7 +569,7 @@ impl PlayerFields for Player {
         }
     }
 
-    fn field_is_guest(&self, executor: &Executor<'_, Context>) -> bool {
+    fn field_is_guest(&self, _executor: &Executor<'_, Context>) -> bool {
         match self {
             Player::User(_user) => false,
             Player::Guest(_name) => true,
@@ -582,19 +578,19 @@ impl PlayerFields for Player {
 }
 
 impl LevelFields for Level {
-    fn field_id(&self, executor: &Executor<'_, Context>) -> ID {
+    fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
         global_id(*self.id(), NodeType::Level)
     }
 
-    fn field_src_id(&self, executor: &Executor<'_, Context>) -> String {
+    fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
         base36(*self.id())
     }
 
-    fn field_name(&self, executor: &Executor<'_, Context>) -> &String {
+    fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
         &*self.name()
     }
 
-    fn field_slug(&self, executor: &Executor<'_, Context>) -> String {
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
         slugify(&*self.name())
     }
 }
@@ -602,7 +598,7 @@ impl LevelFields for Level {
 impl CategoryLevelFields for CategoryLevel {
     fn field_level(
         &self,
-        executor: &Executor<'_, Context>,
+        _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Level, Walked>,
     ) -> Level {
         Level(self.level.clone())
@@ -610,7 +606,7 @@ impl CategoryLevelFields for CategoryLevel {
 
     fn field_category(
         &self,
-        executor: &Executor<'_, Context>,
+        _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Category, Walked>,
     ) -> Category {
         Category(self.category.clone())

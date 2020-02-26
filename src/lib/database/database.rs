@@ -233,8 +233,8 @@ impl<'tables> Indicies<'tables> {
             OldKey: 'tables + Hash + Eq,
             NewKey: 'tables + Ord + Eq,
         >(
-            original: &HashMap<OldKey, Value>,
-            key: fn(&'tables Value) -> NewKey,
+            _original: &HashMap<OldKey, Value>,
+            _key: fn(&'tables Value) -> NewKey,
         ) -> BTreeMap<NewKey, &'tables Value> {
             unimplemented!(
                 "these lifetimes confuse me
