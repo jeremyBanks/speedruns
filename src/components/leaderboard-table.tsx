@@ -10,7 +10,7 @@ import RunLinks from "./run-links";
 
 const LeaderboardTable: React.FC<{
   runs: schema.GetGamePage_game_gameCategories_leaderboard[];
-  game: { timingMethod: string; srcSlug: string };
+  game: { timingMethod: string; slug: string };
 }> = ({ runs, game }) => (
   <table className={styles.leaderboard}>
     <thead>
@@ -41,7 +41,7 @@ const LeaderboardTable: React.FC<{
             <td className={styles.date}>
               <Link
                 href="/[game]/run/[runSrcId]"
-                as={`/${game.srcSlug}/run/${leaderboardRun.run.srcId}`}
+                as={`/${game.slug}/run/${leaderboardRun.run.srcId}`}
               >
                 <a>
                   <RunDate date={leaderboardRun.run.date} />

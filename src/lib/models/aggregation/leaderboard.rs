@@ -3,7 +3,7 @@ use std::{collections::HashSet, convert::TryFrom};
 use getset::Getters;
 use serde::Serialize;
 
-use crate::data::{database::Linked, types::*};
+use crate::{Game, Run, RunPlayer};
 
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
@@ -12,19 +12,23 @@ pub struct LeaderboardRun {
     time_ms: u64,
     is_tied: bool,
     tied_rank: u64,
-    run: Linked<Run>,
+    run: Run,
 }
 
 /// Ranks a set of runs (all for the same game/category/level) using the
 /// timing specified for the game rules, then by run date, then by
 /// submission datetime, discarding lower-ranked runs by the same runner
 /// unless rank_obsoletes is true.
-pub fn leaderboard(runs: &[Linked<Run>], rank_obsoletes: bool) -> Vec<LeaderboardRun> {
+pub fn leaderboard<'runs>(
+    game: &'_ Game,
+    runs: impl Iterator<Item = &'runs Run>,
+    rank_obsoletes: bool,
+) -> Vec<LeaderboardRun> {
+    let mut runs: Vec<&Run> = runs.collect();
+
     if runs.is_empty() {
         return vec![];
     }
-
-    let mut runs: Vec<Linked<Run>> = runs.to_vec();
 
     let game_id = runs[0].game_id;
     let category_id = runs[0].category_id;
@@ -35,8 +39,6 @@ pub fn leaderboard(runs: &[Linked<Run>], rank_obsoletes: bool) -> Vec<Leaderboar
             && r.level_id == level_id),
         "runs must all be from same game and category and level"
     );
-
-    let game = runs[0].game();
 
     runs.sort_by_key(|run| {
         let time_ms = run
@@ -81,7 +83,7 @@ pub fn leaderboard(runs: &[Linked<Run>], rank_obsoletes: bool) -> Vec<Leaderboar
             time_ms,
             is_tied,
             tied_rank,
-            run: run.clone(),
+            run: Run::clone(run),
         };
 
         leaderboard.push(new);

@@ -26,7 +26,12 @@ jobs:
           git config user.name "$(git log -1 --pretty=format:'%an')"
           git config user.email "$(git log -1 --pretty=format:'%ae')"
 
-      - name: setup - install rust toolchain
+      - name: setup - install nightly rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+
+      - name: setup - install chosen rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ steps.env.outputs.rust }}
@@ -67,8 +72,14 @@ jobs:
       - name: test - cargo test
         run: cargo test --workspace
 
+      - name: test - cargo doc
+        run: cargo doc --workspace
+
       - name: test - lint
         run: yarn lint
+
+      - name: test - unused cargo dependencioes
+        run: cargo +nightly udep
 
       - name: publish - add `master` to `deploy` first-parent chain if we made it this far
         if: github.ref == 'refs/heads/master'

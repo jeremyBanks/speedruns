@@ -74,7 +74,7 @@ pub fn parse_global_id(
 
 #[test]
 fn test_round_trip_global_ids() {
-    use crate::utils::u64_from_base36;
+    use speedruns_utils::u64_from_base36;
 
     let zeroes = u64_from_base36("00000000").expect("it's valid");
     let ones = u64_from_base36("zzzzzzzz").expect("it's valid");

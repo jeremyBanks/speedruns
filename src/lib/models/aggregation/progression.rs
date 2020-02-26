@@ -4,21 +4,25 @@ use getset::Getters;
 use itertools::Itertools;
 use serde::Serialize;
 
-use crate::data::{
-    database::Linked,
-    leaderboard::{leaderboard, LeaderboardRun},
-    types::*,
+use crate::{
+    aggregation::leaderboard::{leaderboard, LeaderboardRun},
+    Game, Run,
 };
 
 #[derive(Debug, Clone, Getters, Serialize)]
 #[get = "pub"]
 pub struct ProgressionRun {
     progress_ms: u64,
-    run: Linked<Run>,
+    run: Run,
     leaderboard_run: Option<LeaderboardRun>,
 }
 
-pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
+pub fn progression<'runs>(
+    game: &'_ Game,
+    runs: impl Iterator<Item = &'runs Run>,
+) -> Vec<ProgressionRun> {
+    let runs: Vec<&Run> = runs.collect();
+
     if runs.is_empty() {
         return vec![];
     }
@@ -31,7 +35,7 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
         "runs must all be from same game and category"
     );
 
-    let runs_by_level: HashMap<Option<u64>, Vec<Linked<Run>>> = runs
+    let runs_by_level: HashMap<Option<u64>, Vec<&'runs Run>> = runs
         .iter()
         .sorted_by(|a, b| {
             a.date()
@@ -48,7 +52,7 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
         let mut best_ms: Option<u64> = None;
 
         let mut leaderboard_runs_by_id: HashMap<u64, LeaderboardRun> = HashMap::new();
-        for leaderboard_run in leaderboard(&runs.to_vec(), false) {
+        for leaderboard_run in leaderboard(game, runs.iter().cloned(), false) {
             let id = *leaderboard_run.run().id();
             leaderboard_runs_by_id.insert(id, leaderboard_run);
         }
@@ -56,14 +60,19 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
         for run in runs.iter() {
             let is_progress;
             let mut progress_ms = 0;
+            let run_time = run
+                .times_ms
+                .get(&game.primary_timing)
+                .expect("primary timing");
+
             match best_ms {
                 None => {
                     is_progress = true;
                 }
                 Some(best_ms) => {
-                    is_progress = run.time_ms() < best_ms;
+                    is_progress = run_time < best_ms;
                     if is_progress {
-                        progress_ms = best_ms - run.time_ms();
+                        progress_ms = best_ms - run_time;
                     }
                 }
             }
@@ -71,15 +80,15 @@ pub fn progression(runs: &[Linked<Run>]) -> Vec<ProgressionRun> {
             if is_progress {
                 progression.push(ProgressionRun {
                     progress_ms,
-                    run: run.clone(),
+                    run: Run::clone(run),
                     leaderboard_run: leaderboard_runs_by_id.remove(run.id()),
                 });
-                best_ms = Some(run.time_ms());
+                best_ms = Some(run_time);
             }
         }
     }
 
-    // let runs: Vec<Linked<Run>> = runs.to_vec();
+    // let runs: Vec<&'run Run> = runs.to_vec();
 
     // if runs.is_empty() {
     //     return vec![];

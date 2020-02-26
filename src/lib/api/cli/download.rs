@@ -1,8 +1,8 @@
 #![allow(clippy::useless_attribute, clippy::useless_vec)]
 
 use flate2::{read::GzDecoder, write::GzEncoder};
-#[allow(unused)]
-use log::{debug, error, info, trace, warn};
+
+use log::{debug, error, info};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use std::{
     collections::BTreeMap,
