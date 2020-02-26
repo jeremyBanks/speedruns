@@ -9,7 +9,6 @@ use derive_more::{Deref, From, Into};
 use getset::Getters;
 use itertools::Itertools;
 
-
 use juniper::{Executor, ID};
 use juniper_from_schema::graphql_schema_from_file;
 
