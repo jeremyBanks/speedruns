@@ -79,14 +79,9 @@ type Game implements Node {
   srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
-  URL slug used on speedruns.ca
+  URL slug
   """
   slug: String! @juniper(infallible: true)
-
-  """
-  URL slug used on speedrun.com
-  """
-  srcSlug: String! @juniper(ownership: "owned", infallible: true)
 
   """
   name, in English if possible
@@ -131,14 +126,9 @@ type User implements Node {
   srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
-  URL slug used on speedruns.ca
+  URL slug
   """
-  slug: String! @juniper(infallible: true)
-
-  """
-  URL slug used on speedrun.com
-  """
-  srcSlug: String! @juniper(ownership: "owned", infallible: true)
+  slug: String! @juniper(ownership: "owned", infallible: true)
 }
 
 type Category implements Node {
@@ -153,14 +143,9 @@ type Category implements Node {
   srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
-  URL slug used on speedruns.ca
+  URL slug
   """
-  slug: String! @juniper(infallible: true)
-
-  """
-  URL slug used on speedrun.com
-  """
-  srcSlug: String! @juniper(ownership: "owned", infallible: true)
+  slug: String! @juniper(ownership: "owned", infallible: true)
 
   """
   name, in English if possible
@@ -202,14 +187,9 @@ type Level implements Node {
   srcId: String! @juniper(ownership: "owned", infallible: true)
 
   """
-  URL slug used on speedruns.ca
+  URL slug
   """
-  slug: String! @juniper(infallible: true)
-
-  """
-  URL slug used on speedrun.com
-  """
-  srcSlug: String! @juniper(ownership: "owned", infallible: true)
+  slug: String! @juniper(ownership: "owned", infallible: true)
 
   """
   name, in English if possible

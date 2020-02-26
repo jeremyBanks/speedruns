@@ -64,24 +64,24 @@ const GetNodePage = gql`
       id
       ... on Game {
         srcId
-        srcSlug
+        slug
         name
         slug
       }
       ... on User {
         srcId
-        srcSlug
+        slug
         slug
       }
       ... on Level {
         srcId
-        srcSlug
+        slug
         name
         slug
       }
       ... on Category {
         srcId
-        srcSlug
+        slug
         name
         slug
       }

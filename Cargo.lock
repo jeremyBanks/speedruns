@@ -2329,7 +2329,6 @@ version = "0.21.6-dev"
 dependencies = [
  "actix",
  "actix-cors",
- "actix-rt",
  "actix-web",
  "argh",
  "async-std",

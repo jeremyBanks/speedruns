@@ -50,7 +50,7 @@ const RunPage: NextPage = () => {
         </title>
         <link
           rel="canonical"
-          href={`https://www.speedrun.com/${game.srcSlug}/run/${run.srcId}`}
+          href={`https://www.speedrun.com/${game.slug}/run/${run.srcId}`}
         />
       </Head>
       <h2>
@@ -96,7 +96,7 @@ const GetRunPage = gql`
       id
       srcId
       slug
-      srcSlug
+      slug
       name
     }
 
@@ -113,7 +113,7 @@ const GetRunPage = gql`
       level {
         id
         srcId
-        srcSlug
+        slug
         name
       }
       date
