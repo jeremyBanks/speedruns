@@ -129,7 +129,7 @@ pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
     IntegrityErrors::try_from(errors)
 }
 
-fn validate_game(database: &super::Database, game: &Game) -> Result<(), IntegrityErrors> {
+fn validate_game(_database: &super::Database, game: &Game) -> Result<(), IntegrityErrors> {
     let mut errors = Vec::new();
 
     if let Err(validation_errors) = game.validate() {
@@ -256,7 +256,7 @@ fn validate_run(database: &super::Database, run: &Run) -> Result<(), IntegrityEr
     IntegrityErrors::try_from(errors)
 }
 
-fn validate_user(database: &super::Database, user: &User) -> Result<(), IntegrityErrors> {
+fn validate_user(_database: &super::Database, user: &User) -> Result<(), IntegrityErrors> {
     let mut errors = Vec::new();
 
     if let Err(validation_errors) = user.validate() {

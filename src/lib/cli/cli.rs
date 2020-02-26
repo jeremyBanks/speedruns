@@ -7,7 +7,7 @@
 
 use std::error::Error;
 
-use log::{debug, error, info, trace, warn};
+use log::{warn};
 
 use speedruns_api::cli::{download, import};
 use speedruns_juniper::cli as juniper_cli;
