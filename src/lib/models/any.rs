@@ -4,7 +4,6 @@ use std::{convert::TryFrom, fmt::Debug, hash::Hash};
 use chrono::{DateTime, Utc};
 use derive_more::{From, TryInto};
 
-
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 use crate::*;
