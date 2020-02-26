@@ -2,7 +2,7 @@ use derive_more::From;
 use err_derive::Error;
 use lazy_static::lazy_static;
 
-use log::{debug, error, info, trace, warn};
+use log::error;
 use regex::Regex;
 use validator::Validate;
 
