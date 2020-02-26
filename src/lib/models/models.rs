@@ -1,7 +1,3 @@
-//! A simplified and normalized data model, with shared data referenced by ID.
-//!
-//! This doesn't include all of the metadata from speedrun.com, and excludes
-//! corrupt records and rejected or pending runs.
 #![allow(missing_docs)]
 use std::{
     cmp::{Eq, Ord},
@@ -10,19 +6,29 @@ use std::{
 
 use chrono::{DateTime, NaiveDate, Utc};
 use getset::Getters;
-#[allow(unused)]
-use log::{debug, error, info, trace, warn};
+
+
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationError, ValidationErrors};
 use validator_derive::Validate;
 
-use crate::utils::{base36, src_slugify};
+use speedruns_utils::base36;
+
+pub mod aggregation;
+pub mod any;
 
 // We currently represent all ids as u64s for efficiency.
 // You can use [crate::utils] to convert to and from speedrun.com's
 // API IDs. (This isn't the same conversion as speedrun.com uses,
 // so the ordering of these IDs doesn't align with insertion time
 // or anything like that.)
+
+// The .validate() methods on each record are sanity checks.
+// It shouldn't be possible for imported records to fail validation.
+// If they do, that's a bug.
+//
+// TODO: Make our own validation trait, and move all of the validation
+// logic to a different module.
 
 #[derive(
     Debug,
@@ -51,14 +57,9 @@ pub struct Category {
 }
 
 impl Category {
-    /// This item's ID as it would be formatted for SpeedRun.Com.
+    /// This item's ID as it would be formatted for speedrun.com.
     pub fn src_id(&self) -> String {
         base36(*self.id())
-    }
-
-    /// This item's URL as it would be formatted for SpeedRun.com.
-    pub fn src_slug(&self) -> String {
-        src_slugify(self.name())
     }
 }
 
@@ -94,14 +95,9 @@ pub struct User {
 }
 
 impl User {
-    /// This item's ID as it would be formatted for SpeedRun.Com.
+    /// This item's ID as it would be formatted for speedrun.com.
     pub fn src_id(&self) -> String {
         base36(*self.id())
-    }
-
-    /// This item's URL as it would be formatted for SpeedRun.com.
-    pub fn src_slug(&self) -> String {
-        src_slugify(self.name())
     }
 }
 
@@ -126,14 +122,12 @@ pub struct Game {
     #[validate(length(min = 1))]
     pub slug: String,
     #[validate(length(min = 1))]
-    pub src_slug: String,
-    #[validate(length(min = 1))]
     pub name: String,
     pub primary_timing: TimingMethod,
 }
 
 impl Game {
-    /// This item's ID as it would be formatted for SpeedRun.Com.
+    /// This item's ID as it would be formatted for speedrun.com.
     pub fn src_id(&self) -> String {
         base36(*self.id())
     }
@@ -174,14 +168,9 @@ pub struct Level {
 }
 
 impl Level {
-    /// This item's ID as it would be formatted for SpeedRun.Com.
+    /// This item's ID as it would be formatted for speedrun.com.
     pub fn src_id(&self) -> String {
         base36(*self.id())
-    }
-
-    /// This item's URL as it would be formatted for SpeedRun.com.
-    pub fn src_slug(&self) -> String {
-        src_slugify(self.name())
     }
 }
 
@@ -214,7 +203,7 @@ pub struct Run {
 }
 
 impl Run {
-    /// This item's ID as it would be formatted for SpeedRun.Com.
+    /// This item's ID as it would be formatted for speedrun.com.
     pub fn src_id(&self) -> String {
         base36(*self.id())
     }

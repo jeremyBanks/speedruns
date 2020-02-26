@@ -14,7 +14,7 @@ const ProgressionTable: React.FC<{
   showLevels?: boolean;
   showSums?: boolean;
   showCategories?: boolean;
-  game: { timingMethod: string; srcSlug: string };
+  game: { timingMethod: string; slug: string };
 }> = ({
   runs,
   showLevels = false,
@@ -55,7 +55,7 @@ const ProgressionTable: React.FC<{
             <td className={styles.date}>
               <Link
                 href="/[game]/run/[runSrcId]"
-                as={`/${game.srcSlug}/run/${progress.run.srcId}`}
+                as={`/${game.slug}/run/${progress.run.srcId}`}
               >
                 <a>
                   <RunDate date={progress.run.date} />

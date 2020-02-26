@@ -5,34 +5,34 @@ use std::{
     sync::Arc,
 };
 
+use derive_more::{Deref, From, Into};
+use getset::Getters;
 use itertools::Itertools;
-#[allow(unused)]
-use juniper::{
-    graphql_interface, graphql_object, graphql_scalar, graphql_union, graphql_value,
-    object, GraphQLEnum, GraphQLInputObject, GraphQLObject, GraphQLScalarValue,
-    ScalarValue,
-};
+
+
 use juniper::{Executor, ID};
 use juniper_from_schema::graphql_schema_from_file;
 
-use crate::{
-    data::{
-        database::{Database, Linked as DbLinked},
-        graphql::global_id::{global_id, parse_global_id, NodeType},
-        leaderboard, progression, types as db,
-    },
-    utils::{base36, src_slugify, u64_from_base36},
+use speedruns_database::Database;
+use speedruns_models::{
+    self as models,
+    aggregation::{leaderboard::leaderboard, progression::progression},
 };
+use speedruns_utils::{base36, slugify, u64_from_base36};
+
+pub mod cli;
 
 mod global_id;
+use global_id::{global_id, parse_global_id, NodeType};
 
-graphql_schema_from_file!("src/lib/data/graphql/schema.juniper.graphql");
+graphql_schema_from_file!("./schema.juniper.graphql");
 
 pub fn schema() -> Schema {
     Schema::new(Speedruns {}, Speedruns {})
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Deref, Getters)]
+#[get = "pub"]
 pub struct Context {
     pub database: Arc<Database>,
 }
@@ -45,55 +45,56 @@ pub struct Speedruns {}
 #[derive(Debug)]
 pub struct Stats {}
 
-#[derive(Debug, Clone)]
-pub struct Game(DbLinked<db::Game>);
+#[derive(Debug, Deref, From, Into)]
+pub struct Game(models::Game);
 
-#[derive(Debug, Clone)]
-pub struct Run(DbLinked<db::Run>);
+#[derive(Debug, Deref, From, Into)]
+pub struct Category(models::Category);
 
-#[derive(Debug, Clone)]
-pub struct LeaderboardRun(leaderboard::LeaderboardRun);
+#[derive(Debug, Deref, From, Into)]
+pub struct Level(models::Level);
 
-#[derive(Debug, Clone)]
-pub struct ProgressionRun(progression::ProgressionRun);
+#[derive(Debug, Deref, From, Into)]
+pub struct Run(models::Run);
 
-#[derive(Debug, Clone)]
-pub struct Category(DbLinked<db::Category>);
+#[derive(Debug, Deref, From, Into)]
+pub struct User(models::User);
 
-#[derive(Debug, Clone)]
-pub struct User(DbLinked<db::User>);
+#[derive(Debug, Deref, From, Into)]
+pub struct LeaderboardRun(models::aggregation::leaderboard::LeaderboardRun);
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Deref, From, Into)]
+pub struct ProgressionRun(models::aggregation::progression::ProgressionRun);
+
+#[derive(Debug, Getters)]
+#[get = "pub"]
 pub struct CategoryLevel {
-    category: DbLinked<db::Category>,
-    level: DbLinked<db::Level>,
+    category: Category,
+    level: Level,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum Player {
     User(User),
     Guest(String),
 }
 
-#[derive(Debug, Clone)]
-pub struct Level(DbLinked<db::Level>);
-
 impl StatsFields for Stats {
     fn field_last_updated(&self, executor: &Executor<'_, Context>) -> f64 {
         executor
             .context()
-            .database
+            .indicies()
             .last_updated()
             .timestamp_millis() as f64
     }
 
     fn field_runs(&self, executor: &Executor<'_, Context>) -> i32 {
-        let n = executor.context().database.tables().runs().len();
+        let n = executor.context().database.runs().len();
         n.try_into().expect("impossibly large number of runs")
     }
 
     fn field_games(&self, executor: &Executor<'_, Context>) -> i32 {
-        let n = executor.context().database.tables().games().len();
+        let n = executor.context().database.games().len();
         n.try_into().expect("impossibly large number of runs")
     }
 
@@ -119,7 +120,12 @@ impl SpeedrunsFields for Speedruns {
         _trail: &QueryTrail<'_, Game, Walked>,
         slug: String,
     ) -> Option<Game> {
-        executor.context().database.game_by_slug(&slug).map(Game)
+        executor
+            .context()
+            .indicies()
+            .games_by_slug()
+            .get(&slug[..])
+            .map(|game| (*game).clone().into())
     }
 
     fn field_games(
@@ -127,7 +133,12 @@ impl SpeedrunsFields for Speedruns {
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Game, Walked>,
     ) -> Vec<Game> {
-        executor.context().database.games().map(Game).collect()
+        executor
+            .context()
+            .games()
+            .values()
+            .map(|game| game.clone().into())
+            .collect()
     }
 
     fn field_run(
@@ -138,8 +149,8 @@ impl SpeedrunsFields for Speedruns {
     ) -> Option<Run> {
         let db_id = u64_from_base36(&src_id.to_string());
         match db_id {
-            Ok(db_id) => match executor.context().database.run_by_id(db_id) {
-                Some(run) => Some(Run(run)),
+            Ok(db_id) => match executor.context().database.runs().get(&db_id) {
+                Some(run) => Some((*run).clone().into()),
                 None => None,
             },
             Err(_) => None,
@@ -155,13 +166,26 @@ impl SpeedrunsFields for Speedruns {
         let database = &executor.context().database;
         match parse_global_id(&id) {
             Ok((id, node_type)) => match node_type {
-                NodeType::Game => database.game_by_id(id).map(|g| Node::Game(Game(g))),
-                NodeType::Run => database.run_by_id(id).map(|r| Node::Run(Run(r))),
-                NodeType::User => database.user_by_id(id).map(|u| Node::User(User(u))),
-                NodeType::Level => database.level_by_id(id).map(|l| Node::Level(Level(l))),
+                NodeType::Game => database
+                    .games()
+                    .get(&id)
+                    .map(|g| Node::Game((*g).clone().into())),
+                NodeType::Run => database
+                    .runs()
+                    .get(&id)
+                    .map(|r| Node::Run((*r).clone().into())),
+                NodeType::User => database
+                    .users()
+                    .get(&id)
+                    .map(|u| Node::User((*u).clone().into())),
+                NodeType::Level => database
+                    .levels()
+                    .get(&id)
+                    .map(|l| Node::Level(l.clone().into())),
                 NodeType::Category => database
-                    .category_by_id(id)
-                    .map(|c| Node::Category(Category(c))),
+                    .categories()
+                    .get(&id)
+                    .map(|c| Node::Category(c.clone().into())),
             },
             Err(_) => None,
         }
@@ -174,39 +198,43 @@ impl SpeedrunsFields for Speedruns {
 
 impl GameFields for Game {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
-        global_id(self.0.id, NodeType::Game)
+        global_id(*self.id(), NodeType::Game)
     }
 
     fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
-        base36(self.0.id)
+        base36(*self.id())
     }
 
     fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.name
+        self.name()
     }
 
     fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.slug
-    }
-
-    fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        src_slugify(&self.0.slug)
+        self.slug()
     }
 
     fn field_timing_method(&self, _executor: &Executor<'_, Context>) -> TimingMethod {
-        match self.0.primary_timing() {
-            crate::data::types::TimingMethod::IGT => TimingMethod::Igt,
-            crate::data::types::TimingMethod::RTA => TimingMethod::Rta,
-            crate::data::types::TimingMethod::RTA_NL => TimingMethod::RtaNl,
+        match self.primary_timing() {
+            speedruns_models::TimingMethod::IGT => TimingMethod::Igt,
+            speedruns_models::TimingMethod::RTA => TimingMethod::Rta,
+            speedruns_models::TimingMethod::RTA_NL => TimingMethod::RtaNl,
         }
     }
 
     fn field_runs(
         &self,
-        _executor: &Executor<'_, Context>,
+        executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Run, Walked>,
     ) -> Vec<Run> {
-        self.0.runs().iter().map(|run| Run(run.clone())).collect()
+        executor
+            .context()
+            .indicies()
+            .runs_by_game_id_and_category_id_and_level_id()
+            .range((*self.id(), 0, None)..(*self.id() + 1, 0, None))
+            .map(|(_key, value)| value)
+            .flatten()
+            .map(|run| (*run).clone().into())
+            .collect()
     }
 
     fn field_levels(
@@ -216,10 +244,10 @@ impl GameFields for Game {
     ) -> Vec<Level> {
         executor
             .context()
-            .database
-            .levels_by_game_id(self.0.id)
-            .into_iter()
-            .map(Level)
+            .indicies()
+            .levels_by_game_id_and_slug()
+            .range((*self.id(), "")..(*self.id() + 1, ""))
+            .map(|(_key, level)| (*level).clone().into())
             .collect()
     }
 
@@ -230,12 +258,12 @@ impl GameFields for Game {
     ) -> Vec<Category> {
         executor
             .context()
-            .database
+            .indicies()
             .per_game_categories_by_game_id_and_slug()
-            .range((self.0.id, "".to_string())..(self.0.id + 1, "".to_string()))
+            .range((*self.id(), "")..(*self.id() + 1, ""))
             .map(|(_key, value)| value)
             .sorted_by(|a, b| (&a.name, a.id).cmp(&(&b.name, b.id)))
-            .map(|c| Category(executor.context().database.link(c)))
+            .map(|c| Category((*c).clone().into()))
             .collect()
     }
 
@@ -246,50 +274,57 @@ impl GameFields for Game {
     ) -> Vec<Category> {
         executor
             .context()
-            .database
+            .indicies()
             .per_level_categories_by_game_id_and_slug()
-            .range((self.0.id, "".to_string())..(self.0.id + 1, "".to_string()))
+            .range((*self.id(), "")..(*self.id() + 1, ""))
             .map(|(_key, value)| value)
             .sorted_by(|a, b| (&a.name, a.id).cmp(&(&b.name, b.id)))
-            .map(|c| Category(executor.context().database.link(c)))
+            .map(|c| Category((*c).clone().into()))
             .collect()
     }
 }
 
 impl RunFields for Run {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
-        global_id(self.0.id, NodeType::Run)
+        global_id(*self.id(), NodeType::Run)
     }
 
     fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
-        base36(self.0.id)
+        base36(*self.id())
     }
 
-    fn field_time_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
-        i32::try_from(self.0.time_ms()).expect("impossibly long run")
+    fn field_time_ms(&self, executor: &Executor<'_, Context>) -> i32 {
+        let game = &executor.context().games()[self.game_id()];
+        i32::try_from(
+            self.times_ms()
+                .get(game.primary_timing())
+                .expect("missing primary timing"),
+        )
+        .expect("impossibly long run")
     }
 
     fn field_category(
         &self,
-        _executor: &Executor<'_, Context>,
+        executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Category, Walked>,
     ) -> Category {
-        Category(self.0.category())
+        (&executor.context().categories()[self.category_id()])
+            .clone()
+            .into()
     }
 
     fn field_level(
         &self,
-        _executor: &Executor<'_, Context>,
+        executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Level, Walked>,
     ) -> Option<Level> {
-        self.0.level().map(Level)
+        self.level_id()
+            .map(|level_id| (&executor.context().levels()[&level_id]).clone().into())
     }
 
     fn field_date(&self, _executor: &Executor<'_, Context>) -> Option<f64> {
         // not sure if this cast is potentially lossy in practice
-        self.0
-            .date()
-            .map(|c| c.and_hms(12, 8, 4).timestamp() as f64)
+        self.date().map(|c| c.and_hms(12, 8, 4).timestamp() as f64)
     }
 
     fn field_players(
@@ -297,25 +332,25 @@ impl RunFields for Run {
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Player, Walked>,
     ) -> Vec<Player> {
-        self.0
-            .players()
+        self.players()
             .iter()
             .map(|run_player| match run_player {
-                db::RunPlayer::UserId(user_id) => {
+                models::RunPlayer::UserId(user_id) => {
                     let user = executor
                         .context()
                         .database
-                        .user_by_id(*user_id)
+                        .users()
+                        .get(user_id)
                         .expect("database integrity");
-                    Player::User(User(user))
+                    Player::User(user.clone().into())
                 }
-                db::RunPlayer::GuestName(name) => Player::Guest(name.clone()),
+                models::RunPlayer::GuestName(name) => Player::Guest(name.clone()),
             })
             .collect()
     }
 
     fn field_videos(&self, _executor: &Executor<'_, Context>) -> Vec<String> {
-        self.0.videos().iter().map(|v| v.to_string()).collect()
+        self.videos().iter().map(|v| v.to_string()).collect()
     }
 }
 
@@ -325,19 +360,19 @@ impl LeaderboardRunFields for LeaderboardRun {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Run, Walked>,
     ) -> Run {
-        Run(self.0.run().clone())
+        Run(self.run().clone())
     }
 
     fn field_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
-        i32::try_from(*self.0.rank()).expect("impossible number of runs")
+        i32::try_from(*self.rank()).expect("impossible number of runs")
     }
 
     fn field_is_tied(&self, _executor: &Executor<'_, Context>) -> bool {
-        *self.0.is_tied()
+        *self.is_tied()
     }
 
     fn field_tied_rank(&self, _executor: &Executor<'_, Context>) -> i32 {
-        i32::try_from(*self.0.tied_rank()).expect("impossible number of runs")
+        i32::try_from(*self.tied_rank()).expect("impossible number of runs")
     }
 }
 
@@ -347,11 +382,11 @@ impl ProgressionRunFields for ProgressionRun {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Run, Walked>,
     ) -> Run {
-        Run(self.0.run().clone())
+        Run(self.run().clone())
     }
 
     fn field_progress_ms(&self, _executor: &Executor<'_, Context>) -> i32 {
-        i32::try_from(*self.0.progress_ms()).expect("impossibly long run")
+        i32::try_from(*self.progress_ms()).expect("impossibly long run")
     }
 
     fn field_leaderboard_run(
@@ -359,8 +394,7 @@ impl ProgressionRunFields for ProgressionRun {
         _executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, LeaderboardRun, Walked>,
     ) -> Option<LeaderboardRun> {
-        self.0
-            .leaderboard_run()
+        self.leaderboard_run()
             .as_ref()
             .map(|lr| LeaderboardRun(lr.clone()))
     }
@@ -368,23 +402,19 @@ impl ProgressionRunFields for ProgressionRun {
 
 impl CategoryFields for Category {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
-        global_id(self.0.id, NodeType::Category)
+        global_id(*self.id(), NodeType::Category)
     }
 
     fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
-        base36(self.0.id)
+        base36(*self.id())
     }
 
     fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.name
+        &*self.name()
     }
 
-    fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.slug
-    }
-
-    fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        src_slugify(&self.0.name)
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        slugify(&*self.name())
     }
 
     fn field_leaderboard(
@@ -395,9 +425,14 @@ impl CategoryFields for Category {
         include_obsolete: bool,
         limit: Option<i32>,
     ) -> Vec<LeaderboardRun> {
+        let game = &executor.context().games()[self.game_id()];
         let level_id;
         if let Some(level_slug) = level_slug {
-            let level = self.0.game().level_by_slug(&level_slug);
+            let level = executor
+                .context()
+                .indicies()
+                .levels_by_game_id_and_slug()
+                .get(&(*self.game_id(), &level_slug));
             if let Some(level) = level {
                 level_id = Some(level.id);
             } else {
@@ -410,17 +445,14 @@ impl CategoryFields for Category {
 
         let runs = executor
             .context()
-            .database
+            .indicies()
             .runs_by_game_id_and_category_id_and_level_id()
-            .get(&(self.0.game_id, self.0.id, level_id));
+            .get(&(*self.game_id(), *self.id(), level_id));
 
         if let Some(runs) = runs {
-            let runs: Vec<_> = runs
-                .iter()
-                .map(|run| executor.context().database.link(*run))
-                .collect();
+            let runs: Vec<_> = runs.iter().map(|run| (*run).clone()).collect();
 
-            let mut ranked = leaderboard::leaderboard(&runs, include_obsolete);
+            let mut ranked = leaderboard(&game, runs.iter(), include_obsolete);
 
             if let Some(limit) = limit {
                 ranked.truncate(limit.try_into().unwrap_or(0));
@@ -439,9 +471,14 @@ impl CategoryFields for Category {
         level_slug: Option<String>,
         _include_ties: bool,
     ) -> Vec<ProgressionRun> {
+        let game = &executor.context().games()[self.game_id()];
         let level_id;
         if let Some(level_slug) = level_slug {
-            let level = self.0.game().level_by_slug(&level_slug);
+            let level = executor
+                .context()
+                .indicies()
+                .levels_by_game_id_and_slug()
+                .get(&(*self.game_id(), &level_slug));
             if let Some(level) = level {
                 level_id = Some(level.id);
             } else {
@@ -452,24 +489,33 @@ impl CategoryFields for Category {
             level_id = None;
         }
 
-        // TODO: https://github.com/jeremyBanks/speedruns/issues/267
-        let runs = executor
-            .context()
-            .database
-            .runs_by_game_id_and_category_id_and_level_id()
-            .get(&(self.0.game_id, self.0.id, level_id));
+        let runs: Vec<models::Run> = match level_id {
+            Some(level_id) => match executor
+                .context()
+                .indicies()
+                .runs_by_game_id_and_category_id_and_level_id()
+                .get(&(*self.game_id(), *self.id(), Some(level_id)))
+            {
+                Some(runs) => runs.iter().map(|run| (*run).clone()).collect(),
+                None => Vec::new(),
+            },
+            None => executor
+                .context()
+                .indicies()
+                .runs_by_game_id_and_category_id_and_level_id()
+                .range(
+                    &(*self.game_id(), *self.id(), None)
+                        ..&(*self.game_id() + 1, *self.id(), None),
+                )
+                .map(|(_key, value)| value)
+                .map(|x| x.iter())
+                .flatten()
+                .map(|run| (*run).clone().into())
+                .collect(),
+        };
 
-        if let Some(runs) = runs {
-            let runs: Vec<_> = runs
-                .iter()
-                .map(|run| executor.context().database.link(*run))
-                .collect();
-            let progress = progression::progression(&runs);
-
-            progress.iter().map(|r| ProgressionRun(r.clone())).collect()
-        } else {
-            return vec![];
-        }
+        let progress = progression(&game, runs.iter());
+        progress.iter().map(|r| ProgressionRun(r.clone())).collect()
     }
 
     fn field_levels(
@@ -479,12 +525,12 @@ impl CategoryFields for Category {
     ) -> Vec<CategoryLevel> {
         executor
             .context()
-            .database
-            .levels_by_game_id(self.0.game_id)
-            .into_iter()
-            .map(|level| CategoryLevel {
-                category: self.0.clone(),
-                level,
+            .indicies()
+            .levels_by_game_id_and_slug()
+            .range((*self.id(), "")..(*self.id() + 1, ""))
+            .map(|(_key, level)| CategoryLevel {
+                category: (*self).clone().into(),
+                level: (*level).clone().into(),
             })
             .collect()
     }
@@ -492,26 +538,22 @@ impl CategoryFields for Category {
 
 impl UserFields for User {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
-        global_id(self.0.id, NodeType::User)
+        global_id(*self.id(), NodeType::User)
     }
 
     fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
-        base36(self.0.id)
+        base36(*self.id())
     }
 
-    fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.slug
-    }
-
-    fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        src_slugify(&self.0.name)
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        slugify(&*self.name())
     }
 }
 
 impl PlayerFields for Player {
     fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
         match self {
-            Player::User(user) => &user.0.name,
+            Player::User(user) => &user.name,
             Player::Guest(name) => &name,
         }
     }
@@ -522,7 +564,7 @@ impl PlayerFields for Player {
         _trail: &QueryTrail<'_, User, Walked>,
     ) -> Option<User> {
         match self {
-            Player::User(user) => Some(user.clone()),
+            Player::User(user) => Some((*user).clone().into()),
             Player::Guest(_name) => None,
         }
     }
@@ -537,23 +579,19 @@ impl PlayerFields for Player {
 
 impl LevelFields for Level {
     fn field_id(&self, _executor: &Executor<'_, Context>) -> ID {
-        global_id(self.0.id, NodeType::Level)
+        global_id(*self.id(), NodeType::Level)
     }
 
     fn field_src_id(&self, _executor: &Executor<'_, Context>) -> String {
-        base36(self.0.id)
+        base36(*self.id())
     }
 
     fn field_name(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.name
+        &*self.name()
     }
 
-    fn field_slug(&self, _executor: &Executor<'_, Context>) -> &String {
-        &self.0.slug
-    }
-
-    fn field_src_slug(&self, _executor: &Executor<'_, Context>) -> String {
-        src_slugify(&self.0.name)
+    fn field_slug(&self, _executor: &Executor<'_, Context>) -> String {
+        slugify(&*self.name())
     }
 }
 
@@ -581,18 +619,24 @@ impl CategoryLevelFields for CategoryLevel {
         include_obsolete: bool,
         limit: Option<i32>,
     ) -> Vec<LeaderboardRun> {
-        let runs: Vec<DbLinked<db::Run>> = executor
+        let game = &executor.context().games()[self.category().game_id()];
+
+        let runs: Vec<models::Run> = executor
             .context()
-            .database
+            .indicies()
             .runs_by_game_id_and_category_id_and_level_id()
-            .get(&(self.category.game_id, self.category.id, Some(self.level.id)))
+            .get(&(
+                *self.category().game_id(),
+                *self.category().id(),
+                Some(*self.level().id()),
+            ))
             .map(Clone::clone)
             .unwrap_or_else(Default::default)
             .iter()
-            .map(|run| executor.context().database.link(*run))
+            .map(|run| models::Run::clone(run))
             .collect();
 
-        let mut ranked = leaderboard::leaderboard(&runs, include_obsolete);
+        let mut ranked = leaderboard(game, runs.iter(), include_obsolete);
 
         if let Some(limit) = limit {
             ranked.truncate(limit.try_into().unwrap_or(0));
@@ -607,18 +651,24 @@ impl CategoryLevelFields for CategoryLevel {
         _trail: &QueryTrail<'_, ProgressionRun, Walked>,
         _include_ties: bool,
     ) -> Vec<ProgressionRun> {
-        let runs: Vec<DbLinked<db::Run>> = executor
+        let game = &executor.context().games()[self.category().game_id()];
+
+        let runs: Vec<models::Run> = executor
             .context()
-            .database
+            .indicies()
             .runs_by_game_id_and_category_id_and_level_id()
-            .get(&(self.category.game_id, self.category.id, Some(self.level.id)))
+            .get(&(
+                *self.category().game_id(),
+                *self.category().id(),
+                Some(*self.level().id()),
+            ))
             .map(Clone::clone)
             .unwrap_or_else(Default::default)
             .iter()
-            .map(|run| executor.context().database.link(*run))
+            .map(|run| models::Run::clone(run))
             .collect();
 
-        let progress = progression::progression(&runs);
+        let progress = progression(game, runs.iter());
 
         progress.iter().map(|r| ProgressionRun(r.clone())).collect()
     }

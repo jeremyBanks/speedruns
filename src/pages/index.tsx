@@ -75,24 +75,24 @@ export const HomePage: NextPage<{}> = () => {
       .filter(
         (game: schema.GetGameIndex_games) =>
           slugify(game.name).includes(name) ||
-          slugify(game.srcSlug).includes(name),
+          slugify(game.slug).includes(name),
       )
       .sort((a: schema.GetGameIndex_games, b: schema.GetGameIndex_games) => {
-        const aExact = slugify(a.srcSlug) === name || slugify(a.name) === name;
-        const bExact = slugify(b.srcSlug) === name || slugify(b.name) === name;
-        const aPrefix = name.startsWith(slugify(a.srcSlug));
-        const bPrefix = name.startsWith(slugify(b.srcSlug));
+        const aExact = slugify(a.slug) === name || slugify(a.name) === name;
+        const bExact = slugify(b.slug) === name || slugify(b.name) === name;
+        const aPrefix = name.startsWith(slugify(a.slug));
+        const bPrefix = name.startsWith(slugify(b.slug));
 
         if (aExact && !bExact) return -1;
         else if (bExact && !aExact) return +1;
         else if (aPrefix && !bPrefix) return -1;
         else if (bPrefix && !aPrefix) return +1;
-        else if (a.srcSlug.length < b.srcSlug.length) return -1;
-        else if (a.srcSlug.length > b.srcSlug.length) return +1;
+        else if (a.slug.length < b.slug.length) return -1;
+        else if (a.slug.length > b.slug.length) return +1;
         else if (a.name.length < b.name.length) return -1;
         else if (a.name.length > b.name.length) return +1;
-        else if (a.srcSlug < b.srcSlug) return -1;
-        else if (a.srcSlug > b.srcSlug) return +1;
+        else if (a.slug < b.slug) return -1;
+        else if (a.slug > b.slug) return +1;
         else return 0;
       });
 
@@ -194,12 +194,12 @@ export const HomePage: NextPage<{}> = () => {
         <>
           {targetGames ? (
             <ul>
-              {targetGames.map(({ srcSlug, name }) => (
-                <li key={srcSlug}>
-                  <Link href={`/[game]?game=${srcSlug}`} as={`/${srcSlug}`}>
+              {targetGames.map(({ slug, name }) => (
+                <li key={slug}>
+                  <Link href={`/[game]?game=${slug}`} as={`/${slug}`}>
                     <a>
                       <code>
-                        <b>/{srcSlug}</b>
+                        <b>/{slug}</b>
                       </code>{" "}
                       {name}
                     </a>
@@ -315,7 +315,7 @@ const GetGameIndex = gql`
   query GetGameIndex {
     games {
       id
-      srcSlug
+      slug
       name
     }
   }

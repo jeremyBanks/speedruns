@@ -3,13 +3,13 @@ use std::{convert::TryFrom, fmt::Debug, hash::Hash};
 
 use chrono::{DateTime, Utc};
 use derive_more::{From, TryInto};
-#[allow(unused)]
-use log::{debug, error, info, trace, warn};
+
+
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
-use crate::data::types::*;
+use crate::*;
 
-/// A core types we store in a Database.
+/// A core type we store in a Database.
 pub trait Model:
     Into<AnyModel>
     + TryFrom<AnyModel>
@@ -27,7 +27,7 @@ pub trait Model:
     fn created(&self) -> Option<DateTime<Utc>>;
 }
 
-/// A reference to any Model type.
+/// Any Model type.
 #[derive(
     From,
     TryInto,

@@ -1,14 +1,14 @@
 Feel free to submit issues or send PRs, but (at least for now) this is somewhat
-meant as a personal project for experimenting with different tools, so I
-reserve the right to make bad choices for arbtirary reasons.
+meant as a personal project for experimenting with different tools, so I reserve
+the right to make bad choices for arbtirary reasons.
 
 By intentionally submitting code for inclusion in this repository you are
 agreeing to release it under the terms of [the MIT License](LICENSE).
 
 ## Repository Automation
 
-I use [GitHub Actions](.github/workflows/) and
-[ZEIT](https://zeit.co/) to automate this repository.
+I use [GitHub Actions](.github/workflows/) and [ZEIT](https://zeit.co/) to
+automate this repository.
 
 ### Automatic fixes
 
@@ -21,7 +21,8 @@ helpful, not perscriptive.
 ### Green first-parent chain on `master`
 
 A GitHub Action will ensure that first-parent ancestors of every commit on
-`master` has always passed CI. If `master` looks like, where `A`, `B`, and `C` are commits which already passed CI:
+`master` has always passed CI. If `master` looks like, where `A`, `B`, and `C`
+are commits which already passed CI:
 
 ```
 A🟢---B🟢---C🟢
@@ -49,10 +50,10 @@ commit. Don't do that.
 There is currently only one instance of the Rust GraphQL backend, running our
 latest release at `https://graphql-v0.speedrun.ca/`.
 
-I use ZEIT to run instances of the frontend for almost every commit, branch,
-and pull request. Their bot should comment on the commit or PR with a link
-once it's been deployed. Most of these URLs will be randomly generated, but
-we have a few standard ones:
+I use ZEIT to run instances of the frontend for almost every commit, branch, and
+pull request. Their bot should comment on the commit or PR with a link once it's
+been deployed. Most of these URLs will be randomly generated, but we have a few
+standard ones:
 
 https://speedruns.ca/ runs the latest release, matching the `deploy` branch.  
 https://staging.speedruns.ca/ runs the latest version of `master`, which will
@@ -68,5 +69,6 @@ The backend is published as
 
 The frontend is published as
 [`speedruns` on NPM](https://www.npmjs.com/package/speedruns) and as
-[`@jeremybanks/speedruns` on NPM](https://www.npmjs.com/package/@jeremybanks/speedruns), and
+[`@jeremybanks/speedruns` on NPM](https://www.npmjs.com/package/@jeremybanks/speedruns),
+and
 [on the GitHub Package Registry](https://github.com/jeremyBanks/speedruns/packages/120812).
