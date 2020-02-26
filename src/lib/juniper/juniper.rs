@@ -154,7 +154,7 @@ impl SpeedrunsFields for Speedruns {
         let db_id = u64_from_base36(&src_id.to_string());
         match db_id {
             Ok(db_id) => match executor.context().database.runs().get(&db_id) {
-                Some(run) => Some((*run).into()),
+                Some(run) => Some((*run).clone().into()),
                 None => None,
             },
             Err(_) => None,
@@ -170,16 +170,26 @@ impl SpeedrunsFields for Speedruns {
         let database = &executor.context().database;
         match parse_global_id(&id) {
             Ok((id, node_type)) => match node_type {
-                NodeType::Game => database.games().get(&id).map(|g| Node::Game(Game(*g))),
-                NodeType::Run => database.runs().get(&id).map(|r| Node::Run(Run(*r))),
-                NodeType::User => database.users().get(&id).map(|u| Node::User(User(*u))),
-                NodeType::Level => {
-                    database.levels().get(&id).map(|l| Node::Level(Level(*l)))
-                }
+                NodeType::Game => database
+                    .games()
+                    .get(&id)
+                    .map(|g| Node::Game((*g).clone().into())),
+                NodeType::Run => database
+                    .runs()
+                    .get(&id)
+                    .map(|r| Node::Run((*r).clone().into())),
+                NodeType::User => database
+                    .users()
+                    .get(&id)
+                    .map(|u| Node::User((*u).clone().into())),
+                NodeType::Level => database
+                    .levels()
+                    .get(&id)
+                    .map(|l| Node::Level(l.clone().into())),
                 NodeType::Category => database
                     .categories()
                     .get(&id)
-                    .map(|c| Node::Category(Category(*c))),
+                    .map(|c| Node::Category(c.clone().into())),
             },
             Err(_) => None,
         }
@@ -288,7 +298,7 @@ impl RunFields for Run {
     }
 
     fn field_time_ms(&self, executor: &Executor<'_, Context>) -> i32 {
-        let game = executor.context().games()[self.game_id()];
+        let game = &executor.context().games()[self.game_id()];
         i32::try_from(
             self.times_ms()
                 .get(game.primary_timing())
@@ -302,7 +312,9 @@ impl RunFields for Run {
         executor: &Executor<'_, Context>,
         _trail: &QueryTrail<'_, Category, Walked>,
     ) -> Category {
-        executor.context().categories()[self.category_id()].into()
+        (&executor.context().categories()[self.category_id()])
+            .clone()
+            .into()
     }
 
     fn field_level(
@@ -311,7 +323,7 @@ impl RunFields for Run {
         _trail: &QueryTrail<'_, Level, Walked>,
     ) -> Option<Level> {
         self.level_id()
-            .map(|level_id| executor.context().levels()[&level_id].into())
+            .map(|level_id| (&executor.context().levels()[&level_id]).clone().into())
     }
 
     fn field_date(&self, executor: &Executor<'_, Context>) -> Option<f64> {
@@ -417,7 +429,7 @@ impl CategoryFields for Category {
         include_obsolete: bool,
         limit: Option<i32>,
     ) -> Vec<LeaderboardRun> {
-        let game = executor.context().games()[self.game_id()];
+        let game = &executor.context().games()[self.game_id()];
         let level_id;
         if let Some(level_slug) = level_slug {
             let level = executor
@@ -442,7 +454,7 @@ impl CategoryFields for Category {
             .get(&(*self.game_id(), *self.id(), level_id));
 
         if let Some(runs) = runs {
-            let runs: Vec<_> = runs.iter().map(|run| **run).collect();
+            let runs: Vec<_> = runs.iter().map(|run| (*run).clone()).collect();
 
             let mut ranked = leaderboard(&game, runs.iter(), include_obsolete);
 
@@ -463,7 +475,7 @@ impl CategoryFields for Category {
         level_slug: Option<String>,
         _include_ties: bool,
     ) -> Vec<ProgressionRun> {
-        let game = executor.context().games()[self.game_id()];
+        let game = &executor.context().games()[self.game_id()];
         let level_id;
         if let Some(level_slug) = level_slug {
             let level = executor
@@ -521,7 +533,7 @@ impl CategoryFields for Category {
             .levels_by_game_id_and_slug()
             .range((*self.id(), "")..(*self.id() + 1, ""))
             .map(|(_key, level)| CategoryLevel {
-                category: *self.clone(),
+                category: (*self).clone().into(),
                 level: (*level).clone().into(),
             })
             .collect()
@@ -628,7 +640,7 @@ impl CategoryLevelFields for CategoryLevel {
             .map(|run| models::Run::clone(run))
             .collect();
 
-        let ranked = leaderboard(game, runs.iter(), include_obsolete);
+        let mut ranked = leaderboard(game, runs.iter(), include_obsolete);
 
         if let Some(limit) = limit {
             ranked.truncate(limit.try_into().unwrap_or(0));

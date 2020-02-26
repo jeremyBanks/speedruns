@@ -11,7 +11,7 @@ use std::error::Error;
 use log::{debug, error, info, trace, warn};
 
 use speedruns_api::cli::{download, import};
-// use speedruns_juniper::cli as juniper_cli;
+use speedruns_juniper::cli as juniper_cli;
 
 #[derive(argh::FromArgs, PartialEq, Debug)]
 /// Tools for importing and serving some data from the speedrun.com API.
@@ -34,7 +34,7 @@ pub struct Args {
 pub enum Subcommand {
     Download(DownloadArgs),
     Import(import::Args),
-    // Serve(juniper_cli::Args),
+    Serve(juniper_cli::Args),
 }
 
 #[derive(argh::FromArgs, PartialEq, Debug)]
@@ -64,10 +64,10 @@ pub async fn main() -> Result<(), Box<dyn Error>> {
         }
         Subcommand::Import(args) => {
             import::main(args)?;
-        } //
-          // Subcommand::Serve(args) => {
-          //     serve::main(args).await?;
-          // }
+        }
+        Subcommand::Serve(args) => {
+            juniper_cli::main(args).await?;
+        }
     }
 
     Ok(())

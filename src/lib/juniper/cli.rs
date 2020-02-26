@@ -38,7 +38,8 @@ async fn graphql(
     schema: web::Data<Arc<crate::Schema>>,
     query: web::Json<GraphQLRequest>,
 ) -> actix_web::Result<HttpResponse> {
-    let database: Arc<Database> = DATABASE.read().await.unwrap().clone();
+    let lock = DATABASE.read().await;
+    let database: Arc<Database> = lock.clone().unwrap();
 
     let user = web::block(move || {
         let res = query.execute(&schema, &crate::Context { database });

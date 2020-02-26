@@ -2246,6 +2246,8 @@ dependencies = [
 name = "speedruns"
 version = "0.21.6-dev"
 dependencies = [
+ "actix",
+ "actix-rt",
  "argh",
  "async-std",
  "speedruns_api",
