@@ -6,7 +6,7 @@ use std::{
 
 use chrono::{DateTime, NaiveDate, Utc};
 use getset::Getters;
-#[allow(unused)]
+
 use log::{debug, error, info, trace, warn};
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationError, ValidationErrors};

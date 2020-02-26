@@ -8,7 +8,7 @@ use std::{
 use derive_more::{Deref, From, Into};
 use getset::Getters;
 use itertools::Itertools;
-#[allow(unused)]
+
 use juniper::{
     graphql_interface, graphql_object, graphql_scalar, graphql_union, graphql_value,
     object, GraphQLEnum, GraphQLInputObject, GraphQLObject, GraphQLScalarValue,

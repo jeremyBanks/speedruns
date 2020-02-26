@@ -14,15 +14,14 @@ use std::{
 
 use flate2::read::GzDecoder;
 use itertools::Itertools;
-#[allow(unused)]
+
 use log::{debug, error, info, trace, warn};
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use tempfile::NamedTempFile;
 
 use crate::normalize::Normalize;
-use speedruns_database::{Database, IntegrityError, Tables};
-use speedruns_models::any::{AnyModel, AnyModelVec};
+use speedruns_database::{Database, Tables};
 
 #[derive(argh::FromArgs, PartialEq, Debug)]
 /// Imports downloaded data (converting it to our internal representation, discarding weird

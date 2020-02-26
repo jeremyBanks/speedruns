@@ -7,7 +7,6 @@
 
 use std::error::Error;
 
-#[allow(unused)]
 use log::{debug, error, info, trace, warn};
 
 use speedruns_api::cli::{download, import};

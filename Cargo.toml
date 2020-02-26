@@ -22,7 +22,6 @@ name = "speedruns"
 path = "src/bin/speedruns.rs"
 
 [dependencies]
-actix = "0.9.0"
 actix-rt = "1.0.0"
 argh = "0.1.3"
 async-std = { version = "1.5.0", features = ["attributes"] }
