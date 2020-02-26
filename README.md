@@ -104,7 +104,8 @@ Grab bag of shared code.
 
 - `::model` The data types for our speedrun model.
 - `::validation` Single-record validation logic.
-- `::integrity` Inter-record integrity validation logic. Meant for use by `database` but not coupled to it.
+- `::integrity` Inter-record integrity validation logic. Meant for use by
+  `database` but not coupled to it.
 - `::aggregations` Functions for aggregating collections of records.
   - `::leaderboard(Run[]) -> Leaderboard { game, category, level?, {...}[] }`
   - `::progression(Run[]) -> Progression { game, category, level?, {...}[] }`
