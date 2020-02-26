@@ -60,14 +60,14 @@ pub async fn main() -> Result<(), Box<dyn Error>> {
 
     match args.subcommand {
         Subcommand::Download(_args) => {
-            scrape::main()?;
+            download::main()?;
         }
         Subcommand::Import(args) => {
             import::main(args)?;
-        }
-        Subcommand::Serve(args) => {
-            serve::main(args).await?;
-        }
+        } //
+          // Subcommand::Serve(args) => {
+          //     serve::main(args).await?;
+          // }
     }
 
     Ok(())

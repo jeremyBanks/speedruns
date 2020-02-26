@@ -9,6 +9,7 @@ use std::{
     collections::HashSet,
     fs::File,
     io::{prelude::*, BufReader, BufWriter},
+    sync::Arc,
 };
 
 use flate2::read::GzDecoder;
@@ -19,13 +20,9 @@ use serde::{de::DeserializeOwned, Serialize};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use tempfile::NamedTempFile;
 
-use speedruns::{
-    api::{self, normalize::Normalize},
-    data::{
-        database::{Database, IntegrityError, Tables},
-        models::{AnyModel, AnyModelVec},
-    },
-};
+use crate::normalize::Normalize;
+use speedruns_database::{Database, IntegrityError, Tables};
+use speedruns_models::any::{AnyModel, AnyModelVec};
 
 #[derive(argh::FromArgs, PartialEq, Debug)]
 /// Imports downloaded data (converting it to our internal representation, discarding weird
@@ -57,7 +54,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
     let mut fixture_user_ids = HashSet::new();
 
     info!("Loading API games, with categories and levels...");
-    for api_game in load_api_type::<api::Game>("data/api/games.jsonl.gz")? {
+    for api_game in load_api_type::<crate::types::Game>("data/api/games.jsonl.gz")? {
         if args.fixtures && !fixture_game_slugs.contains(&api_game.abbreviation().as_ref())
         {
             continue;
@@ -75,13 +72,13 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
     }
 
     info!("Loading API runs...");
-    for api_run in load_api_type::<api::Run>("data/api/runs.jsonl.gz")? {
+    for api_run in load_api_type::<crate::types::Run>("data/api/runs.jsonl.gz")? {
         if args.fixtures && !fixture_game_ids.contains(api_run.game()) {
             continue;
         } else {
             fixture_run_ids.insert(api_run.id().clone());
             for player in api_run.players() {
-                if let api::RunPlayer::User { id, .. } = player {
+                if let crate::types::RunPlayer::User { id, .. } = player {
                     fixture_user_ids.insert(id.clone());
                 }
             }
@@ -96,7 +93,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
     }
 
     info!("Loading API users...");
-    for api_user in load_api_type::<api::User>("data/api/users.jsonl.gz")? {
+    for api_user in load_api_type::<crate::types::User>("data/api/users.jsonl.gz")? {
         if args.fixtures && !fixture_user_ids.contains(api_user.id()) {
             continue;
         }
@@ -110,131 +107,15 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
 
     info!("Validating and cleaning API data...");
 
-    loop {
-        // memory leak, so hopefully not many iterations!
-        match Database::new(Box::leak(Box::new(Tables::new(
-            runs.clone(),
-            users.clone(),
-            games.clone(),
-            categories.clone(),
-            levels.clone(),
-        )))) {
-            Ok(_) => {
-                info!("Database validation successful.");
-                break;
-            }
-            Err(errors) => {
-                error!("Database validation failed: {}", errors);
-                let mut dead_run_ids = HashSet::<u64>::new();
-                let mut dead_game_ids = HashSet::<u64>::new();
-                let mut dead_user_ids = HashSet::<u64>::new();
-                let mut dead_level_ids = HashSet::<u64>::new();
-                let mut dead_category_ids = HashSet::<u64>::new();
+    let database = Database::new(Arc::new(Tables::new(
+        games, categories, levels, runs, users,
+    )));
 
-                for error in errors.errors {
-                    match error {
-                        IntegrityError::IndexingError => {
-                            error!("indexing failed");
-                        }
-                        IntegrityError::ForeignKeyMissing { source, .. } => {
-                            use AnyModel::*;
-                            match source {
-                                Run(run) => dead_run_ids.insert(*run.id()),
-                                User(user) => dead_user_ids.insert(*user.id()),
-                                Game(game) => dead_game_ids.insert(*game.id()),
-                                Level(level) => dead_level_ids.insert(*level.id()),
-                                Category(category) => {
-                                    dead_category_ids.insert(*category.id())
-                                }
-                            };
-                        }
-                        IntegrityError::CheckFailed { .. } => {
-                            // validation errors shouldn't be possible, they're a sanity check.
-                            panic!("validation failure?! import bug?");
-                        }
-                        IntegrityError::NonUniqueSlug { sources, .. } => {
-                            use AnyModelVec::*;
-                            match sources {
-                                Runs(_) => unreachable!("runs don't have slugs?!"),
-                                Games(games) => {
-                                    let dead_dupes = games
-                                        .iter()
-                                        .sorted_by_key(|game| {
-                                            (
-                                                game.created(),
-                                                game.slug().len(),
-                                                game.name().len(),
-                                                game.name(),
-                                                game.id(),
-                                            )
-                                                .clone()
-                                        })
-                                        .skip(1);
-                                    for dupe in dead_dupes {
-                                        dead_game_ids.insert(*dupe.id());
-                                    }
-                                }
-                                Users(users) => {
-                                    let dead_dupes = users
-                                        .iter()
-                                        .sorted_by_key(|user| {
-                                            (
-                                                user.created(),
-                                                user.name().len(),
-                                                user.name(),
-                                                user.id(),
-                                            )
-                                                .clone()
-                                        })
-                                        .skip(1);
-                                    for dupe in dead_dupes {
-                                        dead_user_ids.insert(*dupe.id());
-                                    }
-                                }
-                                Categories(categories) => {
-                                    let dead_dupes = categories
-                                        .iter()
-                                        .sorted_by_key(|category| {
-                                            (
-                                                category.name().len(),
-                                                category.name(),
-                                                category.id(),
-                                            )
-                                                .clone()
-                                        })
-                                        .skip(1);
-                                    for dupe in dead_dupes {
-                                        dead_category_ids.insert(*dupe.id());
-                                    }
-                                }
-                                Levels(levels) => {
-                                    let dead_dupes = levels
-                                        .iter()
-                                        .sorted_by_key(|level| {
-                                            (level.name().len(), level.name(), level.id())
-                                                .clone()
-                                        })
-                                        .skip(1);
-                                    for dupe in dead_dupes {
-                                        dead_level_ids.insert(*dupe.id());
-                                    }
-                                }
-                            };
-                        }
-                        IntegrityError::MissingPrimaryTiming(run) => {
-                            dead_run_ids.insert(*run.id());
-                        }
-                    }
-                }
-
-                runs.retain(|x| !dead_run_ids.contains(x.id()));
-                users.retain(|x| !dead_user_ids.contains(x.id()));
-                games.retain(|x| !dead_game_ids.contains(x.id()));
-                categories.retain(|x| !dead_category_ids.contains(x.id()));
-                levels.retain(|x| !dead_level_ids.contains(x.id()));
-            }
-        }
-    }
+    let games: Vec<_> = database.games().values().collect();
+    let categories: Vec<_> = database.categories().values().collect();
+    let levels: Vec<_> = database.levels().values().collect();
+    let runs: Vec<_> = database.runs().values().collect();
+    let users: Vec<_> = database.users().values().collect();
 
     let dir = if args.fixtures { "fixture" } else { "imported" };
 

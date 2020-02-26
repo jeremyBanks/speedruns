@@ -27,11 +27,6 @@ use speedruns_utils::slugify;
 // TODO: we probably want to stop doing that. Here we add further validation
 // and integrity checking that requires the context of the Database.
 
-/// Panic message used when the database state is invalid but that shouldn't be
-/// possible, because it must have already been validated, such as for foreign
-/// key lookups.
-const DATABASE_INTEGRITY: &str = "Database state invalid despite passing validation?!";
-
 /// Validates a Database for business and integrity requirements.
 pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
     let mut errors = vec![];

@@ -9,7 +9,7 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 use crate::*;
 
-/// A core types we store in a Database.
+/// A core type we store in a Database.
 pub trait Model:
     Into<AnyModel>
     + TryFrom<AnyModel>
@@ -27,7 +27,7 @@ pub trait Model:
     fn created(&self) -> Option<DateTime<Utc>>;
 }
 
-/// A reference to any Model type.
+/// Any Model type.
 #[derive(
     From,
     TryInto,
