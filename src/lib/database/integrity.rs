@@ -9,7 +9,7 @@ use derive_more::From;
 use err_derive::Error;
 use itertools::Itertools;
 
-use log::{debug, error, info, trace, warn};
+use log::{error, trace};
 use validator::{Validate, ValidationErrors};
 
 use speedruns_models::{

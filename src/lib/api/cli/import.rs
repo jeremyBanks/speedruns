@@ -15,7 +15,7 @@ use std::{
 use flate2::read::GzDecoder;
 use itertools::Itertools;
 
-use log::{debug, error, info, trace, warn};
+use log::info;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use tempfile::NamedTempFile;

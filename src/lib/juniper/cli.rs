@@ -14,7 +14,7 @@ use actix_web::{self, middleware, web, HttpResponse};
 use juniper::{self, http::GraphQLRequest};
 use lazy_static::lazy_static;
 
-use log::{debug, error, info, trace, warn};
+use log::{error, info, warn};
 use serde::de::DeserializeOwned;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 

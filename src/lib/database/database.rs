@@ -7,7 +7,7 @@ use getset::Getters;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 
-use log::{debug, error, info, trace, warn};
+use log::error;
 
 use speedruns_models::{Category, CategoryType, Game, Level, Run, User};
 
@@ -218,34 +218,11 @@ impl<'tables> Indicies<'tables> {
             key: fn(&'tables Value) -> NewKey,
             filter: fn(&Value) -> bool,
         ) -> BTreeMap<NewKey, &'tables Value> {
-            // TODO: Should this use rayon?
             original
                 .values()
                 .filter(|x| filter(x))
                 .map(|value| (key(value), value))
                 .collect()
-        }
-
-        /// Index groups of rows by some non-unique key.
-        fn index_group<
-            'tables,
-            Value,
-            OldKey: 'tables + Hash + Eq,
-            NewKey: 'tables + Ord + Eq,
-        >(
-            _original: &HashMap<OldKey, Value>,
-            _key: fn(&'tables Value) -> NewKey,
-        ) -> BTreeMap<NewKey, &'tables Value> {
-            unimplemented!(
-                "these lifetimes confuse me
-
-            original
-                .values()
-                .group_by(|x| key(x))
-                .into_iter()
-                .map(|(key, values)| (key, values.collect()))
-                .collect()"
-            );
         }
 
         Indicies {
