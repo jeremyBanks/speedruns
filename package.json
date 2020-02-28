@@ -21,7 +21,7 @@
     "@types/react-no-ssr": "^1.1.1",
     "@types/react-redux": "^7.1.7",
     "@types/react-youtube": "^7.6.2",
-    "@types/yargs": "^15.0.3",
+    "@types/yargs": "^15.0.4",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "@zeit/next-source-maps": "^0.0.3",
