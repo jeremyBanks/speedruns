@@ -5,7 +5,7 @@ const RunPlayers: React.FC<{ players: schema.GameRun_players[] }> = ({
   players,
 }) => {
   if (players?.length) {
-    return <AutoColor>{players.map(p => p.name).join(" & ")}</AutoColor>;
+    return <AutoColor>{players.map((p) => p.name).join(" & ")}</AutoColor>;
   } else {
     return <></>;
   }

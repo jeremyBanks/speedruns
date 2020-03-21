@@ -24,7 +24,7 @@ const LeaderboardTable: React.FC<{
     </thead>
     <tbody>
       {runs.length ? (
-        runs.map(leaderboardRun => (
+        runs.map((leaderboardRun) => (
           <tr
             key={leaderboardRun.run.id}
             data-rank={leaderboardRun?.tiedRank ?? "obsolete"}
