@@ -74,15 +74,6 @@ const GamePage: NextPage = () => {
             <a href={`#${levelCategory.id}`}>{levelCategory.name}</a>
           </h2>
 
-          <h4>Progress</h4>
-
-          <ProgressionTable
-            runs={levelCategory.progression}
-            showLevels={true}
-            showSums={true}
-            game={game}
-          />
-
           {levelCategory.levels.map(({ level, leaderboard, progression }) => (
             <section key={level.id} id={`${levelCategory.id}${level.id}`}>
               <h3>
@@ -220,15 +211,6 @@ const GetGamePage = gql`
         name
         leaderboard(limit: 32) {
           ...GameLeaderboardRun
-        }
-        progression {
-          progressMs
-          run {
-            ...GameRun
-          }
-          leaderboardRun {
-            ...GameLeaderboardRun
-          }
         }
         levels {
           level {

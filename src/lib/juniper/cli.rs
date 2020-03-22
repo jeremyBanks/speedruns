@@ -14,7 +14,6 @@ use actix_web::{self, middleware, web, HttpResponse};
 use juniper::{self, http::GraphQLRequest};
 use lazy_static::lazy_static;
 
-use log::{error, info, warn};
 use serde::de::DeserializeOwned;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 
@@ -89,16 +88,16 @@ lazy_static! {
 }
 
 pub async fn main(args: Args) -> std::io::Result<()> {
-    info!("Initializing server.");
+    log::info!("Initializing server.");
     *(DATABASE.write().await) = Some(Arc::new(
         Database::try_new(Arc::new(unpack_tables(args.no_data)))
             .expect("database should be valid"),
     ));
 
-    info!("Initializing schema.");
+    log::info!("Initializing schema.");
     let schema = Arc::new(crate::schema());
 
-    info!("Initializing server.");
+    log::info!("Initializing server.");
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
             .wrap(middleware::Compress::default())
@@ -111,7 +110,7 @@ pub async fn main(args: Args) -> std::io::Result<()> {
             .service(web::resource("/diediedie").route(web::get().to(diediedie)))
     });
 
-    info!("Binding server.");
+    log::info!("Binding server.");
     server
         .bind(format!("127.0.0.1:{}", args.port.unwrap_or(3001)))?
         .run()
@@ -120,26 +119,26 @@ pub async fn main(args: Args) -> std::io::Result<()> {
 
 fn unpack_tables(no_data: bool) -> Tables {
     if no_data {
-        info!("Skipping database import, will run with no data!");
+        log::info!("Skipping database import, will run with no data!");
         return Tables::new(vec![], vec![], vec![], vec![], vec![]);
     }
 
-    info!("Unpacking database...");
+    log::info!("Unpacking database...");
 
     let mut runs = read_table("data/imported/runs.jsonl").expect("run data corrupt");
-    info!("{} runs.", runs.len());
+    log::info!("{} runs.", runs.len());
     let supplemental =
         read_table("data/supplemental/runs.jsonl").expect("supplemental run data corrupt");
-    info!("{} supplemental runs.", supplemental.len());
+    log::info!("{} supplemental runs.", supplemental.len());
     let users = read_table("data/imported/users.jsonl").expect("user data corrupt");
-    info!("{} users.", users.len());
+    log::info!("{} users.", users.len());
     let games = read_table("data/imported/games.jsonl").expect("game data corrupt");
-    info!("{} games.", games.len());
+    log::info!("{} games.", games.len());
     let categories =
         read_table("data/imported/categories.jsonl").expect("category data corrupt");
-    info!("{} categories.", categories.len());
+    log::info!("{} categories.", categories.len());
     let levels = read_table("data/imported/levels.jsonl").expect("level data corrupt");
-    info!("{} levels.", levels.len());
+    log::info!("{} levels.", levels.len());
 
     runs.extend(supplemental.into_iter());
 
@@ -161,7 +160,7 @@ pub fn read_table<T: DeserializeOwned>(
                 .collect()
         }
         Err(err) => {
-            error!("Failed to load table: {:?}", err);
+            log::error!("Failed to load table: {:?}", err);
             vec![]
         }
     })

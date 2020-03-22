@@ -9,7 +9,6 @@ use derive_more::From;
 use err_derive::Error;
 use itertools::Itertools;
 
-use log::{error, trace};
 use validator::{Validate, ValidationErrors};
 
 use speedruns_models::{
@@ -26,14 +25,14 @@ use speedruns_utils::slugify;
 pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
     let mut errors = vec![];
 
-    trace!("Validating {} runs.", database.runs().len());
+    log::trace!("Validating {} runs.", database.runs().len());
     for run in database.runs().values() {
         if let Err(mut error) = validate_run(database, &run) {
             errors.append(&mut error.errors);
         }
     }
 
-    trace!("Validating {} users.", database.users().len());
+    log::trace!("Validating {} users.", database.users().len());
     let mut user_slugs = HashMap::<String, Vec<User>>::new();
     for user in database.users().values() {
         if let Err(mut error) = validate_user(database, &user) {
@@ -54,7 +53,7 @@ pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
         }
     }
 
-    trace!("Validating {} games.", database.games().len());
+    log::trace!("Validating {} games.", database.games().len());
     let mut game_slugs = HashMap::<String, Vec<Game>>::new();
     for game in database.games().values() {
         if let Err(mut error) = validate_game(database, &game) {
@@ -75,7 +74,7 @@ pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
         }
     }
 
-    trace!("Validating {} categories.", database.categories().len());
+    log::trace!("Validating {} categories.", database.categories().len());
     let mut category_slugs = HashMap::<String, Vec<Category>>::new();
     for category in database.categories().values() {
         if let Err(mut error) = validate_category(database, &category) {
@@ -103,7 +102,7 @@ pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
         }
     }
 
-    trace!("Validating {} levels.", database.levels().len());
+    log::trace!("Validating {} levels.", database.levels().len());
     let mut level_slugs = HashMap::<String, Vec<Level>>::new();
     for level in database.levels().values() {
         if let Err(mut error) = validate_level(database, &level) {
@@ -327,7 +326,7 @@ impl IntegrityError {
 
         match self {
             IntegrityError::IndexingError => {
-                error!("indexing failed");
+                log::error!("indexing failed");
             }
             IntegrityError::ForeignKeyMissing { source, .. } => {
                 use AnyModel::*;

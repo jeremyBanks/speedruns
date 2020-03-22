@@ -7,8 +7,6 @@ use getset::Getters;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 
-use log::error;
-
 use speedruns_models::{Category, CategoryType, Game, Level, Run, User};
 
 #[macro_use]
@@ -111,27 +109,27 @@ impl Database {
                             .collect()
                     }
 
-                    error!(
+                    log::error!(
                         "{:6} ({:3}%) invalid runs",
                         invalid_runs.len(),
                         (invalid_runs.len() * 100) / tables.runs().len().max(1)
                     );
-                    error!(
+                    log::error!(
                         "{:6} ({:3}%) invalid users",
                         invalid_users.len(),
                         (invalid_users.len() * 100) / tables.users().len().max(1)
                     );
-                    error!(
+                    log::error!(
                         "{:6} ({:3}%) invalid games",
                         invalid_games.len(),
                         (invalid_games.len() * 100) / tables.games().len().max(1)
                     );
-                    error!(
+                    log::error!(
                         "{:6} ({:3}%) invalid categories",
                         invalid_categories.len(),
                         (invalid_categories.len() * 100) / tables.categories().len().max(1)
                     );
-                    error!(
+                    log::error!(
                         "{:6} ({:3}%) invalid levels",
                         invalid_levels.len(),
                         (invalid_levels.len() * 100) / tables.levels().len().max(1)

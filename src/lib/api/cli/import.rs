@@ -15,7 +15,6 @@ use std::{
 use flate2::read::GzDecoder;
 use itertools::Itertools;
 
-use log::info;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use tempfile::NamedTempFile;
@@ -44,7 +43,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
     let mut levels = Vec::new();
 
     if args.fixtures {
-        info!("Generating fixture data, not importing into database.");
+        log::info!("Generating fixture data, not importing into database.");
     }
 
     let fixture_game_slugs = ["wc1", "wc2", "wc2btdp", "bpr", "forza_horizon", "zoombinis"];
@@ -52,7 +51,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
     let mut fixture_run_ids = HashSet::new();
     let mut fixture_user_ids = HashSet::new();
 
-    info!("Loading API games, with categories and levels...");
+    log::info!("Loading API games, with categories and levels...");
     for api_game in load_api_type::<crate::types::Game>("data/api/games.jsonl.gz")? {
         if args.fixtures && !fixture_game_slugs.contains(&api_game.abbreviation().as_ref())
         {
@@ -70,7 +69,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
         levels.append(&mut game_levels);
     }
 
-    info!("Loading API runs...");
+    log::info!("Loading API runs...");
     for api_run in load_api_type::<crate::types::Run>("data/api/runs.jsonl.gz")? {
         if args.fixtures && !fixture_game_ids.contains(api_run.game()) {
             continue;
@@ -91,7 +90,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    info!("Loading API users...");
+    log::info!("Loading API users...");
     for api_user in load_api_type::<crate::types::User>("data/api/users.jsonl.gz")? {
         if args.fixtures && !fixture_user_ids.contains(api_user.id()) {
             continue;
@@ -104,7 +103,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
         users.push(user);
     }
 
-    info!("Validating and cleaning API data...");
+    log::info!("Validating and cleaning API data...");
 
     let database = Database::new(Arc::new(Tables::new(
         games, categories, levels, runs, users,
@@ -118,15 +117,15 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
 
     let dir = if args.fixtures { "fixture" } else { "imported" };
 
-    info!("Dumping {} games...", games.len());
+    log::info!("Dumping {} games...", games.len());
     dump_table(&format!("data/{}/games", dir), games)?;
-    info!("Dumping {} users...", users.len());
+    log::info!("Dumping {} users...", users.len());
     dump_table(&format!("data/{}/users", dir), users)?;
-    info!("Dumping {} runs...", runs.len());
+    log::info!("Dumping {} runs...", runs.len());
     dump_table(&format!("data/{}/runs", dir), runs)?;
-    info!("Dumping {} categories...", categories.len());
+    log::info!("Dumping {} categories...", categories.len());
     dump_table(&format!("data/{}/categories", dir), categories)?;
-    info!("Dumping {} levels...", levels.len());
+    log::info!("Dumping {} levels...", levels.len());
     dump_table(&format!("data/{}/levels", dir), levels)?;
 
     Ok(())
