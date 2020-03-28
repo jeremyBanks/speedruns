@@ -12,7 +12,7 @@ path = "models.rs"
 
 [dependencies]
 chrono = { features = ["serde"], version = "0.4.10" }
-derive_more = "0.99.3"
+derive_more = "0.99.4"
 getset = "0.1.0"
 itertools = "0.8.2"
 log = "0.4.8"
