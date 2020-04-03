@@ -55,7 +55,7 @@ impl Spider {
     pub fn load_or_create() -> Self {
         let mut spider = Spider::default();
 
-        let mut load = || -> Result<(), Box<dyn std::error::Error>> {
+        let mut load = || -> anyhow::Result<()> {
             for resource in RESOURCES.iter() {
                 log::info!("Loading {}...", resource.id);
                 let file = File::open(&format!("data/api/{}.jsonl.gz", resource.id))?;
@@ -89,7 +89,7 @@ impl Spider {
         spider
     }
 
-    fn save(&mut self, resource: &Resource) -> Result<(), Box<dyn std::error::Error>> {
+    fn save(&mut self, resource: &Resource) -> anyhow::Result<()> {
         log::info!(
             "Saving {} {}...",
             self.resource_by_id(resource).len(),
@@ -113,7 +113,7 @@ impl Spider {
         Ok(())
     }
 
-    pub fn run(&mut self) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn run(&mut self) -> anyhow::Result<()> {
         let mut headers = reqwest::header::HeaderMap::new();
 
         let user_agent = format!(
@@ -240,6 +240,6 @@ impl Spider {
     }
 }
 
-pub fn main() -> Result<(), Box<dyn std::error::Error>> {
+pub fn main() -> anyhow::Result<()> {
     Spider::load_or_create().run()
 }

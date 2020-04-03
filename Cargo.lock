@@ -2235,6 +2235,7 @@ dependencies = [
 name = "speedruns_api"
 version = "0.21.6-dev"
 dependencies = [
+ "anyhow",
  "argh",
  "base64 0.11.0",
  "chrono",
@@ -2266,6 +2267,7 @@ dependencies = [
 name = "speedruns_cli"
 version = "0.21.6-dev"
 dependencies = [
+ "anyhow",
  "argh",
  "log",
  "pretty_env_logger",

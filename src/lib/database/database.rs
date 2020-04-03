@@ -1,3 +1,11 @@
+#![allow(
+    clippy::or_fun_call,
+    clippy::implicit_hasher,
+    clippy::extra_unused_lifetimes,
+    clippy::clone_on_copy,
+    clippy::identity_conversion
+)]
+
 use std::collections::BTreeMap;
 use std::collections::{BTreeMap as SortedMap, HashMap, HashSet};
 use std::{hash::Hash, sync::Arc};

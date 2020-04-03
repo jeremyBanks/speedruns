@@ -1,3 +1,10 @@
+#![allow(
+    clippy::or_fun_call,
+    clippy::implicit_hasher,
+    clippy::extra_unused_lifetimes,
+    clippy::clone_on_copy
+)]
+
 use std::collections::HashSet;
 use std::{
     collections::HashMap,

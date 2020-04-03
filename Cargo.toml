@@ -22,6 +22,7 @@ name = "speedruns"
 path = "src/bin/speedruns.rs"
 
 [dependencies]
+anyhow = "1.0.27"
 actix-rt = "1.0.0"
 argh = "0.1.3"
 async-std = { version = "1.5.0", features = ["attributes"] }
@@ -31,4 +32,3 @@ speedruns_database = { path = "src/lib/database", version = "0.21.6-dev" }
 speedruns_juniper = { path = "src/lib/juniper", version = "0.21.6-dev" }
 speedruns_models = { path = "src/lib/models", version = "0.21.6-dev" }
 speedruns_utils = { path = "src/lib/utils", version = "0.21.6-dev" }
-anyhow = "1.0.27"

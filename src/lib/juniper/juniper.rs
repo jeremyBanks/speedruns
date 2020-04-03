@@ -1,3 +1,4 @@
+#![allow(clippy::identity_conversion)]
 #![warn(clippy::option_unwrap_used, clippy::result_unwrap_used)]
 
 use std::{

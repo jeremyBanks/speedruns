@@ -1,9 +1,11 @@
-#![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
-#![warn(
-    missing_debug_implementations,
+#![allow(
+    missing_docs,
+    clippy::useless_attribute,
+    clippy::useless_vec,
     clippy::option_unwrap_used,
-    clippy::result_unwrap_used
+    clippy::identity_conversion
 )]
+#![warn(missing_debug_implementations)]
 
 use async_std::sync::RwLock;
 use std::{fs::File, io::BufReader, sync::Arc};

@@ -35,7 +35,7 @@ pub struct Args {
     fixtures: bool,
 }
 
-pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
+pub fn main(args: Args) -> anyhow::Result<()> {
     let mut runs = Vec::new();
     let mut users = Vec::new();
     let mut games = Vec::new();
@@ -131,9 +131,7 @@ pub fn main(args: Args) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn load_api_type<ApiType: DeserializeOwned>(
-    path: &str,
-) -> Result<Vec<ApiType>, Box<dyn std::error::Error>> {
+fn load_api_type<ApiType: DeserializeOwned>(path: &str) -> anyhow::Result<Vec<ApiType>> {
     let file = File::open(path)?;
     let buffer = BufReader::new(&file);
     let decompressor = GzDecoder::new(buffer);
@@ -146,10 +144,7 @@ fn load_api_type<ApiType: DeserializeOwned>(
         .collect())
 }
 
-fn dump_table<T: Serialize + Ord>(
-    path: &str,
-    table: Vec<T>,
-) -> Result<(), Box<dyn std::error::Error>> {
+fn dump_table<T: Serialize + Ord>(path: &str, table: Vec<T>) -> anyhow::Result<()> {
     let mut file = NamedTempFile::new_in("data")?;
     {
         let mut buffer = BufWriter::new(&mut file);
