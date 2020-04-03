@@ -69,8 +69,8 @@ jobs:
           GIT_COMMITTER_EMAIL: bot@jeremy.ca
         run: bash scripts/commit-autofix.bash
 
-      - name: test - cargo test
-        run: cargo test --workspace
+      - name: tests
+        run: yarn test
 
       - name: test - cargo doc
         run: cargo doc --workspace
