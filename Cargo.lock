@@ -285,6 +285,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "anyhow"
+version = "1.0.28"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d9a60d744a80c30fcb657dfe2c1b22bcb3e814c1a1e3674f32bf5820b570fbff"
+
+[[package]]
 name = "arc-swap"
 version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2214,6 +2220,7 @@ name = "speedruns"
 version = "0.21.6-dev"
 dependencies = [
  "actix-rt",
+ "anyhow",
  "argh",
  "async-std",
  "speedruns_api",
