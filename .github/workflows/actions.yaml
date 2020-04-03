@@ -79,7 +79,7 @@ jobs:
         run: yarn lint
 
       - name: test - unused cargo dependencioes
-        run: cargo +nightly udep
+        run: cargo +nightly udeps
 
       - name: publish - add `master` to `deploy` first-parent chain if we made it this far
         if: github.ref == 'refs/heads/master'
