@@ -1,6 +1,6 @@
 use derive_more::From;
-use err_derive::Error;
 use lazy_static::lazy_static;
+use thiserror::Error;
 
 use regex::Regex;
 use validator::Validate;
@@ -10,11 +10,11 @@ use speedruns_utils::{self as utils, slugify, u64_from_base36};
 
 #[derive(Debug, Error, From)]
 pub enum Error {
-    #[error(display = "all names were None or zero-length")]
+    #[error("all names were None or zero-length")]
     NoNames,
-    #[error(display = "an ID was invalid and could not be decoded: {:?}", _0)]
+    #[error("an ID was invalid and could not be decoded: {0:?}")]
     InvalidId(utils::Base36DecodingError),
-    #[error(display = "internal error: invalid object created. {:?}", _0)]
+    #[error("internal error: invalid object created. {0:?}")]
     InternalValidationErrors(validator::ValidationErrors),
 }
 

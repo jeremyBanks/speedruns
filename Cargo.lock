@@ -2257,6 +2257,7 @@ dependencies = [
  "speedruns_models",
  "speedruns_utils",
  "tempfile",
+ "thiserror",
  "validator",
  "validator_derive",
 ]
@@ -2294,6 +2295,7 @@ dependencies = [
  "serde_json",
  "speedruns_models",
  "speedruns_utils",
+ "thiserror",
  "validator",
  "validator_derive",
 ]
@@ -2353,6 +2355,7 @@ dependencies = [
  "derive_more",
  "err-derive",
  "log",
+ "thiserror",
 ]
 
 [[package]]
@@ -2425,6 +2428,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bb6bfa289a4d7c5766392812c0a1f4c1ba45afa1ad47803c11e1f407d846d75f"
 dependencies = [
  "winapi-util",
+]
+
+[[package]]
+name = "thiserror"
+version = "1.0.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f0570dc61221295909abdb95c739f2e74325e14293b2026b0a7e195091ec54ae"
+dependencies = [
+ "thiserror-impl",
+]
+
+[[package]]
+name = "thiserror-impl"
+version = "1.0.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "227362df41d566be41a28f64401e07a043157c21c14b9785a0d8e256f940a8fd"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]

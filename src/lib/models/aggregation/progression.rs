@@ -35,6 +35,7 @@ pub fn progression<'runs>(
         "runs must all be from same game and category"
     );
 
+    #[allow(clippy::clone_double_ref)]
     let runs_by_level: HashMap<Option<u64>, Vec<&'runs Run>> = runs
         .iter()
         .sorted_by(|a, b| {

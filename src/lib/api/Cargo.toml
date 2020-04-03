@@ -33,5 +33,6 @@ speedruns_database = { path = "../database", version = "0.21.6-dev" }
 speedruns_models = { path = "../models", version = "0.21.6-dev" }
 speedruns_utils = { path = "../utils", version = "0.21.6-dev" }
 tempfile = "3.1.0"
+thiserror = "1.0.14"
 validator = "0.10.0"
 validator_derive = "0.10.0"
