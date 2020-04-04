@@ -11,7 +11,6 @@ repository = "https://github.com/jeremybanks/speedruns"
 path = "utils.rs"
 
 [dependencies]
-derive_more = "0.99.3"
-err-derive = "0.1.6,<0.2"
+derive_more = "0.99.5"
 log = "0.4.8"
 thiserror = "1.0.14"
