@@ -5,6 +5,16 @@ const backendHost = "http://localhost:3001";
 const frontendHost = "http://localhost:3000";
 const elision = "[…]";
 
+const normalizeHtml = (html: string) =>
+  toDiffableHtml(html)
+    .replace(/\?ts=\d+"/g, `?ts=${elision}"`)
+    .replace(/dll\/dll_\w+\.js/g, `dll/dll_${elision}.js"`)
+    .replace(/\.js\.\w+\.hot-update\.js/g, `.js.hot-update.${elision}.js"`)
+    .replace(
+      /<script id="__NEXT_DATA__".+?<\/script>/gim,
+      `<script id="__NEXT_DATA__>${elision}</script>`,
+    );
+
 test("snapshot API", async () => {
   const response = await fetch(`${backendHost}/graphql`, {
     method: "POST",
@@ -22,11 +32,6 @@ test("snapshot API", async () => {
 test("snapshot home page", async () => {
   const response = await fetch(`${frontendHost}/`);
   expect([response.status, response.statusText]).toMatchSnapshot();
-  const body = toDiffableHtml(await response.text())
-    .replace(/\?ts=\d+"/g, `?ts=${elision}"`)
-    .replace(
-      /<script id="__NEXT_DATA__".+?<\/script>/g,
-      `<script id="__NEXT_DATA__>${elision}</script>`,
-    );
+  const body = normalizeHtml(await response.text());
   expect(body).toMatchSnapshot();
 });
