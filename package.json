@@ -67,7 +67,7 @@
     "typescript": "^3.8.2",
     "winston": "^3.2.1",
     "yargs": "^15.1.0",
-    "yarn": "^1.22.0"
+    "yarn": "^1.22.4"
   },
   "scripts": {
     "start": "bash scripts/start.bash",
