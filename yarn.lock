@@ -10691,10 +10691,10 @@ reinterval@^1.1.0:
   resolved "https://registry.yarnpkg.com/reinterval/-/reinterval-1.1.0.tgz#3361ecfa3ca6c18283380dd0bb9546f390f5ece7"
   integrity sha1-M2Hs+jymwYKDOA3Qu5VG85D17Oc=
 
-remeda@^0.0.15:
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/remeda/-/remeda-0.0.15.tgz#2d6e4d37b0e7a12aeb2b4cc75924f417d9cfd9fb"
-  integrity sha512-80Soc+hL3uFZ+aTrLpPtFoTj6wV6aKL7FDd0js7kyg6o4pbxc7fLHjJAv/N/KG+80xnfh1MJCEXWNB96W2psEQ==
+remeda@^0.0.18:
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/remeda/-/remeda-0.0.18.tgz#ab3f76116fac9b4c3b8497a94dbcf4f2ab63ccad"
+  integrity sha512-kQ3MrWXXspT7GJ2R2LLs2Zi4QL1mW7d0iHR0fd3z6937CewClnmyrzhzQdagj6m9/nas2JDD6BZ1NQ4fr75VCQ==
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
