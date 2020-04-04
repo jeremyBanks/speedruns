@@ -2,5 +2,8 @@
   "search.exclude": {
     "**/target": true
   },
-  "lldb.verboseLogging": true
+  "lldb.verboseLogging": true,
+  "editor.tokenColorCustomizations": {
+    "comments": "#EEBB11"
+  }
 }

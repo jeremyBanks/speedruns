@@ -4,15 +4,13 @@ license = "MIT"
 name = "speedruns_utils"
 version = "0.21.6-dev"
 authors = ["Jeremy Banks <_@jeremy.ca>"]
-description = "subpackage"
+description = "subpackage of speedruns"
 repository = "https://github.com/jeremybanks/speedruns"
 
 [lib]
-path = "mod.rs"
+path = "utils.rs"
 
 [dependencies]
 derive_more = "0.99.3"
-err-derive = "0.1.5"
+err-derive = "0.1.6,<0.2"
 log = "0.4.8"
-no-panic = "0.1.12"
-unidecode = "0.3.0"

@@ -34,10 +34,17 @@ echo "$version" > .version
 ### Cargo
 
 (cd src/lib/utils && cargo publish $publish_args --token "$CARGO_PUBLISH_TOKEN" --allow-dirty && cd -)
-
-# give the registry a minute to process the publication
 sleep 60
-
+(cd src/lib/models && cargo publish $publish_args --token "$CARGO_PUBLISH_TOKEN" --allow-dirty && cd -)
+sleep 60
+(cd src/lib/database && cargo publish $publish_args --token "$CARGO_PUBLISH_TOKEN" --allow-dirty && cd -)
+sleep 60
+(cd src/lib/juniper && cargo publish $publish_args --token "$CARGO_PUBLISH_TOKEN" --allow-dirty && cd -)
+sleep 60
+(cd src/lib/api && cargo publish $publish_args --token "$CARGO_PUBLISH_TOKEN" --allow-dirty && cd -)
+sleep 60
+(cd src/lib/cli && cargo publish $publish_args --token "$CARGO_PUBLISH_TOKEN" --allow-dirty && cd -)
+sleep 60
 cargo publish $publish_args --token "$CARGO_PUBLISH_TOKEN" --allow-dirty
 
 ### NPM
