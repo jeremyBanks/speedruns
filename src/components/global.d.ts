@@ -9,6 +9,11 @@ declare module "graphiql" {
   }>;
   export default GraphiQL;
 }
+
+declare module "diffable-html" {
+  const toDiffableHtml: (string) => string;
+  export default toDiffableHtml;
+}
 declare module "graphql-docs" {
   export const GraphQLDocs: React.FC<{
     fetcher: (query: unknown) => Promise<any>;

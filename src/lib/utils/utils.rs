@@ -2,15 +2,14 @@
 #![warn(missing_debug_implementations)]
 
 use derive_more::From;
-use err_derive::Error;
+use thiserror::Error;
 
-use log::{error, warn};
 /// Errors for [u64_from_base36].
 #[derive(Debug, Error, From, PartialEq)]
 pub enum Base36DecodingError {
-    #[error(display = "invalid digit: {:?}", _0)]
+    #[error("invalid digit: `{0}`")]
     InvalidDigit(char),
-    #[error(display = "value didn't have expected length of 8 characters")]
+    #[error("value didn't have expected length of 8 characters")]
     WrongLength,
 }
 

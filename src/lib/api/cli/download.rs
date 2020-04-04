@@ -2,7 +2,6 @@
 
 use flate2::{read::GzDecoder, write::GzEncoder};
 
-use log::{debug, error, info};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use std::{
     collections::BTreeMap,
@@ -56,9 +55,9 @@ impl Spider {
     pub fn load_or_create() -> Self {
         let mut spider = Spider::default();
 
-        let mut load = || -> Result<(), Box<dyn std::error::Error>> {
+        let mut load = || -> anyhow::Result<()> {
             for resource in RESOURCES.iter() {
-                info!("Loading {}...", resource.id);
+                log::info!("Loading {}...", resource.id);
                 let file = File::open(&format!("data/api/{}.jsonl.gz", resource.id))?;
                 let buffer = BufReader::new(&file);
                 let decompressor = GzDecoder::new(buffer);
@@ -74,7 +73,7 @@ impl Spider {
                         .to_string();
                     spider.resource_by_id(resource).insert(id, item);
                 }
-                info!(
+                log::info!(
                     "Loaded {} {}.",
                     spider.resource_by_id(resource).len(),
                     resource.id
@@ -84,14 +83,14 @@ impl Spider {
         };
 
         if let Err(error) = load() {
-            info!("Error: {:?}", error);
+            log::info!("Error: {:?}", error);
         }
 
         spider
     }
 
-    fn save(&mut self, resource: &Resource) -> Result<(), Box<dyn std::error::Error>> {
-        info!(
+    fn save(&mut self, resource: &Resource) -> anyhow::Result<()> {
+        log::info!(
             "Saving {} {}...",
             self.resource_by_id(resource).len(),
             resource.id
@@ -109,12 +108,12 @@ impl Spider {
             }
             file.persist(format!("data/api/{}.jsonl.gz", resource.id))?;
         }
-        info!("Saved.");
+        log::info!("Saved.");
 
         Ok(())
     }
 
-    pub fn run(&mut self) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn run(&mut self) -> anyhow::Result<()> {
         let mut headers = reqwest::header::HeaderMap::new();
 
         let user_agent = format!(
@@ -123,7 +122,7 @@ impl Spider {
             option_env!("CARGO_PKG_VERSION").unwrap_or("unknown")
         );
 
-        debug!("user agent: {}", user_agent);
+        log::debug!("user agent: {}", user_agent);
 
         headers.insert(
             reqwest::header::USER_AGENT,
@@ -161,9 +160,12 @@ impl Spider {
                     let offset = if from_start { i * 200 } else { len };
 
                     let what = if from_start { "new" } else { "old" };
-                    info!(
+                    log::info!(
                         "We have {} {}, looking for more {} {}...",
-                        len, resource.id, what, resource.id
+                        len,
+                        resource.id,
+                        what,
+                        resource.id
                     );
 
                     let url = format!("https://www.speedrun.com/api/v1/{}?direction=desc&max=200&orderby={}&embed={}&offset={}", resource.id, resource. order, resource.embed, offset);
@@ -177,13 +179,13 @@ impl Spider {
                                     break;
                                 }
                                 Err(error) => {
-                                    error!("response error: {:?}", error);
+                                    log::error!("response error: {:?}", error);
                                     std::thread::sleep(std::time::Duration::from_secs(32));
                                     continue;
                                 }
                             },
                             Err(error) => {
-                                error!("request error: {:?}", error);
+                                log::error!("request error: {:?}", error);
                                 std::thread::sleep(std::time::Duration::from_secs(32));
                                 continue;
                             }
@@ -208,7 +210,7 @@ impl Spider {
                     }
 
                     let more = self.resource_by_id(resource).len() - previous;
-                    info!("Got {} more {}.", more, resource.id);
+                    log::info!("Got {} more {}.", more, resource.id);
 
                     if from_start {
                         if self.resource_by_id(resource).len() == previous {
@@ -238,6 +240,6 @@ impl Spider {
     }
 }
 
-pub fn main() -> Result<(), Box<dyn std::error::Error>> {
+pub fn main() -> anyhow::Result<()> {
     Spider::load_or_create().run()
 }

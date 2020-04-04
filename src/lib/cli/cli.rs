@@ -5,9 +5,7 @@
     clippy::result_unwrap_used
 )]
 
-use std::error::Error;
-
-use log::warn;
+use anyhow::Context;
 
 use speedruns_api::cli::{download, import};
 use speedruns_juniper::cli as juniper_cli;
@@ -44,7 +42,7 @@ pub enum Subcommand {
 #[argh(subcommand, name = "download")]
 pub struct DownloadArgs {}
 
-pub async fn main() -> Result<(), Box<dyn Error>> {
+pub async fn main() -> anyhow::Result<()> {
     let args: Args = argh::from_env();
 
     if args.quiet {
@@ -59,10 +57,10 @@ pub async fn main() -> Result<(), Box<dyn Error>> {
 
     match args.subcommand {
         Subcommand::Download(_args) => {
-            download::main()?;
+            download::main().context("download failed")?;
         }
         Subcommand::Import(args) => {
-            import::main(args)?;
+            import::main(args).context("import failed")?;
         }
         Subcommand::Serve(args) => {
             juniper_cli::main(args).await?;

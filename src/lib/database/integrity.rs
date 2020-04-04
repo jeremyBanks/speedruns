@@ -1,3 +1,10 @@
+#![allow(
+    clippy::or_fun_call,
+    clippy::implicit_hasher,
+    clippy::extra_unused_lifetimes,
+    clippy::clone_on_copy
+)]
+
 use std::collections::HashSet;
 use std::{
     collections::HashMap,
@@ -6,10 +13,9 @@ use std::{
 };
 
 use derive_more::From;
-use err_derive::Error;
 use itertools::Itertools;
+use thiserror::Error;
 
-use log::{error, trace};
 use validator::{Validate, ValidationErrors};
 
 use speedruns_models::{
@@ -26,14 +32,14 @@ use speedruns_utils::slugify;
 pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
     let mut errors = vec![];
 
-    trace!("Validating {} runs.", database.runs().len());
+    log::trace!("Validating {} runs.", database.runs().len());
     for run in database.runs().values() {
         if let Err(mut error) = validate_run(database, &run) {
             errors.append(&mut error.errors);
         }
     }
 
-    trace!("Validating {} users.", database.users().len());
+    log::trace!("Validating {} users.", database.users().len());
     let mut user_slugs = HashMap::<String, Vec<User>>::new();
     for user in database.users().values() {
         if let Err(mut error) = validate_user(database, &user) {
@@ -54,7 +60,7 @@ pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
         }
     }
 
-    trace!("Validating {} games.", database.games().len());
+    log::trace!("Validating {} games.", database.games().len());
     let mut game_slugs = HashMap::<String, Vec<Game>>::new();
     for game in database.games().values() {
         if let Err(mut error) = validate_game(database, &game) {
@@ -75,7 +81,7 @@ pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
         }
     }
 
-    trace!("Validating {} categories.", database.categories().len());
+    log::trace!("Validating {} categories.", database.categories().len());
     let mut category_slugs = HashMap::<String, Vec<Category>>::new();
     for category in database.categories().values() {
         if let Err(mut error) = validate_category(database, &category) {
@@ -103,7 +109,7 @@ pub fn validate(database: &super::Database) -> Result<(), IntegrityErrors> {
         }
     }
 
-    trace!("Validating {} levels.", database.levels().len());
+    log::trace!("Validating {} levels.", database.levels().len());
     let mut level_slugs = HashMap::<String, Vec<Level>>::new();
     for level in database.levels().values() {
         if let Err(mut error) = validate_level(database, &level) {
@@ -135,7 +141,7 @@ fn validate_game(_database: &super::Database, game: &Game) -> Result<(), Integri
     if let Err(validation_errors) = game.validate() {
         errors.push(IntegrityError::CheckFailed {
             errors: validation_errors,
-            source: game.clone().into(),
+            instance: game.clone().into(),
         });
     }
 
@@ -151,7 +157,7 @@ fn validate_category(
     if let Err(validation_errors) = category.validate() {
         errors.push(IntegrityError::CheckFailed {
             errors: validation_errors,
-            source: category.clone().into(),
+            instance: category.clone().into(),
         });
     }
 
@@ -160,7 +166,7 @@ fn validate_category(
             target_type: "game",
             target_id: category.game_id,
             foreign_key_field: "game_id",
-            source: category.clone().into(),
+            instance: category.clone().into(),
         });
     }
 
@@ -176,7 +182,7 @@ fn validate_level(
     if let Err(validation_errors) = level.validate() {
         errors.push(IntegrityError::CheckFailed {
             errors: validation_errors,
-            source: level.clone().into(),
+            instance: level.clone().into(),
         });
     }
 
@@ -185,7 +191,7 @@ fn validate_level(
             target_type: "game",
             target_id: level.game_id,
             foreign_key_field: "game_id",
-            source: level.clone().into(),
+            instance: level.clone().into(),
         });
     }
 
@@ -208,7 +214,7 @@ fn validate_run(database: &super::Database, run: &Run) -> Result<(), IntegrityEr
                 target_type: "game",
                 target_id: run.game_id,
                 foreign_key_field: "game_id",
-                source: run.clone().into(),
+                instance: run.clone().into(),
             });
         }
     }
@@ -218,7 +224,7 @@ fn validate_run(database: &super::Database, run: &Run) -> Result<(), IntegrityEr
             target_type: "category",
             target_id: run.category_id,
             foreign_key_field: "category_id",
-            source: run.clone().into(),
+            instance: run.clone().into(),
         });
     }
 
@@ -228,7 +234,7 @@ fn validate_run(database: &super::Database, run: &Run) -> Result<(), IntegrityEr
                 target_type: "level",
                 target_id: level_id,
                 foreign_key_field: "level_id",
-                source: run.clone().into(),
+                instance: run.clone().into(),
             });
         }
     }
@@ -240,7 +246,7 @@ fn validate_run(database: &super::Database, run: &Run) -> Result<(), IntegrityEr
                     target_type: "user",
                     target_id: *user_id,
                     foreign_key_field: "players[…].0",
-                    source: run.clone().into(),
+                    instance: run.clone().into(),
                 });
             }
         }
@@ -249,7 +255,7 @@ fn validate_run(database: &super::Database, run: &Run) -> Result<(), IntegrityEr
     if let Err(validation_errors) = run.validate() {
         errors.push(IntegrityError::CheckFailed {
             errors: validation_errors,
-            source: run.clone().into(),
+            instance: run.clone().into(),
         });
     }
 
@@ -262,7 +268,7 @@ fn validate_user(_database: &super::Database, user: &User) -> Result<(), Integri
     if let Err(validation_errors) = user.validate() {
         errors.push(IntegrityError::CheckFailed {
             errors: validation_errors,
-            source: user.clone().into(),
+            instance: user.clone().into(),
         });
     }
 
@@ -287,29 +293,25 @@ impl Display for IntegrityErrors {
 #[allow(clippy::large_enum_variant)]
 #[derive(Debug, Error, From)]
 pub enum IntegrityError {
-    #[error(display = "integrity failure during indexing")]
+    #[error("integrity failure during indexing")]
     IndexingError,
     #[error(
-        display = "{} with id {} does not exist, specified by {} in {:#?}",
-        target_type,
-        target_id,
-        foreign_key_field,
-        source
+        "{target_type:?} with id {target_id:?} does not exist, specified by {foreign_key_field:?} in {instance:#?}",
     )]
     ForeignKeyMissing {
         target_type: &'static str,
         target_id: u64,
         foreign_key_field: &'static str,
-        source: AnyModel,
+        instance: AnyModel,
     },
-    #[error(display = "row validation check failed: {:?} in {:?}", errors, source)]
+    #[error("row validation check failed: {errors:?} in {instance:#?}")]
     CheckFailed {
         errors: ValidationErrors,
-        source: AnyModel,
+        instance: AnyModel,
     },
-    #[error(display = "duplicate {:?} slug for {:?}", slug, sources)]
+    #[error("duplicate {:?} slug for {:?}", slug, sources)]
     NonUniqueSlug { slug: String, sources: AnyModelVec },
-    #[error(display = "run is missing primary timing: {:?}", _0)]
+    #[error("run is missing primary timing: {:?}", _0)]
     MissingPrimaryTiming(Run),
 }
 #[derive(Debug, Clone, Default)]
@@ -327,11 +329,11 @@ impl IntegrityError {
 
         match self {
             IntegrityError::IndexingError => {
-                error!("indexing failed");
+                log::error!("indexing failed");
             }
-            IntegrityError::ForeignKeyMissing { source, .. } => {
+            IntegrityError::ForeignKeyMissing { instance, .. } => {
                 use AnyModel::*;
-                match source {
+                match instance {
                     Game(game) => invalids.games.insert(game.clone()),
                     Category(category) => invalids.categories.insert(category.clone()),
                     Level(level) => invalids.levels.insert(level.clone()),

@@ -1,0 +1,4327 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot API 1`] = `
+Array [
+  200,
+  "OK",
+]
+`;
+
+exports[`snapshot API 2`] = `
+Object {
+  "data": Object {
+    "game": Object {
+      "__typename": "Game",
+      "gameCategories": Array [
+        Object {
+          "__typename": "Category",
+          "id": "cat6UheVH-k",
+          "leaderboard": Array [
+            Object {
+              "__typename": "LeaderboardRun",
+              "isTied": false,
+              "rank": 1,
+              "run": Object {
+                "__typename": "Run",
+                "category": Object {
+                  "__typename": "Category",
+                  "id": "cat6UheVH-k",
+                  "name": "All Campaigns",
+                  "srcId": "wk6wgq21",
+                },
+                "date": 1539432484,
+                "id": "runqhs7fyp8",
+                "level": null,
+                "players": Array [
+                  Object {
+                    "__typename": "Player",
+                    "isGuest": false,
+                    "name": "Szwagier",
+                    "user": Object {
+                      "__typename": "User",
+                      "id": "usrhugqY7Xw",
+                      "slug": "Szwagier",
+                      "srcId": "o86ln058",
+                    },
+                  },
+                ],
+                "srcId": "zg7d65jz",
+                "timeMs": 12081000,
+                "videos": Array [
+                  "https://youtu.be/f-zNBW-jafk?t=7s",
+                ],
+              },
+              "tiedRank": 1,
+            },
+          ],
+          "name": "All Campaigns",
+          "progression": Array [
+            Object {
+              "__typename": "ProgressionRun",
+              "leaderboardRun": Object {
+                "__typename": "LeaderboardRun",
+                "isTied": false,
+                "rank": 1,
+                "run": Object {
+                  "__typename": "Run",
+                  "category": Object {
+                    "__typename": "Category",
+                    "id": "cat6UheVH-k",
+                    "name": "All Campaigns",
+                    "srcId": "wk6wgq21",
+                  },
+                  "date": 1539432484,
+                  "id": "runqhs7fyp8",
+                  "level": null,
+                  "players": Array [
+                    Object {
+                      "__typename": "Player",
+                      "isGuest": false,
+                      "name": "Szwagier",
+                      "user": Object {
+                        "__typename": "User",
+                        "id": "usrhugqY7Xw",
+                        "slug": "Szwagier",
+                        "srcId": "o86ln058",
+                      },
+                    },
+                  ],
+                  "srcId": "zg7d65jz",
+                  "timeMs": 12081000,
+                  "videos": Array [
+                    "https://youtu.be/f-zNBW-jafk?t=7s",
+                  ],
+                },
+                "tiedRank": 1,
+              },
+              "progressMs": 0,
+              "run": Object {
+                "__typename": "Run",
+                "category": Object {
+                  "__typename": "Category",
+                  "id": "cat6UheVH-k",
+                  "name": "All Campaigns",
+                  "srcId": "wk6wgq21",
+                },
+                "date": 1539432484,
+                "id": "runqhs7fyp8",
+                "level": null,
+                "players": Array [
+                  Object {
+                    "__typename": "Player",
+                    "isGuest": false,
+                    "name": "Szwagier",
+                    "user": Object {
+                      "__typename": "User",
+                      "id": "usrhugqY7Xw",
+                      "slug": "Szwagier",
+                      "srcId": "o86ln058",
+                    },
+                  },
+                ],
+                "srcId": "zg7d65jz",
+                "timeMs": 12081000,
+                "videos": Array [
+                  "https://youtu.be/f-zNBW-jafk?t=7s",
+                ],
+              },
+            },
+          ],
+          "slug": "All_Campaigns",
+          "srcId": "wk6wgq21",
+        },
+        Object {
+          "__typename": "Category",
+          "id": "cat6f7V-VpE",
+          "leaderboard": Array [
+            Object {
+              "__typename": "LeaderboardRun",
+              "isTied": false,
+              "rank": 1,
+              "run": Object {
+                "__typename": "Run",
+                "category": Object {
+                  "__typename": "Category",
+                  "id": "cat6f7V-VpE",
+                  "name": "Human Campaign",
+                  "srcId": "z273v15d",
+                },
+                "date": 1539432484,
+                "id": "runqbbq9ZW4",
+                "level": null,
+                "players": Array [
+                  Object {
+                    "__typename": "Player",
+                    "isGuest": false,
+                    "name": "Szwagier",
+                    "user": Object {
+                      "__typename": "User",
+                      "id": "usrhugqY7Xw",
+                      "slug": "Szwagier",
+                      "srcId": "o86ln058",
+                    },
+                  },
+                ],
+                "srcId": "y2q08l7y",
+                "timeMs": 5988000,
+                "videos": Array [
+                  "https://youtu.be/f-zNBW-jafk?t=1h41m40s",
+                ],
+              },
+              "tiedRank": 1,
+            },
+          ],
+          "name": "Human Campaign",
+          "progression": Array [
+            Object {
+              "__typename": "ProgressionRun",
+              "leaderboardRun": Object {
+                "__typename": "LeaderboardRun",
+                "isTied": false,
+                "rank": 1,
+                "run": Object {
+                  "__typename": "Run",
+                  "category": Object {
+                    "__typename": "Category",
+                    "id": "cat6f7V-VpE",
+                    "name": "Human Campaign",
+                    "srcId": "z273v15d",
+                  },
+                  "date": 1539432484,
+                  "id": "runqbbq9ZW4",
+                  "level": null,
+                  "players": Array [
+                    Object {
+                      "__typename": "Player",
+                      "isGuest": false,
+                      "name": "Szwagier",
+                      "user": Object {
+                        "__typename": "User",
+                        "id": "usrhugqY7Xw",
+                        "slug": "Szwagier",
+                        "srcId": "o86ln058",
+                      },
+                    },
+                  ],
+                  "srcId": "y2q08l7y",
+                  "timeMs": 5988000,
+                  "videos": Array [
+                    "https://youtu.be/f-zNBW-jafk?t=1h41m40s",
+                  ],
+                },
+                "tiedRank": 1,
+              },
+              "progressMs": 0,
+              "run": Object {
+                "__typename": "Run",
+                "category": Object {
+                  "__typename": "Category",
+                  "id": "cat6f7V-VpE",
+                  "name": "Human Campaign",
+                  "srcId": "z273v15d",
+                },
+                "date": 1539432484,
+                "id": "runqbbq9ZW4",
+                "level": null,
+                "players": Array [
+                  Object {
+                    "__typename": "Player",
+                    "isGuest": false,
+                    "name": "Szwagier",
+                    "user": Object {
+                      "__typename": "User",
+                      "id": "usrhugqY7Xw",
+                      "slug": "Szwagier",
+                      "srcId": "o86ln058",
+                    },
+                  },
+                ],
+                "srcId": "y2q08l7y",
+                "timeMs": 5988000,
+                "videos": Array [
+                  "https://youtu.be/f-zNBW-jafk?t=1h41m40s",
+                ],
+              },
+            },
+          ],
+          "slug": "Human_Campaign",
+          "srcId": "z273v15d",
+        },
+        Object {
+          "__typename": "Category",
+          "id": "cat6hYTHpP4",
+          "leaderboard": Array [
+            Object {
+              "__typename": "LeaderboardRun",
+              "isTied": false,
+              "rank": 1,
+              "run": Object {
+                "__typename": "Run",
+                "category": Object {
+                  "__typename": "Category",
+                  "id": "cat6hYTHpP4",
+                  "name": "Orc Campaign",
+                  "srcId": "zdnry872",
+                },
+                "date": 1502107684,
+                "id": "runqil_P4oc",
+                "level": null,
+                "players": Array [
+                  Object {
+                    "__typename": "Player",
+                    "isGuest": false,
+                    "name": "KarmikKoala",
+                    "user": Object {
+                      "__typename": "User",
+                      "id": "usrij2t4gqA",
+                      "slug": "KarmikKoala",
+                      "srcId": "zx729rq8",
+                    },
+                  },
+                ],
+                "srcId": "zn8o93lz",
+                "timeMs": 10527000,
+                "videos": Array [
+                  "https://www.twitch.tv/videos/165195444",
+                ],
+              },
+              "tiedRank": 1,
+            },
+          ],
+          "name": "Orc Campaign",
+          "progression": Array [
+            Object {
+              "__typename": "ProgressionRun",
+              "leaderboardRun": Object {
+                "__typename": "LeaderboardRun",
+                "isTied": false,
+                "rank": 1,
+                "run": Object {
+                  "__typename": "Run",
+                  "category": Object {
+                    "__typename": "Category",
+                    "id": "cat6hYTHpP4",
+                    "name": "Orc Campaign",
+                    "srcId": "zdnry872",
+                  },
+                  "date": 1502107684,
+                  "id": "runqil_P4oc",
+                  "level": null,
+                  "players": Array [
+                    Object {
+                      "__typename": "Player",
+                      "isGuest": false,
+                      "name": "KarmikKoala",
+                      "user": Object {
+                        "__typename": "User",
+                        "id": "usrij2t4gqA",
+                        "slug": "KarmikKoala",
+                        "srcId": "zx729rq8",
+                      },
+                    },
+                  ],
+                  "srcId": "zn8o93lz",
+                  "timeMs": 10527000,
+                  "videos": Array [
+                    "https://www.twitch.tv/videos/165195444",
+                  ],
+                },
+                "tiedRank": 1,
+              },
+              "progressMs": 0,
+              "run": Object {
+                "__typename": "Run",
+                "category": Object {
+                  "__typename": "Category",
+                  "id": "cat6hYTHpP4",
+                  "name": "Orc Campaign",
+                  "srcId": "zdnry872",
+                },
+                "date": 1502107684,
+                "id": "runqil_P4oc",
+                "level": null,
+                "players": Array [
+                  Object {
+                    "__typename": "Player",
+                    "isGuest": false,
+                    "name": "KarmikKoala",
+                    "user": Object {
+                      "__typename": "User",
+                      "id": "usrij2t4gqA",
+                      "slug": "KarmikKoala",
+                      "srcId": "zx729rq8",
+                    },
+                  },
+                ],
+                "srcId": "zn8o93lz",
+                "timeMs": 10527000,
+                "videos": Array [
+                  "https://www.twitch.tv/videos/165195444",
+                ],
+              },
+            },
+          ],
+          "slug": "Orc_Campaign",
+          "srcId": "zdnry872",
+        },
+      ],
+      "id": "gamdtuPrEpI",
+      "levelCategories": Array [
+        Object {
+          "__typename": "Category",
+          "id": "cat6TsT94Bo",
+          "leaderboard": Array [],
+          "levels": Array [
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1302869284,
+                    "id": "runqa06cWz0",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJhjzlf1k",
+                      "name": "Human 01: Hillsbrad",
+                      "slug": "Human_01_Hillsbrad",
+                      "srcId": "ldyy7ejd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "Cire2047",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx6l",
+                    "timeMs": 277000,
+                    "videos": Array [
+                      "https://youtu.be/CSeONuQXKww?t=57",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJhjzlf1k",
+                "name": "Human 01: Hillsbrad",
+                "slug": "Human_01_Hillsbrad",
+                "srcId": "ldyy7ejd",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1302869284,
+                      "id": "runqa06cWz0",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJhjzlf1k",
+                        "name": "Human 01: Hillsbrad",
+                        "slug": "Human_01_Hillsbrad",
+                        "srcId": "ldyy7ejd",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "Cire2047",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx6l",
+                      "timeMs": 277000,
+                      "videos": Array [
+                        "https://youtu.be/CSeONuQXKww?t=57",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1302869284,
+                    "id": "runqa06cWz0",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJhjzlf1k",
+                      "name": "Human 01: Hillsbrad",
+                      "slug": "Human_01_Hillsbrad",
+                      "srcId": "ldyy7ejd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "Cire2047",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx6l",
+                    "timeMs": 277000,
+                    "videos": Array [
+                      "https://youtu.be/CSeONuQXKww?t=57",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1518523684,
+                    "id": "runqhwkpcA4",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJqEE2NYk",
+                      "name": "Human 02: Ambush at Tarren Mill",
+                      "slug": "Human_02_Ambush_at_Tarren_Mill",
+                      "srcId": "n93750nd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "ZPR",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrgiWrS1Ys",
+                          "slug": "ZPR",
+                          "srcId": "7j4vgmmj",
+                        },
+                      },
+                    ],
+                    "srcId": "zgnje1vy",
+                    "timeMs": 23000,
+                    "videos": Array [
+                      "https://www.youtube.com/watch?v=_daWKqKdUX4",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJqEE2NYk",
+                "name": "Human 02: Ambush at Tarren Mill",
+                "slug": "Human_02_Ambush_at_Tarren_Mill",
+                "srcId": "n93750nd",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1518523684,
+                      "id": "runqhwkpcA4",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJqEE2NYk",
+                        "name": "Human 02: Ambush at Tarren Mill",
+                        "slug": "Human_02_Ambush_at_Tarren_Mill",
+                        "srcId": "n93750nd",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "ZPR",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrgiWrS1Ys",
+                            "slug": "ZPR",
+                            "srcId": "7j4vgmmj",
+                          },
+                        },
+                      ],
+                      "srcId": "zgnje1vy",
+                      "timeMs": 23000,
+                      "videos": Array [
+                        "https://www.youtube.com/watch?v=_daWKqKdUX4",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1518523684,
+                    "id": "runqhwkpcA4",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJqEE2NYk",
+                      "name": "Human 02: Ambush at Tarren Mill",
+                      "slug": "Human_02_Ambush_at_Tarren_Mill",
+                      "srcId": "n93750nd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "ZPR",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrgiWrS1Ys",
+                          "slug": "ZPR",
+                          "srcId": "7j4vgmmj",
+                        },
+                      },
+                    ],
+                    "srcId": "zgnje1vy",
+                    "timeMs": 23000,
+                    "videos": Array [
+                      "https://www.youtube.com/watch?v=_daWKqKdUX4",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1518782884,
+                    "id": "runqeJR25Fo",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKg0Wfqj0",
+                      "name": "Human 03: Southshore",
+                      "slug": "Human_03_Southshore",
+                      "srcId": "z986vjgd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "ZPR",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrgiWrS1Ys",
+                          "slug": "ZPR",
+                          "srcId": "7j4vgmmj",
+                        },
+                      },
+                    ],
+                    "srcId": "yo4q5l5m",
+                    "timeMs": 229000,
+                    "videos": Array [
+                      "https://www.youtube.com/watch?v=pIrxVPlyBnM",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlKg0Wfqj0",
+                "name": "Human 03: Southshore",
+                "slug": "Human_03_Southshore",
+                "srcId": "z986vjgd",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1518782884,
+                      "id": "runqeJR25Fo",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlKg0Wfqj0",
+                        "name": "Human 03: Southshore",
+                        "slug": "Human_03_Southshore",
+                        "srcId": "z986vjgd",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "ZPR",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrgiWrS1Ys",
+                            "slug": "ZPR",
+                            "srcId": "7j4vgmmj",
+                          },
+                        },
+                      ],
+                      "srcId": "yo4q5l5m",
+                      "timeMs": 229000,
+                      "videos": Array [
+                        "https://www.youtube.com/watch?v=pIrxVPlyBnM",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1518782884,
+                    "id": "runqeJR25Fo",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKg0Wfqj0",
+                      "name": "Human 03: Southshore",
+                      "slug": "Human_03_Southshore",
+                      "srcId": "z986vjgd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "ZPR",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrgiWrS1Ys",
+                          "slug": "ZPR",
+                          "srcId": "7j4vgmmj",
+                        },
+                      },
+                    ],
+                    "srcId": "yo4q5l5m",
+                    "timeMs": 229000,
+                    "videos": Array [
+                      "https://www.youtube.com/watch?v=pIrxVPlyBnM",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1539086884,
+                    "id": "runqdw4Ge-I",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJ84sW79g",
+                      "name": "Human 04: Attack on Zul'dare",
+                      "slug": "Human_04_Attack_on_Zuldare",
+                      "srcId": "rdn0j5qw",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "yl4e61nm",
+                    "timeMs": 365000,
+                    "videos": Array [
+                      "https://youtu.be/jPL7-fWMaWA?t=626",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJ84sW79g",
+                "name": "Human 04: Attack on Zul'dare",
+                "slug": "Human_04_Attack_on_Zuldare",
+                "srcId": "rdn0j5qw",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1539086884,
+                      "id": "runqdw4Ge-I",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJ84sW79g",
+                        "name": "Human 04: Attack on Zul'dare",
+                        "slug": "Human_04_Attack_on_Zuldare",
+                        "srcId": "rdn0j5qw",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "Szwagier",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrhugqY7Xw",
+                            "slug": "Szwagier",
+                            "srcId": "o86ln058",
+                          },
+                        },
+                      ],
+                      "srcId": "yl4e61nm",
+                      "timeMs": 365000,
+                      "videos": Array [
+                        "https://youtu.be/jPL7-fWMaWA?t=626",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1539086884,
+                    "id": "runqdw4Ge-I",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJ84sW79g",
+                      "name": "Human 04: Attack on Zul'dare",
+                      "slug": "Human_04_Attack_on_Zuldare",
+                      "srcId": "rdn0j5qw",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "yl4e61nm",
+                    "timeMs": 365000,
+                    "videos": Array [
+                      "https://youtu.be/jPL7-fWMaWA?t=626",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1539259684,
+                    "id": "runqb8B9En4",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJhjzlf30",
+                      "name": "Human 05: Tol Barad",
+                      "slug": "Human_05_Tol_Barad",
+                      "srcId": "ldyy7ekd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "y6pnvwqm",
+                    "timeMs": 381000,
+                    "videos": Array [
+                      "https://youtu.be/oJYCrQ3Tgw8?t=15",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJhjzlf30",
+                "name": "Human 05: Tol Barad",
+                "slug": "Human_05_Tol_Barad",
+                "srcId": "ldyy7ekd",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1539259684,
+                      "id": "runqb8B9En4",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJhjzlf30",
+                        "name": "Human 05: Tol Barad",
+                        "slug": "Human_05_Tol_Barad",
+                        "srcId": "ldyy7ekd",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "Szwagier",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrhugqY7Xw",
+                            "slug": "Szwagier",
+                            "srcId": "o86ln058",
+                          },
+                        },
+                      ],
+                      "srcId": "y6pnvwqm",
+                      "timeMs": 381000,
+                      "videos": Array [
+                        "https://youtu.be/oJYCrQ3Tgw8?t=15",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1539259684,
+                    "id": "runqb8B9En4",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJhjzlf30",
+                      "name": "Human 05: Tol Barad",
+                      "slug": "Human_05_Tol_Barad",
+                      "srcId": "ldyy7ekd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "y6pnvwqm",
+                    "timeMs": 381000,
+                    "videos": Array [
+                      "https://youtu.be/oJYCrQ3Tgw8?t=15",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1539259684,
+                    "id": "runqj2KbopI",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJKudRJBE",
+                      "name": "Human 06: Dun Algaz",
+                      "slug": "Human_06_Dun_Algaz",
+                      "srcId": "gdre4j69",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "zx4lqrgy",
+                    "timeMs": 355000,
+                    "videos": Array [
+                      "https://youtu.be/zUuvctqh_tk?t=9",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJKudRJBE",
+                "name": "Human 06: Dun Algaz",
+                "slug": "Human_06_Dun_Algaz",
+                "srcId": "gdre4j69",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1539259684,
+                      "id": "runqj2KbopI",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJKudRJBE",
+                        "name": "Human 06: Dun Algaz",
+                        "slug": "Human_06_Dun_Algaz",
+                        "srcId": "gdre4j69",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "Szwagier",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrhugqY7Xw",
+                            "slug": "Szwagier",
+                            "srcId": "o86ln058",
+                          },
+                        },
+                      ],
+                      "srcId": "zx4lqrgy",
+                      "timeMs": 355000,
+                      "videos": Array [
+                        "https://youtu.be/zUuvctqh_tk?t=9",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1539259684,
+                    "id": "runqj2KbopI",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJKudRJBE",
+                      "name": "Human 06: Dun Algaz",
+                      "slug": "Human_06_Dun_Algaz",
+                      "srcId": "gdre4j69",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "zx4lqrgy",
+                    "timeMs": 355000,
+                    "videos": Array [
+                      "https://youtu.be/zUuvctqh_tk?t=9",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1420114084,
+                    "id": "runqa06cW04",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJtCu7BcA",
+                      "name": "Human 07: Grim Batol",
+                      "slug": "Human_07_Grim_Batol",
+                      "srcId": "nwllx60w",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx72",
+                    "timeMs": 1008000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJtCu7BcA",
+                "name": "Human 07: Grim Batol",
+                "slug": "Human_07_Grim_Batol",
+                "srcId": "nwllx60w",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1420114084,
+                      "id": "runqa06cW04",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJtCu7BcA",
+                        "name": "Human 07: Grim Batol",
+                        "slug": "Human_07_Grim_Batol",
+                        "srcId": "nwllx60w",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "AverageAvocado",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx72",
+                      "timeMs": 1008000,
+                      "videos": Array [
+                        "https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1420114084,
+                    "id": "runqa06cW04",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJtCu7BcA",
+                      "name": "Human 07: Grim Batol",
+                      "slug": "Human_07_Grim_Batol",
+                      "srcId": "nwllx60w",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx72",
+                    "timeMs": 1008000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1370088484,
+                    "id": "runqa06cW1A",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKfMQDbxU",
+                      "name": "Human 08: Tyr's Hand",
+                      "slug": "Human_08_Tyrs_Hand",
+                      "srcId": "ywe1k4yd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx74",
+                    "timeMs": 856000,
+                    "videos": Array [
+                      "https://youtu.be/bjpkuqV9hVg?t=81",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlKfMQDbxU",
+                "name": "Human 08: Tyr's Hand",
+                "slug": "Human_08_Tyrs_Hand",
+                "srcId": "ywe1k4yd",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1370088484,
+                      "id": "runqa06cW1A",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlKfMQDbxU",
+                        "name": "Human 08: Tyr's Hand",
+                        "slug": "Human_08_Tyrs_Hand",
+                        "srcId": "ywe1k4yd",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "AverageAvocado",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx74",
+                      "timeMs": 856000,
+                      "videos": Array [
+                        "https://youtu.be/bjpkuqV9hVg?t=81",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1370088484,
+                    "id": "runqa06cW1A",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKfMQDbxU",
+                      "name": "Human 08: Tyr's Hand",
+                      "slug": "Human_08_Tyrs_Hand",
+                      "srcId": "ywe1k4yd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx74",
+                    "timeMs": 856000,
+                    "videos": Array [
+                      "https://youtu.be/bjpkuqV9hVg?t=81",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1540901284,
+                    "id": "runqilGfpuI",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlIcodwALE",
+                      "name": "Human 09: The Battle at Darrowmere",
+                      "slug": "Human_09_The_Battle_at_Darrowmere",
+                      "srcId": "69z3orld",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "zn4qj17m",
+                    "timeMs": 45000,
+                    "videos": Array [
+                      "https://youtu.be/pUywBBW50g8?t=10",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlIcodwALE",
+                "name": "Human 09: The Battle at Darrowmere",
+                "slug": "Human_09_The_Battle_at_Darrowmere",
+                "srcId": "69z3orld",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1540901284,
+                      "id": "runqilGfpuI",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlIcodwALE",
+                        "name": "Human 09: The Battle at Darrowmere",
+                        "slug": "Human_09_The_Battle_at_Darrowmere",
+                        "srcId": "69z3orld",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "Szwagier",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrhugqY7Xw",
+                            "slug": "Szwagier",
+                            "srcId": "o86ln058",
+                          },
+                        },
+                      ],
+                      "srcId": "zn4qj17m",
+                      "timeMs": 45000,
+                      "videos": Array [
+                        "https://youtu.be/pUywBBW50g8?t=10",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1540901284,
+                    "id": "runqilGfpuI",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlIcodwALE",
+                      "name": "Human 09: The Battle at Darrowmere",
+                      "slug": "Human_09_The_Battle_at_Darrowmere",
+                      "srcId": "69z3orld",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "zn4qj17m",
+                    "timeMs": 45000,
+                    "videos": Array [
+                      "https://youtu.be/pUywBBW50g8?t=10",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1370088484,
+                    "id": "runqa06cW1Y",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJ8WsGg_E",
+                      "name": "Human 10: The Prisoners",
+                      "slug": "Human_10_The_Prisoners",
+                      "srcId": "r9g20z5d",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx7a",
+                    "timeMs": 1354000,
+                    "videos": Array [
+                      "https://youtu.be/vcvTVZgeVcs?t=33",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJ8WsGg_E",
+                "name": "Human 10: The Prisoners",
+                "slug": "Human_10_The_Prisoners",
+                "srcId": "r9g20z5d",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1370088484,
+                      "id": "runqa06cW1Y",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJ8WsGg_E",
+                        "name": "Human 10: The Prisoners",
+                        "slug": "Human_10_The_Prisoners",
+                        "srcId": "r9g20z5d",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "AverageAvocado",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx7a",
+                      "timeMs": 1354000,
+                      "videos": Array [
+                        "https://youtu.be/vcvTVZgeVcs?t=33",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1370088484,
+                    "id": "runqa06cW1Y",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJ8WsGg_E",
+                      "name": "Human 10: The Prisoners",
+                      "slug": "Human_10_The_Prisoners",
+                      "srcId": "r9g20z5d",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx7a",
+                    "timeMs": 1354000,
+                    "videos": Array [
+                      "https://youtu.be/vcvTVZgeVcs?t=33",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1420114084,
+                    "id": "runqa06cW1o",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJuu3NxIA",
+                      "name": "Human 11: Betrayal and the Destruction of Alterac",
+                      "slug": "Human_11_Betrayal_and_the_Destruction_of_Alterac",
+                      "srcId": "o9xn520w",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx7e",
+                    "timeMs": 1037000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJuu3NxIA",
+                "name": "Human 11: Betrayal and the Destruction of Alterac",
+                "slug": "Human_11_Betrayal_and_the_Destruction_of_Alterac",
+                "srcId": "o9xn520w",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1420114084,
+                      "id": "runqa06cW1o",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJuu3NxIA",
+                        "name": "Human 11: Betrayal and the Destruction of Alterac",
+                        "slug": "Human_11_Betrayal_and_the_Destruction_of_Alterac",
+                        "srcId": "o9xn520w",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "AverageAvocado",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx7e",
+                      "timeMs": 1037000,
+                      "videos": Array [
+                        "https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1420114084,
+                    "id": "runqa06cW1o",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJuu3NxIA",
+                      "name": "Human 11: Betrayal and the Destruction of Alterac",
+                      "slug": "Human_11_Betrayal_and_the_Destruction_of_Alterac",
+                      "srcId": "o9xn520w",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx7e",
+                    "timeMs": 1037000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1523016484,
+                    "id": "runqbWhCsso",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlITZ3hAD0",
+                      "name": "Human 12: The Battle at Crestfall",
+                      "slug": "Human_12_The_Battle_at_Crestfall",
+                      "srcId": "4956oj0d",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Banks",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrgFq39djE",
+                          "slug": "Banks",
+                          "srcId": "18qyezox",
+                        },
+                      },
+                    ],
+                    "srcId": "y234dj9m",
+                    "timeMs": 232000,
+                    "videos": Array [
+                      "https://youtu.be/-9KIi30IYFc",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlITZ3hAD0",
+                "name": "Human 12: The Battle at Crestfall",
+                "slug": "Human_12_The_Battle_at_Crestfall",
+                "srcId": "4956oj0d",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1523016484,
+                      "id": "runqbWhCsso",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlITZ3hAD0",
+                        "name": "Human 12: The Battle at Crestfall",
+                        "slug": "Human_12_The_Battle_at_Crestfall",
+                        "srcId": "4956oj0d",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "Banks",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrgFq39djE",
+                            "slug": "Banks",
+                            "srcId": "18qyezox",
+                          },
+                        },
+                      ],
+                      "srcId": "y234dj9m",
+                      "timeMs": 232000,
+                      "videos": Array [
+                        "https://youtu.be/-9KIi30IYFc",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1523016484,
+                    "id": "runqbWhCsso",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlITZ3hAD0",
+                      "name": "Human 12: The Battle at Crestfall",
+                      "slug": "Human_12_The_Battle_at_Crestfall",
+                      "srcId": "4956oj0d",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Banks",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrgFq39djE",
+                          "slug": "Banks",
+                          "srcId": "18qyezox",
+                        },
+                      },
+                    ],
+                    "srcId": "y234dj9m",
+                    "timeMs": 232000,
+                    "videos": Array [
+                      "https://youtu.be/-9KIi30IYFc",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1453550884,
+                    "id": "runqi6QqF9I",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJ85fBmlk",
+                      "name": "Human 13: Assault on Blackrock Spire",
+                      "slug": "Human_13_Assault_on_Blackrock_Spire",
+                      "srcId": "rdqj20k9",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Stu",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhduVXrcw",
+                          "slug": "Stu",
+                          "srcId": "kjp6yp58",
+                        },
+                      },
+                    ],
+                    "srcId": "zpqo498y",
+                    "timeMs": 1115000,
+                    "videos": Array [
+                      "https://youtu.be/pR7c7aSpsqQ?t=49",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJ85fBmlk",
+                "name": "Human 13: Assault on Blackrock Spire",
+                "slug": "Human_13_Assault_on_Blackrock_Spire",
+                "srcId": "rdqj20k9",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1453550884,
+                      "id": "runqi6QqF9I",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJ85fBmlk",
+                        "name": "Human 13: Assault on Blackrock Spire",
+                        "slug": "Human_13_Assault_on_Blackrock_Spire",
+                        "srcId": "rdqj20k9",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "Stu",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrhduVXrcw",
+                            "slug": "Stu",
+                            "srcId": "kjp6yp58",
+                          },
+                        },
+                      ],
+                      "srcId": "zpqo498y",
+                      "timeMs": 1115000,
+                      "videos": Array [
+                        "https://youtu.be/pR7c7aSpsqQ?t=49",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1453550884,
+                    "id": "runqi6QqF9I",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJ85fBmlk",
+                      "name": "Human 13: Assault on Blackrock Spire",
+                      "slug": "Human_13_Assault_on_Blackrock_Spire",
+                      "srcId": "rdqj20k9",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Stu",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhduVXrcw",
+                          "slug": "Stu",
+                          "srcId": "kjp6yp58",
+                        },
+                      },
+                    ],
+                    "srcId": "zpqo498y",
+                    "timeMs": 1115000,
+                    "videos": Array [
+                      "https://youtu.be/pR7c7aSpsqQ?t=49",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1539259684,
+                    "id": "runqeI1XXSc",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlIYe1ubb0",
+                      "name": "Human 14: The Great Portal",
+                      "slug": "Human_14_The_Great_Portal",
+                      "srcId": "5d7vk7gd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "yo2r055z",
+                    "timeMs": 685000,
+                    "videos": Array [
+                      "https://youtu.be/1_lL8qF_blM?t=5",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlIYe1ubb0",
+                "name": "Human 14: The Great Portal",
+                "slug": "Human_14_The_Great_Portal",
+                "srcId": "5d7vk7gd",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1539259684,
+                      "id": "runqeI1XXSc",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlIYe1ubb0",
+                        "name": "Human 14: The Great Portal",
+                        "slug": "Human_14_The_Great_Portal",
+                        "srcId": "5d7vk7gd",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "Szwagier",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrhugqY7Xw",
+                            "slug": "Szwagier",
+                            "srcId": "o86ln058",
+                          },
+                        },
+                      ],
+                      "srcId": "yo2r055z",
+                      "timeMs": 685000,
+                      "videos": Array [
+                        "https://youtu.be/1_lL8qF_blM?t=5",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1539259684,
+                    "id": "runqeI1XXSc",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlIYe1ubb0",
+                      "name": "Human 14: The Great Portal",
+                      "slug": "Human_14_The_Great_Portal",
+                      "srcId": "5d7vk7gd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "yo2r055z",
+                    "timeMs": 685000,
+                    "videos": Array [
+                      "https://youtu.be/1_lL8qF_blM?t=5",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1370088484,
+                    "id": "runqa06cWxE",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJfWZIa4U",
+                      "name": "Orc 01: Zul'dare",
+                      "slug": "Orc_01_Zuldare",
+                      "srcId": "kwj5l7r9",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx5d",
+                    "timeMs": 217000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJfWZIa4U",
+                "name": "Orc 01: Zul'dare",
+                "slug": "Orc_01_Zuldare",
+                "srcId": "kwj5l7r9",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1370088484,
+                      "id": "runqa06cWxE",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJfWZIa4U",
+                        "name": "Orc 01: Zul'dare",
+                        "slug": "Orc_01_Zuldare",
+                        "srcId": "kwj5l7r9",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "AverageAvocado",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx5d",
+                      "timeMs": 217000,
+                      "videos": Array [
+                        "https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1370088484,
+                    "id": "runqa06cWxE",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJfWZIa4U",
+                      "name": "Orc 01: Zul'dare",
+                      "slug": "Orc_01_Zuldare",
+                      "srcId": "kwj5l7r9",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx5d",
+                    "timeMs": 217000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1554206884,
+                    "id": "runqbmu3-GM",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJxnM4Piw",
+                      "name": "Orc 02: Raid at Hillsbrad",
+                      "slug": "Orc_02_Raid_at_Hillsbrad",
+                      "srcId": "owo017vw",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Banks",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrgFq39djE",
+                          "slug": "Banks",
+                          "srcId": "18qyezox",
+                        },
+                      },
+                    ],
+                    "srcId": "y43413kz",
+                    "timeMs": 41000,
+                    "videos": Array [
+                      "https://youtu.be/weNOZYDrJdk?t=4",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJxnM4Piw",
+                "name": "Orc 02: Raid at Hillsbrad",
+                "slug": "Orc_02_Raid_at_Hillsbrad",
+                "srcId": "owo017vw",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1554206884,
+                      "id": "runqbmu3-GM",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJxnM4Piw",
+                        "name": "Orc 02: Raid at Hillsbrad",
+                        "slug": "Orc_02_Raid_at_Hillsbrad",
+                        "srcId": "owo017vw",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "Banks",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrgFq39djE",
+                            "slug": "Banks",
+                            "srcId": "18qyezox",
+                          },
+                        },
+                      ],
+                      "srcId": "y43413kz",
+                      "timeMs": 41000,
+                      "videos": Array [
+                        "https://youtu.be/weNOZYDrJdk?t=4",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1554206884,
+                    "id": "runqbmu3-GM",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJxnM4Piw",
+                      "name": "Orc 02: Raid at Hillsbrad",
+                      "slug": "Orc_02_Raid_at_Hillsbrad",
+                      "srcId": "owo017vw",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Banks",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrgFq39djE",
+                          "slug": "Banks",
+                          "srcId": "18qyezox",
+                        },
+                      },
+                    ],
+                    "srcId": "y43413kz",
+                    "timeMs": 41000,
+                    "videos": Array [
+                      "https://youtu.be/weNOZYDrJdk?t=4",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1539173284,
+                    "id": "runqdgx8f54",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKYLWydmU",
+                      "name": "Orc 03: Southshore",
+                      "slug": "Orc_03_Southshore",
+                      "srcId": "xd17ejqd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "yj4xokny",
+                    "timeMs": 206000,
+                    "videos": Array [
+                      "https://youtu.be/lXhJ90EhCxc?t=56",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlKYLWydmU",
+                "name": "Orc 03: Southshore",
+                "slug": "Orc_03_Southshore",
+                "srcId": "xd17ejqd",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1539173284,
+                      "id": "runqdgx8f54",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlKYLWydmU",
+                        "name": "Orc 03: Southshore",
+                        "slug": "Orc_03_Southshore",
+                        "srcId": "xd17ejqd",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "Szwagier",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrhugqY7Xw",
+                            "slug": "Szwagier",
+                            "srcId": "o86ln058",
+                          },
+                        },
+                      ],
+                      "srcId": "yj4xokny",
+                      "timeMs": 206000,
+                      "videos": Array [
+                        "https://youtu.be/lXhJ90EhCxc?t=56",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1539173284,
+                    "id": "runqdgx8f54",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKYLWydmU",
+                      "name": "Orc 03: Southshore",
+                      "slug": "Orc_03_Southshore",
+                      "srcId": "xd17ejqd",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "yj4xokny",
+                    "timeMs": 206000,
+                    "videos": Array [
+                      "https://youtu.be/lXhJ90EhCxc?t=56",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1270555684,
+                    "id": "runqfygTMIY",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJEAQaRwQ",
+                      "name": "Orc 04: Assault on Hillsbrad",
+                      "slug": "Orc_04_Assault_on_Hillsbrad",
+                      "srcId": "ewpjm7lw",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "texture3D",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "z13v9rwm",
+                    "timeMs": 539000,
+                    "videos": Array [
+                      "https://youtu.be/wclxHSOMSz8",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJEAQaRwQ",
+                "name": "Orc 04: Assault on Hillsbrad",
+                "slug": "Orc_04_Assault_on_Hillsbrad",
+                "srcId": "ewpjm7lw",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1270555684,
+                      "id": "runqfygTMIY",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJEAQaRwQ",
+                        "name": "Orc 04: Assault on Hillsbrad",
+                        "slug": "Orc_04_Assault_on_Hillsbrad",
+                        "srcId": "ewpjm7lw",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "texture3D",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "z13v9rwm",
+                      "timeMs": 539000,
+                      "videos": Array [
+                        "https://youtu.be/wclxHSOMSz8",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1270555684,
+                    "id": "runqfygTMIY",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJEAQaRwQ",
+                      "name": "Orc 04: Assault on Hillsbrad",
+                      "slug": "Orc_04_Assault_on_Hillsbrad",
+                      "srcId": "ewpjm7lw",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "texture3D",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "z13v9rwm",
+                    "timeMs": 539000,
+                    "videos": Array [
+                      "https://youtu.be/wclxHSOMSz8",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1420114084,
+                    "id": "runqa06cWx4",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKcTp_uc0",
+                      "name": "Orc 05: Tol Barad",
+                      "slug": "Orc_05_Tol_Barad",
+                      "srcId": "y9mjq5l9",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx5q",
+                    "timeMs": 1154000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlKcTp_uc0",
+                "name": "Orc 05: Tol Barad",
+                "slug": "Orc_05_Tol_Barad",
+                "srcId": "y9mjq5l9",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1420114084,
+                      "id": "runqa06cWx4",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlKcTp_uc0",
+                        "name": "Orc 05: Tol Barad",
+                        "slug": "Orc_05_Tol_Barad",
+                        "srcId": "y9mjq5l9",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "AverageAvocado",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx5q",
+                      "timeMs": 1154000,
+                      "videos": Array [
+                        "https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1420114084,
+                    "id": "runqa06cWx4",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKcTp_uc0",
+                      "name": "Orc 05: Tol Barad",
+                      "slug": "Orc_05_Tol_Barad",
+                      "srcId": "y9mjq5l9",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx5q",
+                    "timeMs": 1154000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1356610084,
+                    "id": "runqa06cWyI",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlIa7xOU8E",
+                      "name": "Orc 06: The Badlands",
+                      "slug": "Orc_06_The_Badlands",
+                      "srcId": "5wkjzk5d",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "Cire2047",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx5u",
+                    "timeMs": 298000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlIa7xOU8E",
+                "name": "Orc 06: The Badlands",
+                "slug": "Orc_06_The_Badlands",
+                "srcId": "5wkjzk5d",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1356610084,
+                      "id": "runqa06cWyI",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlIa7xOU8E",
+                        "name": "Orc 06: The Badlands",
+                        "slug": "Orc_06_The_Badlands",
+                        "srcId": "5wkjzk5d",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "Cire2047",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx5u",
+                      "timeMs": 298000,
+                      "videos": Array [
+                        "https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1356610084,
+                    "id": "runqa06cWyI",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlIa7xOU8E",
+                      "name": "Orc 06: The Badlands",
+                      "slug": "Orc_06_The_Badlands",
+                      "srcId": "5wkjzk5d",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "Cire2047",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx5u",
+                    "timeMs": 298000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1356610084,
+                    "id": "runqa06cWyU",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlIX9TQgUk",
+                      "name": "Orc 07: The Fall of Stromgarde",
+                      "slug": "Orc_07_The_Fall_of_Stromgarde",
+                      "srcId": "592zg0g9",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "Cire2047",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx5x",
+                    "timeMs": 2414000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlIX9TQgUk",
+                "name": "Orc 07: The Fall of Stromgarde",
+                "slug": "Orc_07_The_Fall_of_Stromgarde",
+                "srcId": "592zg0g9",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1356610084,
+                      "id": "runqa06cWyU",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlIX9TQgUk",
+                        "name": "Orc 07: The Fall of Stromgarde",
+                        "slug": "Orc_07_The_Fall_of_Stromgarde",
+                        "srcId": "592zg0g9",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "Cire2047",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx5x",
+                      "timeMs": 2414000,
+                      "videos": Array [
+                        "https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1356610084,
+                    "id": "runqa06cWyU",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlIX9TQgUk",
+                      "name": "Orc 07: The Fall of Stromgarde",
+                      "slug": "Orc_07_The_Fall_of_Stromgarde",
+                      "srcId": "592zg0g9",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "Cire2047",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx5x",
+                    "timeMs": 2414000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1518437284,
+                    "id": "runqeJR8onI",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlIKX2FcuQ",
+                      "name": "Orc 08: The Runestone at Caer Darrow",
+                      "slug": "Orc_08_The_Runestone_at_Caer_Darrow",
+                      "srcId": "29v3ey1w",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "ZPR",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrgiWrS1Ys",
+                          "slug": "ZPR",
+                          "srcId": "7j4vgmmj",
+                        },
+                      },
+                    ],
+                    "srcId": "yo4qdnjm",
+                    "timeMs": 91000,
+                    "videos": Array [
+                      "https://www.youtube.com/watch?v=yv7lDQU7dC0",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlIKX2FcuQ",
+                "name": "Orc 08: The Runestone at Caer Darrow",
+                "slug": "Orc_08_The_Runestone_at_Caer_Darrow",
+                "srcId": "29v3ey1w",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1518437284,
+                      "id": "runqeJR8onI",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlIKX2FcuQ",
+                        "name": "Orc 08: The Runestone at Caer Darrow",
+                        "slug": "Orc_08_The_Runestone_at_Caer_Darrow",
+                        "srcId": "29v3ey1w",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "ZPR",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrgiWrS1Ys",
+                            "slug": "ZPR",
+                            "srcId": "7j4vgmmj",
+                          },
+                        },
+                      ],
+                      "srcId": "yo4qdnjm",
+                      "timeMs": 91000,
+                      "videos": Array [
+                        "https://www.youtube.com/watch?v=yv7lDQU7dC0",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1518437284,
+                    "id": "runqeJR8onI",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlIKX2FcuQ",
+                      "name": "Orc 08: The Runestone at Caer Darrow",
+                      "slug": "Orc_08_The_Runestone_at_Caer_Darrow",
+                      "srcId": "29v3ey1w",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "ZPR",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrgiWrS1Ys",
+                          "slug": "ZPR",
+                          "srcId": "7j4vgmmj",
+                        },
+                      },
+                    ],
+                    "srcId": "yo4qdnjm",
+                    "timeMs": 91000,
+                    "videos": Array [
+                      "https://www.youtube.com/watch?v=yv7lDQU7dC0",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1420114084,
+                    "id": "runqa06cWyo",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKYMGwrS0",
+                      "name": "Orc 09: The Razing of Tyr's Hand",
+                      "slug": "Orc_09_The_Razing_of_Tyrs_Hand",
+                      "srcId": "xd4j760d",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx62",
+                    "timeMs": 1180000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlKYMGwrS0",
+                "name": "Orc 09: The Razing of Tyr's Hand",
+                "slug": "Orc_09_The_Razing_of_Tyrs_Hand",
+                "srcId": "xd4j760d",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1420114084,
+                      "id": "runqa06cWyo",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlKYMGwrS0",
+                        "name": "Orc 09: The Razing of Tyr's Hand",
+                        "slug": "Orc_09_The_Razing_of_Tyrs_Hand",
+                        "srcId": "xd4j760d",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "AverageAvocado",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx62",
+                      "timeMs": 1180000,
+                      "videos": Array [
+                        "https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1420114084,
+                    "id": "runqa06cWyo",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKYMGwrS0",
+                      "name": "Orc 09: The Razing of Tyr's Hand",
+                      "slug": "Orc_09_The_Razing_of_Tyrs_Hand",
+                      "srcId": "xd4j760d",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx62",
+                    "timeMs": 1180000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLm5DuBIoS54B89M4RQFbNUvZv0HhOye3R",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1539173284,
+                    "id": "runqfqWjH0M",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKYLMHWOA",
+                      "name": "Orc 10: The Destruction of Stratholme",
+                      "slug": "Orc_10_The_Destruction_of_Stratholme",
+                      "srcId": "xd0gr00w",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "z03od54z",
+                    "timeMs": 671000,
+                    "videos": Array [
+                      "https://youtu.be/mfd1tL0t1e0?t=113",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlKYLMHWOA",
+                "name": "Orc 10: The Destruction of Stratholme",
+                "slug": "Orc_10_The_Destruction_of_Stratholme",
+                "srcId": "xd0gr00w",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1539173284,
+                      "id": "runqfqWjH0M",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlKYLMHWOA",
+                        "name": "Orc 10: The Destruction of Stratholme",
+                        "slug": "Orc_10_The_Destruction_of_Stratholme",
+                        "srcId": "xd0gr00w",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "Szwagier",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrhugqY7Xw",
+                            "slug": "Szwagier",
+                            "srcId": "o86ln058",
+                          },
+                        },
+                      ],
+                      "srcId": "z03od54z",
+                      "timeMs": 671000,
+                      "videos": Array [
+                        "https://youtu.be/mfd1tL0t1e0?t=113",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1539173284,
+                    "id": "runqfqWjH0M",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKYLMHWOA",
+                      "name": "Orc 10: The Destruction of Stratholme",
+                      "slug": "Orc_10_The_Destruction_of_Stratholme",
+                      "srcId": "xd0gr00w",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "Szwagier",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhugqY7Xw",
+                          "slug": "Szwagier",
+                          "srcId": "o86ln058",
+                        },
+                      },
+                    ],
+                    "srcId": "z03od54z",
+                    "timeMs": 671000,
+                    "videos": Array [
+                      "https://youtu.be/mfd1tL0t1e0?t=113",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1521374884,
+                    "id": "runpkxtuRzM",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJ_O9riHU",
+                      "name": "Orc 11: The Dead Rise as Quel'Thalas Falls",
+                      "slug": "Orc_11_The_Dead_Rise_as_QuelThalas_Falls",
+                      "srcId": "rw64pvn9",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "GreenMixTape",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhA7GAay8",
+                          "slug": "GreenMixTape",
+                          "srcId": "e8e96q7j",
+                        },
+                      },
+                    ],
+                    "srcId": "m3d2e1wz",
+                    "timeMs": 781000,
+                    "videos": Array [
+                      "https://www.youtube.com/watch?v=OZPHFj61E_A&feature=youtu.be",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJ_O9riHU",
+                "name": "Orc 11: The Dead Rise as Quel'Thalas Falls",
+                "slug": "Orc_11_The_Dead_Rise_as_QuelThalas_Falls",
+                "srcId": "rw64pvn9",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1521374884,
+                      "id": "runpkxtuRzM",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJ_O9riHU",
+                        "name": "Orc 11: The Dead Rise as Quel'Thalas Falls",
+                        "slug": "Orc_11_The_Dead_Rise_as_QuelThalas_Falls",
+                        "srcId": "rw64pvn9",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": false,
+                          "name": "GreenMixTape",
+                          "user": Object {
+                            "__typename": "User",
+                            "id": "usrhA7GAay8",
+                            "slug": "GreenMixTape",
+                            "srcId": "e8e96q7j",
+                          },
+                        },
+                      ],
+                      "srcId": "m3d2e1wz",
+                      "timeMs": 781000,
+                      "videos": Array [
+                        "https://www.youtube.com/watch?v=OZPHFj61E_A&feature=youtu.be",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1521374884,
+                    "id": "runpkxtuRzM",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJ_O9riHU",
+                      "name": "Orc 11: The Dead Rise as Quel'Thalas Falls",
+                      "slug": "Orc_11_The_Dead_Rise_as_QuelThalas_Falls",
+                      "srcId": "rw64pvn9",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": false,
+                        "name": "GreenMixTape",
+                        "user": Object {
+                          "__typename": "User",
+                          "id": "usrhA7GAay8",
+                          "slug": "GreenMixTape",
+                          "srcId": "e8e96q7j",
+                        },
+                      },
+                    ],
+                    "srcId": "m3d2e1wz",
+                    "timeMs": 781000,
+                    "videos": Array [
+                      "https://www.youtube.com/watch?v=OZPHFj61E_A&feature=youtu.be",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1357301284,
+                    "id": "runqa06cWzQ",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJqEE2M0k",
+                      "name": "Orc 12: The Tomb of Sargeras",
+                      "slug": "Orc_12_The_Tomb_of_Sargeras",
+                      "srcId": "n937507d",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "Cire2047",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx6c",
+                    "timeMs": 3212000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJqEE2M0k",
+                "name": "Orc 12: The Tomb of Sargeras",
+                "slug": "Orc_12_The_Tomb_of_Sargeras",
+                "srcId": "n937507d",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1357301284,
+                      "id": "runqa06cWzQ",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJqEE2M0k",
+                        "name": "Orc 12: The Tomb of Sargeras",
+                        "slug": "Orc_12_The_Tomb_of_Sargeras",
+                        "srcId": "n937507d",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "Cire2047",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx6c",
+                      "timeMs": 3212000,
+                      "videos": Array [
+                        "https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1357301284,
+                    "id": "runqa06cWzQ",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJqEE2M0k",
+                      "name": "Orc 12: The Tomb of Sargeras",
+                      "slug": "Orc_12_The_Tomb_of_Sargeras",
+                      "srcId": "n937507d",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "Cire2047",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx6c",
+                    "timeMs": 3212000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1370088484,
+                    "id": "runqa06cWzU",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKg0WfqPk",
+                      "name": "Orc 13: The Siege of Dalaran",
+                      "slug": "Orc_13_The_Siege_of_Dalaran",
+                      "srcId": "z986vj7d",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx6d",
+                    "timeMs": 2397000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlKg0WfqPk",
+                "name": "Orc 13: The Siege of Dalaran",
+                "slug": "Orc_13_The_Siege_of_Dalaran",
+                "srcId": "z986vj7d",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1370088484,
+                      "id": "runqa06cWzU",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlKg0WfqPk",
+                        "name": "Orc 13: The Siege of Dalaran",
+                        "slug": "Orc_13_The_Siege_of_Dalaran",
+                        "srcId": "z986vj7d",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "AverageAvocado",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx6d",
+                      "timeMs": 2397000,
+                      "videos": Array [
+                        "https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1370088484,
+                    "id": "runqa06cWzU",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlKg0WfqPk",
+                      "name": "Orc 13: The Siege of Dalaran",
+                      "slug": "Orc_13_The_Siege_of_Dalaran",
+                      "srcId": "z986vj7d",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "AverageAvocado",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx6d",
+                    "timeMs": 2397000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PL5b0fctdcCFMyFFMP8KHrBlh4lj1y6oQk",
+                    ],
+                  },
+                },
+              ],
+            },
+            Object {
+              "__typename": "CategoryLevel",
+              "leaderboard": Array [
+                Object {
+                  "__typename": "LeaderboardRun",
+                  "isTied": false,
+                  "rank": 1,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1435493284,
+                    "id": "runqa06cWzo",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJ84sW72w",
+                      "name": "Orc 14: The Fall of Lordaeron",
+                      "slug": "Orc_14_The_Fall_of_Lordaeron",
+                      "srcId": "rdn0j5nw",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "Cire2047",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx6i",
+                    "timeMs": 3024000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc",
+                    ],
+                  },
+                  "tiedRank": 1,
+                },
+              ],
+              "level": Object {
+                "__typename": "Level",
+                "id": "lvlJ84sW72w",
+                "name": "Orc 14: The Fall of Lordaeron",
+                "slug": "Orc_14_The_Fall_of_Lordaeron",
+                "srcId": "rdn0j5nw",
+              },
+              "progression": Array [
+                Object {
+                  "__typename": "ProgressionRun",
+                  "leaderboardRun": Object {
+                    "__typename": "LeaderboardRun",
+                    "isTied": false,
+                    "rank": 1,
+                    "run": Object {
+                      "__typename": "Run",
+                      "category": Object {
+                        "__typename": "Category",
+                        "id": "cat6TsT94Bo",
+                        "name": "Mission",
+                        "srcId": "wdmw5ee2",
+                      },
+                      "date": 1435493284,
+                      "id": "runqa06cWzo",
+                      "level": Object {
+                        "__typename": "Level",
+                        "id": "lvlJ84sW72w",
+                        "name": "Orc 14: The Fall of Lordaeron",
+                        "slug": "Orc_14_The_Fall_of_Lordaeron",
+                        "srcId": "rdn0j5nw",
+                      },
+                      "players": Array [
+                        Object {
+                          "__typename": "Player",
+                          "isGuest": true,
+                          "name": "Cire2047",
+                          "user": null,
+                        },
+                      ],
+                      "srcId": "xxxxxx6i",
+                      "timeMs": 3024000,
+                      "videos": Array [
+                        "https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc",
+                      ],
+                    },
+                    "tiedRank": 1,
+                  },
+                  "progressMs": 0,
+                  "run": Object {
+                    "__typename": "Run",
+                    "category": Object {
+                      "__typename": "Category",
+                      "id": "cat6TsT94Bo",
+                      "name": "Mission",
+                      "srcId": "wdmw5ee2",
+                    },
+                    "date": 1435493284,
+                    "id": "runqa06cWzo",
+                    "level": Object {
+                      "__typename": "Level",
+                      "id": "lvlJ84sW72w",
+                      "name": "Orc 14: The Fall of Lordaeron",
+                      "slug": "Orc_14_The_Fall_of_Lordaeron",
+                      "srcId": "rdn0j5nw",
+                    },
+                    "players": Array [
+                      Object {
+                        "__typename": "Player",
+                        "isGuest": true,
+                        "name": "Cire2047",
+                        "user": null,
+                      },
+                    ],
+                    "srcId": "xxxxxx6i",
+                    "timeMs": 3024000,
+                    "videos": Array [
+                      "https://www.youtube.com/playlist?list=PLumTHdkN2x_nwV_rcgadktukTaBZiubYc",
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+          "name": "Mission",
+          "slug": "Mission",
+          "srcId": "wdmw5ee2",
+        },
+      ],
+      "name": "Warcraft II: Tides of Darkness",
+      "slug": "wc2",
+      "srcId": "o1yry26q",
+      "timingMethod": "RTA",
+    },
+  },
+}
+`;
+
+exports[`snapshot home page 1`] = `
+Array [
+  200,
+  "OK",
+]
+`;
+
+exports[`snapshot home page 2`] = `
+"
+<!DOCTYPE html>
+<html class=\\"_2QhnptBkj92ATf1Ri_3Arl\\">
+  <head>
+    <style data-next-hide-fouc=\\"true\\">
+      body{display:none}
+    </style>
+    <noscript data-next-hide-fouc=\\"true\\">
+      <style>
+        body{display:block}
+      </style>
+    </noscript>
+    <meta charset=\\"utf-8\\">
+    <link rel=\\"icon\\"
+          href=\\"/finch.png\\"
+    >
+    <meta charset=\\"utf-8\\">
+    <meta name=\\"viewport\\"
+          content=\\"width=600\\"
+    >
+    <meta name=\\"apple-mobile-web-app-capable\\"
+          content=\\"yes\\"
+    >
+    <title>
+      speedruns.ca
+    </title>
+    <meta property=\\"og:title\\"
+          content=\\"Speedruns\\"
+    >
+    <meta property=\\"og:image\\"
+          content=\\"/finch.png\\"
+    >
+    <meta property=\\"og:description\\"
+          content=\\"speedruns.ca: an unofficial mirror of speedrun.com\\"
+    >
+    <meta name=\\"next-head-count\\"
+          content=\\"7\\"
+    >
+    <link rel=\\"preload\\"
+          href=\\"/_next/static/css/styles.chunk.css?ts=[…]\\"
+          as=\\"style\\"
+    >
+    <link rel=\\"stylesheet\\"
+          href=\\"/_next/static/css/styles.chunk.css?ts=[…]\\"
+    >
+    <link rel=\\"preload\\"
+          href=\\"/_next/static/development/pages/index.js?ts=[…]\\"
+          as=\\"script\\"
+    >
+    <link rel=\\"preload\\"
+          href=\\"/_next/static/development/pages/_app.js?ts=[…]\\"
+          as=\\"script\\"
+    >
+    <link rel=\\"preload\\"
+          href=\\"/_next/static/runtime/webpack.js?ts=[…]\\"
+          as=\\"script\\"
+    >
+    <link rel=\\"preload\\"
+          href=\\"/_next/static/chunks/styles.js?ts=[…]\\"
+          as=\\"script\\"
+    >
+    <link rel=\\"preload\\"
+          href=\\"/_next/static/runtime/main.js?ts=[…]\\"
+          as=\\"script\\"
+    >
+    <noscript id=\\"__next_css__DO_NOT_USE__\\">
+    </noscript>
+  </head>
+  <body>
+    <div id=\\"__next\\">
+      <header class=\\"_7cx2qv4vMrC1f1EvR85QL\\">
+        <h1>
+          <span>
+            <a href=\\"/\\">
+              <img src=\\"/finch.png\\"
+                   width=\\"13\\"
+              >
+              <b>
+                speedruns.ca
+              </b>
+            </a>
+            :
+            <span class=\\"_3aj6c_WVkXlGr9qKMsB5IB\\">
+              an unofficial mirror of
+              <a href=\\"https://www.speedrun.com/\\">
+                speedrun.com
+              </a>
+            </span>
+          </span>
+        </h1>
+      </header>
+      <main>
+        <section class=\\"_1NV2bB7KtOyyCk3ONw9dU9\\">
+          <section class=\\"_1vKNM-z9VgwjcBwbE7PnxR\\">
+            <h2>
+              Games
+            </h2>
+            <form>
+              <label style=\\"display:flex;align-items:center\\">
+                <span style=\\"display:flex;flex:0;padding:4px 8px\\">
+                  Search:
+                </span>
+                <input placeholder=\\"Braid\\"
+                       style=\\"display:flex;flex:1;font-size:18px;padding:4px 8px\\"
+                >
+              </label>
+            </form>
+            <div style=\\"height:256px\\">
+            </div>
+            <h2>
+              Internals
+            </h2>
+            <ul>
+              <li>
+                backend:
+                <a href=\\"https://github.com/jeremyBanks/speedruns/\\">
+                  <code>
+                    0.21.6-dev
+                  </code>
+                </a>
+              </li>
+              <li>
+                frontend:
+                <a href=\\"https://github.com/jeremyBanks/speedruns/\\">
+                  <code>
+                    0.21.6-dev
+                  </code>
+                </a>
+              </li>
+            </ul>
+            <h3>
+              Stats
+            </h3>
+            <ul>
+              <li>
+                updated:
+                2020-02-26
+              </li>
+              <li>
+                games:
+                <code>
+                  17803
+                </code>
+              </li>
+              <li>
+                runs:
+                <code>
+                  915948
+                </code>
+              </li>
+            </ul>
+            <h3>
+              GraphQL Schema
+            </h3>
+            <ul>
+              <li>
+                <a href=\\"/graphql/schema\\">
+                  Documentation
+                </a>
+              </li>
+              <li>
+                <a href=\\"/graphql/voyager\\">
+                  Graph Viewer
+                </a>
+              </li>
+              <li>
+                <a href=\\"/node/gamdtuPrEpI\\">
+                  Node Inspector
+                </a>
+              </li>
+              <li>
+                <a href=\\"/graphql/schema.graphql\\">
+                  SDL Definition
+                </a>
+              </li>
+              <li>
+                <a href=\\"/graphql/schema.json\\">
+                  Introspection JSON
+                </a>
+              </li>
+              <li>
+                <a href=\\"http://localhost:3001/graphql/../playground\\">
+                  Playground IDE
+                </a>
+              </li>
+              <li>
+                <a href=\\"http://localhost:3001/graphql/../graphiql\\">
+                  GraphiQL IDE
+                </a>
+              </li>
+              <li>
+                <a href=\\"http://localhost:3001/graphql\\">
+                  Endpoint
+                </a>
+              </li>
+            </ul>
+          </section>
+        </section>
+      </main>
+      <footer class=\\"_1gdWiHgem2DvZQC9U4nA0G\\">
+        <p>
+          <strong>
+            The information on this site may be incomplete or aggregated incorrectly.
+          </strong>
+          Refer to
+          <a href=\\"https://www.speedrun.com/games\\">
+            speedrun.com
+          </a>
+          for certainty.
+        </p>
+        <p>
+          This site is not affiliated with or endorsed by
+          <a href=\\"https://www.speedrun.com/about\\">
+            speedrun.com
+          </a>
+          . This site is non-commercial and uses content from speedrun.com under
+          <a href=\\"https://creativecommons.org/licenses/by-nc/4.0/\\">
+            the CC BY-NC license
+          </a>
+          .
+          <a href=\\"https://github.com/jeremyBanks/speedruns\\">
+            This site&#x27;s source code
+          </a>
+          is released under
+          <a href=\\"https://choosealicense.com/licenses/mit/\\">
+            the MIT license
+          </a>
+          .
+        </p>
+      </footer>
+    </div>
+    <script src=\\"/_next/static/development/dll/dll_[…].js\\"?ts=[…]\\">
+    </script>
+    <script id=\\"__NEXT_DATA__\\"
+            type=\\"application/json\\"
+    >
+      {\\"props\\":{\\"pageProps\\":{\\"apolloCache\\":{\\"$ROOT_QUERY.stats\\":{\\"lastUpdated\\":1582695469000,\\"runs\\":915948,\\"games\\":17803,\\"version\\":\\"0.21.6-dev\\",\\"__typename\\":\\"Stats\\"},\\"ROOT_QUERY\\":{\\"stats\\":{\\"type\\":\\"id\\",\\"generated\\":true,\\"id\\":\\"$ROOT_QUERY.stats\\",\\"typename\\":\\"Stats\\"},\\"seed\\":-1831240164}}}},\\"page\\":\\"/\\",\\"query\\":{},\\"buildId\\":\\"development\\",\\"isFallback\\":false}
+    </script>
+    <script nomodule
+            src=\\"/_next/static/runtime/polyfills.js?ts=[…]\\"
+    >
+    </script>
+    <script async
+            data-next-page=\\"/\\"
+            src=\\"/_next/static/development/pages/index.js?ts=[…]\\"
+    >
+    </script>
+    <script async
+            data-next-page=\\"/_app\\"
+            src=\\"/_next/static/development/pages/_app.js?ts=[…]\\"
+    >
+    </script>
+    <script src=\\"/_next/static/runtime/webpack.js?ts=[…]\\"
+            async
+    >
+    </script>
+    <script src=\\"/_next/static/chunks/styles.js?ts=[…]\\"
+            async
+    >
+    </script>
+    <script src=\\"/_next/static/runtime/main.js?ts=[…]\\"
+            async
+    >
+    </script>
+    <script src=\\"/_next/static/development/_buildManifest.js?ts=[…]\\"
+            async
+    >
+    </script>
+    <script src=\\"/_next/static/development/_ssgManifest.js?ts=[…]\\"
+            async
+    >
+    </script>
+  </body>
+</html>
+"
+`;

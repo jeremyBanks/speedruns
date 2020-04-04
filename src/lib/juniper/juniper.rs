@@ -1,3 +1,4 @@
+#![allow(clippy::identity_conversion)]
 #![warn(clippy::option_unwrap_used, clippy::result_unwrap_used)]
 
 use std::{
@@ -8,7 +9,6 @@ use std::{
 use derive_more::{Deref, From, Into};
 use getset::Getters;
 use itertools::Itertools;
-
 use juniper::{Executor, ID};
 use juniper_from_schema::graphql_schema_from_file;
 
@@ -426,7 +426,7 @@ impl CategoryFields for Category {
     ) -> Vec<LeaderboardRun> {
         let game = &executor.context().games()[self.game_id()];
         let level_id;
-        if let Some(level_slug) = level_slug {
+        if let Some(level_slug) = &level_slug {
             let level = executor
                 .context()
                 .indicies()
@@ -447,6 +447,13 @@ impl CategoryFields for Category {
             .indicies()
             .runs_by_game_id_and_category_id_and_level_id()
             .get(&(*self.game_id(), *self.id(), level_id));
+
+        log::debug!(
+            "{:?} runs for leaderboard {:?} {:?}",
+            runs.map(|runs| runs.len()),
+            &level_slug,
+            self
+        );
 
         if let Some(runs) = runs {
             let runs: Vec<_> = runs.iter().map(|run| (*run).clone()).collect();
@@ -470,9 +477,11 @@ impl CategoryFields for Category {
         level_slug: Option<String>,
         _include_ties: bool,
     ) -> Vec<ProgressionRun> {
+        // TODO: expect a level_slug IFF this is a level category, not a game category.
+
         let game = &executor.context().games()[self.game_id()];
         let level_id;
-        if let Some(level_slug) = level_slug {
+        if let Some(level_slug) = &level_slug {
             let level = executor
                 .context()
                 .indicies()
@@ -488,30 +497,22 @@ impl CategoryFields for Category {
             level_id = None;
         }
 
-        let runs: Vec<models::Run> = match level_id {
-            Some(level_id) => match executor
-                .context()
-                .indicies()
-                .runs_by_game_id_and_category_id_and_level_id()
-                .get(&(*self.game_id(), *self.id(), Some(level_id)))
-            {
-                Some(runs) => runs.iter().map(|run| (*run).clone()).collect(),
-                None => Vec::new(),
-            },
-            None => executor
-                .context()
-                .indicies()
-                .runs_by_game_id_and_category_id_and_level_id()
-                .range(
-                    &(*self.game_id(), *self.id(), None)
-                        ..&(*self.game_id() + 1, *self.id(), None),
-                )
-                .map(|(_key, value)| value)
-                .map(|x| x.iter())
-                .flatten()
-                .map(|run| (*run).clone().into())
-                .collect(),
+        let runs = match executor
+            .context()
+            .indicies()
+            .runs_by_game_id_and_category_id_and_level_id()
+            .get(&(*self.game_id(), *self.id(), level_id))
+        {
+            Some(runs) => runs.iter().map(|run| (*run).clone()).collect(),
+            None => Vec::new(),
         };
+
+        log::debug!(
+            "{:?} runs for progression {:?} {:?}",
+            runs.len(),
+            &level_slug,
+            self
+        );
 
         let progress = progression(&game, runs.iter());
         progress.iter().map(|r| ProgressionRun(r.clone())).collect()
@@ -526,7 +527,7 @@ impl CategoryFields for Category {
             .context()
             .indicies()
             .levels_by_game_id_and_slug()
-            .range((*self.id(), "")..(*self.id() + 1, ""))
+            .range((*self.game_id(), "")..(*self.game_id() + 1, ""))
             .map(|(_key, level)| CategoryLevel {
                 category: (*self).clone().into(),
                 level: (*level).clone().into(),
@@ -635,6 +636,8 @@ impl CategoryLevelFields for CategoryLevel {
             .map(|run| models::Run::clone(run))
             .collect();
 
+        log::debug!("{:?} runs for leaderboard {:?}", runs.len(), self);
+
         let mut ranked = leaderboard(game, runs.iter(), include_obsolete);
 
         if let Some(limit) = limit {
@@ -666,6 +669,8 @@ impl CategoryLevelFields for CategoryLevel {
             .iter()
             .map(|run| models::Run::clone(run))
             .collect();
+
+        log::debug!("{:?} runs for progression {:?}", runs.len(), self);
 
         let progress = progression(game, runs.iter());
 
