@@ -52,7 +52,7 @@ const GamePage: NextPage = () => {
         </Link>
       </h2>
 
-      {game.gameCategories.map(category => (
+      {game.gameCategories.map((category) => (
         <section key={category.id} id={`${category.id}`}>
           <h3>
             <a href={`#${category.id}`}>{category.name}</a>
@@ -68,7 +68,7 @@ const GamePage: NextPage = () => {
         </section>
       ))}
 
-      {game.levelCategories.map(levelCategory => (
+      {game.levelCategories.map((levelCategory) => (
         <div key={levelCategory.id} id={levelCategory.id}>
           <h2>
             <a href={`#${levelCategory.id}`}>{levelCategory.name}</a>

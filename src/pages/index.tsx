@@ -152,7 +152,7 @@ export const HomePage: NextPage<{}> = () => {
       <h2>Games</h2>
 
       <form
-        onSubmit={event => {
+        onSubmit={(event) => {
           event.preventDefault();
           // HACK: sue me
           (event.target as any)
@@ -179,7 +179,7 @@ export const HomePage: NextPage<{}> = () => {
           <input
             ref={input}
             placeholder={debouncedTargetNameOrSuggestion}
-            onChange={e => void setTargetName(e.target.value)}
+            onChange={(e) => void setTargetName(e.target.value)}
             style={{
               display: "flex",
               flex: 1,

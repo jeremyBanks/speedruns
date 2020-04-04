@@ -18,7 +18,7 @@ const GraphiQL: React.FC<{}> = () => {
   const [GraphiQL, setGraphiQL] = useState<typeof import("graphiql").default>();
 
   useEffect(() => {
-    import("graphiql").then(imported => {
+    import("graphiql").then((imported) => {
       setGraphiQL(() => imported.default);
     });
   }, []);
@@ -37,7 +37,7 @@ const GraphiQL: React.FC<{}> = () => {
                 body: JSON.stringify(query),
                 headers: { "Content-Type": "application/json" },
                 method: "post",
-              }).then(response => response.json())
+              }).then((response) => response.json())
             }
           />
         </div>

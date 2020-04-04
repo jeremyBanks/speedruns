@@ -45,7 +45,7 @@ const RunPage: NextPage = () => {
     <section className={styles.runPage} id={game.id}>
       <Head>
         <title>
-          {game.name} Speedrun by {run.players.map(p => p.name).join(" & ")} (
+          {game.name} Speedrun by {run.players.map((p) => p.name).join(" & ")} (
           {run.srcId})
         </title>
         <link
@@ -75,8 +75,8 @@ const RunPage: NextPage = () => {
       </p>
 
       {run.videos
-        .filter(video => /youtu/.test(video))
-        .map(video => (
+        .filter((video) => /youtu/.test(video))
+        .map((video) => (
           <div key={video}>
             <YouTube
               videoId={video.split(/=|\.be\//)[1].split(/[?&]/)[0]}
