@@ -9,12 +9,12 @@ const AutoColor: React.FC<{ children?: string }> = ({ children }) => {
   const bytes = Array.from(
     sha256(
       Uint8Array.from(
-        Array.from(seed + String(children)).map(c => c.charCodeAt(0)),
+        Array.from(seed + String(children)).map((c) => c.charCodeAt(0)),
       ),
     ),
   );
 
-  const randoms = bytes.map(n => n / 255.0);
+  const randoms = bytes.map((n) => n / 255.0);
 
   const [r, g, b] = space.lab
     .rgb([

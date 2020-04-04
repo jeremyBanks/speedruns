@@ -37,7 +37,7 @@ const ProgressionTable: React.FC<{
     </thead>
     <tbody>
       {runs.length ? (
-        runs.map(progress => (
+        runs.map((progress) => (
           <tr
             key={progress.run.id}
             data-rank={progress.leaderboardRun?.rank ?? "obsolete"}

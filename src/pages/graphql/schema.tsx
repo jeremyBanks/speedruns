@@ -39,7 +39,7 @@ const GraphQLDocs: React.FC<{}> = () => {
                 body: JSON.stringify({ query }),
                 headers: { "Content-Type": "application/json" },
                 method: "post",
-              }).then(response => response.json())
+              }).then((response) => response.json())
             }
           />
         </div>

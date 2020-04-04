@@ -20,7 +20,7 @@ const Playground: React.FC<{}> = () => {
   >();
 
   useEffect(() => {
-    import("@apollographql/graphql-playground-react").then(playground => {
+    import("@apollographql/graphql-playground-react").then((playground) => {
       setPlayground(playground);
     });
   }, []);
