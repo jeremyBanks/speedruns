@@ -37,10 +37,7 @@ const GamePage: NextPage = () => {
     <section className={styles.gamePage}>
       <Head>
         <title>{game.name} Speedruns</title>
-        <link
-          rel="canonical"
-          href={`https://www.speedrun.com/${game.srcSlug}`}
-        />
+        <link rel="canonical" href={`https://www.speedrun.com/${game.slug}`} />
         <meta property="og:title" content={`${game.name} Speedruns`} />
         <meta property="og:image" content="/finch.png" />
         <meta
@@ -50,7 +47,7 @@ const GamePage: NextPage = () => {
       </Head>
 
       <h2>
-        <Link href={`/[game]?game=${game.srcSlug}`} as={`/${game.srcSlug}`}>
+        <Link href={`/[game]?game=${game.slug}`} as={`/${game.slug}`}>
           <a>{game.name}</a>
         </Link>
       </h2>
@@ -113,7 +110,7 @@ const GetGamePagePreview = gql`
   query GetGamePagePreview($slug: String!) {
     game(slug: $slug) {
       id
-      srcSlug
+      slug
       name
     }
   }
@@ -133,7 +130,7 @@ const GameRun = gql`
     level {
       id
       srcId
-      srcSlug
+      slug
       name
     }
     date
@@ -169,7 +166,7 @@ const GameLeaderboardRun = gql`
       level {
         id
         srcId
-        srcSlug
+        slug
         name
       }
       date
@@ -195,13 +192,13 @@ const GetGamePage = gql`
       id
       srcId
       slug
-      srcSlug
+      slug
       name
       timingMethod
       gameCategories {
         id
         srcId
-        srcSlug
+        slug
         name
         leaderboard(limit: 32) {
           ...GameLeaderboardRun
@@ -219,7 +216,7 @@ const GetGamePage = gql`
       levelCategories {
         id
         srcId
-        srcSlug
+        slug
         name
         leaderboard(limit: 32) {
           ...GameLeaderboardRun
@@ -237,7 +234,7 @@ const GetGamePage = gql`
           level {
             id
             srcId
-            srcSlug
+            slug
             name
           }
           leaderboard(limit: 32) {

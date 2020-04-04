@@ -5,6 +5,7 @@
     clippy::result_unwrap_used
 )]
 
+use async_std::sync::RwLock;
 use std::{fs::File, io::BufReader, sync::Arc};
 
 use actix_cors::{self};
@@ -12,14 +13,12 @@ use actix_web::{self, middleware, web, HttpResponse};
 
 use juniper::{self, http::GraphQLRequest};
 use lazy_static::lazy_static;
-#[allow(unused)]
-use log::{debug, error, info, trace, warn};
+
+use log::{error, info, warn};
 use serde::de::DeserializeOwned;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
-use speedruns::data::{
-    database::{Database, Tables},
-    graphql,
-};
+
+use speedruns_database::{Database, Tables};
 
 async fn graphiql() -> HttpResponse {
     let html = juniper::http::graphiql::graphiql_source("/graphql");
@@ -35,23 +34,19 @@ async fn playground() -> HttpResponse {
         .body(html)
 }
 
-lazy_static! {
-    static ref DATABASE: Arc<Database> = {
-        let tables: &'static Tables = Box::leak(Box::new(unpack_tables()));
-        Database::new(tables).expect("database should be valid")
-    };
-}
-
 async fn graphql(
-    schema: web::Data<Arc<graphql::Schema>>,
+    schema: web::Data<Arc<crate::Schema>>,
     query: web::Json<GraphQLRequest>,
 ) -> actix_web::Result<HttpResponse> {
-    let database = DATABASE.clone();
+    let lock = DATABASE.read().await;
+    let database: Arc<Database> = lock.clone().unwrap();
+
     let user = web::block(move || {
-        let res = query.execute(&schema, &graphql::Context { database });
+        let res = query.execute(&schema, &crate::Context { database });
         Ok::<_, serde_json::error::Error>(serde_json::to_string(&res)?)
     })
     .await?;
+
     Ok(HttpResponse::Ok()
         .content_type("application/json")
         .header(actix_web::http::header::ACCESS_CONTROL_ALLOW_ORIGIN, "*")
@@ -89,12 +84,19 @@ pub struct Args {
     no_data: bool,
 }
 
+lazy_static! {
+    static ref DATABASE: RwLock<Option<Arc<Database>>> = RwLock::new(None);
+}
+
 pub async fn main(args: Args) -> std::io::Result<()> {
     info!("Initializing server.");
-    lazy_static::initialize(&DATABASE);
+    *(DATABASE.write().await) = Some(Arc::new(
+        Database::try_new(Arc::new(unpack_tables(args.no_data)))
+            .expect("database should be valid"),
+    ));
 
     info!("Initializing schema.");
-    let schema = Arc::new(graphql::schema());
+    let schema = Arc::new(crate::schema());
 
     info!("Initializing server.");
     let server = actix_web::HttpServer::new(move || {
@@ -116,13 +118,10 @@ pub async fn main(args: Args) -> std::io::Result<()> {
         .await
 }
 
-fn unpack_tables() -> Tables {
-    let args: crate::Args = argh::from_env();
-    if let crate::Subcommand::Serve(args) = args.subcommand {
-        if args.no_data {
-            info!("Skipping database import, will run with no data!");
-            return Tables::new(vec![], vec![], vec![], vec![], vec![]);
-        }
+fn unpack_tables(no_data: bool) -> Tables {
+    if no_data {
+        info!("Skipping database import, will run with no data!");
+        return Tables::new(vec![], vec![], vec![], vec![], vec![]);
     }
 
     info!("Unpacking database...");
@@ -144,7 +143,7 @@ fn unpack_tables() -> Tables {
 
     runs.extend(supplemental.into_iter());
 
-    Tables::new(runs, users, games, categories, levels)
+    Tables::new(games, categories, levels, runs, users)
 }
 
 pub fn read_table<T: DeserializeOwned>(

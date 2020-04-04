@@ -2,16 +2,9 @@
 #![allow(missing_docs, clippy::useless_attribute, clippy::useless_vec)]
 #![warn(missing_debug_implementations)]
 
-/// Types for the speedrun.com API data we consume and utilities for normalizing it.  
-pub mod api;
-
-/// Our normalized data types, a frozen in-memory database, and leaderboard logic.
-pub mod data;
-
-/// Utilities that should probably go somewhere more specific.
+pub use speedruns_api as api;
+pub use speedruns_cli as cli;
+pub use speedruns_database as database;
+pub use speedruns_juniper as juniper;
+pub use speedruns_models as models;
 pub use speedruns_utils as utils;
-
-pub use crate::data::{
-    database::Database,
-    types::{self, *},
-};
