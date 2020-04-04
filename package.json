@@ -58,7 +58,7 @@
     "react-dom": "^16.13.0",
     "react-icons": "^3.9.0",
     "react-no-ssr": "^1.1.0",
-    "react-redux": "^7.1.3",
+    "react-redux": "^7.2.0",
     "react-youtube": "^7.9.0",
     "remeda": "^0.0.15",
     "replace-in-files-cli": "^0.3.1",
