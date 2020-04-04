@@ -6,9 +6,12 @@ cargo build --workspace
 cargo test --workspace
 
 cargo run serve &
-trap "kill $!" EXIT
+TO_KILL="$! ${TO_KILL:-}"
+trap "kill $TO_KILL" EXIT
+
 yarn dev &
-trap "kill $!" EXIT
+TO_KILL="$! ${TO_KILL:-}"
+trap "kill $TO_KILL" EXIT
 
 sleep 16
 

@@ -1,6 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`snapshot API 1`] = `"OK"`;
+exports[`snapshot API 1`] = `
+Array [
+  200,
+  "OK",
+]
+`;
 
 exports[`snapshot API 2`] = `
 Object {
@@ -4036,93 +4041,99 @@ Object {
 }
 `;
 
-exports[`snapshot home page 1`] = `"OK"`;
+exports[`snapshot home page 1`] = `
+Array [
+  200,
+  "OK",
+]
+`;
 
 exports[`snapshot home page 2`] = `
+"
 <!DOCTYPE html>
-<html class="_2QhnptBkj92ATf1Ri_3Arl">
+<html class=\\"_2QhnptBkj92ATf1Ri_3Arl\\">
   <head>
-    <style data-next-hide-fouc="true">
+    <style data-next-hide-fouc=\\"true\\">
       body{display:none}
     </style>
-    <noscript data-next-hide-fouc="true">
+    <noscript data-next-hide-fouc=\\"true\\">
       <style>
         body{display:block}
       </style>
     </noscript>
-    <meta charset="utf-8">
-    <link rel="icon"
-          href="/finch.png"
+    <meta charset=\\"utf-8\\">
+    <link rel=\\"icon\\"
+          href=\\"/finch.png\\"
     >
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=600"
+    <meta charset=\\"utf-8\\">
+    <meta name=\\"viewport\\"
+          content=\\"width=600\\"
     >
-    <meta name="apple-mobile-web-app-capable"
-          content="yes"
+    <meta name=\\"apple-mobile-web-app-capable\\"
+          content=\\"yes\\"
     >
     <title>
       speedruns.ca
     </title>
-    <meta property="og:title"
-          content="Speedruns"
+    <meta property=\\"og:title\\"
+          content=\\"Speedruns\\"
     >
-    <meta property="og:image"
-          content="/finch.png"
+    <meta property=\\"og:image\\"
+          content=\\"/finch.png\\"
     >
-    <meta property="og:description"
-          content="speedruns.ca: an unofficial mirror of speedrun.com"
+    <meta property=\\"og:description\\"
+          content=\\"speedruns.ca: an unofficial mirror of speedrun.com\\"
     >
-    <meta name="next-head-count"
-          content="7"
+    <meta name=\\"next-head-count\\"
+          content=\\"7\\"
     >
-    <link rel="preload"
-          href="/_next/static/css/styles.chunk.css"
-          as="style"
+    <link rel=\\"preload\\"
+          href=\\"/_next/static/css/styles.chunk.css\\"
+          as=\\"style\\"
     >
-    <link rel="stylesheet"
-          href="/_next/static/css/styles.chunk.css"
+    <link rel=\\"stylesheet\\"
+          href=\\"/_next/static/css/styles.chunk.css\\"
     >
-    <link rel="preload"
-          href="/_next/static/development/pages/index.js?ts=0"
-          as="script"
+    <link rel=\\"preload\\"
+          href=\\"/_next/static/development/pages/index.js?ts=[…]\\"
+          as=\\"script\\"
     >
-    <link rel="preload"
-          href="/_next/static/development/pages/_app.js?ts=0"
-          as="script"
+    <link rel=\\"preload\\"
+          href=\\"/_next/static/development/pages/_app.js?ts=[…]\\"
+          as=\\"script\\"
     >
-    <link rel="preload"
-          href="/_next/static/runtime/webpack.js?ts=0"
-          as="script"
+    <link rel=\\"preload\\"
+          href=\\"/_next/static/runtime/webpack.js?ts=[…]\\"
+          as=\\"script\\"
     >
-    <link rel="preload"
-          href="/_next/static/chunks/styles.js?ts=0"
-          as="script"
+    <link rel=\\"preload\\"
+          href=\\"/_next/static/chunks/styles.js?ts=[…]\\"
+          as=\\"script\\"
     >
-    <link rel="preload"
-          href="/_next/static/runtime/main.js?ts=0"
-          as="script"
+    <link rel=\\"preload\\"
+          href=\\"/_next/static/runtime/main.js?ts=[…]\\"
+          as=\\"script\\"
     >
-    <noscript id="__next_css__DO_NOT_USE__">
+    <noscript id=\\"__next_css__DO_NOT_USE__\\">
     </noscript>
   </head>
   <body>
-    <div id="__next">
-      <header class="_7cx2qv4vMrC1f1EvR85QL">
+    <div id=\\"__next\\">
+      <header class=\\"_7cx2qv4vMrC1f1EvR85QL\\">
         <h1>
           <span>
-            <a href="/">
-              <img src="/finch.png"
-                   width="13"
+            <a href=\\"/\\">
+              <img src=\\"/finch.png\\"
+                   width=\\"13\\"
               >
               <b>
                 speedruns.ca
               </b>
             </a>
             :
-            <span class="_3aj6c_WVkXlGr9qKMsB5IB">
+            <span class=\\"_3aj6c_WVkXlGr9qKMsB5IB\\">
               an unofficial mirror of
-              <a href="https://www.speedrun.com/">
+              <a href=\\"https://www.speedrun.com/\\">
                 speedrun.com
               </a>
             </span>
@@ -4130,106 +4141,67 @@ exports[`snapshot home page 2`] = `
         </h1>
       </header>
       <main>
-        <section class="_1NV2bB7KtOyyCk3ONw9dU9">
-          <section class="_1vKNM-z9VgwjcBwbE7PnxR">
+        <section class=\\"_1NV2bB7KtOyyCk3ONw9dU9\\">
+          <section class=\\"_1vKNM-z9VgwjcBwbE7PnxR\\">
             <h2>
               Games
             </h2>
             <form>
-              <label style="display:flex;align-items:center">
-                <span style="display:flex;flex:0;padding:4px 8px">
+              <label style=\\"display:flex;align-items:center\\">
+                <span style=\\"display:flex;flex:0;padding:4px 8px\\">
                   Search:
                 </span>
-                <input placeholder="Braid"
-                       style="display:flex;flex:1;font-size:18px;padding:4px 8px"
+                <input placeholder=\\"Braid\\"
+                       style=\\"display:flex;flex:1;font-size:18px;padding:4px 8px\\"
                 >
               </label>
             </form>
-            <div style="height:256px">
+            <div style=\\"height:256px\\">
             </div>
             <h2>
               Internals
             </h2>
-            <ul>
-              <li>
-                backend:
-                <a href="https://github.com/jeremyBanks/speedruns/">
-                  <code>
-                    0.21.6-dev
-                  </code>
-                </a>
-              </li>
-              <li>
-                frontend:
-                <a href="https://github.com/jeremyBanks/speedruns/">
-                  <code>
-                    0.21.6-dev
-                  </code>
-                </a>
-              </li>
-            </ul>
-            <h3>
-              Stats
-            </h3>
-            <ul>
-              <li>
-                updated:
-                2020-02-19
-              </li>
-              <li>
-                games:
-                <code>
-                  6
-                </code>
-              </li>
-              <li>
-                runs:
-                <code>
-                  952
-                </code>
-              </li>
-            </ul>
             <h3>
               GraphQL Schema
             </h3>
             <ul>
               <li>
-                <a href="/graphql/schema">
+                <a href=\\"/graphql/schema\\">
                   Documentation
                 </a>
               </li>
               <li>
-                <a href="/graphql/voyager">
+                <a href=\\"/graphql/voyager\\">
                   Graph Viewer
                 </a>
               </li>
               <li>
-                <a href="/node/gamdtuPrEpI">
+                <a href=\\"/node/gamdtuPrEpI\\">
                   Node Inspector
                 </a>
               </li>
               <li>
-                <a href="/graphql/schema.graphql">
+                <a href=\\"/graphql/schema.graphql\\">
                   SDL Definition
                 </a>
               </li>
               <li>
-                <a href="/graphql/schema.json">
+                <a href=\\"/graphql/schema.json\\">
                   Introspection JSON
                 </a>
               </li>
               <li>
-                <a href="http://localhost:3001/graphql/../playground">
+                <a href=\\"http://localhost:3001/graphql/../playground\\">
                   Playground IDE
                 </a>
               </li>
               <li>
-                <a href="http://localhost:3001/graphql/../graphiql">
+                <a href=\\"http://localhost:3001/graphql/../graphiql\\">
                   GraphiQL IDE
                 </a>
               </li>
               <li>
-                <a href="http://localhost:3001/graphql">
+                <a href=\\"http://localhost:3001/graphql\\">
                   Endpoint
                 </a>
               </li>
@@ -4237,75 +4209,76 @@ exports[`snapshot home page 2`] = `
           </section>
         </section>
       </main>
-      <footer class="_1gdWiHgem2DvZQC9U4nA0G">
+      <footer class=\\"_1gdWiHgem2DvZQC9U4nA0G\\">
         <p>
           <strong>
             The information on this site may be incomplete or aggregated incorrectly.
           </strong>
           Refer to
-          <a href="https://www.speedrun.com/games">
+          <a href=\\"https://www.speedrun.com/games\\">
             speedrun.com
           </a>
           for certainty.
         </p>
         <p>
           This site is not affiliated with or endorsed by
-          <a href="https://www.speedrun.com/about">
+          <a href=\\"https://www.speedrun.com/about\\">
             speedrun.com
           </a>
           . This site is non-commercial and uses content from speedrun.com under
-          <a href="https://creativecommons.org/licenses/by-nc/4.0/">
+          <a href=\\"https://creativecommons.org/licenses/by-nc/4.0/\\">
             the CC BY-NC license
           </a>
           .
-          <a href="https://github.com/jeremyBanks/speedruns">
+          <a href=\\"https://github.com/jeremyBanks/speedruns\\">
             This site&#x27;s source code
           </a>
           is released under
-          <a href="https://choosealicense.com/licenses/mit/">
+          <a href=\\"https://choosealicense.com/licenses/mit/\\">
             the MIT license
           </a>
           .
         </p>
       </footer>
     </div>
-    <script src="/_next/static/development/dll/dll_d6a88dbe3071bd165157.js?ts=0">
+    <script src=\\"/_next/static/development/dll/dll_d6a88dbe3071bd165157.js?ts=[…]\\">
     </script>
-    <script id="__NEXT_DATA__"
-            type="application/json"
+    <script id=\\"__NEXT_DATA__\\"
+            type=\\"application/json\\"
     >
-      {"props":{"pageProps":{"apolloCache":{"$ROOT_QUERY.stats":{"lastUpdated":1582147329000,"runs":952,"games":6,"version":"0.21.6-dev","__typename":"Stats"},"ROOT_QUERY":{"stats":{"type":"id","generated":true,"id":"$ROOT_QUERY.stats","typename":"Stats"},"seed":-532738840}}}},"page":"/","query":{},"buildId":"development","isFallback":false}
+      {\\"props\\":{\\"pageProps\\":{\\"apolloCache\\":{}}},\\"page\\":\\"/\\",\\"query\\":{},\\"buildId\\":\\"development\\",\\"isFallback\\":false}
     </script>
     <script nomodule
-            src="/_next/static/runtime/polyfills.js?ts=0"
+            src=\\"/_next/static/runtime/polyfills.js?ts=[…]\\"
     >
     </script>
     <script async
-            data-next-page="/"
-            src="/_next/static/development/pages/index.js?ts=0"
+            data-next-page=\\"/\\"
+            src=\\"/_next/static/development/pages/index.js?ts=[…]\\"
     >
     </script>
     <script async
-            data-next-page="/_app"
-            src="/_next/static/development/pages/_app.js?ts=0"
+            data-next-page=\\"/_app\\"
+            src=\\"/_next/static/development/pages/_app.js?ts=[…]\\"
     >
     </script>
-    <script src="/_next/static/runtime/webpack.js?ts=0"
+    <script src=\\"/_next/static/runtime/webpack.js?ts=[…]\\"
             async
     >
     </script>
-    <script src="/_next/static/chunks/styles.js?ts=0"
+    <script src=\\"/_next/static/chunks/styles.js?ts=[…]\\"
             async
     >
     </script>
-    <script src="/_next/static/runtime/main.js?ts=0"
+    <script src=\\"/_next/static/runtime/main.js?ts=[…]\\"
             async
     >
     </script>
-    <script src="/_next/static/development/_buildManifest.js?ts=0"
+    <script src=\\"/_next/static/development/_buildManifest.js?ts=[…]\\"
             async
     >
     </script>
   </body>
 </html>
+"
 `;
