@@ -10,10 +10,7 @@ const normalizeHtml = (html: string) =>
     .replace(/\?ts=\d+"/g, `?ts=${elision}"`)
     .replace(/dll\/dll_\w+\.js/g, `dll/dll_${elision}.js"`)
     .replace(/\.js\.\w+\.hot-update\.js/g, `.js.hot-update.${elision}.js"`)
-    .replace(
-      /<script id="__NEXT_DATA__".+?<\/script>/gim,
-      `<script id="__NEXT_DATA__>${elision}</script>`,
-    );
+    .replace(/\"seed":[0-9\-]+/g, `"seed":${elision}"`);
 
 test("snapshot API", async () => {
   const response = await fetch(`${backendHost}/graphql`, {

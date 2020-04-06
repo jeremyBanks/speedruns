@@ -6,8 +6,7 @@
     clippy::identity_conversion
 )]
 
-use std::collections::BTreeMap;
-use std::collections::{BTreeMap as SortedMap, HashMap, HashSet};
+use std::collections::{BTreeMap, HashSet};
 use std::{hash::Hash, sync::Arc};
 
 use chrono::{DateTime, NaiveDateTime, Utc};
@@ -40,26 +39,26 @@ rental! {
 #[derive(Debug, Default, Serialize, Deserialize, Clone, Getters)]
 #[get = "pub"]
 pub struct Tables {
-    games: HashMap<u64, Game>,
-    categories: HashMap<u64, Category>,
-    runs: HashMap<u64, Run>,
-    users: HashMap<u64, User>,
-    levels: HashMap<u64, Level>,
+    games: BTreeMap<u64, Game>,
+    categories: BTreeMap<u64, Category>,
+    runs: BTreeMap<u64, Run>,
+    users: BTreeMap<u64, User>,
+    levels: BTreeMap<u64, Level>,
 }
 
 #[derive(Debug, Clone, Getters)]
 #[get = "pub"]
 pub struct Indicies<'tables> {
     last_updated: DateTime<Utc>,
-    games_by_slug: SortedMap<&'tables str, &'tables Game>,
-    users_by_slug: SortedMap<&'tables str, &'tables User>,
+    games_by_slug: BTreeMap<&'tables str, &'tables Game>,
+    users_by_slug: BTreeMap<&'tables str, &'tables User>,
     per_game_categories_by_game_id_and_slug:
-        SortedMap<(u64, &'tables str), &'tables Category>,
+        BTreeMap<(u64, &'tables str), &'tables Category>,
     per_level_categories_by_game_id_and_slug:
-        SortedMap<(u64, &'tables str), &'tables Category>,
-    levels_by_game_id_and_slug: SortedMap<(u64, &'tables str), &'tables Level>,
+        BTreeMap<(u64, &'tables str), &'tables Category>,
+    levels_by_game_id_and_slug: BTreeMap<(u64, &'tables str), &'tables Level>,
     runs_by_game_id_and_category_id_and_level_id:
-        SortedMap<(u64, u64, Option<u64>), Vec<&'tables Run>>,
+        BTreeMap<(u64, u64, Option<u64>), Vec<&'tables Run>>,
 }
 
 impl Tables {
@@ -107,9 +106,9 @@ impl Database {
                     }
 
                     fn filter_invalid<T: Hash + Eq + Clone>(
-                        table: &HashMap<u64, T>,
+                        table: &BTreeMap<u64, T>,
                         invalid: HashSet<T>,
-                    ) -> HashMap<u64, T> {
+                    ) -> BTreeMap<u64, T> {
                         table
                             .iter()
                             .filter(|(_id, row)| !invalid.contains(row))
@@ -182,23 +181,23 @@ impl Database {
         self.0.suffix()
     }
 
-    pub fn games(&self) -> &HashMap<u64, Game> {
+    pub fn games(&self) -> &BTreeMap<u64, Game> {
         self.tables().games()
     }
 
-    pub fn categories(&self) -> &HashMap<u64, Category> {
+    pub fn categories(&self) -> &BTreeMap<u64, Category> {
         self.tables().categories()
     }
 
-    pub fn levels(&self) -> &HashMap<u64, Level> {
+    pub fn levels(&self) -> &BTreeMap<u64, Level> {
         self.tables().levels()
     }
 
-    pub fn runs(&self) -> &HashMap<u64, Run> {
+    pub fn runs(&self) -> &BTreeMap<u64, Run> {
         self.tables().runs()
     }
 
-    pub fn users(&self) -> &HashMap<u64, User> {
+    pub fn users(&self) -> &BTreeMap<u64, User> {
         self.tables().users()
     }
 }
@@ -212,7 +211,7 @@ impl<'tables> Indicies<'tables> {
             OldKey: 'tables + Hash + Eq,
             NewKey: 'tables + Ord + Eq,
         >(
-            original: &'tables HashMap<OldKey, Value>,
+            original: &'tables BTreeMap<OldKey, Value>,
             key: fn(&'tables Value) -> NewKey,
         ) -> BTreeMap<NewKey, &'tables Value> {
             index_where(original, key, |_| true)
@@ -220,7 +219,7 @@ impl<'tables> Indicies<'tables> {
 
         /// Index rows passing some filter by some unique key. (Uniqueness not validated.)
         fn index_where<'tables, Value, OldKey: 'tables + Hash + Eq, NewKey: Ord + Eq>(
-            original: &'tables HashMap<OldKey, Value>,
+            original: &'tables BTreeMap<OldKey, Value>,
             key: fn(&'tables Value) -> NewKey,
             filter: fn(&Value) -> bool,
         ) -> BTreeMap<NewKey, &'tables Value> {
@@ -275,7 +274,7 @@ impl<'tables> Indicies<'tables> {
 }
 pub trait TableUtils {}
 
-impl<Row> TableUtils for HashMap<u64, Row> {}
+impl<Row> TableUtils for BTreeMap<u64, Row> {}
 pub trait IndexUtils {}
 
 impl<Key: Ord + Eq, RowRef> IndexUtils for BTreeMap<Key, RowRef> {}
