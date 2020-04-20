@@ -9,7 +9,7 @@
     "speedruns-frontend": "src/bin/speedruns-frontend.js"
   },
   "dependencies": {
-    "@apollo/react-hooks": "^3.1.4",
+    "@apollo/react-hooks": "^3.1.5",
     "@apollo/react-ssr": "^3.1.4",
     "@apollographql/graphql-playground-react": "^1.7.32",
     "@shopify/useful-types": "^2.1.5",
