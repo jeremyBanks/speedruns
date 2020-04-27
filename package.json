@@ -62,7 +62,7 @@
     "react-youtube": "^7.9.0",
     "remeda": "^0.0.18",
     "replace-in-files-cli": "^0.3.1",
-    "tslint": "^6.1.1",
+    "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.8.3",
     "winston": "^3.2.1",
