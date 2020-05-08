@@ -16,7 +16,7 @@ derive_more = "0.99.5"
 getset = "0.1.0"
 itertools = "0.9.0"
 log = "0.4.8"
-serde = { features = ["derive"], version = "1.0.106" }
+serde = { features = ["derive"], version = "1.0.107" }
 speedruns_utils = { path = "../utils", version = "0.21.6-dev" }
 validator = "0.10.0"
 validator_derive = "0.10.0"
