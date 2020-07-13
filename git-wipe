@@ -1,0 +1,57 @@
+#!/bin/bash
+set -euo pipefail
+shopt -s inherit_errexit nullglob compat"${BASH_COMPAT=42}"
+
+declare repo
+repo="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+
+cd "$repo"
+git config alias.wipe '!./git-wipe'
+
+echo "$(tput bold; tput setaf 1)This will wipe all commits' messages and authors, and smear timestamps.$(tput sgr0)"
+echo
+printf "%s" "Please wait a moment and confirm that this is what you want to do."
+while read -s -n 1 -t 4 -r; do
+    if [[ "$REPLY" =~ ^[Nn]$ ]]; then
+        echo
+        exit
+    fi
+    printf "\r%s" "$(tput el; tput bold; tput setaf 1)Please wait a moment$(tput sgr0) or press N to quit."
+done
+printf "\r"
+read -p "$(tput el; tput bold; tput setaf 1)Press Y to proceed with wipe.$(tput sgr0) Press N to quit. $(tput smul)" -n 1 -r
+echo "$(tput sgr0)"
+
+if [[ ! "${REPLY}" =~ ^[Yy]$ ]]; then
+    exit
+fi
+
+declare wiped
+wiped="$(git rev-parse HEAD)"
+
+git tag "wiped/${wiped:0:4}" "$wiped" 2>/dev/null || :
+
+export GIT_AUTHOR_NAME="${GIT_AUTHOR_NAME:-${GIT_COMMITTER_NAME:-$(git config user.name)}}"
+export GIT_AUTHOR_EMAIL="${GIT_AUTHOR_EMAIL:-${GIT_COMMITTER_EMAIL:-$(git config user.email)}}"
+export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+
+declare git_wip
+git_wip="$(mktemp -t git-wipe-XXXX.bash)"
+
+cat <git-wip >"$git_wip"
+
+declare wipe_env
+wipe_env="export GIT_AUTHOR_NAME=$GIT_AUTHOR_NAME;
+export GIT_AUTHOR_EMAIL=$GIT_AUTHOR_EMAIL;
+export GIT_COMMITTER_NAME=$GIT_COMMITTER_NAME;
+export GIT_COMMITTER_EMAIL=$GIT_COMMITTER_EMAIL;
+eval "'"'"\$(bash $git_wip)"'"'""
+
+export FILTER_BRANCH_SQUELCH_WARNING=true
+
+git filter-branch --force --env-filter "${wipe_env}" --msg-filter "${wipe_env}; echo \${GIT_COMMIT_MESSAGE}"
+
+git --no-pager log --format=raw --graph --decorate -n 2 "$wiped"
+echo
+git --no-pager log --format=raw --graph --decorate -n 2

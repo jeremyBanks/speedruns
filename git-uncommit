@@ -1,0 +1,20 @@
+#!/bin/bash
+set -euo pipefail
+shopt -s inherit_errexit nullglob compat"${BASH_COMPAT=42}"
+
+declare repo
+repo="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+
+cd "$repo"
+git config alias.uncommit '!./git-uncommit'
+
+declare uncommitted
+uncommitted="$(git rev-parse HEAD)"
+
+git tag "uncommitted/${uncommitted:0:4}" "$uncommitted" 2>/dev/null || :
+
+git reset --soft HEAD^
+
+git --no-pager log --format=raw --graph --decorate -n 2 "$uncommitted"
+
+git status
