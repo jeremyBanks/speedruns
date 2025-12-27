@@ -130,7 +130,7 @@ impl Spider {
             reqwest::header::HeaderValue::from_str(&user_agent)?,
         );
 
-        let client = reqwest::Client::builder()
+        let client = reqwest::blocking::Client::builder()
             .default_headers(headers)
             .build()?;
 
@@ -171,9 +171,9 @@ impl Spider {
                     let response_data: JsonValue;
                     loop {
                         match client.get(&url).send() {
-                            Ok(mut response) => match response.json::<JsonValue>() {
-                                Ok(response) => {
-                                    response_data = response;
+                            Ok(response) => match response.json::<JsonValue>() {
+                                Ok(json_response) => {
+                                    response_data = json_response;
                                     break;
                                 }
                                 Err(error) => {

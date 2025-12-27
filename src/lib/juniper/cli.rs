@@ -45,11 +45,11 @@ async fn graphql(
         let res = query.execute(&schema, &crate::Context { database });
         Ok::<_, serde_json::error::Error>(serde_json::to_string(&res)?)
     })
-    .await?;
+    .await??;
 
     Ok(HttpResponse::Ok()
         .content_type("application/json")
-        .header(actix_web::http::header::ACCESS_CONTROL_ALLOW_ORIGIN, "*")
+        .append_header((actix_web::http::header::ACCESS_CONTROL_ALLOW_ORIGIN, "*"))
         .body(user))
 }
 
@@ -102,8 +102,8 @@ pub async fn main(args: Args) -> std::io::Result<()> {
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
             .wrap(middleware::Compress::default())
-            .data(schema.clone())
-            .wrap(actix_cors::Cors::new().finish())
+            .app_data(web::Data::new(schema.clone()))
+            .wrap(actix_cors::Cors::permissive())
             .wrap(actix_web::middleware::Logger::default())
             .service(web::resource("/graphql").route(web::post().to(graphql)))
             .service(web::resource("/graphiql").route(web::get().to(graphiql)))
