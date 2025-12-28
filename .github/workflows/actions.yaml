@@ -145,6 +145,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: version
+          path: version
 
       - name: validation - installed published packages
         run: |
@@ -183,6 +184,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: version
+          path: version
 
       - name: publish - trigger zeit deploy from `deploy`
         run: curl "${{secrets.ZEIT_DEPLOY_STABLE}}"
