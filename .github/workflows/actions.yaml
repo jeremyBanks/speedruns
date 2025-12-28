@@ -95,7 +95,7 @@ jobs:
 
       - name: publish - record published version
         if: github.ref == 'refs/heads/master'
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: version
           path: .version
@@ -147,7 +147,7 @@ jobs:
           toolchain: stable
 
       - name: setup - recall published version
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with:
           name: version
 
@@ -185,7 +185,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - name: setup - recall published version
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with:
           name: version
 
