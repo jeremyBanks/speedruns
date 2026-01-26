@@ -6,10 +6,13 @@ use log::{debug, error, info};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use std::{
     collections::BTreeMap,
-    fs::File,
+    fs::{self, File},
     io::{prelude::*, BufReader, BufWriter},
+    path::Path,
 };
 use tempfile::NamedTempFile;
+
+const DATA_API_DIR: &str = "data/api";
 
 #[derive(PartialEq, Eq, Hash)]
 struct Resource {
@@ -56,10 +59,22 @@ impl Spider {
     pub fn load_or_create() -> Self {
         let mut spider = Spider::default();
 
-        let mut load = || -> Result<(), Box<dyn std::error::Error>> {
-            for resource in RESOURCES.iter() {
-                info!("Loading {}...", resource.id);
-                let file = File::open(&format!("data/api/{}.jsonl.gz", resource.id))?;
+        // Ensure data directory exists
+        if let Err(e) = fs::create_dir_all(DATA_API_DIR) {
+            error!("Failed to create data directory {}: {:?}", DATA_API_DIR, e);
+        }
+
+        // Load each resource independently - missing files are OK for fresh start
+        for resource in RESOURCES.iter() {
+            let path = format!("{}/{}.jsonl.gz", DATA_API_DIR, resource.id);
+            if !Path::new(&path).exists() {
+                info!("No existing {} data at {}, starting fresh.", resource.id, path);
+                continue;
+            }
+
+            info!("Loading {}...", resource.id);
+            let mut load_resource = || -> Result<usize, Box<dyn std::error::Error>> {
+                let file = File::open(&path)?;
                 let buffer = BufReader::new(&file);
                 let decompressor = GzDecoder::new(buffer);
                 let deserializer = JsonDeserializer::from_reader(decompressor);
@@ -74,30 +89,29 @@ impl Spider {
                         .to_string();
                     spider.resource_by_id(resource).insert(id, item);
                 }
-                info!(
-                    "Loaded {} {}.",
-                    spider.resource_by_id(resource).len(),
-                    resource.id
-                );
-            }
-            Ok(())
-        };
+                Ok(spider.resource_by_id(resource).len())
+            };
 
-        if let Err(error) = load() {
-            info!("Error: {:?}", error);
+            match load_resource() {
+                Ok(count) => info!("Loaded {} {}.", count, resource.id),
+                Err(e) => error!("Failed to load {}: {:?}", resource.id, e),
+            }
         }
 
         spider
     }
 
     fn save(&mut self, resource: &Resource) -> Result<(), Box<dyn std::error::Error>> {
+        // Ensure directory exists before saving
+        fs::create_dir_all(DATA_API_DIR)?;
+
         info!(
             "Saving {} {}...",
             self.resource_by_id(resource).len(),
             resource.id
         );
         {
-            let mut file = NamedTempFile::new_in("data")?;
+            let mut file = NamedTempFile::new_in(DATA_API_DIR)?;
             {
                 let buffer = BufWriter::new(&mut file);
                 let mut compressor = GzEncoder::new(buffer, flate2::Compression::best());
@@ -107,14 +121,14 @@ impl Spider {
                 }
                 compressor.finish()?;
             }
-            file.persist(format!("data/api/{}.jsonl.gz", resource.id))?;
+            file.persist(format!("{}/{}.jsonl.gz", DATA_API_DIR, resource.id))?;
         }
         info!("Saved.");
 
         Ok(())
     }
 
-    pub fn run(&mut self) -> Result<(), Box<dyn std::error::Error>> {
+    pub async fn run(&mut self) -> Result<(), Box<dyn std::error::Error>> {
         let mut headers = reqwest::header::HeaderMap::new();
 
         let user_agent = format!(
@@ -130,7 +144,7 @@ impl Spider {
             reqwest::header::HeaderValue::from_str(&user_agent)?,
         );
 
-        let client = reqwest::blocking::Client::builder()
+        let client = reqwest::Client::builder()
             .default_headers(headers)
             .build()?;
 
@@ -170,21 +184,36 @@ impl Spider {
 
                     let response_data: JsonValue;
                     loop {
-                        match client.get(&url).send() {
-                            Ok(response) => match response.json::<JsonValue>() {
-                                Ok(json_response) => {
-                                    response_data = json_response;
-                                    break;
-                                }
-                                Err(error) => {
-                                    error!("response error: {:?}", error);
-                                    std::thread::sleep(std::time::Duration::from_secs(32));
+                        match client.get(&url).send().await {
+                            Ok(response) => {
+                                // Check for rate limiting (429 Too Many Requests)
+                                if response.status() == reqwest::StatusCode::TOO_MANY_REQUESTS {
+                                    let retry_after = response
+                                        .headers()
+                                        .get(reqwest::header::RETRY_AFTER)
+                                        .and_then(|v| v.to_str().ok())
+                                        .and_then(|v| v.parse::<u64>().ok())
+                                        .unwrap_or(60);
+                                    error!("Rate limited, sleeping for {} seconds", retry_after);
+                                    tokio::time::sleep(std::time::Duration::from_secs(retry_after)).await;
                                     continue;
+                                }
+
+                                match response.json::<JsonValue>().await {
+                                    Ok(json_response) => {
+                                        response_data = json_response;
+                                        break;
+                                    }
+                                    Err(error) => {
+                                        error!("response error: {:?}", error);
+                                        tokio::time::sleep(std::time::Duration::from_secs(32)).await;
+                                        continue;
+                                    }
                                 }
                             },
                             Err(error) => {
                                 error!("request error: {:?}", error);
-                                std::thread::sleep(std::time::Duration::from_secs(32));
+                                tokio::time::sleep(std::time::Duration::from_secs(32)).await;
                                 continue;
                             }
                         }
@@ -227,17 +256,17 @@ impl Spider {
 
                     previous = self.resource_by_id(resource).len();
 
-                    std::thread::sleep(std::time::Duration::from_secs(1));
+                    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
                 }
             }
 
             self.save(resource)?;
         }
 
-        std::process::exit(0)
+        Ok(())
     }
 }
 
-pub fn main() -> Result<(), Box<dyn std::error::Error>> {
-    Spider::load_or_create().run()
+pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    Spider::load_or_create().run().await
 }

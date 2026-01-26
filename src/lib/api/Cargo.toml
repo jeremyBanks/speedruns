@@ -25,7 +25,8 @@ log = "0.4.8"
 rand = "0.7.3"
 regex = "1.3.7"
 rental = "0.5.6"
-reqwest = { version = "0.11", features = ["blocking", "gzip", "json"] }
+reqwest = { version = "0.11", features = ["gzip", "json"] }
+tokio = { version = "1", features = ["time"] }
 serde = { features = ["derive"], version = "1.0.106" }
 serde_derive = "1.0.104"
 serde_json = "1.0.51"

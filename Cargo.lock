@@ -875,9 +875,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9fa08315bb612088cc391249efdc3bc77536f16c91f6cf495e6fbe85b20a4a81"
 dependencies = [
  "futures-core",
- "futures-io",
  "futures-task",
- "memchr",
  "pin-project-lite 0.2.16",
  "pin-utils",
  "slab",
@@ -2151,6 +2149,7 @@ dependencies = [
  "speedruns_models",
  "speedruns_utils",
  "tempfile",
+ "tokio",
  "validator",
  "validator_derive",
 ]

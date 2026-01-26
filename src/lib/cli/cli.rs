@@ -59,7 +59,7 @@ pub async fn main() -> Result<(), Box<dyn Error>> {
 
     match args.subcommand {
         Subcommand::Download(_args) => {
-            download::main()?;
+            download::main().await?;
         }
         Subcommand::Import(args) => {
             import::main(args)?;
