@@ -3,6 +3,7 @@
 use flate2::{read::GzDecoder, write::GzEncoder};
 
 use log::{debug, error, info, warn};
+use rand::seq::SliceRandom;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use std::{
     collections::{BTreeMap, HashSet},
@@ -132,7 +133,7 @@ impl Spider {
         Ok(())
     }
 
-    pub async fn run(&mut self) -> Result<(), Box<dyn std::error::Error>> {
+    pub async fn run(&mut self, one_game_only: bool) -> Result<(), Box<dyn std::error::Error>> {
         let mut headers = reqwest::header::HeaderMap::new();
 
         let user_agent = format!(
@@ -151,6 +152,11 @@ impl Spider {
         let client = reqwest::Client::builder()
             .default_headers(headers)
             .build()?;
+
+        // --one mode: pick a random game and fetch just its runs
+        if one_game_only {
+            return self.run_one_game(&client).await;
+        }
 
         for resource in BULK_RESOURCES.iter() {
             // the logic:
@@ -273,6 +279,189 @@ impl Spider {
         Ok(())
     }
 
+    /// --one mode: pick a random game and fetch its runs
+    async fn run_one_game(&mut self, client: &reqwest::Client) -> Result<(), Box<dyn std::error::Error>> {
+        if self.games_by_id.is_empty() {
+            error!("No games loaded. Run a full download first to get the games list.");
+            return Ok(());
+        }
+
+        // Pick a random game
+        let game_ids: Vec<String> = self.games_by_id.keys().cloned().collect();
+        let game_id = game_ids.choose(&mut rand::thread_rng())
+            .expect("games list not empty")
+            .clone();
+
+        let game_name = self.games_by_id.get(&game_id)
+            .and_then(|g| g.get("names"))
+            .and_then(|n| n.get("international"))
+            .and_then(|n| n.as_str())
+            .unwrap_or("unknown");
+
+        info!("Selected game: {} ({})", game_name, game_id);
+
+        // Count runs we have for this game before fetching
+        let runs_before: usize = self.runs_by_id.values()
+            .filter(|r| r.get("game").and_then(|g| g.as_str()) == Some(&game_id))
+            .count();
+        info!("We have {} runs for this game.", runs_before);
+
+        // Fetch runs for this game
+        let mut offset = 0;
+        let mut total_fetched = 0;
+        loop {
+            let url = format!(
+                "https://www.speedrun.com/api/v1/runs?game={}&max=200&offset={}",
+                game_id, offset
+            );
+
+            info!("Fetching runs for {} (offset {})...", game_name, offset);
+
+            let response_data: JsonValue = match client.get(&url).send().await {
+                Ok(response) => {
+                    if response.status() == reqwest::StatusCode::TOO_MANY_REQUESTS {
+                        let retry_after = response
+                            .headers()
+                            .get(reqwest::header::RETRY_AFTER)
+                            .and_then(|v| v.to_str().ok())
+                            .and_then(|v| v.parse::<u64>().ok())
+                            .unwrap_or(60);
+                        error!("Rate limited, sleeping for {} seconds", retry_after);
+                        tokio::time::sleep(std::time::Duration::from_secs(retry_after)).await;
+                        continue;
+                    }
+                    match response.json().await {
+                        Ok(j) => j,
+                        Err(e) => {
+                            error!("Failed to parse response: {:?}", e);
+                            break;
+                        }
+                    }
+                }
+                Err(e) => {
+                    error!("Request failed: {:?}", e);
+                    break;
+                }
+            };
+
+            let items = response_data
+                .get("data")
+                .and_then(|d| d.as_array())
+                .map(|a| a.to_vec())
+                .unwrap_or_default();
+
+            let count = items.len();
+            for item in items {
+                if let Some(id) = item.get("id").and_then(|v| v.as_str()) {
+                    self.runs_by_id.insert(id.to_string(), item);
+                    total_fetched += 1;
+                }
+            }
+
+            info!("Got {} runs.", count);
+
+            if count < 200 {
+                // End of runs for this game
+                break;
+            }
+
+            offset += 200;
+            tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+        }
+
+        let runs_after: usize = self.runs_by_id.values()
+            .filter(|r| r.get("game").and_then(|g| g.as_str()) == Some(&game_id))
+            .count();
+
+        info!("Finished fetching runs for {}. Had {}, now have {} ({} new).",
+              game_name, runs_before, runs_after, runs_after - runs_before);
+
+        // Save runs
+        self.save(&BULK_RESOURCES[1])?; // runs
+
+        // Fetch missing users from the runs we just got
+        self.fetch_missing_users_for_game(client, &game_id).await?;
+
+        Ok(())
+    }
+
+    /// Fetch missing users referenced in runs for a specific game
+    async fn fetch_missing_users_for_game(&mut self, client: &reqwest::Client, game_id: &str) -> Result<(), Box<dyn std::error::Error>> {
+        // Collect user IDs from runs for this game
+        let mut user_ids: HashSet<String> = HashSet::new();
+        for run in self.runs_by_id.values() {
+            if run.get("game").and_then(|g| g.as_str()) != Some(game_id) {
+                continue;
+            }
+            if let Some(players) = run.get("players").and_then(|p| p.as_array()) {
+                for player in players {
+                    if let Some(id) = player.get("id").and_then(|v| v.as_str()) {
+                        user_ids.insert(id.to_string());
+                    }
+                }
+            }
+        }
+
+        // Find missing users
+        let missing: Vec<String> = user_ids
+            .iter()
+            .filter(|id| !self.users_by_id.contains_key(*id))
+            .cloned()
+            .collect();
+
+        if missing.is_empty() {
+            info!("All users for this game already present.");
+            return Ok(());
+        }
+
+        info!("Fetching {} missing users for this game...", missing.len());
+
+        let mut fetched = 0;
+        for user_id in &missing {
+            let url = format!("https://www.speedrun.com/api/v1/users/{}", user_id);
+
+            match client.get(&url).send().await {
+                Ok(response) => {
+                    if response.status() == reqwest::StatusCode::TOO_MANY_REQUESTS {
+                        let retry_after = response
+                            .headers()
+                            .get(reqwest::header::RETRY_AFTER)
+                            .and_then(|v| v.to_str().ok())
+                            .and_then(|v| v.parse::<u64>().ok())
+                            .unwrap_or(60);
+                        error!("Rate limited, sleeping for {} seconds", retry_after);
+                        tokio::time::sleep(std::time::Duration::from_secs(retry_after)).await;
+                        continue;
+                    }
+
+                    if !response.status().is_success() {
+                        warn!("Failed to fetch user {}: {}", user_id, response.status());
+                        continue;
+                    }
+
+                    if let Ok(json) = response.json::<JsonValue>().await {
+                        if let Some(user_data) = json.get("data") {
+                            self.users_by_id.insert(user_id.clone(), user_data.clone());
+                            fetched += 1;
+                        }
+                    }
+                }
+                Err(e) => {
+                    warn!("Request failed for user {}: {:?}", user_id, e);
+                }
+            }
+
+            tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+        }
+
+        info!("Fetched {} new users.", fetched);
+        if fetched > 0 {
+            self.save(&USERS_RESOURCE)?;
+        }
+
+        Ok(())
+    }
+
     /// Extract user IDs from all runs and fetch any we don't already have
     async fn fetch_missing_users(&mut self, client: &reqwest::Client) -> Result<(), Box<dyn std::error::Error>> {
         info!("Checking for missing users referenced in runs...");
@@ -373,6 +562,6 @@ impl Spider {
     }
 }
 
-pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    Spider::load_or_create().run().await
+pub async fn main(one_game_only: bool) -> Result<(), Box<dyn std::error::Error>> {
+    Spider::load_or_create().run(one_game_only).await
 }

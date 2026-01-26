@@ -42,7 +42,11 @@ pub enum Subcommand {
 /// beyond the existence of  a string "id" value. This stores everything in-memory, it's not
 /// memory-efficient.
 #[argh(subcommand, name = "download")]
-pub struct DownloadArgs {}
+pub struct DownloadArgs {
+    /// fetch runs for just one random game, then stop. useful for incremental updates.
+    #[argh(switch)]
+    one: bool,
+}
 
 pub async fn main() -> Result<(), Box<dyn Error>> {
     let args: Args = argh::from_env();
@@ -58,8 +62,8 @@ pub async fn main() -> Result<(), Box<dyn Error>> {
     pretty_env_logger::init();
 
     match args.subcommand {
-        Subcommand::Download(_args) => {
-            download::main().await?;
+        Subcommand::Download(args) => {
+            download::main(args.one).await?;
         }
         Subcommand::Import(args) => {
             import::main(args)?;
