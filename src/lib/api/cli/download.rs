@@ -2,10 +2,10 @@
 
 use flate2::{read::GzDecoder, write::GzEncoder};
 
-use log::{debug, error, info};
+use log::{debug, error, info, warn};
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, HashSet},
     fs::{self, File},
     io::{prelude::*, BufReader, BufWriter},
     path::Path,
@@ -21,16 +21,12 @@ struct Resource {
     embed: &'static str,
 }
 
-const RESOURCES: [Resource; 3] = [
+// Only games and runs support bulk listing; users must be fetched individually
+const BULK_RESOURCES: [Resource; 2] = [
     Resource {
         id: "games",
         order: "created",
         embed: "levels,categories,variables,gametypes,platforms,regions,genres,engines,developers,publishers"
-    },
-    Resource {
-        id: "users",
-        order: "signup",
-        embed: ""
     },
     Resource {
         id: "runs",
@@ -38,6 +34,13 @@ const RESOURCES: [Resource; 3] = [
         embed: ""
     },
 ];
+
+// Dummy resource for users (used for load/save only, not bulk download)
+const USERS_RESOURCE: Resource = Resource {
+    id: "users",
+    order: "",
+    embed: ""
+};
 
 #[derive(Default)]
 struct Spider {
@@ -65,7 +68,8 @@ impl Spider {
         }
 
         // Load each resource independently - missing files are OK for fresh start
-        for resource in RESOURCES.iter() {
+        let all_resources = [&BULK_RESOURCES[0], &BULK_RESOURCES[1], &USERS_RESOURCE];
+        for resource in all_resources.iter() {
             let path = format!("{}/{}.jsonl.gz", DATA_API_DIR, resource.id);
             if !Path::new(&path).exists() {
                 info!("No existing {} data at {}, starting fresh.", resource.id, path);
@@ -148,7 +152,7 @@ impl Spider {
             .default_headers(headers)
             .build()?;
 
-        for resource in RESOURCES.iter() {
+        for resource in BULK_RESOURCES.iter() {
             // the logic:
             // try to grab from offset of len
             // if you see any duplicates, that means you're missing some at
@@ -262,6 +266,108 @@ impl Spider {
 
             self.save(resource)?;
         }
+
+        // After downloading runs, fetch any missing users referenced in runs
+        self.fetch_missing_users(&client).await?;
+
+        Ok(())
+    }
+
+    /// Extract user IDs from all runs and fetch any we don't already have
+    async fn fetch_missing_users(&mut self, client: &reqwest::Client) -> Result<(), Box<dyn std::error::Error>> {
+        info!("Checking for missing users referenced in runs...");
+
+        // Collect all user IDs referenced in runs
+        let mut referenced_user_ids: HashSet<String> = HashSet::new();
+        for run in self.runs_by_id.values() {
+            if let Some(players) = run.get("players").and_then(|p| p.as_array()) {
+                for player in players {
+                    // Players can be either user references or guests
+                    if let Some(id) = player.get("id").and_then(|v| v.as_str()) {
+                        referenced_user_ids.insert(id.to_string());
+                    }
+                }
+            }
+        }
+
+        // Find users we don't have yet
+        let existing_user_ids: HashSet<&String> = self.users_by_id.keys().collect();
+        let missing_user_ids: Vec<String> = referenced_user_ids
+            .iter()
+            .filter(|id| !existing_user_ids.contains(id))
+            .cloned()
+            .collect();
+
+        if missing_user_ids.is_empty() {
+            info!("All referenced users already present.");
+            return Ok(());
+        }
+
+        info!("Need to fetch {} missing users.", missing_user_ids.len());
+
+        let mut fetched = 0;
+        let mut failed = 0;
+        for user_id in &missing_user_ids {
+            let url = format!("https://www.speedrun.com/api/v1/users/{}", user_id);
+
+            match client.get(&url).send().await {
+                Ok(response) => {
+                    if response.status() == reqwest::StatusCode::TOO_MANY_REQUESTS {
+                        let retry_after = response
+                            .headers()
+                            .get(reqwest::header::RETRY_AFTER)
+                            .and_then(|v| v.to_str().ok())
+                            .and_then(|v| v.parse::<u64>().ok())
+                            .unwrap_or(60);
+                        error!("Rate limited, sleeping for {} seconds", retry_after);
+                        tokio::time::sleep(std::time::Duration::from_secs(retry_after)).await;
+                        // Don't increment failed, will retry on next run
+                        continue;
+                    }
+
+                    if response.status() == reqwest::StatusCode::NOT_FOUND {
+                        warn!("User {} not found (may have been deleted)", user_id);
+                        failed += 1;
+                        continue;
+                    }
+
+                    if !response.status().is_success() {
+                        warn!("Failed to fetch user {}: {}", user_id, response.status());
+                        failed += 1;
+                        continue;
+                    }
+
+                    match response.json::<JsonValue>().await {
+                        Ok(json_response) => {
+                            if let Some(user_data) = json_response.get("data") {
+                                self.users_by_id.insert(user_id.clone(), user_data.clone());
+                                fetched += 1;
+                            }
+                        }
+                        Err(e) => {
+                            warn!("Failed to parse user {}: {:?}", user_id, e);
+                            failed += 1;
+                        }
+                    }
+                }
+                Err(e) => {
+                    warn!("Request failed for user {}: {:?}", user_id, e);
+                    failed += 1;
+                }
+            }
+
+            // Save progress periodically
+            if fetched % 100 == 0 && fetched > 0 {
+                info!("Fetched {} users so far...", fetched);
+                self.save(&USERS_RESOURCE)?;
+            }
+
+            // Rate limit ourselves
+            tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+        }
+
+        info!("Fetched {} new users, {} failed.", fetched, failed);
+        self.save(&USERS_RESOURCE)?;
 
         Ok(())
     }
