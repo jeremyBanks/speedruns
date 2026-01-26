@@ -253,8 +253,8 @@ impl Spider {
                         break;
                     };
 
-                    // save progress
-                    if i % 32 == 255 {
+                    // save progress periodically (every 256 pages = ~51K items)
+                    if i > 0 && i % 256 == 0 {
                         self.save(resource)?;
                     }
 
