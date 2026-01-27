@@ -85,6 +85,7 @@ impl Spider {
                 let decompressor = GzDecoder::new(buffer);
                 let deserializer = JsonDeserializer::from_reader(decompressor);
                 let iterator = deserializer.into_iter::<JsonValue>();
+                let mut count = 0;
                 for item in iterator {
                     let item = item?;
                     let id = item
@@ -94,6 +95,10 @@ impl Spider {
                         .expect("record should have id field")
                         .to_string();
                     spider.resource_by_id(resource).insert(id, item);
+                    count += 1;
+                    if count % 50000 == 0 {
+                        debug!("  ...loaded {} {} so far", count, resource.id);
+                    }
                 }
                 Ok(spider.resource_by_id(resource).len())
             };
@@ -121,12 +126,19 @@ impl Spider {
             {
                 let buffer = BufWriter::new(&mut file);
                 let mut compressor = GzEncoder::new(buffer, flate2::Compression::best());
+                let total = self.resource_by_id(resource).len();
+                let mut count = 0;
                 for data in self.resource_by_id(resource).values() {
                     serde_json::to_writer(&mut compressor, &data)?;
                     compressor.write_all(b"\n")?;
+                    count += 1;
+                    if count % 100000 == 0 {
+                        debug!("  ...saved {}/{} {}", count, total, resource.id);
+                    }
                 }
                 compressor.finish()?;
             }
+            debug!("Persisting temp file...");
             file.persist(format!("{}/{}.jsonl.gz", DATA_API_DIR, resource.id))?;
         }
         info!("Saved.");
