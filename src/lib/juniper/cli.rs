@@ -70,17 +70,16 @@ async fn diediedie() -> HttpResponse {
         .body("/diediedie only works on linux")
 }
 
-#[derive(argh::FromArgs, PartialEq, Debug)]
+#[derive(clap::Parser, Debug)]
 /// Serves imported data from a GraphQL server. All data is loaded into memory, not served
 /// from disk.
-#[argh(subcommand, name = "serve")]
 pub struct Args {
-    /// port to run server on
-    #[argh(option)]
+    /// Port to run server on
+    #[arg(long)]
     port: Option<u32>,
-    /// whether to skip the database import (such as if you only need to run the server to
+    /// Whether to skip the database import (such as if you only need to run the server to
     /// briefly download the schema)
-    #[argh(switch)]
+    #[arg(long)]
     no_data: bool,
 }
 

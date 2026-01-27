@@ -7,53 +7,55 @@
 
 use std::error::Error;
 
+use clap::{Parser, Subcommand as ClapSubcommand};
 use log::warn;
 
 use speedruns_api::cli::{download, import};
 use speedruns_juniper::cli as juniper_cli;
 
-#[derive(argh::FromArgs, PartialEq, Debug)]
-/// Tools for importing and serving some data from the speedrun.com API.
+#[derive(Parser, Debug)]
+#[command(about = "Tools for importing and serving some data from the speedrun.com API.")]
 pub struct Args {
-    #[argh(subcommand)]
+    #[command(subcommand)]
     subcommand: Subcommand,
 
-    /// silence log output except for errors. overrides --verbose and RUST_LOG.
-    #[argh(switch, short = 'q')]
+    /// Silence log output except for errors. Overrides --verbose and RUST_LOG.
+    #[arg(short = 'q', long)]
     quiet: bool,
 
-    /// enables maximum logging for our code and debug logging for dependencies. overrides
+    /// Enables maximum logging for our code and debug logging for dependencies. Overrides
     /// RUST_LOG.
-    #[argh(switch, short = 'v')]
+    #[arg(short = 'v', long)]
     verbose: bool,
 }
 
-#[derive(argh::FromArgs, PartialEq, Debug)]
-#[argh(subcommand)]
+#[derive(ClapSubcommand, Debug)]
 pub enum Subcommand {
+    /// Fetches/updates a local mirror of speedrun.com API content.
     Download(DownloadArgs),
+    /// Imports downloaded data (converting it to our internal representation).
     Import(import::Args),
+    /// Serves imported data from a GraphQL server.
     Serve(juniper_cli::Args),
 }
 
-#[derive(argh::FromArgs, PartialEq, Debug)]
+#[derive(Parser, Debug)]
 /// Fetches/updates a local mirror of speedrun.com API content. This just stores the JSON
 /// representation of each item as-is, it doesn't make any assumptions about their structure
-/// beyond the existence of  a string "id" value. This stores everything in-memory, it's not
+/// beyond the existence of a string "id" value. This stores everything in-memory, it's not
 /// memory-efficient.
-#[argh(subcommand, name = "download")]
 pub struct DownloadArgs {
-    /// limit number of games to fetch runs for. -1 means unlimited (default).
-    #[argh(option, default = "-1")]
+    /// Limit number of games to fetch runs for. -1 means unlimited (default).
+    #[arg(long, default_value = "-1")]
     limit: i32,
 
-    /// backup existing data files with YYYYMMDDHHMM- prefix before downloading.
-    #[argh(switch)]
+    /// Backup existing data files with YYYYMMDDHHMM- prefix before downloading.
+    #[arg(long)]
     backup: bool,
 }
 
 pub async fn main() -> Result<(), Box<dyn Error>> {
-    let args: Args = argh::from_env();
+    let args = Args::parse();
 
     if args.quiet {
         std::env::set_var("RUST_LOG", "error");
