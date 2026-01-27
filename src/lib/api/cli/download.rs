@@ -331,8 +331,6 @@ impl Spider {
 
         info!("Selected {} game(s) to fetch runs for.", selected_games.len());
 
-        let mut all_fetched_game_ids: Vec<String> = Vec::new();
-
         for (i, game_id) in selected_games.iter().enumerate() {
             let game_name = self.games_by_id.get(game_id)
                 .and_then(|g| g.get("names"))
@@ -416,14 +414,10 @@ impl Spider {
             info!("Finished fetching runs for {}. Had {}, now have {} ({} new).",
                   game_name, runs_before, runs_after, runs_after - runs_before);
 
-            all_fetched_game_ids.push(game_id.clone());
-        }
+            // Save runs after each game
+            self.save(&BULK_RESOURCES[1])?; // runs
 
-        // Save runs
-        self.save(&BULK_RESOURCES[1])?; // runs
-
-        // Fetch missing users from all the games we just fetched
-        for game_id in &all_fetched_game_ids {
+            // Fetch missing users immediately after each game
             self.fetch_missing_users_for_game(client, game_id).await?;
         }
 
