@@ -1,5 +1,6 @@
 #![allow(clippy::useless_attribute, clippy::useless_vec)]
 
+use chrono::Local;
 use flate2::{read::GzDecoder, write::GzEncoder};
 
 use log::{debug, error, info, warn};
@@ -133,7 +134,26 @@ impl Spider {
         Ok(())
     }
 
-    pub async fn run(&mut self, one_game_only: bool) -> Result<(), Box<dyn std::error::Error>> {
+    /// Backup existing data files with YYYYMMDDHHMM- prefix
+    fn backup_data_files(&self) -> Result<(), Box<dyn std::error::Error>> {
+        let timestamp = Local::now().format("%Y%m%d%H%M").to_string();
+
+        for name in &["games", "runs", "users"] {
+            let src = format!("{}/{}.jsonl.gz", DATA_API_DIR, name);
+            if Path::new(&src).exists() {
+                let dst = format!("{}/{}-{}.jsonl.gz", DATA_API_DIR, timestamp, name);
+                info!("Backing up {} -> {}", src, dst);
+                fs::copy(&src, &dst)?;
+            }
+        }
+
+        Ok(())
+    }
+
+    pub async fn run(&mut self, one_game_only: bool, backup: bool) -> Result<(), Box<dyn std::error::Error>> {
+        if backup {
+            self.backup_data_files()?;
+        }
         let mut headers = reqwest::header::HeaderMap::new();
 
         let user_agent = format!(
@@ -562,6 +582,6 @@ impl Spider {
     }
 }
 
-pub async fn main(one_game_only: bool) -> Result<(), Box<dyn std::error::Error>> {
-    Spider::load_or_create().run(one_game_only).await
+pub async fn main(one_game_only: bool, backup: bool) -> Result<(), Box<dyn std::error::Error>> {
+    Spider::load_or_create().run(one_game_only, backup).await
 }

@@ -46,6 +46,10 @@ pub struct DownloadArgs {
     /// fetch runs for just one random game, then stop. useful for incremental updates.
     #[argh(switch)]
     one: bool,
+
+    /// backup existing data files with YYYYMMDDHHMM- prefix before downloading.
+    #[argh(switch)]
+    backup: bool,
 }
 
 pub async fn main() -> Result<(), Box<dyn Error>> {
@@ -63,7 +67,7 @@ pub async fn main() -> Result<(), Box<dyn Error>> {
 
     match args.subcommand {
         Subcommand::Download(args) => {
-            download::main(args.one).await?;
+            download::main(args.one, args.backup).await?;
         }
         Subcommand::Import(args) => {
             import::main(args)?;
