@@ -265,9 +265,14 @@ impl Spider {
                     let response = response_data
                         .as_object()
                         .expect("json response to have expected structure");
-                    let items = response["data"]
-                        .as_array()
-                        .expect("json response to have expected structure");
+                    let items = match response.get("data").and_then(|d| d.as_array()) {
+                        Some(arr) => arr,
+                        None => {
+                            error!("API response missing 'data' field: {:?}", response);
+                            tokio::time::sleep(std::time::Duration::from_secs(30)).await;
+                            continue;
+                        }
+                    };
 
                     for item in items.iter().cloned() {
                         let id = item
