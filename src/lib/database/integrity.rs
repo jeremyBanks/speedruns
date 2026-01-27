@@ -411,10 +411,12 @@ impl IntegrityError {
     }
 }
 
-#[derive(Debug, Error, From)]
+#[derive(Debug, From)]
 pub struct IntegrityErrors {
     pub errors: Vec<IntegrityError>,
 }
+
+impl std::error::Error for IntegrityErrors {}
 
 impl IntegrityErrors {
     fn try_from(errors: Vec<IntegrityError>) -> Result<(), IntegrityErrors> {

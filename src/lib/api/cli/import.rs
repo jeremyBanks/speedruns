@@ -23,16 +23,15 @@ use tempfile::NamedTempFile;
 use crate::normalize::Normalize;
 use speedruns_database::{Database, Tables};
 
-#[derive(argh::FromArgs, PartialEq, Debug)]
+#[derive(clap::Parser, Debug)]
 /// Imports downloaded data (converting it to our internal representation, discarding weird
-/// records). existing data is removed/replaced. This is even less memory-efficient than
+/// records). Existing data is removed/replaced. This is even less memory-efficient than
 /// `download` because it also stores everything in memory, and but also memory leaks on top
 /// of that!
-#[argh(subcommand, name = "import")]
 pub struct Args {
-    /// import a subset of the API data into our fixtures, instead of importing the full
+    /// Import a subset of the API data into our fixtures, instead of importing the full
     /// data set into our database.
-    #[argh(switch)]
+    #[arg(long)]
     fixtures: bool,
 }
 
