@@ -43,9 +43,9 @@ pub enum Subcommand {
 /// memory-efficient.
 #[argh(subcommand, name = "download")]
 pub struct DownloadArgs {
-    /// fetch runs for just one random game, then stop. useful for incremental updates.
-    #[argh(switch)]
-    one: bool,
+    /// limit number of games to fetch runs for. -1 means unlimited (default).
+    #[argh(option, default = "-1")]
+    limit: i32,
 
     /// backup existing data files with YYYYMMDDHHMM- prefix before downloading.
     #[argh(switch)]
@@ -67,7 +67,7 @@ pub async fn main() -> Result<(), Box<dyn Error>> {
 
     match args.subcommand {
         Subcommand::Download(args) => {
-            download::main(args.one, args.backup).await?;
+            download::main(args.limit, args.backup).await?;
         }
         Subcommand::Import(args) => {
             import::main(args)?;

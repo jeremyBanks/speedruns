@@ -5,6 +5,7 @@ use flate2::{read::GzDecoder, write::GzEncoder};
 
 use log::{debug, error, info, warn};
 use rand::seq::SliceRandom;
+use rand::prelude::*;
 use serde_json::{Deserializer as JsonDeserializer, Value as JsonValue};
 use std::{
     collections::{BTreeMap, HashSet},
@@ -162,7 +163,7 @@ impl Spider {
         Ok(())
     }
 
-    pub async fn run(&mut self, one_game_only: bool, backup: bool) -> Result<(), Box<dyn std::error::Error>> {
+    pub async fn run(&mut self, limit: i32, backup: bool) -> Result<(), Box<dyn std::error::Error>> {
         if backup {
             self.backup_data_files()?;
         }
@@ -185,9 +186,9 @@ impl Spider {
             .default_headers(headers)
             .build()?;
 
-        // --one mode: pick a random game and fetch just its runs
-        if one_game_only {
-            return self.run_one_game(&client).await;
+        // --limit mode: fetch runs for N random games instead of bulk download
+        if limit >= 0 {
+            return self.run_limited(&client, limit as usize).await;
         }
 
         for resource in BULK_RESOURCES.iter() {
@@ -311,108 +312,120 @@ impl Spider {
         Ok(())
     }
 
-    /// --one mode: pick a random game and fetch its runs
-    async fn run_one_game(&mut self, client: &reqwest::Client) -> Result<(), Box<dyn std::error::Error>> {
+    /// --limit mode: fetch runs for N random games
+    async fn run_limited(&mut self, client: &reqwest::Client, limit: usize) -> Result<(), Box<dyn std::error::Error>> {
+        if limit == 0 {
+            info!("Limit is 0, nothing to do.");
+            return Ok(());
+        }
+
         if self.games_by_id.is_empty() {
             error!("No games loaded. Run a full download first to get the games list.");
             return Ok(());
         }
 
-        // Pick a random game
-        let game_ids: Vec<String> = self.games_by_id.keys().cloned().collect();
-        let game_id = game_ids.choose(&mut rand::thread_rng())
-            .expect("games list not empty")
-            .clone();
+        // Pick N random games
+        let mut game_ids: Vec<String> = self.games_by_id.keys().cloned().collect();
+        game_ids.shuffle(&mut rand::thread_rng());
+        let selected_games: Vec<String> = game_ids.into_iter().take(limit).collect();
 
-        let game_name = self.games_by_id.get(&game_id)
-            .and_then(|g| g.get("names"))
-            .and_then(|n| n.get("international"))
-            .and_then(|n| n.as_str())
-            .unwrap_or("unknown");
+        info!("Selected {} game(s) to fetch runs for.", selected_games.len());
 
-        info!("Selected game: {} ({})", game_name, game_id);
+        let mut all_fetched_game_ids: Vec<String> = Vec::new();
 
-        // Count runs we have for this game before fetching
-        let runs_before: usize = self.runs_by_id.values()
-            .filter(|r| r.get("game").and_then(|g| g.as_str()) == Some(&game_id))
-            .count();
-        info!("We have {} runs for this game.", runs_before);
+        for (i, game_id) in selected_games.iter().enumerate() {
+            let game_name = self.games_by_id.get(game_id)
+                .and_then(|g| g.get("names"))
+                .and_then(|n| n.get("international"))
+                .and_then(|n| n.as_str())
+                .unwrap_or("unknown");
 
-        // Fetch runs for this game
-        let mut offset = 0;
-        let mut total_fetched = 0;
-        loop {
-            let url = format!(
-                "https://www.speedrun.com/api/v1/runs?game={}&max=200&offset={}",
-                game_id, offset
-            );
+            info!("[{}/{}] Selected game: {} ({})", i + 1, limit, game_name, game_id);
 
-            info!("Fetching runs for {} (offset {})...", game_name, offset);
+            // Count runs we have for this game before fetching
+            let runs_before: usize = self.runs_by_id.values()
+                .filter(|r| r.get("game").and_then(|g| g.as_str()) == Some(game_id.as_str()))
+                .count();
+            info!("We have {} runs for this game.", runs_before);
 
-            let response_data: JsonValue = match client.get(&url).send().await {
-                Ok(response) => {
-                    if response.status() == reqwest::StatusCode::TOO_MANY_REQUESTS {
-                        let retry_after = response
-                            .headers()
-                            .get(reqwest::header::RETRY_AFTER)
-                            .and_then(|v| v.to_str().ok())
-                            .and_then(|v| v.parse::<u64>().ok())
-                            .unwrap_or(60);
-                        error!("Rate limited, sleeping for {} seconds", retry_after);
-                        tokio::time::sleep(std::time::Duration::from_secs(retry_after)).await;
-                        continue;
-                    }
-                    match response.json().await {
-                        Ok(j) => j,
-                        Err(e) => {
-                            error!("Failed to parse response: {:?}", e);
-                            break;
+            // Fetch runs for this game
+            let mut offset = 0;
+            loop {
+                let url = format!(
+                    "https://www.speedrun.com/api/v1/runs?game={}&max=200&offset={}",
+                    game_id, offset
+                );
+
+                info!("Fetching runs for {} (offset {})...", game_name, offset);
+
+                let response_data: JsonValue = match client.get(&url).send().await {
+                    Ok(response) => {
+                        if response.status() == reqwest::StatusCode::TOO_MANY_REQUESTS {
+                            let retry_after = response
+                                .headers()
+                                .get(reqwest::header::RETRY_AFTER)
+                                .and_then(|v| v.to_str().ok())
+                                .and_then(|v| v.parse::<u64>().ok())
+                                .unwrap_or(60);
+                            error!("Rate limited, sleeping for {} seconds", retry_after);
+                            tokio::time::sleep(std::time::Duration::from_secs(retry_after)).await;
+                            continue;
+                        }
+                        match response.json().await {
+                            Ok(j) => j,
+                            Err(e) => {
+                                error!("Failed to parse response: {:?}", e);
+                                break;
+                            }
                         }
                     }
+                    Err(e) => {
+                        error!("Request failed: {:?}", e);
+                        break;
+                    }
+                };
+
+                let items = response_data
+                    .get("data")
+                    .and_then(|d| d.as_array())
+                    .map(|a| a.to_vec())
+                    .unwrap_or_default();
+
+                let count = items.len();
+                for item in items {
+                    if let Some(id) = item.get("id").and_then(|v| v.as_str()) {
+                        self.runs_by_id.insert(id.to_string(), item);
+                    }
                 }
-                Err(e) => {
-                    error!("Request failed: {:?}", e);
+
+                info!("Got {} runs.", count);
+
+                if count < 200 {
+                    // End of runs for this game
                     break;
                 }
-            };
 
-            let items = response_data
-                .get("data")
-                .and_then(|d| d.as_array())
-                .map(|a| a.to_vec())
-                .unwrap_or_default();
-
-            let count = items.len();
-            for item in items {
-                if let Some(id) = item.get("id").and_then(|v| v.as_str()) {
-                    self.runs_by_id.insert(id.to_string(), item);
-                    total_fetched += 1;
-                }
+                offset += 200;
+                tokio::time::sleep(std::time::Duration::from_secs(1)).await;
             }
 
-            info!("Got {} runs.", count);
+            let runs_after: usize = self.runs_by_id.values()
+                .filter(|r| r.get("game").and_then(|g| g.as_str()) == Some(game_id.as_str()))
+                .count();
 
-            if count < 200 {
-                // End of runs for this game
-                break;
-            }
+            info!("Finished fetching runs for {}. Had {}, now have {} ({} new).",
+                  game_name, runs_before, runs_after, runs_after - runs_before);
 
-            offset += 200;
-            tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+            all_fetched_game_ids.push(game_id.clone());
         }
-
-        let runs_after: usize = self.runs_by_id.values()
-            .filter(|r| r.get("game").and_then(|g| g.as_str()) == Some(&game_id))
-            .count();
-
-        info!("Finished fetching runs for {}. Had {}, now have {} ({} new).",
-              game_name, runs_before, runs_after, runs_after - runs_before);
 
         // Save runs
         self.save(&BULK_RESOURCES[1])?; // runs
 
-        // Fetch missing users from the runs we just got
-        self.fetch_missing_users_for_game(client, &game_id).await?;
+        // Fetch missing users from all the games we just fetched
+        for game_id in &all_fetched_game_ids {
+            self.fetch_missing_users_for_game(client, game_id).await?;
+        }
 
         Ok(())
     }
@@ -594,6 +607,6 @@ impl Spider {
     }
 }
 
-pub async fn main(one_game_only: bool, backup: bool) -> Result<(), Box<dyn std::error::Error>> {
-    Spider::load_or_create().run(one_game_only, backup).await
+pub async fn main(limit: i32, backup: bool) -> Result<(), Box<dyn std::error::Error>> {
+    Spider::load_or_create().run(limit, backup).await
 }
