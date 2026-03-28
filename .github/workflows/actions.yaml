@@ -7,15 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: preparation - checkout source
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: preparation - reading environment
         id: env
         run: |
-          echo "::set-output name=rust::$(cat rust-toolchain)"
-          echo "::set-output name=node::$(cat .nvmrc)"
-          echo "::set-output name=git-branch::$(echo ${GITHUB_REF#refs/heads/})"
-          echo "::set-output name=yarn-cache::$(yarn cache dir)"
+          echo "rust=$(cat rust-toolchain)" >> $GITHUB_OUTPUT
+          echo "node=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+          echo "git-branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
+          echo "yarn-cache=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
       - name: preparation - configure git write access
         run: |
@@ -37,7 +37,7 @@ jobs:
           toolchain: ${{ steps.env.outputs.rust }}
 
       - name: setup - install node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ steps.env.outputs.node }}
 
@@ -95,7 +95,7 @@ jobs:
 
       - name: publish - record published version
         if: github.ref == 'refs/heads/master'
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: version
           path: .version
@@ -103,32 +103,27 @@ jobs:
       - name: setup - record published version
         if: github.ref == 'refs/heads/master'
         id: version
-        run: echo "::set-output name=version::$(cat .version)"
+        run: echo "version=$(cat .version)" >> $GITHUB_OUTPUT
+
+      - name: publish - prepare release asset
+        if: github.ref == 'refs/heads/master'
+        run: cp ./target/release/speedruns ./target/release/speedruns-linux-x86_64
 
       - name: publish - create github (pre)release
         if: github.ref == 'refs/heads/master'
         id: create_release
-        uses: actions/create-release@master
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.version.outputs.version }}
-          release_name: ${{ steps.version.outputs.version }}
+          name: ${{ steps.version.outputs.version }}
           draft: false
           prerelease: true
           body: |
             [`crates.io`](https://crates.io/crates/speedruns/${{ steps.version.outputs.version }}) && ([`npm`](https://www.npmjs.com/package/speedruns/v/${{ steps.version.outputs.version }}) || [`ghpr`](https://github.com/jeremyBanks/speedruns/packages/120812?version=${{ steps.version.outputs.version }}))
-
-      - name: publish - upload linux binary to github releases
-        if: github.ref == 'refs/heads/master'
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./target/release/speedruns
-          asset_name: speedruns-linux-x86_64
-          asset_content_type: application/octet-stream
+          files: |
+            ./target/release/speedruns-linux-x86_64
 
   post-publish:
     name: "validate published packages"
@@ -137,7 +132,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - name: setup - install node 13
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: 13.x
 
@@ -147,9 +142,10 @@ jobs:
           toolchain: stable
 
       - name: setup - recall published version
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with:
           name: version
+          path: version
 
       - name: validation - installed published packages
         run: |
@@ -185,9 +181,10 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - name: setup - recall published version
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with:
           name: version
+          path: version
 
       - name: publish - trigger zeit deploy from `deploy`
         run: curl "${{secrets.ZEIT_DEPLOY_STABLE}}"
